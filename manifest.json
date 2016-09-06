@@ -31,9 +31,7 @@
 		"unlimitedStorage"
   ],
 	"web_accessible_resources": [
-		"js/*",
-		"css/*",
-		"views/*"
+		"https://github.com/lpshanley/MNSure-Script-Engine/*"
 	],
 	"externally_connectable": {
 		"matches": ["https://people.mnsure.org/Curam/*"]

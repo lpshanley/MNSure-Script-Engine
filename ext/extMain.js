@@ -9,7 +9,7 @@ chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab){
 					var result = null;
 					
 					$.ajax({
-						url: 'views/'+request.file,
+						url: 'https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/views/'+request.file,
 						type: 'get',
 						dataType: 'html',
 						async: false,
