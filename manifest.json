@@ -3,16 +3,13 @@
   "name": "MNSure Script Engine",
 	"author": "Lucas Shanley",
   "description": "This is used to run scripts on the mnsure page.",
-  "version": "1.0.1",
-  "browser_action": {
+  "version": "1.1",
 	"icons": { 
 		"16": "icon16.png",
 		"32": "icon32.png",
 		"48": "icon48.png",
 		"128": "icon128.png"
 	},
-	"default_popup": "default.html"
-  },
   "content_scripts": [
 		{
 			"all_frames" : false,
@@ -31,7 +28,7 @@
 		"unlimitedStorage"
   ],
 	"web_accessible_resources": [
-		"https://github.com/lpshanley/MNSure-Script-Engine/*"
+		"https://rawgit.com/lpshanley/MNSure-Script-Engine/*"
 	],
 	"externally_connectable": {
 		"matches": ["https://people.mnsure.org/Curam/*"]
