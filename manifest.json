@@ -1,0 +1,47 @@
+{
+  "manifest_version": 2,
+  "name": "MNSure Script Engine",
+	"author": "Lucas Shanley",
+  "description": "This is used to run scripts on the mnsure page.",
+  "version": "1.0.1",
+  "browser_action": {
+	"icons": { 
+		"16": "icon16.png",
+		"32": "icon32.png",
+		"48": "icon48.png",
+		"128": "icon128.png"
+	},
+	"default_popup": "default.html"
+  },
+  "content_scripts": [
+		{
+			"all_frames" : false,
+			"matches": ["https://people.mnsure.org/Curam/*"],
+			"run_at": "document_idle",
+			"js": [
+				"js/libs/jquery.min.js",
+				"js/main.js"
+			]
+		}
+  ],
+  "permissions": [
+		"activeTab",
+		"tabs",
+		"https://people.mnsure.org/Curam/*",
+		"unlimitedStorage"
+  ],
+	"web_accessible_resources": [
+		"js/*",
+		"css/*",
+		"views/*"
+	],
+	"externally_connectable": {
+		"matches": ["https://people.mnsure.org/Curam/*"]
+	},
+	"background": {
+		"scripts": [
+			"js/libs/jquery.min.js",
+			"ext/extMain.js"
+		]
+	}
+}

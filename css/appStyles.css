@@ -1,0 +1,222 @@
+/* Site CSS Corrections
+=================================================================*/
+
+	/* Allows Script menu to be viewable */
+#app-banner-dc {
+	overflow: visible;
+}
+
+	/* Widens banner to make room for the script button */
+#app-banner .right-box .right-cell 
+{
+	width: 320px;
+}
+
+	/* Fixes button hover effects in the app-banner */
+#app-banner .right-box .right-cell a:hover
+{
+	background-position: 0 30px;
+}
+
+	/* Fixes help button hover effect */
+#app-banner .right-box .right-cell .dijitDropDownButton:hover .dijitButtonNode
+{
+	background-position: 0 -12px !important;
+}
+
+	/* Fixes padding on menu help button as it was lower than the rest of the text */
+.soria #app-banner .right-box .right-cell .dijitDownArrowButton {
+  padding-top: 1px;
+}
+
+/* App Banner Corrections
+=================================================================*/
+#app-banner .left-box {
+	position: relative;
+	display: inline-block;
+}
+
+#app-banner .center-box {
+	width: 450px;
+	float: left;
+	display: inline-block;
+	height: 24px;
+	position: relative;
+	background-color: #FFF;
+	color: #000;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	border-top: 1px solid black;
+	box-shadow: inset 5px 5px 5px -5px rgba(0,0,0,.8);
+}
+
+/* IFrame Corrections
+=================================================================*/
+
+.soria .expand-list-dropdown {
+    margin: 0px;
+    padding: 3px 1px 1px 3px;
+}
+
+/* Script dropdown menu system
+=================================================================*/
+
+	/*  */
+.scripts-link {
+	cursor: pointer;
+}
+
+	/* Show menu on hover */
+#script-launcher:hover>ul
+{
+	z-index: 1000;
+	display: block;
+}
+
+	/* Menu List */
+#script-launcher ul
+{
+	list-style: none;
+	position: absolute;
+	float: left !important;
+	z-index: -1000;
+	background: #D7E5F5 !important;
+	top: 26px;
+	border-left: 4px solid #1089B8;
+	border-top: 4px solid #1089B8;
+	display: none;
+	width: 150px;
+	box-shadow: 1px 5px 5px rgba(0,0,0,.4);
+}
+
+	/* Menu List Items */
+#script-launcher ul li
+{
+	position:relative;
+	float:none !important;
+	margin:0;
+	padding:0;
+	width: 150px;
+	border-bottom: 1px solid rgba(0,0,0,.1);
+}
+
+	/* Menu List Item Anchors */
+#script-launcher ul li a
+{
+	display: block;
+	color: #000 !important;
+	line-height: 26px;
+	padding: 0 12px !important;
+	background: none;
+}
+
+	/* Menu List Item Anchors Hover */
+#script-launcher ul li a:hover
+{
+	background: none !important;
+}
+
+#script-launcher ul li:hover
+{
+	background: #C4D8F1;
+}
+
+#script-launcher ul ul
+{
+	display: none;
+	position:absolute;
+	top:100%;
+	left: 150px;
+	background:#fff;
+	padding: 0;
+	width: 150px;
+	top: 0;
+	border-top: 0;
+}
+
+#script-launcher ul ul li
+{
+	float:none;
+	width: inherit;
+}
+
+#script-launcher ul ul ul
+{
+	top:0;
+	left:100%
+}
+
+#script-launcher ul li:hover > ul
+{
+	display:block
+}
+
+/* Pop Up Window Config
+=================================================================*/
+
+	/* Overlay */
+.modal-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,.5);
+	z-index: 1000;
+}
+
+.modal-content-wrapper {
+	width: 500px;
+	min-height: 100px;
+	background-color: white;
+	z-index: inherit;
+	margin: auto;
+	top: 50px;
+	position: relative;
+	-webkit-box-shadow: none !important;
+}
+
+.modal-titlebar{
+	height: 21px;
+	width: 100%;
+}
+
+#mns-modal-actions {
+	position: relative;
+}
+
+.mns-modal-template{
+	padding: 0 15px;
+	border-top: 1px solid #7FBAD5;
+}
+
+.mns-input-group{
+	display: block;
+	margin: 5px 0;
+	width: 100%;
+}
+
+.mns-input-group:first-child {
+	margin-top: 15px;
+}
+
+.mns-input-group:last-child {
+	margin-bottom: 15px;
+}
+
+.mns-input-group:only-child {
+	margin: 15px 0;
+}
+
+.mns-input-group.col-2 {
+	width: 50%;
+	float: left;
+}
+
+.mns-input-descriptor{
+	display: none;
+}
+
+.mns-modal-template .hidden {
+	display: none;
+}
