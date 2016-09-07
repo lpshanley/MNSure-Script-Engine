@@ -17,7 +17,7 @@
 			"run_at": "document_idle",
 			"js": [
 				"js/libs/jquery.min.js",
-				"js/main.js"
+				"js/content_script.js"
 			]
 		}
   ],
@@ -36,7 +36,7 @@
 	"background": {
 		"scripts": [
 			"js/libs/jquery.min.js",
-			"ext/extMain.js"
+			"js/background.js"
 		]
 	}
 }
