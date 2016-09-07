@@ -1,6 +1,7 @@
 /*   Script Engine Functions
 ---------------------------------------------*/
 
+	
 var _engine = {
 	
 	/* Core Functions
@@ -28,21 +29,49 @@ var _engine = {
 	//***************//
 	
 	domTools: {
+		
+		/* Tools in the "Get" section of the 
+		|* toolbox are designed to return elements
+		|* of the webpage.
+		\*-----------------------------------------------*/
+		
 		get: {
+			
+				/* Returns an array of the top level tabs ( Home, 
+				|* HCR Cases and Outcomes, Inbox, and Calendar )
+				\*----------------------------------------------------------*/
 			mainTabList: function(){
-				return $('#app-sections-container-dc_tablist > div.dijitTabListWrapper.dijitTabContainerTopNone.dijitAlignClient > div > div.visible')[0];
+				return $('#app-sections-container-dc_tablist > div.dijitTabListWrapper.dijitTabContainerTopNone.dijitAlignClient > div > div.visible');
 			},
+			
+				/* Returns the tab in the top level that is presently 
+				|* selected
+				\*----------------------------------------------------------*/
 			mainTabActive: function(){
 				return $('#app-sections-container-dc_tablist > div.dijitTabListWrapper.dijitTabContainerTopNone.dijitAlignClient > div > div.visible.dijitTabChecked.dijitChecked')[0];
 			},
+			
+				/* Returns an array of the tabs that are currently 
+				|* open on the HCR Cases and Outcomes screen.
+				\*----------------------------------------------------------*/
 			hcrTabList: function(){
 				_engine.navigation.hcr();
 				return $('[widgetid="HCRCASEAPPWorkspaceSection-stc_tablist"] div.dijitTabContainerTop-tabs div.dijitTab')[0];
 			},
+			
+				/* Returns the tab that is currently the focus on the
+				|* HCR Cases and Outcomes screen.
+				\*----------------------------------------------------------*/
 			hcrTabActive: function(){
 				_engine.navigation.hcr();
 				return $('[widgetid="HCRCASEAPPWorkspaceSection-stc_tablist"] div.dijitTabContainerTop-tabs div.dijitTab.dijitTabChecked.dijitChecked')[0];
 			},
+			
+				/* Returns the iFrame for the tab that is currently the
+				|* focus on the HCR Cases and Outcomes screen.
+				|* This can be thought of as the wrapper for the tabs
+				|* content.
+				\*----------------------------------------------------------*/
 			hcrTabActiveFrame: function(){
 				_engine.navigation.hcr();
 				var _t = _engine.domTools.get.hcrTabActive();
@@ -51,7 +80,16 @@ var _engine = {
 				
 				return $('[widgetid="'+_f+'"]')[0];
 			},
+			
+				/* These functions get elements that are contained inside the 
+				|* iFrame returned from '_engine.domTools.get.hcrTabActiveFrame()' 
+				\*----------------------------------------------------------*/
 			icFrame: {
+				
+					/* This returns an array of tabs that are available on the 
+					|* currently focused icFrame ( Home, Evidence, Participants, 
+					|* Assessments, Services, etc... )
+					\*----------------------------------------------------------*/
 				icTabList: function(){
 					_engine.navigation.hcr();
 					if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -61,6 +99,11 @@ var _engine = {
 						_engine.caseWork.caseSelection();
 					}
 				},
+				
+					/* This returns the tab that is currently the focused tab 
+					|* of the open Integrated case. ( Home, Evidence, Participants, 
+					|* Assessments, Services, etc... )
+					\*----------------------------------------------------------*/
 				icTabActive: function(){
 					_engine.navigation.hcr();
 					if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -70,6 +113,11 @@ var _engine = {
 						_engine.caseWork.caseSelection();
 					}
 				},
+				
+					/* This returns the left hand sub menu of screens that have 
+					|* one. Example: 'Contact Tab' - [Notes, Attachements, 
+					|* Meeting Minutes, Communications]
+					\*----------------------------------------------------------*/
 				icTabActiveSubMenu: function(){
 					_engine.navigation.hcr();
 					if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -77,6 +125,11 @@ var _engine = {
 						return $( _tp ).find('div.dijitStackContainer-child.dijitVisible');
 					}
 				},
+				
+					/* Returns the frame that is from the currently focused tab
+					|* on the currently focused IC Tab [This is the lower portion
+					|* of the currently open IC Tab.]
+					\*----------------------------------------------------------*/
 				icTabActiveFrame: function(){
 					_engine.navigation.hcr();
 					if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -84,7 +137,14 @@ var _engine = {
 						return $( _tp ).find('.content-area-container iframe').contents().find('body');
 					}
 				},
+				
+					/* Returns elements that are a subset of the home tab
+					|* on an IC Case
+					\*----------------------------------------------------------*/
 				homeTab: {
+					
+						/* Returns an array of the cases that display on the Home Tab
+						\*----------------------------------------------------------*/
 					cases: function(){
 						_engine.navigation.hcr();
 						if(_engine.domTools.test.hcrTabActiveIsIC()){
