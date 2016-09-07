@@ -56,7 +56,7 @@ var _engine = {
 				\*----------------------------------------------------------*/
 			hcrTabList: function(){
 				_engine.navigation.hcr();
-				return $('[widgetid="HCRCASEAPPWorkspaceSection-stc_tablist"] div.dijitTabContainerTop-tabs div.dijitTab')[0];
+				return $('[widgetid="HCRCASEAPPWorkspaceSection-stc_tablist"] div.dijitTabContainerTop-tabs div.dijitTab');
 			},
 			
 				/* Returns the tab that is currently the focus on the
