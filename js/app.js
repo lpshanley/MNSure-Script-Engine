@@ -371,7 +371,6 @@ var _engine = {
 					if( $.inArray( _t, _tabID ) > -1 ){
 						if(!$( _engine.domTools.get.icFrame.icTabList()[k] ).hasClass('dijitTabChecked')){
 							_engine.domTools.get.icFrame.icTabList()[k].click();
-							console.log( $( _engine.domTools.get.hcrTabActiveFrame() ).find('.content-area-container iframe').length );
 						}
 						return false;
 					}
