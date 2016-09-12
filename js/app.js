@@ -800,46 +800,60 @@ var _engine = {
 				if(_engine.domTools.test.icFrame.onTab("contact") && typeof $( _engine.domTools.get.icFrame.icTabActiveFrame() ).find('a[title="New"]')[0] != "undefined" ){
 				
 					$( _engine.domTools.get.icFrame.icTabActiveFrame() ).find('a[title="New"]')[0].click();
+			
+					var count = 0;
 					
-					//Wait 1500ms and write into the case note
-					
-					setTimeout(function(){
-						
-						if( _engine.storage.modalParams.get() != false ){
-							//Perform actions on the stored params
-							$.each( _engine.storage.modalParams.get(),function(k,v){
-								if( v.descriptor.toLowerCase() == "subject" ){
-									
-									_engine.domTools.set.icFrame.contactTab.caseNoteModal.subject( v.value );
-									
-								} else {
-									
-									var line = "";
-									
-									if( v.descriptor != "" && v.value == "" ){
-										line += v.descriptor;
-									} else if( v.descriptor == "" && v.value != "" ){
-										line += v.value;
-									} else if( v.descriptor != "" && v.value != "" ){
-										line += v.descriptor + ": " + v.value;
+					var _load = function(){
+						if( count <= 20 ){
+							
+							console.log( count );
+							
+							if( _engine.storage.modalParams.get() != false ){
+								//Perform actions on the stored params
+								$.each( _engine.storage.modalParams.get(),function(k,v){
+									if( v.descriptor.toLowerCase() == "subject" ){
+										
+										_engine.domTools.set.icFrame.contactTab.caseNoteModal.subject( v.value );
+										
+									} else {
+										
+										var line = "";
+										
+										if( v.descriptor != "" && v.value == "" ){
+											line += v.descriptor;
+										} else if( v.descriptor == "" && v.value != "" ){
+											line += v.value;
+										} else if( v.descriptor != "" && v.value != "" ){
+											line += v.descriptor + ": " + v.value;
+										}
+										
+										_engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine( line );
+										
 									}
 									
-									_engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine( line );
-									
-								}
+								});
 								
-							});
+								_engine.storage.modalParams.clear();
 							
-							_engine.storage.modalParams.clear();
+							}
+							
+							count++;
 							
 						} else {
-							console.error( "Error: Modal param storage object is empty." );
+							
+							console.error("Error [_engine.caseWork.note._completeNote( _caseNote )]: Load function timed out.");							
+							clearInterval( _load );
+							
 						}
+							
+					}
 					
-					},2000);
+					setInterval( _load, 100 );
 					
 				} else {
+					
 					setTimeout(function(){ _engine.caseWork.note._completeNote(); },100); //Reloads Every 100 ms to ensure page loading.
+					
 				}
 				
 			}
