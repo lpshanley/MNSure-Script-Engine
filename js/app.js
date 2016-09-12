@@ -775,25 +775,44 @@ var _engine = {
 					// Gathers HTML for view and stores to local storage
 					_engine.advanced.getView( _noteLocation );
 
-					// Wait 100ms and then gather and clear HTML from localStorage
-					setTimeout(function(){
-						
-						// Gather html for modal
-						var _html = _engine.storage.html.get();
-						
-						// Clear html storage
-						_engine.storage.html.clear();
-						
-						//Build modal
-						_engine.ui.modal.build( _note, _html );
-
-					},500);
+					// Check every 100ms for info in local storage. Timeout after 2000ms.
+					
+					var count = 0;
+					
+					var buildFrame = function(){
+						if(count <= 20){
+							
+							console.info("Trying to load 'buildFrame': "+count);
+							
+							if(_engine.storage.html.get() != false){
+								// Gather html for modal
+								var _html = _engine.storage.html.get();
+								
+								// Clear html storage
+								_engine.storage.html.clear();
+								
+								//Build modal
+								_engine.ui.modal.build( _note, _html );
+								
+								clearInterval( buildFrame );
+								
+							}
+							
+							count++;
+							
+						} else {
+							console.error("Error [_engine.caseWork.note.write( _note )]: Build frame html timed out.");	
+							clearInterval( buildFrame );
+						}
+					}
+					
+					setInterval(buildFrame, 100);
 
 				} else {
 					console.error("_engine.caseWork.note.write( note ): A valid note type must be specified to run this command.")
 				}
 			},
-			_completeNote: function( _caseNote ){
+			_completeNote: function(){
 				
 				_engine.navigation.icTabs.contact();
 				
@@ -805,8 +824,6 @@ var _engine = {
 					
 					var _load = function(){
 						if( count <= 20 ){
-							
-							console.log( count );
 							
 							if( _engine.storage.modalParams.get() != false ){
 								//Perform actions on the stored params
@@ -834,6 +851,7 @@ var _engine = {
 								});
 								
 								_engine.storage.modalParams.clear();
+								clearInterval( _load );
 							
 							}
 							
@@ -841,7 +859,7 @@ var _engine = {
 							
 						} else {
 							
-							console.error("Error [_engine.caseWork.note._completeNote( _caseNote )]: Load function timed out.");							
+							console.error("Error [_engine.caseWork.note._completeNote()]: Load function timed out.");							
 							clearInterval( _load );
 							
 						}
