@@ -779,7 +779,7 @@ var _engine = {
 						//Build modal
 						_engine.ui.modal.build( _note, _html );
 
-					},200);
+					},500);
 
 				} else {
 					console.error("_engine.caseWork.note.write( note ): A valid note type must be specified to run this command.")
