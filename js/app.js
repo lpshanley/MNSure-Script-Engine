@@ -235,6 +235,14 @@ var _engine = {
 							}
 						}
 					}
+				},
+				onTab: function( _t ){
+					var current_tab = _engine.domTools.get.icFrame.icTabActive().text().replace("Close Tab", "").trim().toLowerCase();
+					if( _t.toLowerCase() == current_tab ){
+						return true;
+					} else {
+						return false;
+					}
 				}
 			}
 		}
@@ -786,6 +794,10 @@ var _engine = {
 				}
 			},
 			_completeNote: function( _caseNote ){
+				
+				if(!_engine.domTools.test.onTab("contact")) {
+					console.info( "Not on tab" );
+				}
 				
 				_engine.navigation.icTabs.contact();
 				
