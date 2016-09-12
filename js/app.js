@@ -799,50 +799,47 @@ var _engine = {
 				
 				if(_engine.domTools.test.icFrame.onTab("contact") && typeof $( _engine.domTools.get.icFrame.icTabActiveFrame() ).find('a[title="New"]')[0] != "undefined" ){
 				
+					$( _engine.domTools.get.icFrame.icTabActiveFrame() ).find('a[title="New"]')[0].click();
+					
+					//Wait 1500ms and write into the case note
+					
 					setTimeout(function(){
-						//Wait 100ms and open a new case note
-						$( _engine.domTools.get.icFrame.icTabActiveFrame() ).find('a[title="New"]')[0].click();
-						//Wait 100ms and write into the case note
-						setTimeout(function(){
-							
-							if( _engine.storage.modalParams.get() != false ){
-								//Perform actions on the stored params
-								$.each( _engine.storage.modalParams.get(),function(k,v){
-									if( v.descriptor.toLowerCase() == "subject" ){
-										
-										_engine.domTools.set.icFrame.contactTab.caseNoteModal.subject( v.value );
-										
-									} else {
-										
-										var line = "";
-										
-										if( v.descriptor != "" && v.value == "" ){
-											line += v.descriptor;
-										} else if( v.descriptor == "" && v.value != "" ){
-											line += v.value;
-										} else if( v.descriptor != "" && v.value != "" ){
-											line += v.descriptor + ": " + v.value;
-										}
-										
-										_engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine( line );
-										
+						
+						if( _engine.storage.modalParams.get() != false ){
+							//Perform actions on the stored params
+							$.each( _engine.storage.modalParams.get(),function(k,v){
+								if( v.descriptor.toLowerCase() == "subject" ){
+									
+									_engine.domTools.set.icFrame.contactTab.caseNoteModal.subject( v.value );
+									
+								} else {
+									
+									var line = "";
+									
+									if( v.descriptor != "" && v.value == "" ){
+										line += v.descriptor;
+									} else if( v.descriptor == "" && v.value != "" ){
+										line += v.value;
+									} else if( v.descriptor != "" && v.value != "" ){
+										line += v.descriptor + ": " + v.value;
 									}
 									
-								});
+									_engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine( line );
+									
+								}
 								
-								_engine.storage.modalParams.clear();
-								
-							} else {
-								console.error( "Error: Modal param storage object is empty." );
-							}
+							});
+							
+							_engine.storage.modalParams.clear();
+							
+						} else {
+							console.error( "Error: Modal param storage object is empty." );
+						}
 					
-							//_engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine( "Adding Context to body" );
-						
-						},1750);
-					},250);
+					},2000);
 					
 				} else {
-					setTimeout(function(){ console.error("Trying to load page again"); _engine.caseWork.note._completeNote(); },100);
+					setTimeout(function(){ _engine.caseWork.note._completeNote(); },100); //Reloads Every 100 ms to ensure page loading.
 				}
 				
 			}
