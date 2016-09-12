@@ -779,7 +779,7 @@ var _engine = {
 					
 					var count = 0;
 					
-					var buildFrame = function(){
+					var buildFrame = setInterval(function(){
 						if(count <= 20){
 							
 							console.info("Trying to load 'buildFrame': "+count);
@@ -804,9 +804,9 @@ var _engine = {
 							console.error("Error [_engine.caseWork.note.write( _note )]: Build frame html timed out.");	
 							clearInterval( buildFrame );
 						}
-					}
+					}, 100);
 					
-					setInterval(buildFrame, 100);
+					buildFrame;
 
 				} else {
 					console.error("_engine.caseWork.note.write( note ): A valid note type must be specified to run this command.")
@@ -822,7 +822,7 @@ var _engine = {
 			
 					var count = 0;
 					
-					var _load = function(){
+					var _load = setInterval(function(){
 						if( count <= 20 ){
 							
 							if( _engine.storage.modalParams.get() != false ){
@@ -864,9 +864,9 @@ var _engine = {
 							
 						}
 							
-					}
+					}, 100);
 					
-					setInterval( _load, 100 );
+					_load;
 					
 				} else {
 					
