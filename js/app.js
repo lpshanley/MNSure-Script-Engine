@@ -778,10 +778,10 @@ var _engine = {
 
 					// Check every 100ms for info in local storage. Timeout after 2000ms.
 					
-					var count = 0;
+					var _c = 0;
 					
 					var buildFrame = setInterval(function(){
-						if(count <= 25){
+						if(_c <= 25){
 							
 							if(_engine.storage.html.get() != false){
 								// Gather html for modal
@@ -797,7 +797,7 @@ var _engine = {
 								
 							}
 							
-							count++;
+							_c++;
 							
 						} else {
 							console.error("Error [_engine.caseWork.note.write( _note )]: Build frame html timed out.");	
@@ -873,7 +873,7 @@ var _engine = {
 										
 										}
 										
-										count++;
+										_c2++;
 										
 									} else {
 										
@@ -892,7 +892,7 @@ var _engine = {
 							
 						}
 								
-						count++
+						_c1++
 					} else {
 						
 						clearInterval(_nav);
