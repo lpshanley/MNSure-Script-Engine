@@ -210,24 +210,26 @@ var _engine = {
 								if(typeof _engine.domTools.get.icFrame.contactTab.caseNoteModal._body() != 'undefined'){
 									
 									_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Located modal body");
-									
-									//Grab Modal Body
-									var modalBody = _engine.domTools.get.icFrame.contactTab.caseNoteModal._body();
+
 									//Wrap input in div tags
-									var line = $('<div>',{'html':_s});									
+									var line = $('<div>',{'html':_s});
+									
 									//Check if body is empty
+									
 									if(_engine.domTools.test.icFrame.contactTab.caseNoteModal.body.isEmpty()){
 										
 										_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Body empty. Writing Line.");
 										
 										//If empty, set first line
-										$( modalBody ).html( line );
+										
+										$( _engine.domTools.get.icFrame.contactTab.caseNoteModal._body() ).html( line );
+										
 									} else {
 										
 										_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Body not empty. Writing Line.");
 										
 										//If not empty, add to body
-										$( modalBody ).append( line );
+										$( _engine.domTools.get.icFrame.contactTab.caseNoteModal._body() ).append( line );
 									}
 									
 								} else {
@@ -879,7 +881,7 @@ var _engine = {
 									
 									_engine.debug.info("- * Attempting to target modal window [ attempt: "+ _c2 +" ]");
 									
-									if(_c2 <= 25){
+									if(_c2 <= 40){
 										
 										// _openModal interval has not timed out
 										
