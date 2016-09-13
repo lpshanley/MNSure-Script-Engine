@@ -177,7 +177,9 @@ var _engine = {
 								var _f = $( _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() );
 								var _f2 = $(_f).contents().find('iframe.cke_wysiwyg_frame');
 								
-								console.log( "_body: " + $(_f2) );
+								console.log( "BODY START" );
+								console.log( $(_f2) );
+								console.log( "BODY END" );
 								
 								return $(_f2).contents().find('body');
 								
