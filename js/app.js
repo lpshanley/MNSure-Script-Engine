@@ -962,7 +962,7 @@ var _engine = {
 						
 					}
 					
-					_engine.debug.info("========== END NAVIGATING TO CONTACT [ attempt: " + _c1 + " ] ==========");
+					_engine.debug.info("=========== END NAVIGATING TO CONTACT [ attempt: " + _c1 + " ] ===========");
 					
 				},100);
 
