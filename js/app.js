@@ -207,6 +207,9 @@ var _engine = {
 								
 								_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Started | Input: " + _s);
 								
+								console.log(typeof _engine.domTools.get.icFrame.contactTab.caseNoteModal._body());
+								console.log(_engine.domTools.get.icFrame.contactTab.caseNoteModal._body());
+								
 								if(typeof _engine.domTools.get.icFrame.contactTab.caseNoteModal._body() != 'undefined'){
 									
 									_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Located modal body");
