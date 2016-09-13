@@ -923,7 +923,7 @@ var _engine = {
 													
 												}
 
-											}
+											}, 100);
 
 											_gatherParams;
 											
