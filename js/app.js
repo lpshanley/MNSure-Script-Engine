@@ -205,6 +205,8 @@ var _engine = {
 										//If not empty, add to body
 										$( modalBody ).append( line );
 									}
+								} else {
+									_engine.debug.warn("[ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ]: Could not add line. Body returning 'undefined'.")
 								}
 							},
 							addDivider: function( _s ){
