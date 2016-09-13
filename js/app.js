@@ -161,7 +161,7 @@ var _engine = {
 							if( $('iframe[title="Modal Frame - New Note"].curam-active-modal').length > 0 ){
 								return $('iframe[title="Modal Frame - New Note"].curam-active-modal');
 							} else {
-								_engine.debug.error("[_engine.domTools.get.icFrame.contactTab.caseNoteFrame()]: Unable to target an open case note modal.");
+								_engine.debug.warn("[_engine.domTools.get.icFrame.contactTab.caseNoteFrame()]: Unable to target an open case note modal.");
 								return false;
 							}
 						},
