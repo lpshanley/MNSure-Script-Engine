@@ -158,7 +158,7 @@ var _engine = {
 				contactTab: {
 					caseNoteModal:{
 						_activeModal: function(){
-							if( $('iframe[title="Modal Frame - New Note"].curam-active-modal').length > 0 ){
+							if( typeof $('iframe[title="Modal Frame - New Note"].curam-active-modal')[0] != "undefined" ){
 								return $('iframe[title="Modal Frame - New Note"].curam-active-modal');
 							} else {
 								_engine.debug.warn("- * Fail Reason: [_engine.domTools.get.icFrame.contactTab.caseNoteFrame()]: Unable to target an open case note modal.");
@@ -173,9 +173,14 @@ var _engine = {
 						},
 						_body: function(){
 							if( _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() != false ){
-								var _f = _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal();
-								var _f2 = $(_f).contents().find('iframe.cke_wysiwyg_frame');//.contents().find('body');
+								
+								var _f = $( _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() );
+								var _f2 = $(_f).contents().find('iframe.cke_wysiwyg_frame');
+								
+								console.log( "_body: " + $(_f2) );
+								
 								return $(_f2).contents().find('body');
+								
 							}
 						}
 					}
@@ -207,8 +212,7 @@ var _engine = {
 							addLine: function( _s ){
 								
 								_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Started | Input: " + _s);
-								
-								console.log(typeof _engine.domTools.get.icFrame.contactTab.caseNoteModal._body());
+
 								console.log(_engine.domTools.get.icFrame.contactTab.caseNoteModal._body());
 								
 								if(typeof _engine.domTools.get.icFrame.contactTab.caseNoteModal._body() != 'undefined'){
