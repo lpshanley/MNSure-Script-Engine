@@ -222,8 +222,13 @@ var _engine = {
 										
 										//If empty, set first line
 										
-										//_engine.domTools.get.icFrame.contactTab.caseNoteModal._body().html( line );
-										_engine.domTools.get.icFrame.contactTab.caseNoteModal._body().html( "<div>Static Div for testing</div>" );
+										console.log( line );
+										console.log( $( line ) );
+										console.log( _engine.domTools.get.icFrame.contactTab.caseNoteModal._body() ); 
+										
+										_engine.domTools.get.icFrame.contactTab.caseNoteModal._body().html( line );
+										
+										console.log( _engine.domTools.get.icFrame.contactTab.caseNoteModal._body() ); 
 										
 									} else {
 										
@@ -838,7 +843,7 @@ var _engine = {
 							_c++;
 							
 						} else {
-							_engine.debug.info("- * Fail Reason: [_engine.caseWork.note.write( _note )]: Build frame html timed out.");	
+							_engine.debug.error("- * Fail Reason: [_engine.caseWork.note.write( _note )]: Build frame html timed out.");	
 							_engine.storage.html.clear();
 							clearInterval( buildFrame );
 						}
@@ -974,7 +979,7 @@ var _engine = {
 										
 										//_openModal Interval has timed out clear interval
 										
-										_engine.debug.info("- * Fail Reason: [_engine.caseWork.note._completeNote()]: Failed to open or target case note modal.");							
+										_engine.debug.error("- * Fail Reason: [_engine.caseWork.note._completeNote()]: Failed to open or target case note modal. Request timed out.");							
 										clearInterval( _openModal );
 										
 									}
@@ -993,7 +998,7 @@ var _engine = {
 						
 					} else {
 						
-						_engine.debug.info("- * Fail Reason: [_engine.caseWork.note._completeNote()]: Failed to navigate to contact screen.");	
+						_engine.debug.error("- * Fail Reason: [_engine.caseWork.note._completeNote()]: Failed to navigate to contact screen.");	
 						
 						clearInterval(_nav);
 						
