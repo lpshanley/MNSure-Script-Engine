@@ -192,17 +192,19 @@ var _engine = {
 						},
 						body: {
 							addLine: function( _s ){
-								//Grab Modal Body
-								var modalBody = _engine.domTools.get.icFrame.contactTab.caseNoteModal._body();
-								//Wrap input in paragraph tags
-								var line = "<div>" + _s + "</div>";
-								//Check if body is empty
-								if(_engine.domTools.test.icFrame.contactTab.caseNoteModal.body.isEmpty()){
-									//If empty, set first line
-									$( modalBody ).html( line );
-								} else {
-									//If not empty, add to body
-									$( modalBody ).append( line );
+								if(typeof _engine.domTools.get.icFrame.contactTab.caseNoteModal._body() != 'undefined'){
+									//Grab Modal Body
+									var modalBody = _engine.domTools.get.icFrame.contactTab.caseNoteModal._body();
+									//Wrap input in paragraph tags
+									var line = "<div>" + _s + "</div>";
+									//Check if body is empty
+									if(_engine.domTools.test.icFrame.contactTab.caseNoteModal.body.isEmpty()){
+										//If empty, set first line
+										$( modalBody ).html( line );
+									} else {
+										//If not empty, add to body
+										$( modalBody ).append( line );
+									}
 								}
 							},
 							addDivider: function( _s ){
