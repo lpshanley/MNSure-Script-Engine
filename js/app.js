@@ -861,7 +861,7 @@ var _engine = {
 						
 						_engine.debug.info("========== START NAVIGATING TO CONTACT [ attempt: " + _c1 + " ] ==========");
 						
-						_engine.navigation.icTabs.contact()
+						_engine.navigation.icTabs.contact();
 						
 						var _src = $( _engine.domTools.get.hcrTabActiveFrame() ).find('.content-area-container iframe').attr('src');
 
