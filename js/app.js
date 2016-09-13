@@ -931,7 +931,6 @@ var _engine = {
 											
 											//Clear wrapping interval to escape it
 											clearInterval( _openModal );
-											clearInterval(_nav);
 											
 										}
 										
@@ -945,7 +944,6 @@ var _engine = {
 										
 										_engine.debug.info("Error [_engine.caseWork.note._completeNote()]: Failed to open or target case note modal.");							
 										clearInterval( _openModal );
-										clearInterval(_nav);
 										
 									}
 										
@@ -953,18 +951,21 @@ var _engine = {
 
 								_openModal;
 								
+								clearInterval(_nav);
+								
 							}
 							
 						}
-								
+						
 						_c1++
+						
 					} else {
+						
+						_engine.debug.info("Error [_engine.caseWork.note._completeNote()]: Failed to navigate to contact screen.");	
 						
 						clearInterval(_nav);
 						
 					}
-					
-					_engine.debug.info("=========== END NAVIGATING TO CONTACT [ attempt: " + _c1 + " ] ===========");
 					
 				},100);
 
