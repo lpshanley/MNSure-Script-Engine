@@ -815,65 +815,92 @@ var _engine = {
 			},
 			_completeNote: function(){
 				
-				_engine.navigation.icTabs.contact();
+				// Timeout Counter
+				_c1 = 0;
 				
-				if(_engine.domTools.test.icFrame.onTab("contact") && typeof $( _engine.domTools.get.icFrame.icTabActiveFrame() ).find('a[title="New"]')[0] != "undefined" ){
-				
-					$( _engine.domTools.get.icFrame.icTabActiveFrame() ).find('a[title="New"]')[0].click();
-			
-					var count = 0;
-					
-					var _load = setInterval(function(){
-						if( count <= 25 ){
+				// Run a max of 2500ms
+				var _nav = setInterval(function(){
+					if(_c1 <= 25){
+						
+						_engine.navigation.icTabs.contact()
+						
+						var _src = $( _engine.domTools.get.hcrTabActiveFrame() ).find('.content-area-container iframe').attr('src');
+
+						if( typeof _src != "undefined" && _src.split("?")[0].split("/")[1].split("_")[1].split(".")[0].replace("Page",'').toLowerCase() == "listnote" ){
+
+							var _id = $( _engine.domTools.get.hcrTabActiveFrame() ).find('.content-area-container iframe').contents().find('body').attr('id');
 							
-							if( _engine.storage.modalParams.get() != false ){
-								//Perform actions on the stored params
-								$.each( _engine.storage.modalParams.get(),function(k,v){
-									if( v.descriptor.toLowerCase() == "subject" ){
+							if( typeof _id != "undefined" && _id.split("_")[ _id.split("_").length - 1 ].toLowerCase() == "listnote" ){
+								
+								$( _engine.domTools.get.icFrame.icTabActiveFrame() ).find('a[title="New"]')[0].click();
+								
+								// Timeout Counter
+								_c2 = 0;
+								
+								var _load = setInterval(function(){
+									
+									if( _c2 <= 25 ){
 										
-										_engine.domTools.set.icFrame.contactTab.caseNoteModal.subject( v.value );
+										if( _engine.storage.modalParams.get() != false ){
+											
+											//Perform actions on the stored params
+											
+											$.each( _engine.storage.modalParams.get(),function(k,v){
+												if( v.descriptor.toLowerCase() == "subject" ){
+													
+													_engine.domTools.set.icFrame.contactTab.caseNoteModal.subject( v.value );
+													
+												} else {
+													
+													var line = "";
+													
+													if( v.descriptor != "" && v.value == "" ){
+														line += v.descriptor;
+													} else if( v.descriptor == "" && v.value != "" ){
+														line += v.value;
+													} else if( v.descriptor != "" && v.value != "" ){
+														line += v.descriptor + ": " + v.value;
+													}
+													
+													_engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine( line );
+													
+												}
+												
+											});
+											
+											_engine.storage.modalParams.clear();
+											clearInterval( _load );
+										
+										}
+										
+										count++;
 										
 									} else {
 										
-										var line = "";
-										
-										if( v.descriptor != "" && v.value == "" ){
-											line += v.descriptor;
-										} else if( v.descriptor == "" && v.value != "" ){
-											line += v.value;
-										} else if( v.descriptor != "" && v.value != "" ){
-											line += v.descriptor + ": " + v.value;
-										}
-										
-										_engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine( line );
+										console.error("Error [_engine.caseWork.note._completeNote()]: Load function timed out.");							
+										clearInterval( _load );
 										
 									}
-									
-								});
+										
+								}, 100);
 								
-								_engine.storage.modalParams.clear();
-								clearInterval( _load );
-							
+								_load;
+								
+								clearInterval(_nav);
+								
 							}
 							
-							count++;
-							
-						} else {
-							
-							console.error("Error [_engine.caseWork.note._completeNote()]: Load function timed out.");							
-							clearInterval( _load );
-							
 						}
-							
-					}, 100);
-					
-					_load;
-					
-				} else {
-					
-					setTimeout(function(){ _engine.caseWork.note._completeNote(); },100); //Reloads Every 100 ms to ensure page loading.
-					
-				}
+								
+						count++
+					} else {
+						
+						clearInterval(_nav);
+						
+					}
+				},100);
+
+				_nav;
 				
 			}
 		},
