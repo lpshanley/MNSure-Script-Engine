@@ -972,7 +972,7 @@ var _engine = {
 		}
 	},
 	debug: {
-		enabled: true,
+		enabled: false,
 		log: function( msg ){
 			if(_engine.debug.enabled){
 				console.log("Debug Engine: " + msg);
