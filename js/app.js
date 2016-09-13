@@ -219,7 +219,7 @@ var _engine = {
 								
 								var _f = _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal();
 								
-								console.log( _f );
+								console.log( _f ); 
 								
 								var _f2 = $(_f).contents().find('iframe.cke_wysiwyg_frame');
 								
