@@ -135,6 +135,7 @@ var _engine = {
 					_engine.navigation.hcr();
 					if(_engine.domTools.test.hcrTabActiveIsIC()){
 						var _tp = _engine.domTools.get.hcrTabActiveFrame();
+						
 						return $( _tp ).find('.content-area-container iframe').contents().find('body');
 					}
 				},
@@ -780,9 +781,7 @@ var _engine = {
 					var count = 0;
 					
 					var buildFrame = setInterval(function(){
-						if(count <= 20){
-							
-							console.info("Trying to load 'buildFrame': "+count);
+						if(count <= 25){
 							
 							if(_engine.storage.html.get() != false){
 								// Gather html for modal
@@ -802,6 +801,8 @@ var _engine = {
 							
 						} else {
 							console.error("Error [_engine.caseWork.note.write( _note )]: Build frame html timed out.");	
+							_engine.storage.html.clear();
+							_engine.storage.html.clear();
 							clearInterval( buildFrame );
 						}
 					}, 100);
@@ -823,7 +824,7 @@ var _engine = {
 					var count = 0;
 					
 					var _load = setInterval(function(){
-						if( count <= 20 ){
+						if( count <= 25 ){
 							
 							if( _engine.storage.modalParams.get() != false ){
 								//Perform actions on the stored params
@@ -943,7 +944,29 @@ var _engine = {
 			}
 		}
 	}
-	
+	debug: {
+		enabled: true,
+		log: function( msg ){
+			if(_engine.debug.enabled == true){
+				console.log("Debug Engine: " + msg);
+			}
+		},
+		info: function( msg ){
+			if(_engine.debug.enabled == true){
+				console.info("Debug Engine: " + msg);
+			}
+		},
+		warn: function( msg ){
+			if(_engine.debug.enabled == true){
+				console.warn("Debug Engine: " + msg);
+			}
+		},
+		error: function( msg ){
+			if(_engine.debug.enabled == true){
+				console.error("Debug Engine: " + msg);
+			}
+		}
+	}
 }
 
 /*   Onload
