@@ -161,7 +161,7 @@ var _engine = {
 							if( $('iframe[title="Modal Frame - New Note"].curam-active-modal').length > 0 ){
 								return $('iframe[title="Modal Frame - New Note"].curam-active-modal');
 							} else {
-								console.error("Error [_engine.domTools.get.icFrame.contactTab.caseNoteFrame()]: Unable to target an open frame.");
+								_engine.debug.error("[_engine.domTools.get.icFrame.contactTab.caseNoteFrame()]: Unable to target an open case note modal.");
 								return false;
 							}
 						},
@@ -186,7 +186,9 @@ var _engine = {
 				contactTab: {
 					caseNoteModal:{
 						subject: function( _s ){
-							_engine.domTools.get.icFrame.contactTab.caseNoteModal._subject().val( _s );
+							if(typeof _engine.domTools.get.icFrame.contactTab.caseNoteModal._subject() != 'undefined'){
+								_engine.domTools.get.icFrame.contactTab.caseNoteModal._subject().val( _s );
+							}
 						},
 						body: {
 							addLine: function( _s ){
