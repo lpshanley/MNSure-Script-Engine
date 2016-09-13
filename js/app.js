@@ -174,7 +174,8 @@ var _engine = {
 						_body: function(){
 							if( _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() != false ){
 								var _f = _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal();
-								return $(_f).contents().find('iframe.cke_wysiwyg_frame').contents().find('body');
+								var _f2 = $(_f).contents().find('iframe.cke_wysiwyg_frame');//.contents().find('body');
+								return $(_f2).contents().find('body');
 							}
 						}
 					}
