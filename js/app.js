@@ -943,6 +943,7 @@ var _engine = {
 										
 										_engine.debug.info("Error [_engine.caseWork.note._completeNote()]: Failed to open or target case note modal.");							
 										clearInterval( _openModal );
+										clearInterval(_nav);
 										
 									}
 										
