@@ -804,7 +804,7 @@ var _engine = {
 							_c++;
 							
 						} else {
-							_engine.debug.info("Error [_engine.caseWork.note.write( _note )]: Build frame html timed out.");	
+							_engine.debug.info("[_engine.caseWork.note.write( _note )]: Build frame html timed out.");	
 							_engine.storage.html.clear();
 							clearInterval( buildFrame );
 						}
@@ -927,9 +927,9 @@ var _engine = {
 
 											_gatherParams;
 											
-											
 											//Clear wrapping interval to escape it
 											clearInterval( _openModal );
+											clearInterval(_nav);
 											
 										}
 										
@@ -949,8 +949,6 @@ var _engine = {
 								}, 100);
 
 								_openModal;
-								
-								clearInterval(_nav);
 								
 							}
 							
