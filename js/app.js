@@ -825,6 +825,8 @@ var _engine = {
 				var _nav = setInterval(function(){
 					if(_c1 <= 25){
 						
+						_engine.debug.info("========== START NAVIGATING TO CONTACT [ attempt: " + _c1 + " ] ==========");
+						
 						_engine.navigation.icTabs.contact()
 						
 						var _src = $( _engine.domTools.get.hcrTabActiveFrame() ).find('.content-area-container iframe').attr('src');
@@ -835,59 +837,118 @@ var _engine = {
 							
 							if( typeof _id != "undefined" && _id.split("_")[ _id.split("_").length - 1 ].toLowerCase() == "listnote" ){
 								
+								_engine.debug.info("- ****** Completed navigation on attempt: " + _c1 + " ] ******");
+								
 								$( _engine.domTools.get.icFrame.icTabActiveFrame() ).find('a[title="New"]')[0].click();
 								
-								// Timeout Counter
-								_c2 = 0;
+								_engine.debug.info("- * Clicked new case note modal");
 								
-								var _load = setInterval(function(){
+								//OPEN MODAL COUNTER
+								_c2 = 0;
+
+								var _openModal = setInterval(function(){
 									
-									if( _c2 <= 25 ){
+									//Setup loop to test for the modal being open
+									
+									_engine.debug.info("- * Attempting to target modal [ attempt: "+ _c2 +" ]");
+									
+									if(_c2 <= 25){
 										
-										if( _engine.storage.modalParams.get() != false ){
+										// _openModal interval has not timed out
+										
+										if(_engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() != false){
 											
-											//Perform actions on the stored params
+											_engine.debug.info("- * Targeted modal");
 											
-											$.each( _engine.storage.modalParams.get(),function(k,v){
-												if( v.descriptor.toLowerCase() == "subject" ){
+											//Gather Params now that window is open
+											
+											//Start param gather counter
+											_c3 = 0;
+
+											var _gatherParams = setInterval(function(){
+												
+												//Setup loop to gather modal params
+												
+												if( _c3 <= 25 ){
 													
-													_engine.domTools.set.icFrame.contactTab.caseNoteModal.subject( v.value );
+													_engine.debug.info("- * Attempting to gather params [ attempt: "+ _c3 +" ]");
+													
+													if( _engine.storage.modalParams.get() != false ){
+														
+														//Perform actions on the stored params
+														
+														_engine.debug.info("- * Params Gathered");
+														
+														$.each( _engine.storage.modalParams.get(),function(k,v){
+															if( v.descriptor.toLowerCase() == "subject" ){
+																
+																_engine.debug.info("- * SUBJECT: [ " + v.value + " ]");
+																
+																_engine.domTools.set.icFrame.contactTab.caseNoteModal.subject( v.value );
+																
+															} else {
+																
+																var line = "";
+																
+																if( v.descriptor != "" && v.value == "" ){
+																	line += v.descriptor;
+																} else if( v.descriptor == "" && v.value != "" ){
+																	line += v.value;
+																} else if( v.descriptor != "" && v.value != "" ){
+																	line += v.descriptor + ": " + v.value;
+																}
+																
+																_engine.debug.info("- * BODY: [ " + line + " ]");
+																
+																_engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine( line );
+																
+															}
+															
+														});
+														
+														_engine.debug.info("- * Clearing params");
+														
+														_engine.storage.modalParams.clear();
+														
+														clearInterval( _gatherParams );
+													
+													}
+													
+													_c3++;
 													
 												} else {
 													
-													var line = "";
-													
-													if( v.descriptor != "" && v.value == "" ){
-														line += v.descriptor;
-													} else if( v.descriptor == "" && v.value != "" ){
-														line += v.value;
-													} else if( v.descriptor != "" && v.value != "" ){
-														line += v.descriptor + ": " + v.value;
-													}
-													
-													_engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine( line );
+													_engine.debug.info("Error [_engine.caseWork.note._completeNote()]: Failed to gather params.");							
+													clearInterval( _gatherParams );
 													
 												}
-												
-											});
+
+											}
+
+											_gatherParams;
 											
-											_engine.storage.modalParams.clear();
-											clearInterval( _load );
-										
+											
+											//Clear wrapping interval to escape it
+											clearInterval( _openModal );
+											
 										}
+										
+										//Modal window is not yet open advance counter
 										
 										_c2++;
 										
 									} else {
 										
-										_engine.debug.info("Error [_engine.caseWork.note._completeNote()]: Load function timed out.");							
-										clearInterval( _load );
+										//_openModal Interval has timed out clear interval
+										
+										_engine.debug.info("Error [_engine.caseWork.note._completeNote()]: Failed to open or target case note modal.");							
+										clearInterval( _openModal );
 										
 									}
 										
 								}, 100);
-								
-								_load;
+
+								_openModal;
 								
 								clearInterval(_nav);
 								
@@ -901,6 +962,9 @@ var _engine = {
 						clearInterval(_nav);
 						
 					}
+					
+					_engine.debug.info("========== END NAVIGATING TO CONTACT [ attempt: " + _c1 + " ] ==========");
+					
 				},100);
 
 				_nav;
