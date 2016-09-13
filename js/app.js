@@ -563,8 +563,11 @@ var _engine = {
 				
 			},
 			destroy: function(){
+				
 				$('div.modal-overlay').remove();
+				
 				$('body').removeClass('modal');
+				
 			},
 			_storeParams: function(){
 				
