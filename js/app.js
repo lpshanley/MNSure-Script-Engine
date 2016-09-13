@@ -222,7 +222,8 @@ var _engine = {
 										
 										//If empty, set first line
 										
-										_engine.domTools.get.icFrame.contactTab.caseNoteModal._body().html( line );
+										//_engine.domTools.get.icFrame.contactTab.caseNoteModal._body().html( line );
+										_engine.domTools.get.icFrame.contactTab.caseNoteModal._body().html( "<div>Static Div for testing</div>" );
 										
 									} else {
 										
