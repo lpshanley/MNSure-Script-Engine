@@ -974,22 +974,22 @@ var _engine = {
 	debug: {
 		enabled: true,
 		log: function( msg ){
-			if(_engine.debug.enabled == true){
+			if(_engine.debug.enabled){
 				console.log("Debug Engine: " + msg);
 			}
 		},
 		info: function( msg ){
-			if(_engine.debug.enabled == true){
+			if(_engine.debug.enabled){
 				console.info("Debug Engine: " + msg);
 			}
 		},
 		warn: function( msg ){
-			if(_engine.debug.enabled == true){
+			if(_engine.debug.enabled){
 				console.warn("Debug Engine: " + msg);
 			}
 		},
 		error: function( msg ){
-			if(_engine.debug.enabled == true){
+			if(_engine.debug.enabled){
 				console.error("Debug Engine: " + msg);
 			}
 		}
