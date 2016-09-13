@@ -188,6 +188,8 @@ var _engine = {
 						subject: function( _s ){
 							if(typeof _engine.domTools.get.icFrame.contactTab.caseNoteModal._subject() != 'undefined'){
 								_engine.domTools.get.icFrame.contactTab.caseNoteModal._subject().val( _s );
+							} else {
+								_engine.debug.warn("- * Fail Reason: [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.subject() ]: Could not add line. Subject returning 'undefined'.")
 							}
 						},
 						body: {
@@ -195,8 +197,8 @@ var _engine = {
 								if(typeof _engine.domTools.get.icFrame.contactTab.caseNoteModal._body() != 'undefined'){
 									//Grab Modal Body
 									var modalBody = _engine.domTools.get.icFrame.contactTab.caseNoteModal._body();
-									//Wrap input in paragraph tags
-									var line = "<div>" + _s + "</div>";
+									//Wrap input in div tags
+									var line = $('<div>',{'html':_s});									
 									//Check if body is empty
 									if(_engine.domTools.test.icFrame.contactTab.caseNoteModal.body.isEmpty()){
 										//If empty, set first line
@@ -839,11 +841,11 @@ var _engine = {
 							
 							if( typeof _id != "undefined" && _id.split("_")[ _id.split("_").length - 1 ].toLowerCase() == "listnote" ){
 								
-								_engine.debug.info("- ****** Completed navigation on attempt: " + _c1 + " ] ******");
+								_engine.debug.info("- ****** Completed navigation on attempt: " + _c1 + " ******");
 								
 								$( _engine.domTools.get.icFrame.icTabActiveFrame() ).find('a[title="New"]')[0].click();
 								
-								_engine.debug.info("- * Clicked new case note modal");
+								_engine.debug.info("- * Clicked new case note");
 								
 								//OPEN MODAL COUNTER
 								_c2 = 0;
@@ -852,7 +854,7 @@ var _engine = {
 									
 									//Setup loop to test for the modal being open
 									
-									_engine.debug.info("- * Attempting to target modal [ attempt: "+ _c2 +" ]");
+									_engine.debug.info("- * Attempting to target modal window [ attempt: "+ _c2 +" ]");
 									
 									if(_c2 <= 25){
 										
