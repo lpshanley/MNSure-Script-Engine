@@ -214,10 +214,10 @@ var _engine = {
 							addLine: function( _s ){
 								
 								_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Started | Input: " + _s);
-
-								console.log(_engine.domTools.get.icFrame.contactTab.caseNoteModal._body());
 								
-								if(typeof _engine.domTools.get.icFrame.contactTab.caseNoteModal._body() != 'undefined'){
+								var _modalBody = _engine.domTools.get.icFrame.contactTab.caseNoteModal._body();
+								
+								if(typeof $( _modalBody ) != 'undefined'){
 									
 									_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Located modal body");
 
@@ -232,20 +232,14 @@ var _engine = {
 										
 										//If empty, set first line
 										
-										console.log( line );
-										console.log( $( line ) );
-										console.log( _engine.domTools.get.icFrame.contactTab.caseNoteModal._body() ); 
-										
-										_engine.domTools.get.icFrame.contactTab.caseNoteModal._body().html( line );
-										
-										console.log( _engine.domTools.get.icFrame.contactTab.caseNoteModal._body() ); 
+										$( _modalBody ).html( line );
 										
 									} else {
 										
 										_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Body not empty. Writing Line.");
 										
 										//If not empty, add to body
-										_engine.domTools.get.icFrame.contactTab.caseNoteModal._body().append( line );
+										$( _modalBody ).append( line );
 
 									}
 									
