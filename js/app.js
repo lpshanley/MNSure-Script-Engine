@@ -218,12 +218,18 @@ var _engine = {
 								_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Started | Input: " + _s);
 								
 								var _f = _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal();
+								
+								console.log( _f );
+								
 								var _f2 = $(_f).contents().find('iframe.cke_wysiwyg_frame');
-								var _f3 = $(_f2).contents().find('body');								
+								
+								console.log( _f2 );
+								
+								var _f3 = $(_f2).contents().find('body');		
+
+								console.log( _f3 );
 								
 								var _modalBody = $(_f2).contents().find('body');
-								
-								console.log( _modalBody );
 								
 								if(typeof $( _modalBody ) != 'undefined'){
 									
