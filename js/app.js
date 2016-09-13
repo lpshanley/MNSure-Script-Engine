@@ -161,7 +161,7 @@ var _engine = {
 							if( $('iframe[title="Modal Frame - New Note"].curam-active-modal').length > 0 ){
 								return $('iframe[title="Modal Frame - New Note"].curam-active-modal');
 							} else {
-								_engine.debug.warn("[_engine.domTools.get.icFrame.contactTab.caseNoteFrame()]: Unable to target an open case note modal.");
+								_engine.debug.warn("- * Fail Reason: [_engine.domTools.get.icFrame.contactTab.caseNoteFrame()]: Unable to target an open case note modal.");
 								return false;
 							}
 						},
@@ -206,7 +206,7 @@ var _engine = {
 										$( modalBody ).append( line );
 									}
 								} else {
-									_engine.debug.warn("[ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ]: Could not add line. Body returning 'undefined'.")
+									_engine.debug.warn("- * Fail Reason: [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ]: Could not add line. Body returning 'undefined'.")
 								}
 							},
 							addDivider: function( _s ){
@@ -608,7 +608,7 @@ var _engine = {
 
 						break;
 					default:
-						_engine.debug.error("Modal Error [_engine.ui.modal._submit( type )]: Type error or type not found.")
+						_engine.debug.error("- * Fail Reason: Modal Error [_engine.ui.modal._submit( type )]: Type error or type not found.")
 						break;
 					
 				}
@@ -697,7 +697,7 @@ var _engine = {
 							case "":
 								break;
 							default:
-								_engine.debug.error("Error found in event handler. Could not translate '_c': "+_c);
+								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
 						}
 						break;
 						
@@ -714,7 +714,7 @@ var _engine = {
 							case "":
 								break;
 							default:
-								_engine.debug.error("Error found in event handler. Could not translate '_c': "+_c);
+								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
 						}						
 						break;
 						
@@ -727,7 +727,7 @@ var _engine = {
 							case "":
 								break;
 							default:
-								_engine.debug.error("Error found in event handler. Could not translate '_c': "+_c);
+								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
 						}
 						break;
 						
@@ -744,14 +744,14 @@ var _engine = {
 							case "":
 								break;
 							default:
-								_engine.debug.error("Error found in event handler. Could not translate '_c': "+_c);
+								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
 						}
 						
 						break;
 					case "":
 						break;
 					default:
-						_engine.debug.error("Error found in event handler. Could not translate '_f': "+_f);
+						_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_f': "+_f);
 				}
 				
 			});
@@ -806,7 +806,7 @@ var _engine = {
 							_c++;
 							
 						} else {
-							_engine.debug.info("[_engine.caseWork.note.write( _note )]: Build frame html timed out.");	
+							_engine.debug.info("- * Fail Reason: [_engine.caseWork.note.write( _note )]: Build frame html timed out.");	
 							_engine.storage.html.clear();
 							clearInterval( buildFrame );
 						}
@@ -815,7 +815,7 @@ var _engine = {
 					buildFrame;
 
 				} else {
-					_engine.debug.error("_engine.caseWork.note.write( note ): A valid note type must be specified to run this command.")
+					_engine.debug.error("- * Fail Reason: [_engine.caseWork.note.write( note )]: A valid note type must be specified to run this command.")
 				}
 			},
 			_completeNote: function(){
@@ -920,7 +920,7 @@ var _engine = {
 													
 												} else {
 													
-													_engine.debug.info("Error [_engine.caseWork.note._completeNote()]: Failed to gather params.");							
+													_engine.debug.info("- * Fail Reason: Error [_engine.caseWork.note._completeNote()]: Failed to gather params.");							
 													clearInterval( _gatherParams );
 													
 												}
@@ -942,7 +942,7 @@ var _engine = {
 										
 										//_openModal Interval has timed out clear interval
 										
-										_engine.debug.info("Error [_engine.caseWork.note._completeNote()]: Failed to open or target case note modal.");							
+										_engine.debug.info("- * Fail Reason: [_engine.caseWork.note._completeNote()]: Failed to open or target case note modal.");							
 										clearInterval( _openModal );
 										
 									}
@@ -961,7 +961,7 @@ var _engine = {
 						
 					} else {
 						
-						_engine.debug.info("Error [_engine.caseWork.note._completeNote()]: Failed to navigate to contact screen.");	
+						_engine.debug.info("- * Fail Reason: [_engine.caseWork.note._completeNote()]: Failed to navigate to contact screen.");	
 						
 						clearInterval(_nav);
 						
