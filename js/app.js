@@ -604,7 +604,7 @@ var _engine = {
 
 						break;
 					default:
-						console.error("Modal Error [_engine.ui.modal._submit( type )]: Type error or type not found.")
+						_engine.debug.error("Modal Error [_engine.ui.modal._submit( type )]: Type error or type not found.")
 						break;
 					
 				}
@@ -693,7 +693,7 @@ var _engine = {
 							case "":
 								break;
 							default:
-								console.error("Error found in event handler. Could not translate '_c': "+_c);
+								_engine.debug.error("Error found in event handler. Could not translate '_c': "+_c);
 						}
 						break;
 						
@@ -710,7 +710,7 @@ var _engine = {
 							case "":
 								break;
 							default:
-								console.error("Error found in event handler. Could not translate '_c': "+_c);
+								_engine.debug.error("Error found in event handler. Could not translate '_c': "+_c);
 						}						
 						break;
 						
@@ -723,7 +723,7 @@ var _engine = {
 							case "":
 								break;
 							default:
-								console.error("Error found in event handler. Could not translate '_c': "+_c);
+								_engine.debug.error("Error found in event handler. Could not translate '_c': "+_c);
 						}
 						break;
 						
@@ -740,14 +740,14 @@ var _engine = {
 							case "":
 								break;
 							default:
-								console.error("Error found in event handler. Could not translate '_c': "+_c);
+								_engine.debug.error("Error found in event handler. Could not translate '_c': "+_c);
 						}
 						
 						break;
 					case "":
 						break;
 					default:
-						console.error("Error found in event handler. Could not translate '_f': "+_f);
+						_engine.debug.error("Error found in event handler. Could not translate '_f': "+_f);
 				}
 				
 			});
@@ -802,8 +802,7 @@ var _engine = {
 							_c++;
 							
 						} else {
-							console.error("Error [_engine.caseWork.note.write( _note )]: Build frame html timed out.");	
-							_engine.storage.html.clear();
+							_engine.debug.info("Error [_engine.caseWork.note.write( _note )]: Build frame html timed out.");	
 							_engine.storage.html.clear();
 							clearInterval( buildFrame );
 						}
@@ -812,7 +811,7 @@ var _engine = {
 					buildFrame;
 
 				} else {
-					console.error("_engine.caseWork.note.write( note ): A valid note type must be specified to run this command.")
+					_engine.debug.error("_engine.caseWork.note.write( note ): A valid note type must be specified to run this command.")
 				}
 			},
 			_completeNote: function(){
@@ -879,7 +878,7 @@ var _engine = {
 										
 									} else {
 										
-										console.error("Error [_engine.caseWork.note._completeNote()]: Load function timed out.");							
+										_engine.debug.info("Error [_engine.caseWork.note._completeNote()]: Load function timed out.");							
 										clearInterval( _load );
 										
 									}
