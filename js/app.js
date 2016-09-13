@@ -222,14 +222,15 @@ var _engine = {
 										
 										//If empty, set first line
 										
-										$( _engine.domTools.get.icFrame.contactTab.caseNoteModal._body() ).html( line );
+										_engine.domTools.get.icFrame.contactTab.caseNoteModal._body().html( line );
 										
 									} else {
 										
 										_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Body not empty. Writing Line.");
 										
 										//If not empty, add to body
-										$( _engine.domTools.get.icFrame.contactTab.caseNoteModal._body() ).append( line );
+										_engine.domTools.get.icFrame.contactTab.caseNoteModal._body().append( line );
+
 									}
 									
 								} else {
