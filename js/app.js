@@ -975,22 +975,22 @@ var _engine = {
 		enabled: false,
 		log: function( msg ){
 			if(_engine.debug.enabled){
-				console.log("Debug Engine: " + msg);
+				console.log("_engine.debug: " + msg);
 			}
 		},
 		info: function( msg ){
 			if(_engine.debug.enabled){
-				console.info("Debug Engine: " + msg);
+				console.info("_engine.debug: " + msg);
 			}
 		},
 		warn: function( msg ){
 			if(_engine.debug.enabled){
-				console.warn("Debug Engine: " + msg);
+				console.warn("_engine.debug: " + msg);
 			}
 		},
 		error: function( msg ){
 			if(_engine.debug.enabled){
-				console.error("Debug Engine: " + msg);
+				console.error("_engine.debug: " + msg);
 			}
 		}
 	}
