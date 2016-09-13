@@ -943,7 +943,7 @@ var _engine = {
 				localStorage.removeItem( "mnsEngine_modalParams" );
 			}
 		}
-	}
+	},
 	debug: {
 		enabled: true,
 		log: function( msg ){
