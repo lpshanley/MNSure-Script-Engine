@@ -174,14 +174,15 @@ var _engine = {
 						_body: function(){
 							if( _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() != false ){
 								
-								var _f = $( _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() );
+								var _f = _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal();
 								var _f2 = $(_f).contents().find('iframe.cke_wysiwyg_frame');
+								var _f3 = $(_f2).contents().find('body');
 								
 								console.log( "BODY START" );
-								console.log( $(_f2) );
+								console.log( $(_f3) );
 								console.log( "BODY END" );
 								
-								return $(_f2).contents().find('body');
+								return $(_f2);
 								
 							}
 						}
