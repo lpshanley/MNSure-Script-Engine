@@ -1063,11 +1063,17 @@ var _engine = {
 		},
 		caseSelection: function(){
 			
-			_engine.debug.info("- * [ _engine.caseWork.caseSelection() ] Starting integrated case selection.");
-			
-			_engine.debug.error("- * [ _engine.caseWork.caseSelection() ] Case selection feature is in development. Please manually select an IC.");
-			
-			//BUILD CASE SELECTION WINDOW HERE
+			if(!_engine.beta.enabled){
+				
+				//Run normal script
+				_engine.debug.error("- * [ _engine.caseWork.caseSelection() ] Case selection feature is in development. Please manually select an IC.");
+				
+			} else {
+				
+				//Run beta script
+				_engine.debug.info("- * [ _engine.caseWork.caseSelection() ] Starting integrated case selection.");
+				
+			}
 			
 		}
 	},
@@ -1134,40 +1140,40 @@ var _engine = {
 		}
 	},
 	debug: {
-		logs: false,
+		enabled: false,
 		log: function( msg ){
-			if(_engine.debug.logs){
+			if(_engine.debug.enabled){
 				console.log("_engine.debug: " + msg);
 			}
 		},
 		info: function( msg ){
-			if(_engine.debug.logs){
+			if(_engine.debug.enabled){
 				console.info("_engine.debug: " + msg);
 			}
 		},
 		warn: function( msg ){
-			if(_engine.debug.logs){
+			if(_engine.debug.enabled){
 				console.warn("_engine.debug: " + msg);
 			}
 		},
 		error: function( msg ){
-			if(_engine.debug.logs){
+			if(_engine.debug.enabled){
 				console.error("_engine.debug: " + msg);
 			}
 		},
 		debug: function( msg ){
-			if(_engine.debug.logs){
+			if(_engine.debug.enabled){
 				console.debug("_engine.debug: " + msg);
 			}
 		}
 	},
 	beta: {
-		enableBetaUser: function(){
-			_engine.beta.betaUser = true;
-			_engine.debug.logs = true;
+		enabled: false,
+		enableBeta: function(){
+			_engine.beta.enabled = true;
+			_engine.debug.enabled = true;
 			_engine.debug.debug("Beta User Access Enabled. Logging Enabled. To disable please refresh browser.");
-		},
-		betaUser: false		
+		}	
 	}
 }
 
