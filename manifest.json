@@ -29,6 +29,7 @@
   ],
 	"web_accessible_resources": [
 		"https://rawgit.com/lpshanley/MNSure-Script-Engine/*"
+		"https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/*"
 	],
 	"externally_connectable": {
 		"matches": ["https://people.mnsure.org/Curam/*"]
