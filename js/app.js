@@ -169,7 +169,7 @@ var _engine = {
 								if ( typeof _bodyFrame[0] != 'undefined' ){
 									
 									//Modal is loaded
-									_engine.debug.info("- * Fail Reason: [_engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal()]: Modal is open and fully loaded.");
+									_engine.debug.info("- * [_engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal()]: Modal is open and fully loaded.");
 									return _modalFrame;
 									
 								} else {
