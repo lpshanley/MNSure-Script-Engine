@@ -696,6 +696,14 @@ var _engine = {
 				_engine.ui.modal.destroy();
 				
 			}
+		},
+		topNotification: function( msg ){
+			
+			//Create Element
+			var _span = $('<span>',{'html':msg});
+			//Swap content
+			$('div.center-box').html( _span );
+			
 		}
 	},
 	
@@ -741,6 +749,12 @@ var _engine = {
 					_engine.search._person();
 					
 				});
+				
+				if(_engine.beta.enabled){
+					_engine.ui.topNotification("Scripts Enabled: Release");
+				} else {
+					_engine.ui.topNotification("Scripts Enabled: Beta");
+				}
 				
 				_engine.ui.scriptMenu.build( _engine.ui.scriptMenu.items );
 			
@@ -1172,6 +1186,7 @@ var _engine = {
 		enableBeta: function(){
 			_engine.beta.enabled = true;
 			_engine.debug.enabled = true;
+			_engine.ui.topNotification("Scripts Enabled: Beta");
 			_engine.debug.debug("Beta User Access Enabled. Logging Enabled. To disable please refresh browser.");
 		}	
 	}

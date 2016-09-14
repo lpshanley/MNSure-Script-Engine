@@ -222,3 +222,12 @@
 .mns-modal-template .hidden {
 	display: none;
 }
+
+/* Top notification bar layout
+=================================================================*/
+
+div.center-box > span {
+	position: relative;
+	top: 5px;
+	left: 6px;
+}
