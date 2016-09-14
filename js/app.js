@@ -1194,10 +1194,10 @@ var _engine = {
 			_engine.beta.enabled = true;
 			//Enable Debugging
 			_engine.debug.enabled = true;
-			//Change Script Repo
-			$('script[data-scriptengine]').attr("src", $('script[data-scriptengine]').attr("src").replace("master","beta").replace("cdn.rawgit","rawgit") );
 			//Change CSS Repo
 			$('link[data-scriptengine]').attr("href", $('link[data-scriptengine]').attr("href").replace("master","beta").replace("cdn.rawgit","rawgit") );
+			//Change Script Repo
+			$('script[data-scriptengine]').attr("src", $('script[data-scriptengine]').attr("src").replace("master","beta").replace("cdn.rawgit","rawgit") );
 			_engine.ui.topNotification("Scripts Enabled: Beta");
 			_engine.debug.debug("Beta User Access Enabled. Logging Enabled. To disable please refresh browser.");
 		}	
