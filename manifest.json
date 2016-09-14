@@ -3,7 +3,7 @@
   "name": "MNSure Script Engine",
 	"author": "Lucas Shanley",
   "description": "This is used to run scripts on the mnsure page.",
-  "version": "1.1",
+  "version": "1.3",
 	"icons": { 
 		"16": "icon16.png",
 		"32": "icon32.png",
@@ -17,7 +17,7 @@
 			"run_at": "document_idle",
 			"js": [
 				"js/libs/jquery.min.js",
-				"js/main.js"
+				"js/content_script.js"
 			]
 		}
   ],
@@ -36,7 +36,7 @@
 	"background": {
 		"scripts": [
 			"js/libs/jquery.min.js",
-			"ext/extMain.js"
+			"js/background.js"
 		]
 	}
 }

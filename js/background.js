@@ -1,3 +1,5 @@
+/* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
+
 chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab){
 	
 	if(changeInfo.status == "complete"){

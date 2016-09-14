@@ -1,6 +1,8 @@
+/* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
+
 /*   Script Engine Functions
 ---------------------------------------------*/
-
+	
 var _engine = {
 	
 	/* Core Functions
@@ -28,21 +30,49 @@ var _engine = {
 	//***************//
 	
 	domTools: {
+		
+		/* Tools in the "Get" section of the 
+		|* toolbox are designed to return elements
+		|* of the webpage.
+		\*-----------------------------------------------*/
+		
 		get: {
+			
+				/* Returns an array of the top level tabs ( Home, 
+				|* HCR Cases and Outcomes, Inbox, and Calendar )
+				\*----------------------------------------------------------*/
 			mainTabList: function(){
-				return $('#app-sections-container-dc_tablist > div.dijitTabListWrapper.dijitTabContainerTopNone.dijitAlignClient > div > div.visible')[0];
+				return $('#app-sections-container-dc_tablist > div.dijitTabListWrapper.dijitTabContainerTopNone.dijitAlignClient > div > div.visible');
 			},
+			
+				/* Returns the tab in the top level that is presently 
+				|* selected
+				\*----------------------------------------------------------*/
 			mainTabActive: function(){
 				return $('#app-sections-container-dc_tablist > div.dijitTabListWrapper.dijitTabContainerTopNone.dijitAlignClient > div > div.visible.dijitTabChecked.dijitChecked')[0];
 			},
+			
+				/* Returns an array of the tabs that are currently 
+				|* open on the HCR Cases and Outcomes screen.
+				\*----------------------------------------------------------*/
 			hcrTabList: function(){
 				_engine.navigation.hcr();
-				return $('[widgetid="HCRCASEAPPWorkspaceSection-stc_tablist"] div.dijitTabContainerTop-tabs div.dijitTab')[0];
+				return $('[widgetid="HCRCASEAPPWorkspaceSection-stc_tablist"] div.dijitTabContainerTop-tabs div.dijitTab');
 			},
+			
+				/* Returns the tab that is currently the focus on the
+				|* HCR Cases and Outcomes screen.
+				\*----------------------------------------------------------*/
 			hcrTabActive: function(){
 				_engine.navigation.hcr();
 				return $('[widgetid="HCRCASEAPPWorkspaceSection-stc_tablist"] div.dijitTabContainerTop-tabs div.dijitTab.dijitTabChecked.dijitChecked')[0];
 			},
+			
+				/* Returns the iFrame for the tab that is currently the
+				|* focus on the HCR Cases and Outcomes screen.
+				|* This can be thought of as the wrapper for the tabs
+				|* content.
+				\*----------------------------------------------------------*/
 			hcrTabActiveFrame: function(){
 				_engine.navigation.hcr();
 				var _t = _engine.domTools.get.hcrTabActive();
@@ -51,7 +81,16 @@ var _engine = {
 				
 				return $('[widgetid="'+_f+'"]')[0];
 			},
+			
+				/* These functions get elements that are contained inside the 
+				|* iFrame returned from '_engine.domTools.get.hcrTabActiveFrame()' 
+				\*----------------------------------------------------------*/
 			icFrame: {
+				
+					/* This returns an array of tabs that are available on the 
+					|* currently focused icFrame ( Home, Evidence, Participants, 
+					|* Assessments, Services, etc... )
+					\*----------------------------------------------------------*/
 				icTabList: function(){
 					_engine.navigation.hcr();
 					if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -61,6 +100,11 @@ var _engine = {
 						_engine.caseWork.caseSelection();
 					}
 				},
+				
+					/* This returns the tab that is currently the focused tab 
+					|* of the open Integrated case. ( Home, Evidence, Participants, 
+					|* Assessments, Services, etc... )
+					\*----------------------------------------------------------*/
 				icTabActive: function(){
 					_engine.navigation.hcr();
 					if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -70,6 +114,11 @@ var _engine = {
 						_engine.caseWork.caseSelection();
 					}
 				},
+				
+					/* This returns the left hand sub menu of screens that have 
+					|* one. Example: 'Contact Tab' - [Notes, Attachements, 
+					|* Meeting Minutes, Communications]
+					\*----------------------------------------------------------*/
 				icTabActiveSubMenu: function(){
 					_engine.navigation.hcr();
 					if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -77,14 +126,27 @@ var _engine = {
 						return $( _tp ).find('div.dijitStackContainer-child.dijitVisible');
 					}
 				},
+				
+					/* Returns the frame that is from the currently focused tab
+					|* on the currently focused IC Tab [This is the lower portion
+					|* of the currently open IC Tab.]
+					\*----------------------------------------------------------*/
 				icTabActiveFrame: function(){
 					_engine.navigation.hcr();
 					if(_engine.domTools.test.hcrTabActiveIsIC()){
 						var _tp = _engine.domTools.get.hcrTabActiveFrame();
+						
 						return $( _tp ).find('.content-area-container iframe').contents().find('body');
 					}
 				},
+				
+					/* Returns elements that are a subset of the home tab
+					|* on an IC Case
+					\*----------------------------------------------------------*/
 				homeTab: {
+					
+						/* Returns an array of the cases that display on the Home Tab
+						\*----------------------------------------------------------*/
 					cases: function(){
 						_engine.navigation.hcr();
 						if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -96,23 +158,51 @@ var _engine = {
 				contactTab: {
 					caseNoteModal:{
 						_activeModal: function(){
-							if( $('iframe[title="Modal Frame - New Note"].curam-active-modal').length > 0 ){
-								return $('iframe[title="Modal Frame - New Note"].curam-active-modal');
+							
+							var _modalFrame = $('iframe[title="Modal Frame - New Note"].curam-active-modal');
+							
+							if( typeof _modalFrame[0] != "undefined" ){
+								
+								var _bodyFrame = $( _modalFrame ).contents().find('iframe.cke_wysiwyg_frame');
+								
+								//Modal is open
+								if ( typeof _bodyFrame[0] != 'undefined' ){
+									
+									//Modal is loaded
+									_engine.debug.info("- * [ _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() ]: Modal is open and fully loaded.");
+									return _modalFrame;
+									
+								} else {
+									_engine.debug.warn("- * Fail Reason: [ _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() ]: Modal is open but not fully loaded.");
+									return false;
+								}
 							} else {
-								console.error("Error [_engine.domTools.get.icFrame.contactTab.caseNoteFrame()]: Unable to target an open frame.");
+								_engine.debug.warn("- * Fail Reason: [ _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() ]: Unable to target an open case note modal.");
 								return false;
 							}
 						},
 						_subject: function(){
-							if( _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() != false ){
-								var _f = _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal();
-								return $( _f ).contents().find('input[title="Subject Mandatory"]');
+							
+							var _activeModal = _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal();
+							
+							if( _activeModal != false ){
+								
+								return $( _activeModal ).contents().find('input[title="Subject Mandatory"]');
+								
 							}
 						},
 						_body: function(){
-							if( _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() != false ){
-								var _f = _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal();
-								return $(_f).contents().find('iframe.cke_wysiwyg_frame').contents().find('body');
+							
+							var _activeModal = _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal();
+							
+							if( _activeModal != false ){
+								
+								return $( _activeModal ).contents().find('iframe.cke_wysiwyg_frame').contents().find('body');
+								
+							} else {
+								
+								return false;
+								
 							}
 						}
 					}
@@ -124,26 +214,62 @@ var _engine = {
 				contactTab: {
 					caseNoteModal:{
 						subject: function( _s ){
-							_engine.domTools.get.icFrame.contactTab.caseNoteModal._subject().val( _s );
+							
+							_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.subject() ] Started | Input: " + _s);
+							
+							if(typeof _engine.domTools.get.icFrame.contactTab.caseNoteModal._subject() != 'undefined'){
+								
+								_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.subject() ] Located modal subject");
+								
+								_engine.domTools.get.icFrame.contactTab.caseNoteModal._subject().val( _s );
+								
+							} else {
+								_engine.debug.warn("- * Fail Reason: [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.subject() ]: Could not add line. Subject returning 'undefined'.")
+							}
+							
+							_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.subject() ] Complete");
+							
 						},
 						body: {
 							addLine: function( _s ){
-								//Grab Modal Body
-								var modalBody = _engine.domTools.get.icFrame.contactTab.caseNoteModal._body();
-								//Wrap input in paragraph tags
-								var line = "<div>" + _s + "</div>";
-								//Check if body is empty
-								if(_engine.domTools.test.icFrame.contactTab.caseNoteModal.body.isEmpty()){
-									//If empty, set first line
-									$( modalBody ).html( line );
+								
+								_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Started | Input: " + _s);
+								
+								var _modalBody = _engine.domTools.get.icFrame.contactTab.caseNoteModal._body();
+								
+								if(typeof $( _modalBody ) != 'undefined'){
+									
+									_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Located modal body");
+
+									//Wrap input in div tags
+									var line = $('<div>',{'html':_s});
+									
+									//Check if body is empty
+									
+									if(_engine.domTools.test.icFrame.contactTab.caseNoteModal.body.isEmpty()){
+										
+										_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Body empty. Writing Line.");
+										
+										//If empty, set first line
+										
+										$( _modalBody ).html( line );
+										
+									} else {
+										
+										_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Body not empty. Writing Line.");
+										
+										//If not empty, add to body
+										$( _modalBody ).append( line );
+
+									}
+									
 								} else {
-									//If not empty, add to body
-									$( modalBody ).append( line );
+									_engine.debug.warn("- * Fail Reason: [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ]: Could not add line. Body returning 'undefined'.")
 								}
-							},
-							addDivider: function( _s ){
-								_engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine( "-----------------------------" );
-							},
+								
+								_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Complete");
+								
+							}
 						}
 					}
 				}
@@ -166,13 +292,29 @@ var _engine = {
 					caseNoteModal:{
 						body: {
 							isEmpty: function(){
-								if( _engine.domTools.get.icFrame.contactTab.caseNoteModal._body().text() == ""){
-									return true;
+								
+								var _modalBody = _engine.domTools.get.icFrame.contactTab.caseNoteModal._body();
+								
+								if( _modalBody != false ){
+									if( $( _modalBody ).text() == ""){
+										return true;
+									} else {
+										return false;
+									}
 								} else {
-									return false;
+									_engine.debug.warn("- * Fail Reason: [ _engine.domTools.test.icFrame.contactTab.caseNoteModal.body.isEmpty() ]: Case note body object is returning undefined. Not loaded.")
+									return undefined;
 								}
 							}
 						}
+					}
+				},
+				onTab: function( _t ){
+					var current_tab = _engine.domTools.get.icFrame.icTabActive().text().replace("Close Tab", "").trim().toLowerCase();
+					if( _t.toLowerCase() == current_tab ){
+						return true;
+					} else {
+						return false;
 					}
 				}
 			}
@@ -213,6 +355,7 @@ var _engine = {
 					_engine.navigation.icTabs.icNavCore("Home");
 				} else {
 					_engine.caseWork.caseSelection();
+					return false;
 				}
 			},
 			evidence: function(){
@@ -221,6 +364,7 @@ var _engine = {
 					_engine.navigation.icTabs.icNavCore("EvidenceFolder");
 				} else {
 					_engine.caseWork.caseSelection();
+					return false;
 				}
 			},
 			participants: function(){
@@ -229,6 +373,7 @@ var _engine = {
 					_engine.navigation.icTabs.icNavCore("ParticipantFolder");
 				} else {
 					_engine.caseWork.caseSelection();
+					return false;
 				}
 			},
 			assessments: function(){
@@ -237,6 +382,7 @@ var _engine = {
 					_engine.navigation.icTabs.icNavCore("Assessments");
 				} else {
 					_engine.caseWork.caseSelection();
+					return false;
 				}
 			},
 			services: function(){
@@ -245,6 +391,7 @@ var _engine = {
 					_engine.navigation.icTabs.icNavCore("Services");
 				} else {
 					_engine.caseWork.caseSelection();
+					return false;
 				}
 			},
 			referrals: function(){
@@ -253,6 +400,7 @@ var _engine = {
 					_engine.navigation.icTabs.icNavCore("Referrals");
 				} else {
 					_engine.caseWork.caseSelection();
+					return false;
 				}
 			},
 			contact: function(){
@@ -261,6 +409,7 @@ var _engine = {
 					_engine.navigation.icTabs.icNavCore("ContactFolder");
 				} else {
 					_engine.caseWork.caseSelection();
+					return false;
 				}
 			},
 			tasks: function(){
@@ -269,6 +418,7 @@ var _engine = {
 					_engine.navigation.icTabs.icNavCore("Tasks");
 				} else {
 					_engine.caseWork.caseSelection();
+					return false;
 				}
 			},
 			issuesAndProceedings: function(){
@@ -277,6 +427,7 @@ var _engine = {
 					_engine.navigation.icTabs.icNavCore("IssuesAndProceedings");
 				} else {
 					_engine.caseWork.caseSelection();
+					return false;
 				}
 			},
 			administration: function(){
@@ -285,6 +436,7 @@ var _engine = {
 					_engine.navigation.icTabs.icNavCore("AdminFolder");
 				} else {
 					_engine.caseWork.caseSelection();
+					return false;
 				}
 			},
 			elections: function(){
@@ -293,6 +445,7 @@ var _engine = {
 					_engine.navigation.icTabs.icNavCore("ElectionsFolder");
 				} else {
 					_engine.caseWork.caseSelection();
+					return false;
 				}
 			},
 			icNavCore: function( _t ){
@@ -460,8 +613,11 @@ var _engine = {
 				
 			},
 			destroy: function(){
+				
 				$('div.modal-overlay').remove();
+				
 				$('body').removeClass('modal');
+				
 			},
 			_storeParams: function(){
 				
@@ -532,7 +688,7 @@ var _engine = {
 
 						break;
 					default:
-						console.error("Modal Error [_engine.ui.modal._submit( type )]: Type error or type not found.")
+						_engine.debug.error("- * Fail Reason: Modal Error [_engine.ui.modal._submit( type )]: Type error or type not found.")
 						break;
 					
 				}
@@ -540,6 +696,14 @@ var _engine = {
 				_engine.ui.modal.destroy();
 				
 			}
+		},
+		topNotification: function( msg ){
+			
+			//Create Element
+			var _span = $('<span>',{'html':msg});
+			//Swap content
+			$('div.center-box').html( _span );
+			
 		}
 	},
 	
@@ -586,6 +750,12 @@ var _engine = {
 					
 				});
 				
+				if(_engine.beta.enabled){
+					_engine.ui.topNotification("Scripts Enabled: Beta");
+				} else {
+					_engine.ui.topNotification("Scripts Enabled: Release");
+				}
+				
 				_engine.ui.scriptMenu.build( _engine.ui.scriptMenu.items );
 			
 			},2000);
@@ -621,7 +791,7 @@ var _engine = {
 							case "":
 								break;
 							default:
-								console.error("Error found in event handler. Could not translate '_c': "+_c);
+								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
 						}
 						break;
 						
@@ -638,7 +808,7 @@ var _engine = {
 							case "":
 								break;
 							default:
-								console.error("Error found in event handler. Could not translate '_c': "+_c);
+								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
 						}						
 						break;
 						
@@ -651,7 +821,7 @@ var _engine = {
 							case "":
 								break;
 							default:
-								console.error("Error found in event handler. Could not translate '_c': "+_c);
+								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
 						}
 						break;
 						
@@ -668,14 +838,14 @@ var _engine = {
 							case "":
 								break;
 							default:
-								console.error("Error found in event handler. Could not translate '_c': "+_c);
+								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
 						}
 						
 						break;
 					case "":
 						break;
 					default:
-						console.error("Error found in event handler. Could not translate '_f': "+_f);
+						_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_f': "+_f);
 				}
 				
 			});
@@ -706,75 +876,219 @@ var _engine = {
 					// Gathers HTML for view and stores to local storage
 					_engine.advanced.getView( _noteLocation );
 
-					// Wait 100ms and then gather and clear HTML from localStorage
-					setTimeout(function(){
-						
-						// Gather html for modal
-						var _html = _engine.storage.html.get();
-						
-						// Clear html storage
-						_engine.storage.html.clear();
-						
-						//Build modal
-						_engine.ui.modal.build( _note, _html );
-
-					},200);
+					// Check every 100ms for info in local storage. Timeout after 2000ms.
+					
+					var _c = 0;
+					
+					var buildFrame = setInterval(function(){
+						if(_c <= 25){
+							
+							if(_engine.storage.html.get() != false){
+								// Gather html for modal
+								var _html = _engine.storage.html.get();
+								
+								// Clear html storage
+								_engine.storage.html.clear();
+								
+								//Build modal
+								_engine.ui.modal.build( _note, _html );
+								
+								clearInterval( buildFrame );
+								
+							}
+							
+							_c++;
+							
+						} else {
+							_engine.debug.error("- * Fail Reason: [_engine.caseWork.note.write( _note )]: Build frame html timed out.");	
+							_engine.storage.html.clear();
+							clearInterval( buildFrame );
+						}
+					}, 100);
+					
+					buildFrame;
 
 				} else {
-					console.error("_engine.caseWork.note.write( note ): A valid note type must be specified to run this command.")
+					_engine.debug.error("- * Fail Reason: [_engine.caseWork.note.write( note )]: A valid note type must be specified to run this command.")
 				}
 			},
-			_completeNote: function( _caseNote ){
+			_completeNote: function(){
 				
-				_engine.navigation.icTabs.contact();
+				// Timeout Counter
+				_c1 = 0;
 				
-				setTimeout(function(){
-					//Wait 100ms and open a new case note
-					$( _engine.domTools.get.icFrame.icTabActiveFrame() ).find('a[title="New"]')[0].click();
-					//Wait 100ms and write into the case note
-					setTimeout(function(){
+				// Run a max of 2500ms
+				var _nav = setInterval(function(){
+					if(_c1 <= 25){
 						
-						if( _engine.storage.modalParams.get() != false ){
-							//Perform actions on the stored params
-							$.each( _engine.storage.modalParams.get(),function(k,v){
-								if( v.descriptor.toLowerCase() == "subject" ){
+						_engine.debug.info("========== START NAVIGATING TO CONTACT [ attempt: " + _c1 + " ] ==========");
+						
+						var _contactNav = _engine.navigation.icTabs.contact();
+						
+						if( _contactNav != false){
+						
+							var _src = $( _engine.domTools.get.hcrTabActiveFrame() ).find('.content-area-container iframe').attr('src');
+
+							if( typeof _src != "undefined" && _src.split("?")[0].split("/")[1].split("_")[1].split(".")[0].replace("Page",'').toLowerCase() == "listnote" ){
+
+								var _id = $( _engine.domTools.get.hcrTabActiveFrame() ).find('.content-area-container iframe').contents().find('body').attr('id');
+								
+								if( typeof _id != "undefined" && _id.split("_")[ _id.split("_").length - 1 ].toLowerCase() == "listnote" ){
 									
-									_engine.domTools.set.icFrame.contactTab.caseNoteModal.subject( v.value );
+									_engine.debug.info("- ****** Completed navigation on attempt: " + _c1 + " ******");
 									
-								} else {
+									$( _engine.domTools.get.icFrame.icTabActiveFrame() ).find('a[title="New"]')[0].click();
 									
-									var line = "";
+									_engine.debug.info("- * Clicked new case note");
 									
-									if( v.descriptor != "" && v.value == "" ){
-										line += v.descriptor;
-									} else if( v.descriptor == "" && v.value != "" ){
-										line += v.value;
-									} else if( v.descriptor != "" && v.value != "" ){
-										line += v.descriptor + ": " + v.value;
-									}
+									//OPEN MODAL COUNTER
+									_c2 = 0;
+
+									var _openModal = setInterval(function(){
+										
+										//Setup loop to test for the modal being open
+										
+										_engine.debug.info("- * Attempting to target modal window [ attempt: "+ _c2 +" ]");
+										
+										if(_c2 <= 40){
+											
+											// _openModal interval has not timed out
+											
+											if(_engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() != false){
+												
+												_engine.debug.info("- * Targeted modal");
+												
+												//Gather Params now that window is open
+												
+												//Start param gather counter
+												_c3 = 0;
+
+												var _gatherParams = setInterval(function(){
+													
+													//Setup loop to gather modal params
+													
+													if( _c3 <= 25 ){
+														
+														_engine.debug.info("- * Attempting to gather params [ attempt: "+ _c3 +" ]");
+														
+														if( _engine.storage.modalParams.get() != false ){
+															
+															//Perform actions on the stored params
+															
+															_engine.debug.info("- * Params Gathered");
+															
+															$.each( _engine.storage.modalParams.get(),function(k,v){
+																if( v.descriptor.toLowerCase() == "subject" ){
+																	
+																	_engine.debug.info("- * SUBJECT: [ " + v.value + " ]");
+																	
+																	_engine.domTools.set.icFrame.contactTab.caseNoteModal.subject( v.value );
+																	
+																} else {
+																	
+																	var line = "";
+																	
+																	if( v.descriptor != "" && v.value == "" ){
+																		line += v.descriptor;
+																	} else if( v.descriptor == "" && v.value != "" ){
+																		line += v.value;
+																	} else if( v.descriptor != "" && v.value != "" ){
+																		line += v.descriptor + ": " + v.value;
+																	}
+																	
+																	_engine.debug.info("- * BODY: [ " + line + " ]");
+																	
+																	_engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine( line );
+																	
+																}
+																
+															});
+															
+															_engine.debug.info("- * Clearing params");
+															
+															_engine.storage.modalParams.clear();
+															
+															clearInterval( _gatherParams );
+														
+														}
+														
+														_c3++;
+														
+													} else {
+														
+														_engine.debug.info("- * Fail Reason: Error [_engine.caseWork.note._completeNote()]: Failed to gather params.");							
+														clearInterval( _gatherParams );
+														
+													}
+
+												}, 100);
+
+												_gatherParams;
+												
+												//Clear wrapping interval to escape it
+												clearInterval( _openModal );
+												
+											}
+											
+											//Modal window is not yet open advance counter
+											
+											_c2++;
+											
+										} else {
+											
+											//_openModal Interval has timed out clear interval
+											
+											_engine.debug.error("- * Fail Reason: [_engine.caseWork.note._completeNote()]: Failed to open or target case note modal. Request timed out.");							
+											clearInterval( _openModal );
+											
+										}
+											
+									}, 100);
+
+									_openModal;
 									
-									_engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine( line );
+									clearInterval(_nav);
 									
 								}
 								
-							});
+							}
 							
-							_engine.storage.modalParams.clear();
-							
+							_c1++
+						
 						} else {
-							console.error( "Error: Modal param storage object is empty." );
+						
+							clearInterval(_nav);
+							
 						}
-				
-						//_engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine( "Adding Context to body" );
+						
+					} else {
+						
+						_engine.debug.error("- * Fail Reason: [_engine.caseWork.note._completeNote()]: Failed to navigate to contact screen.");	
+						
+						clearInterval(_nav);
+						
+					}
 					
-					},1750);
-				},250);
+				},100);
+
+				_nav;
 				
 			}
 		},
 		caseSelection: function(){
-			console.log("Case Selection Window");
-			//BUILD CASE SELECTION WINDOW HERE
+			
+			if(!_engine.beta.enabled){
+				
+				//Run normal script
+				_engine.debug.error("- * [ _engine.caseWork.caseSelection() ] Case selection feature is in development. Please manually select an IC.");
+				
+			} else {
+				
+				//Run beta script
+				_engine.debug.info("- * [ _engine.caseWork.caseSelection() ] Starting integrated case selection.");
+				
+			}
+			
 		}
 	},
 	advanced: {
@@ -838,8 +1152,44 @@ var _engine = {
 				localStorage.removeItem( "mnsEngine_modalParams" );
 			}
 		}
+	},
+	debug: {
+		enabled: false,
+		log: function( msg ){
+			if(_engine.debug.enabled){
+				console.log("_engine.debug: " + msg);
+			}
+		},
+		info: function( msg ){
+			if(_engine.debug.enabled){
+				console.info("_engine.debug: " + msg);
+			}
+		},
+		warn: function( msg ){
+			if(_engine.debug.enabled){
+				console.warn("_engine.debug: " + msg);
+			}
+		},
+		error: function( msg ){
+			if(_engine.debug.enabled){
+				console.error("_engine.debug: " + msg);
+			}
+		},
+		debug: function( msg ){
+			if(_engine.debug.enabled){
+				console.debug("_engine.debug: " + msg);
+			}
+		}
+	},
+	beta: {
+		enabled: false,
+		enableBeta: function(){
+			_engine.beta.enabled = true;
+			_engine.debug.enabled = true;
+			_engine.ui.topNotification("Scripts Enabled: Beta");
+			_engine.debug.debug("Beta User Access Enabled. Logging Enabled. To disable please refresh browser.");
+		}	
 	}
-	
 }
 
 /*   Onload
