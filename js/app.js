@@ -158,32 +158,50 @@ var _engine = {
 				contactTab: {
 					caseNoteModal:{
 						_activeModal: function(){
-							if( typeof $('iframe[title="Modal Frame - New Note"].curam-active-modal')[0] != "undefined" ){
-								return $('iframe[title="Modal Frame - New Note"].curam-active-modal');
+							
+							var _modalFrame = $('iframe[title="Modal Frame - New Note"].curam-active-modal');
+							
+							if( typeof _modalFrame[0] != "undefined" ){
+								
+								var _bodyFrame = $( _modalFrame ).contents().find('iframe.cke_wysiwyg_frame');
+								
+								//Modal is open
+								if ( typeof _bodyFrame[0] != 'undefined' ){
+									
+									//Modal is loaded
+									_engine.debug.info("- * Fail Reason: [_engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal()]: Modal is open and fully loaded.");
+									return _modalFrame;
+									
+								} else {
+									_engine.debug.warn("- * Fail Reason: [_engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal()]: Modal is open but not fully loaded.");
+									return false;
+								}
 							} else {
-								_engine.debug.warn("- * Fail Reason: [_engine.domTools.get.icFrame.contactTab.caseNoteFrame()]: Unable to target an open case note modal.");
+								_engine.debug.warn("- * Fail Reason: [_engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal()]: Unable to target an open case note modal.");
 								return false;
 							}
 						},
 						_subject: function(){
-							if( _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() != false ){
-								var _f = _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal();
-								return $( _f ).contents().find('input[title="Subject Mandatory"]');
+							
+							var _activeModal = _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal();
+							
+							if( _activeModal != false ){
+								
+								return $( _activeModal ).contents().find('input[title="Subject Mandatory"]');
+								
 							}
 						},
 						_body: function(){
-							if( _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() != false ){
+							
+							var _activeModal = _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal();
+							
+							if( _activeModal != false ){
 								
-								var _f = _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal();
-								var _f2 = $(_f).contents().find('iframe.cke_wysiwyg_frame');
-								var _f3 = $(_f2).contents().find('body');
+								return $( _activeModal ).contents().find('iframe.cke_wysiwyg_frame').contents().find('body');
 								
-								console.log( "BODY START" );
-								console.log( $(_f2) );
-								console.log( $(_f3) );
-								console.log( "BODY END" );
+							} else {
 								
-								return $( _f3 );
+								return false;
 								
 							}
 						}
@@ -217,19 +235,7 @@ var _engine = {
 								
 								_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Started | Input: " + _s);
 								
-								var _f = _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal();
-								
-								console.log( _f ); 
-								
-								var _f2 = $(_f).contents().find('iframe.cke_wysiwyg_frame');
-								
-								console.log( _f2 );
-								
-								var _f3 = $(_f2).contents().find('body');		
-
-								console.log( _f3 );
-								
-								var _modalBody = $(_f2).contents().find('body');
+								var _modalBody = _engine.domTools.get.icFrame.contactTab.caseNoteModal._body();
 								
 								if(typeof $( _modalBody ) != 'undefined'){
 									
@@ -286,10 +292,18 @@ var _engine = {
 					caseNoteModal:{
 						body: {
 							isEmpty: function(){
-								if( _engine.domTools.get.icFrame.contactTab.caseNoteModal._body().text() == ""){
-									return true;
+								
+								var _modalBody = _engine.domTools.get.icFrame.contactTab.caseNoteModal._body();
+								
+								if( _modalBody != false ){
+									if( $( _modalBody ).text() == ""){
+										return true;
+									} else {
+										return false;
+									}
 								} else {
-									return false;
+									_engine.debug.warn("- * Fail Reason: [ _engine.domTools.test.icFrame.contactTab.caseNoteModal.body.isEmpty() ]: Case note body object is returning undefined. Not loaded.")
+									return undefined;
 								}
 							}
 						}
