@@ -169,15 +169,15 @@ var _engine = {
 								if ( typeof _bodyFrame[0] != 'undefined' ){
 									
 									//Modal is loaded
-									_engine.debug.info("- * [_engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal()]: Modal is open and fully loaded.");
+									_engine.debug.info("- * [ _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() ]: Modal is open and fully loaded.");
 									return _modalFrame;
 									
 								} else {
-									_engine.debug.warn("- * Fail Reason: [_engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal()]: Modal is open but not fully loaded.");
+									_engine.debug.warn("- * Fail Reason: [ _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() ]: Modal is open but not fully loaded.");
 									return false;
 								}
 							} else {
-								_engine.debug.warn("- * Fail Reason: [_engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal()]: Unable to target an open case note modal.");
+								_engine.debug.warn("- * Fail Reason: [ _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() ]: Unable to target an open case note modal.");
 								return false;
 							}
 						},
