@@ -751,9 +751,9 @@ var _engine = {
 				});
 				
 				if(_engine.beta.enabled){
-					_engine.ui.topNotification("Scripts Enabled: Release");
-				} else {
 					_engine.ui.topNotification("Scripts Enabled: Beta");
+				} else {
+					_engine.ui.topNotification("Scripts Enabled: Release");
 				}
 				
 				_engine.ui.scriptMenu.build( _engine.ui.scriptMenu.items );
