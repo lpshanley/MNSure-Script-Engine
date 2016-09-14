@@ -1098,17 +1098,25 @@ var _engine = {
 		extensionID: function(){
 			return $('script[data-scriptengine]').attr('data-extensionID');
 		},
+		betaCommit: function(){
+			return $('script[data-scriptengine]').attr('data-beta');
+		},
+		masterCommit: function(){
+			return $('script[data-scriptengine]').attr('data-master');
+		},
 		getView: function( _f ){
 
 			var _html = null;
 			
 			if(_engine.beta.enabled){
 				var _v = "beta";
+				var _c = _engine.advanced.betaCommit();
 			} else {
 				var _v = "release";
+				var _c = _engine.advanced.masterCommit();
 			}
 			
-			chrome.runtime.sendMessage( _engine.advanced.extensionID(), { file: _f, release: _v },
+			chrome.runtime.sendMessage( _engine.advanced.extensionID(), { file: _f, release: _v, commit: _c },
 				function( response ){
 					
 					_engine.storage.html.set( response );
@@ -1168,7 +1176,7 @@ var _engine = {
 		},
 		info: function( msg ){
 			if(_engine.debug.enabled){
-				console.info("_engine.debug: " + msg);
+				console.info("_engine.debug: " + msg); 
 			}
 		},
 		warn: function( msg ){
@@ -1194,10 +1202,13 @@ var _engine = {
 			_engine.beta.enabled = true;
 			//Enable Debugging
 			_engine.debug.enabled = true;
+			
+			var _betaCommit = _engine.advanced.betaCommit();
+			
 			//Change CSS Repo
-			$('link[data-scriptengine]').attr("href", $('link[data-scriptengine]').attr("href").replace("master","beta").replace("cdn.rawgit","rawgit") );
+			$('link[data-scriptengine]').attr("href", "https://rawgit.com/lpshanley/MNSure-Script-Engine/"+ _betaCommit +"/css/appStyles.css");
 			//Change Script Repo
-			$('script[data-scriptengine]').attr("src", $('script[data-scriptengine]').attr("src").replace("master","beta").replace("cdn.rawgit","rawgit") );
+			$('script[data-scriptengine]').attr("src", "https://rawgit.com/lpshanley/MNSure-Script-Engine/"+ _betaCommit +"/js/app.js" );
 			_engine.ui.topNotification("Scripts Enabled: Beta");
 			_engine.debug.debug("Beta User Access Enabled. Logging Enabled. To disable please refresh browser.");
 		}	
