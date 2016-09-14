@@ -1134,27 +1134,40 @@ var _engine = {
 		}
 	},
 	debug: {
-		enabled: false,
+		logs: false,
 		log: function( msg ){
-			if(_engine.debug.enabled){
+			if(_engine.debug.logs){
 				console.log("_engine.debug: " + msg);
 			}
 		},
 		info: function( msg ){
-			if(_engine.debug.enabled){
+			if(_engine.debug.logs){
 				console.info("_engine.debug: " + msg);
 			}
 		},
 		warn: function( msg ){
-			if(_engine.debug.enabled){
+			if(_engine.debug.logs){
 				console.warn("_engine.debug: " + msg);
 			}
 		},
 		error: function( msg ){
-			if(_engine.debug.enabled){
+			if(_engine.debug.logs){
 				console.error("_engine.debug: " + msg);
 			}
+		},
+		debug: function( msg ){
+			if(_engine.debug.logs){
+				console.debug("_engine.debug: " + msg);
+			}
 		}
+	},
+	beta: {
+		enableBetaUser: function(){
+			_engine.beta.betaUser = true;
+			_engine.debug.logs = true;
+			_engine.debug.debug("Beta User Access Enabled. Logging Enabled. To disable please refresh browser.");
+		},
+		betaUser: false		
 	}
 }
 
