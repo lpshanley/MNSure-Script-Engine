@@ -1168,7 +1168,7 @@ var _engine = {
 		},
 		info: function( msg ){
 			if(_engine.debug.enabled){
-				console.info("_engine.debug: " + msg);
+				console.info("_engine.debug: " + msg); 
 			}
 		},
 		warn: function( msg ){
