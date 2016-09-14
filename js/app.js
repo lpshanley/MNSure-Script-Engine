@@ -1042,8 +1042,6 @@ var _engine = {
 							_c1++
 						
 						} else {
-							
-							_engine.debug.info("- * Fail Reason: [_engine.caseWork.note._completeNote()]: Not on an integrated case screen. Opening case selection dialog prior to moving forward.");	
 						
 							clearInterval(_nav);
 							
@@ -1064,8 +1062,13 @@ var _engine = {
 			}
 		},
 		caseSelection: function(){
-			console.log("Case Selection Window");
+			
+			_engine.debug.info("- * [ _engine.caseWork.caseSelection() ] Starting integrated case selection.");
+			
+			_engine.debug.error("- * [ _engine.caseWork.caseSelection() ] Case selection feature is in development. Please manually select an IC.");
+			
 			//BUILD CASE SELECTION WINDOW HERE
+			
 		}
 	},
 	advanced: {
