@@ -1276,6 +1276,7 @@ var _engine = {
 				$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/js/app.js" );
 				console.debug("_engine.debug: Release Access Enabled. Logging Disabled.");
 			}
+			
 			_engine.ui.topNotification("Scripts Enabled: Release");
 
 		}
