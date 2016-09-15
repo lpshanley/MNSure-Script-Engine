@@ -1266,15 +1266,15 @@ var _engine = {
 			//Enable Beta
 			_engine.storage.betaStatus.set( false );
 			
-			var _releaseCommit = _engine.advanced.releaseCommit();
+			var _masterCommit = _engine.advanced.masterCommit();
 			
 			//Change CSS Repo
-			if( $('link[data-scriptengine]').attr("href") != "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _releaseCommit +"/css/appStyles.css" ){
-				$('link[data-scriptengine]').attr("href", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _releaseCommit +"/css/appStyles.css");
+			if( $('link[data-scriptengine]').attr("href") != "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/css/appStyles.css" ){
+				$('link[data-scriptengine]').attr("href", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/css/appStyles.css");
 			}
 			//Change Script Repo
-			if( $('script[data-scriptengine]').attr("src") != "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _releaseCommit +"/js/app.js" ){
-				$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _releaseCommit +"/js/app.js" );
+			if( $('script[data-scriptengine]').attr("src") != "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/js/app.js" ){
+				$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/js/app.js" );
 			}
 			_engine.ui.topNotification("Scripts Enabled: Release");
 			_engine.debug.debug("Release Access Enabled.");
