@@ -1178,7 +1178,7 @@ var _engine = {
 				localStorage.removeItem( "mnsEngine_Status" );
 			}
 		},
-		betaStatus: function() {
+		betaStatus: {
 			set: function( _status ){
 				
 				window.localStorage.setItem( "mnsEngine_betaStatus", _status );
@@ -1193,7 +1193,7 @@ var _engine = {
 				localStorage.removeItem( "mnsEngine_betaStatus" );
 			}
 		},
-		debugStatus: function() {
+		debugStatus: {
 			set: function( _status ){
 				
 				window.localStorage.setItem( "mnsEngine_debugStatus", _status );
