@@ -720,6 +720,7 @@ var _engine = {
 	events: {
 		_startUp: function() {
 			
+<<<<<<< HEAD
 			if( !_engine.storage.mnsEngine_Status ){
 			
 				setTimeout(function(){
@@ -729,6 +730,15 @@ var _engine = {
 					
 					//********** Left Click **********//
 					// Opens a small settings menu
+=======
+			setTimeout(function(){
+				/* Loaded
+				/* Scripts Main Button
+				========================*/
+				
+				//********** Left Click **********//
+				// Opens a small settings menu
+>>>>>>> origin/master
 
 					$('#script-launcher a').click(function(){
 
