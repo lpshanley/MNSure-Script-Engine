@@ -753,9 +753,13 @@ var _engine = {
 					});
 					
 					if( _engine.beta.betaURL ){
+						
 						_engine.beta.enableBeta();
+						
 					} else {
+						
 						_engine.beta.enableRelease();
+						
 					}
 					
 					
