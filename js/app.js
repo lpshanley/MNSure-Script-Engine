@@ -756,12 +756,6 @@ var _engine = {
 					
 					_engine.ui.scriptMenu.build( _engine.ui.scriptMenu.items );
 					
-					if( _engine.storage.betaStatus.get() ){
-						_engine.ui.topNotification("Scripts Enabled: Beta");
-					} else {
-						_engine.ui.topNotification("Scripts Enabled: Release");
-					}
-					
 					_engine.storage.engineStatus.set( true );
 				
 				},2000);
@@ -1280,9 +1274,10 @@ var _engine = {
 			//Change Script Repo
 			if( $('script[data-scriptengine]').attr("src") != "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/js/app.js" ){
 				$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/js/app.js" );
+				console.debug("_engine.debug: Release Access Enabled. Logging Disabled.");
 			}
 			_engine.ui.topNotification("Scripts Enabled: Release");
-			console.debug("_engine.debug: Release Access Enabled. Logging Disabled.");
+
 		}
 	}
 }
