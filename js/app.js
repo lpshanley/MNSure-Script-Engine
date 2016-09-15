@@ -488,8 +488,14 @@ var _engine = {
 						"Returned Mail...":{
 							_events: "caseWork[writeNote(Returned Mail)]"
 						},
-						"Test Note...": {
-							_events: "caseWork[writeNote(Test)]"
+						"Add Member...":{
+							_events: "caseWork[writeNote(Add Member)]"
+						},
+						"Income...":{
+							_events: "caseWork[writeNote(Income)]"
+						},
+						"ATS...":{
+							_events: "caseWork[writeNote(ATS)]"
 						}
 					}
 				}
