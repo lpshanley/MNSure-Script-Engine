@@ -1219,7 +1219,9 @@ var _engine = {
 	},
 	debug: {
 		toggle: function(){
+			//Set debug status to oppo
 			_engine.storage.debugStatus.set( !_engine.storage.debugStatus.get() );
+			console.debug("_engine.debug: Debugging status changed to - " + _engine.storage.debugStatus.get() );
 		},
 		log: function( msg ){
 			if( _engine.storage.debugStatus.get() ){
