@@ -698,7 +698,7 @@ var _engine = {
 						break;
 					case "error":
 						
-						_engine.debug.error("- * Fail Reason: Modal Error [_engine.ui.modal._submit( error )]: Error modal. Unable to fetch proper template file.")
+						_engine.debug.error("- * Fail Reason: Modal Error [ _engine.ui.modal._button( error ) ]: Error modal. Unable to fetch proper template file.")
 						
 						break;
 					case "close":
@@ -707,7 +707,7 @@ var _engine = {
 						
 						break;
 					default:
-						_engine.debug.error("- * Fail Reason: Modal Error [_engine.ui.modal._submit( _type )]: Type error or type not found.");
+						_engine.debug.error("- * Fail Reason: Modal Error [ _engine.ui.modal._button( _type ) ]: Type error or type not found.");
 						break;
 					
 				}
