@@ -1131,7 +1131,9 @@ var _engine = {
 			chrome.runtime.sendMessage( _engine.advanced.extensionID(), { file: _f, commit: _c },
 				function( response ){
 					
-					console.log( response );
+					if( typeof response == null ){
+						console.log("It is null");
+					}
 					
 					_engine.storage.html.set( response );
 					
