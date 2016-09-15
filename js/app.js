@@ -752,7 +752,7 @@ var _engine = {
 						
 					});
 					
-					if( _engine.beta.betaURL ){
+					if( _engine.beta.betaURL() ){
 						
 						_engine.beta.enableBeta();
 						
