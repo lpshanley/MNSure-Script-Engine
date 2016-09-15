@@ -1263,7 +1263,7 @@ var _engine = {
 			//Change Script Repo
 			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _betaCommit +"/js/app.js" );
 			_engine.ui.topNotification("Scripts Enabled: Beta");
-			_engine.debug.debug("Beta User Access Enabled. Logging Enabled. To disable please refresh browser.");
+			_engine.debug.debug("Beta User Access Enabled. Logging Enabled.");
 		},
 		enableRelease: function(){
 			//Enable Debugging
@@ -1282,7 +1282,7 @@ var _engine = {
 				$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/js/app.js" );
 			}
 			_engine.ui.topNotification("Scripts Enabled: Release");
-			console.debug("_engine.debug: Release Access Enabled.");
+			console.debug("_engine.debug: Release Access Enabled. Logging Disabled.");
 		}
 	}
 }
