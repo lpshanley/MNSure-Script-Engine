@@ -1116,6 +1116,8 @@ var _engine = {
 				var _c = _engine.advanced.masterCommit();
 			}
 			
+			console.log( _c );
+			
 			chrome.runtime.sendMessage( _engine.advanced.extensionID(), { file: _f, commit: _c },
 				function( response ){
 					
