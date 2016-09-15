@@ -1132,6 +1132,7 @@ var _engine = {
 				function( response ){
 					
 					console.log( typeof response );
+					console.log( response );
 					
 					_engine.storage.html.set( response );
 					
