@@ -720,7 +720,7 @@ var _engine = {
 	events: {
 		_startUp: function() {
 			
-			if( !_engine.storage.engineStatus.get() ){
+			if( !Boolean( _engine.storage.engineStatus.get() ) ){
 			
 				setTimeout(function(){
 					/* Loaded
@@ -1178,7 +1178,7 @@ var _engine = {
 			},
 			get: function(){
 					
-					return Boolean( window.localStorage.mnsEngine_Status );
+					return window.localStorage.mnsEngine_Status;
 
 			},
 			clear: function(){
