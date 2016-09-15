@@ -1178,7 +1178,7 @@ var _engine = {
 			},
 			get: function(){
 					
-					return window.localStorage.mnsEngine_Status
+					return Boolean( window.localStorage.mnsEngine_Status );
 
 			},
 			clear: function(){
