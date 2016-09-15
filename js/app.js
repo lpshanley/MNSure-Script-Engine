@@ -752,13 +752,15 @@ var _engine = {
 						
 					});
 					
-					if(_engine.beta.enabled){
+					_engine.beta.enableRelease();
+					
+					_engine.ui.scriptMenu.build( _engine.ui.scriptMenu.items );
+					
+					if( _engine.storage.betaStatus.get() ){
 						_engine.ui.topNotification("Scripts Enabled: Beta");
 					} else {
 						_engine.ui.topNotification("Scripts Enabled: Release");
 					}
-					
-					_engine.ui.scriptMenu.build( _engine.ui.scriptMenu.items );
 					
 					_engine.storage.engineStatus.set( true );
 				
@@ -1083,17 +1085,8 @@ var _engine = {
 		},
 		caseSelection: function(){
 			
-			if(!_engine.beta.enabled){
-				
-				//Run normal script
-				_engine.debug.error("- * [ _engine.caseWork.caseSelection() ] Case selection feature is in development. Please manually select an IC.");
-				
-			} else {
-				
-				//Run beta script
-				_engine.debug.info("- * [ _engine.caseWork.caseSelection() ] Starting integrated case selection.");
-				
-			}
+			_engine.debug.info("- * [ _engine.caseWork.caseSelection() ] Starting integrated case selection.");
+			_engine.debug.error("- * [ _engine.caseWork.caseSelection() ] Case selection feature is in development. Please manually select an IC.");
 			
 		}
 	},
@@ -1114,7 +1107,7 @@ var _engine = {
 
 			var _html = null;
 			
-			if(_engine.beta.enabled){
+			if( _engine.storage.betaStatus.get() ){
 				var _c = _engine.advanced.betaCommit();
 			} else {
 				var _c = _engine.advanced.masterCommit();
@@ -1184,43 +1177,79 @@ var _engine = {
 			clear: function(){
 				localStorage.removeItem( "mnsEngine_Status" );
 			}
+		},
+		betaStatus: {
+			set: function( _status ){
+				
+				window.localStorage.setItem( "mnsEngine_betaStatus", _status );
+				
+			},
+			get: function(){
+					
+				if( typeof window.localStorage.mnsEngine_betaStatus == 'undefined' ){
+					_engine.storage.betaStatus.set( false );
+				}
+				
+				return String( window.localStorage.mnsEngine_betaStatus.toLowerCase() ) == "true";
+
+			},
+			clear: function(){
+				localStorage.removeItem( "mnsEngine_betaStatus" );
+			}
+		},
+		debugStatus: {
+			set: function( _status ){
+				
+				window.localStorage.setItem( "mnsEngine_debugStatus", _status );
+				
+			},
+			get: function(){
+				
+				if( typeof window.localStorage.mnsEngine_debugStatus == 'undefined' ){
+					_engine.storage.mnsEngine_debugStatus.set( false );
+				}
+					
+				return String( window.localStorage.mnsEngine_debugStatus.toLowerCase() ) == "true";
+
+			},
+			clear: function(){
+				localStorage.removeItem( "mnsEngine_debugStatus" );
+			}
 		}
 	},
 	debug: {
-		enabled: false,
 		log: function( msg ){
-			if(_engine.debug.enabled){
+			if( _engine.storage.debugStatus.get() ){
 				console.log("_engine.debug: " + msg);
 			}
 		},
 		info: function( msg ){
-			if(_engine.debug.enabled){
+			if( _engine.storage.debugStatus.get() ){
 				console.info("_engine.debug: " + msg); 
 			}
 		},
 		warn: function( msg ){
-			if(_engine.debug.enabled){
+			if( _engine.storage.debugStatus.get() ){
 				console.warn("_engine.debug: " + msg);
 			}
 		},
 		error: function( msg ){
-			if(_engine.debug.enabled){
+			if( _engine.storage.debugStatus.get() ){
 				console.error("_engine.debug: " + msg);
 			}
 		},
 		debug: function( msg ){
-			if(_engine.debug.enabled){
+			if( _engine.storage.debugStatus.get() ){
 				console.debug("_engine.debug: " + msg);
 			}
 		}
 	},
 	beta: {
-		enabled: false,
 		enableBeta: function(){
-			//Enable Beta
-			_engine.beta.enabled = true;
 			//Enable Debugging
-			_engine.debug.enabled = true;
+			_engine.storage.debugStatus.set( true );
+			//Enable Beta
+			_engine.storage.betaStatus.set( true );
 			
 			var _betaCommit = _engine.advanced.betaCommit();
 			
@@ -1230,7 +1259,26 @@ var _engine = {
 			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _betaCommit +"/js/app.js" );
 			_engine.ui.topNotification("Scripts Enabled: Beta");
 			_engine.debug.debug("Beta User Access Enabled. Logging Enabled. To disable please refresh browser.");
-		}	
+		},
+		enableRelease: function(){
+			//Enable Debugging
+			_engine.storage.debugStatus.set( false );
+			//Enable Beta
+			_engine.storage.betaStatus.set( false );
+			
+			var _masterCommit = _engine.advanced.masterCommit();
+			
+			//Change CSS Repo
+			if( $('link[data-scriptengine]').attr("href") != "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/css/appStyles.css" ){
+				$('link[data-scriptengine]').attr("href", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/css/appStyles.css");
+			}
+			//Change Script Repo
+			if( $('script[data-scriptengine]').attr("src") != "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/js/app.js" ){
+				$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/js/app.js" );
+			}
+			_engine.ui.topNotification("Scripts Enabled: Release");
+			_engine.debug.debug("Release Access Enabled.");
+		}
 	}
 }
 
