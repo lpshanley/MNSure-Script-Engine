@@ -760,6 +760,8 @@ var _engine = {
 					
 					_engine.ui.scriptMenu.build( _engine.ui.scriptMenu.items );
 					
+					_engine.beta.enableRelease();
+					
 					_engine.storage.engineStatus.set( true );
 				
 				},2000);
@@ -1083,17 +1085,8 @@ var _engine = {
 		},
 		caseSelection: function(){
 			
-			if(!_engine.beta.enabled){
-				
-				//Run normal script
-				_engine.debug.error("- * [ _engine.caseWork.caseSelection() ] Case selection feature is in development. Please manually select an IC.");
-				
-			} else {
-				
-				//Run beta script
-				_engine.debug.info("- * [ _engine.caseWork.caseSelection() ] Starting integrated case selection.");
-				
-			}
+			_engine.debug.info("- * [ _engine.caseWork.caseSelection() ] Starting integrated case selection.");
+			_engine.debug.error("- * [ _engine.caseWork.caseSelection() ] Case selection feature is in development. Please manually select an IC.");
 			
 		}
 	},
@@ -1184,10 +1177,40 @@ var _engine = {
 			clear: function(){
 				localStorage.removeItem( "mnsEngine_Status" );
 			}
+		},
+		betaStatus: function(): {
+			set: function( _status ){
+				
+				window.localStorage.setItem( "mnsEngine_betaStatus", _status );
+				
+			},
+			get: function(){
+					
+					return String( window.localStorage.mnsEngine_betaStatus.toLowerCase() ) == "true";
+
+			},
+			clear: function(){
+				localStorage.removeItem( "mnsEngine_betaStatus" );
+			}
+		},
+		debugStatus: function(): {
+			set: function( _status ){
+				
+				window.localStorage.setItem( "mnsEngine_debugStatus", _status );
+				
+			},
+			get: function(){
+					
+					return String( window.localStorage.mnsEngine_debugStatus.toLowerCase() ) == "true";
+
+			},
+			clear: function(){
+				localStorage.removeItem( "mnsEngine_debugStatus" );
+			}
 		}
 	},
 	debug: {
-		enabled: false,
+		enabled: _engine.storage.debugStatus.get(),
 		log: function( msg ){
 			if(_engine.debug.enabled){
 				console.log("_engine.debug: " + msg);
@@ -1215,12 +1238,12 @@ var _engine = {
 		}
 	},
 	beta: {
-		enabled: false,
+		enabled: _engine.storage.betaStatus.get(),
 		enableBeta: function(){
 			//Enable Beta
-			_engine.beta.enabled = true;
+			_engine.beta.enabled = _engine.storage.betaStatus.set( true );
 			//Enable Debugging
-			_engine.debug.enabled = true;
+			_engine.debug.enabled = _engine.storage.debugStatus.set( true );
 			
 			var _betaCommit = _engine.advanced.betaCommit();
 			
@@ -1230,7 +1253,26 @@ var _engine = {
 			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _betaCommit +"/js/app.js" );
 			_engine.ui.topNotification("Scripts Enabled: Beta");
 			_engine.debug.debug("Beta User Access Enabled. Logging Enabled. To disable please refresh browser.");
-		}	
+		},
+		enableRelease: function(){
+			//Enable Beta
+			_engine.beta.enabled = _engine.storage.betaStatus.set( false );
+			//Enable Debugging
+			_engine.debug.enabled = _engine.storage.debugStatus.set( false );
+			
+			var _releaseCommit = _engine.advanced.releaseCommit();
+			
+			//Change CSS Repo
+			if( $('link[data-scriptengine]').attr("href") != "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _releaseCommit +"/css/appStyles.css" ){
+				$('link[data-scriptengine]').attr("href", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _releaseCommit +"/css/appStyles.css");
+			}
+			//Change Script Repo
+			if( $('script[data-scriptengine]').attr("src") != "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _releaseCommit +"/js/app.js" ){
+				$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _releaseCommit +"/js/app.js" );
+			}
+			_engine.ui.topNotification("Scripts Enabled: Release");
+			_engine.debug.debug("Release Access Enabled.");
+		}
 	}
 }
 
