@@ -752,7 +752,12 @@ var _engine = {
 						
 					});
 					
-					_engine.beta.enableRelease();
+					if( _engine.beta.betaURL ){
+						_engine.beta.enableBeta();
+					} else {
+						_engine.beta.enableRelease();
+					}
+					
 					
 					_engine.ui.scriptMenu.build( _engine.ui.scriptMenu.items );
 					
@@ -1258,6 +1263,28 @@ var _engine = {
 			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _betaCommit +"/js/app.js" );
 			_engine.ui.topNotification("Scripts Enabled: Beta");
 			_engine.debug.debug("Beta User Access Enabled. Logging Enabled.");
+		},
+		betaURL: function(){
+			var url = window.location.href;
+			
+			if( url.split("?").length > 1 ){
+				
+				if( url.split("?")[url.split("?").length-1].toLowerCase() == "beta" ){
+					
+					return true;
+					
+				} else {
+					
+					return false;
+					
+				}
+				
+			} else {
+				
+				return false;
+				
+			}
+			
 		},
 		enableRelease: function(){
 			//Enable Debugging
