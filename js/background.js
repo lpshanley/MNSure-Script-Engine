@@ -10,14 +10,10 @@ chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab){
 					
 					var result = null;
 					
-					var _version = request.release;
 					var _commit = request.commit;
+
+					var _url = "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _commit +"/views/";
 					
-					if( request.release == "beta" ){
-						var _url = "https://rawgit.com/lpshanley/MNSure-Script-Engine/"+ _commit +"/views/";
-					} else {
-						var _url = "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _commit +"/views/";
-					}
 					
 					$.ajax({
 						url: _url+request.file,
