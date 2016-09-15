@@ -549,7 +549,7 @@ var _engine = {
 			} 
 		},
 		modal: {
-			build: function( title, layout, type ){
+			build: function( title, layout ){
 
 					//Add modal class to body
 				$('body').addClass('modal');
@@ -589,10 +589,9 @@ var _engine = {
 				
 					//Button Text
 				var _submit = "Submit"
-				var _type = type;
 				
 					//Modal footer - Button Anchor
-				var mnsModalFooterSubmitButton = $('<a>', {'onClick':'_engine.events.handleClickEvent("ui[modalButton('+_type+')]")', 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+ _submit +'</span></span></span>'});
+				var mnsModalFooterSubmitButton = $('<a>', {'onClick':'_engine.events.handleClickEvent("ui[submitModal(casenote)]")', 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+ _submit +'</span></span></span>'});
 				
 					//Modal footer - Filler Span
 				var mnsModalFooterFiller = $('<span>', {'class':'filler'});
@@ -601,7 +600,7 @@ var _engine = {
 				var _cancel = "Cancel"
 				
 					//Modal footer - Button Anchor
-				var mnsModalFooterCancelButton = $('<a>', {'onClick':'_engine.events.handleClickEvent("ui[modalButton(close)]")', 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+ _cancel +'</span></span></span>'});
+				var mnsModalFooterCancelButton = $('<a>', {'onClick':'_engine.events.handleClickEvent("ui[closeModal]")', 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+ _cancel +'</span></span></span>'});
 				
 					//Add footer to modal
 				$( 'div.modal-content-wrapper' ).append( mnsModalFooter );
@@ -684,9 +683,7 @@ var _engine = {
 				return;
 				
 			},
-			_button:function( _type ){
-				
-				_engine.debug.info( "- * [ _engine.ui.modal._button() ] function started with type: " + _type );
+			_submit:function( _type ){
 				
 				switch( _type.toLowerCase() ){
 					case "casenote":
@@ -696,18 +693,8 @@ var _engine = {
 						_engine.caseWork.note._completeNote();
 
 						break;
-					case "error":
-						
-						_engine.debug.error("- * Fail Reason: Modal Error [_engine.ui.modal._submit( error )]: Error modal. Unable to fetch proper template file.")
-						
-						break;
-					case "close":
-						
-						_engine.ui.modal.destroy();
-						
-						break;
 					default:
-						_engine.debug.error("- * Fail Reason: Modal Error [_engine.ui.modal._submit( _type )]: Type error or type not found.");
+						_engine.debug.error("- * Fail Reason: Modal Error [_engine.ui.modal._submit( type )]: Type error or type not found.")
 						break;
 					
 				}
@@ -857,9 +844,14 @@ var _engine = {
 						
 					case "ui":
 						switch( _c ){
-							case "modalButton":
-								_engine.ui.modal._button( _sc );
+							case "closeModal":
+								_engine.ui.modal.destroy();
 								break;
+							case "submitModal":
+								//Perform Modal Submission Actions
+								_engine.ui.modal._submit( _sc );
+								break;
+								
 							case "":
 								break;
 							default:
@@ -885,20 +877,12 @@ var _engine = {
 				
 				_noteLocation = null;
 				
-				_modalType = "casenote";
-				
 				switch( _note.toLowerCase() ){
 					case "returned mail":
-						_noteLocation = "case notes/returned mail.html";
+						_noteLocation = "case notes/returned mail.html"
 						break;
-					case "add member":
-						_noteLocation = "case notes/add member.html";
-						break;
-					case "income":
-						_noteLocation = "case notes/income.html";
-						break;
-					case "ats":
-						_noteLocation = "case notes/ats.html";
+					case "test":
+						_noteLocation = "case notes/test.html"
 						break;
 					default:
 						break;
@@ -916,20 +900,15 @@ var _engine = {
 					var buildFrame = setInterval(function(){
 						if(_c <= 25){
 							
-							if( _engine.storage.html.get() != false ){
+							if(_engine.storage.html.get() != false){
 								// Gather html for modal
 								var _html = _engine.storage.html.get();
-								
-								if( $('<div>', {'html': _engine.storage.html.get() }).find('div').hasClass('mns-error-modal') ){
-									_note = "Error";
-									_modalType = "error";
-								}
 								
 								// Clear html storage
 								_engine.storage.html.clear();
 								
 								//Build modal
-								_engine.ui.modal.build( _note, _html, _modalType );
+								_engine.ui.modal.build( _note, _html );
 								
 								clearInterval( buildFrame );
 								
@@ -1146,15 +1125,9 @@ var _engine = {
 			chrome.runtime.sendMessage( _engine.advanced.extensionID(), { file: _f, commit: _c },
 				function( response ){
 					
-					if( response == null ){
-						
-						_engine.advanced.getView( "error/error.html" );
-						
-					} else {
-						
-						_engine.storage.html.set( response );
-						
-					}
+					console.log( response );
+					
+					_engine.storage.html.set( response );
 					
 				}
 			);
