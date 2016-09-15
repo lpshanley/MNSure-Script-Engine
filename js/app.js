@@ -592,7 +592,7 @@ var _engine = {
 				var _type = type;
 				
 					//Modal footer - Button Anchor
-				var mnsModalFooterSubmitButton = $('<a>', {'onClick':'_engine.events.handleClickEvent("ui[submitModal('+_type+')]")', 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+ _submit +'</span></span></span>'});
+				var mnsModalFooterSubmitButton = $('<a>', {'onClick':'_engine.events.handleClickEvent("ui[modalButton('+_type+')]")', 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+ _submit +'</span></span></span>'});
 				
 					//Modal footer - Filler Span
 				var mnsModalFooterFiller = $('<span>', {'class':'filler'});
@@ -601,7 +601,7 @@ var _engine = {
 				var _cancel = "Cancel"
 				
 					//Modal footer - Button Anchor
-				var mnsModalFooterCancelButton = $('<a>', {'onClick':'_engine.events.handleClickEvent("ui[closeModal]")', 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+ _cancel +'</span></span></span>'});
+				var mnsModalFooterCancelButton = $('<a>', {'onClick':'_engine.events.handleClickEvent("ui[modalButton(close)]")', 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+ _cancel +'</span></span></span>'});
 				
 					//Add footer to modal
 				$( 'div.modal-content-wrapper' ).append( mnsModalFooter );
@@ -684,7 +684,7 @@ var _engine = {
 				return;
 				
 			},
-			_submit:function( _type ){
+			_button:function( _type ){
 				
 				_engine.debug.info( "- * [ _engine.ui.modal._submit() ] Started with type: " + _type );
 				
@@ -701,8 +701,13 @@ var _engine = {
 						_engine.debug.error("- * Fail Reason: Modal Error [_engine.ui.modal._submit( error )]: Error modal. Unable to fetch proper template file.")
 						
 						break;
+					case "close":
+						
+						_engine.ui.modal.destroy();
+						
+						break;
 					default:
-						_engine.debug.error("- * Fail Reason: Modal Error [_engine.ui.modal._submit( type )]: Type error or type not found.");
+						_engine.debug.error("- * Fail Reason: Modal Error [_engine.ui.modal._submit( _type )]: Type error or type not found.");
 						break;
 					
 				}
@@ -852,14 +857,9 @@ var _engine = {
 						
 					case "ui":
 						switch( _c ){
-							case "closeModal":
-								_engine.ui.modal.destroy();
+							case "modalButton":
+								_engine.ui.modal._button( _sc );
 								break;
-							case "submitModal":
-								//Perform Modal Submission Actions
-								_engine.ui.modal._submit( _sc );
-								break;
-								
 							case "":
 								break;
 							default:
