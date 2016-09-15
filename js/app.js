@@ -1125,6 +1125,8 @@ var _engine = {
 			chrome.runtime.sendMessage( _engine.advanced.extensionID(), { file: _f, commit: _c },
 				function( response ){
 					
+					console.log( response );
+					
 					_engine.storage.html.set( response );
 					
 				}
