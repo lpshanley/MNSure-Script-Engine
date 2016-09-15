@@ -879,10 +879,16 @@ var _engine = {
 				
 				switch( _note.toLowerCase() ){
 					case "returned mail":
-						_noteLocation = "case notes/returned mail.html"
+						_noteLocation = "case notes/returned mail.html";
 						break;
-					case "test":
-						_noteLocation = "case notes/test.html"
+					case "add member":
+						_noteLocation = "case notes/add member.html";
+						break;
+					case "income":
+						_noteLocation = "case notes/income.html";
+						break;
+					case "ats":
+						_noteLocation = "case notes/ats.html";
 						break;
 					default:
 						break;
