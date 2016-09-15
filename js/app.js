@@ -694,8 +694,13 @@ var _engine = {
 						_engine.caseWork.note._completeNote();
 
 						break;
+					case "error":
+						
+						_engine.debug.error("- * Fail Reason: Modal Error [_engine.ui.modal._submit( error )]: Error modal. Unable to fetch proper template file.")
+						
+						break;
 					default:
-						_engine.debug.error("- * Fail Reason: Modal Error [_engine.ui.modal._submit( type )]: Type error or type not found.")
+						_engine.debug.error("- * Fail Reason: Modal Error [_engine.ui.modal._submit( type )]: Type error or type not found.");
 						break;
 					
 				}
