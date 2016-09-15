@@ -488,8 +488,14 @@ var _engine = {
 						"Returned Mail...":{
 							_events: "caseWork[writeNote(Returned Mail)]"
 						},
-						"Test Note...": {
-							_events: "caseWork[writeNote(Test)]"
+						"Add Member...":{
+							_events: "caseWork[writeNote(Add Member)]"
+						},
+						"Income...":{
+							_events: "caseWork[writeNote(Income)]"
+						},
+						"ATS...":{
+							_events: "caseWork[writeNote(ATS)]"
 						}
 					}
 				}
@@ -1118,6 +1124,8 @@ var _engine = {
 			
 			chrome.runtime.sendMessage( _engine.advanced.extensionID(), { file: _f, commit: _c },
 				function( response ){
+					
+					console.log( response );
 					
 					_engine.storage.html.set( response );
 					
