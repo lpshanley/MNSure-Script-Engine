@@ -686,6 +686,8 @@ var _engine = {
 			},
 			_submit:function( _type ){
 				
+				_engine.debug.info( "- * [ _engine.ui.modal._submit() ] Started with type: " + _type );
+				
 				switch( _type.toLowerCase() ){
 					case "casenote":
 						
