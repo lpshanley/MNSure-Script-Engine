@@ -1218,6 +1218,9 @@ var _engine = {
 		}
 	},
 	debug: {
+		toggle: function(){
+			_engine.storage.debugStatus.set( !_engine.storage.debugStatus.get() );
+		},
 		log: function( msg ){
 			if( _engine.storage.debugStatus.get() ){
 				console.log("_engine.debug: " + msg);
