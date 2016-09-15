@@ -720,7 +720,7 @@ var _engine = {
 	events: {
 		_startUp: function() {
 			
-			if( !_engine.storage.mnsEngine_Status ){
+			if( !_engine.storage.engineStatus.get() ){
 			
 				setTimeout(function(){
 					/* Loaded
