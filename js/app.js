@@ -759,6 +759,8 @@ var _engine = {
 					}
 					
 					_engine.ui.scriptMenu.build( _engine.ui.scriptMenu.items );
+					
+					_engine.storage.engineStatus.set( true );
 				
 				},2000);
 			
