@@ -878,6 +878,8 @@ var _engine = {
 				
 				_noteLocation = null;
 				
+				_modalType = "casenote";
+				
 				switch( _note.toLowerCase() ){
 					case "returned mail":
 						_noteLocation = "case notes/returned mail.html";
@@ -911,13 +913,16 @@ var _engine = {
 								// Gather html for modal
 								var _html = _engine.storage.html.get();
 								
-								
+								if( $('<div>', {'html': _engine.storage.html.get() }).find('div').hasClass('mns-error-modal') ){
+									_note = "Error";
+									_modalType = "error";
+								}
 								
 								// Clear html storage
 								_engine.storage.html.clear();
 								
 								//Build modal
-								_engine.ui.modal.build( _note, _html, 'casenote' );
+								_engine.ui.modal.build( _note, _html, _modalType );
 								
 								clearInterval( buildFrame );
 								
