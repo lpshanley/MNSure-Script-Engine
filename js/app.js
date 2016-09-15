@@ -1186,7 +1186,11 @@ var _engine = {
 			},
 			get: function(){
 					
-					return String( window.localStorage.mnsEngine_betaStatus.toLowerCase() ) == "true";
+				if( typeof window.localStorage.mnsEngine_betaStatus ){
+					_engine.storage.betaStatus.set( false );
+				}
+				
+				return String( window.localStorage.mnsEngine_betaStatus.toLowerCase() ) == "true";
 
 			},
 			clear: function(){
@@ -1200,8 +1204,12 @@ var _engine = {
 				
 			},
 			get: function(){
+				
+				if( typeof window.localStorage.mnsEngine_debugStatus ){
+						_engine.storage.mnsEngine_debugStatus.set( false );
+					}
 					
-					return String( window.localStorage.mnsEngine_debugStatus.toLowerCase() ) == "true";
+				return String( window.localStorage.mnsEngine_debugStatus.toLowerCase() ) == "true";
 
 			},
 			clear: function(){
@@ -1240,10 +1248,10 @@ var _engine = {
 	beta: {
 		enabled: _engine.storage.betaStatus.get(),
 		enableBeta: function(){
-			//Enable Beta
-			_engine.storage.betaStatus.set( true );
 			//Enable Debugging
 			_engine.storage.debugStatus.set( true );
+			//Enable Beta
+			_engine.storage.betaStatus.set( true );
 			
 			var _betaCommit = _engine.advanced.betaCommit();
 			
@@ -1255,10 +1263,10 @@ var _engine = {
 			_engine.debug.debug("Beta User Access Enabled. Logging Enabled. To disable please refresh browser.");
 		},
 		enableRelease: function(){
-			//Enable Beta
-			_engine.storage.betaStatus.set( false );
 			//Enable Debugging
 			_engine.storage.debugStatus.set( false );
+			//Enable Beta
+			_engine.storage.betaStatus.set( false );
 			
 			var _releaseCommit = _engine.advanced.releaseCommit();
 			
