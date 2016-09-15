@@ -1186,7 +1186,7 @@ var _engine = {
 			},
 			get: function(){
 					
-				if( typeof window.localStorage.mnsEngine_betaStatus ){
+				if( typeof window.localStorage.mnsEngine_betaStatus == 'undefined' ){
 					_engine.storage.betaStatus.set( false );
 				}
 				
@@ -1205,9 +1205,9 @@ var _engine = {
 			},
 			get: function(){
 				
-				if( typeof window.localStorage.mnsEngine_debugStatus ){
-						_engine.storage.mnsEngine_debugStatus.set( false );
-					}
+				if( typeof window.localStorage.mnsEngine_debugStatus == 'undefined' ){
+					_engine.storage.mnsEngine_debugStatus.set( false );
+				}
 					
 				return String( window.localStorage.mnsEngine_debugStatus.toLowerCase() ) == "true";
 
@@ -1218,29 +1218,28 @@ var _engine = {
 		}
 	},
 	debug: {
-		enabled: _engine.storage.debugStatus.get(),
 		log: function( msg ){
-			if(_engine.debug.enabled){
+			if( _engine.storage.debugStatus.get() ){
 				console.log("_engine.debug: " + msg);
 			}
 		},
 		info: function( msg ){
-			if(_engine.debug.enabled){
+			if( _engine.storage.debugStatus.get() ){
 				console.info("_engine.debug: " + msg); 
 			}
 		},
 		warn: function( msg ){
-			if(_engine.debug.enabled){
+			if( _engine.storage.debugStatus.get() ){
 				console.warn("_engine.debug: " + msg);
 			}
 		},
 		error: function( msg ){
-			if(_engine.debug.enabled){
+			if( _engine.storage.debugStatus.get() ){
 				console.error("_engine.debug: " + msg);
 			}
 		},
 		debug: function( msg ){
-			if(_engine.debug.enabled){
+			if( _engine.storage.debugStatus.get() ){
 				console.debug("_engine.debug: " + msg);
 			}
 		}
