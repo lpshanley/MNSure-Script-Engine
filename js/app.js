@@ -756,7 +756,7 @@ var _engine = {
 					
 					_engine.ui.scriptMenu.build( _engine.ui.scriptMenu.items );
 					
-					if( _engine.beta.enabled ){
+					if( _engine.storage.betaStatus.get() ){
 						_engine.ui.topNotification("Scripts Enabled: Beta");
 					} else {
 						_engine.ui.topNotification("Scripts Enabled: Release");
@@ -1107,7 +1107,7 @@ var _engine = {
 
 			var _html = null;
 			
-			if(_engine.beta.enabled){
+			if( _engine.storage.betaStatus.get() ){
 				var _c = _engine.advanced.betaCommit();
 			} else {
 				var _c = _engine.advanced.masterCommit();
@@ -1245,7 +1245,6 @@ var _engine = {
 		}
 	},
 	beta: {
-		enabled: _engine.storage.betaStatus.get(),
 		enableBeta: function(){
 			//Enable Debugging
 			_engine.storage.debugStatus.set( true );
