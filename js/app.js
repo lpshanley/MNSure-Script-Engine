@@ -549,7 +549,7 @@ var _engine = {
 			} 
 		},
 		modal: {
-			build: function( title, layout ){
+			build: function( title, layout, type ){
 
 					//Add modal class to body
 				$('body').addClass('modal');
@@ -589,9 +589,10 @@ var _engine = {
 				
 					//Button Text
 				var _submit = "Submit"
+				var _type = type;
 				
 					//Modal footer - Button Anchor
-				var mnsModalFooterSubmitButton = $('<a>', {'onClick':'_engine.events.handleClickEvent("ui[submitModal(casenote)]")', 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+ _submit +'</span></span></span>'});
+				var mnsModalFooterSubmitButton = $('<a>', {'onClick':'_engine.events.handleClickEvent("ui[submitModal('+_type+')]")', 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+ _submit +'</span></span></span>'});
 				
 					//Modal footer - Filler Span
 				var mnsModalFooterFiller = $('<span>', {'class':'filler'});
@@ -906,15 +907,17 @@ var _engine = {
 					var buildFrame = setInterval(function(){
 						if(_c <= 25){
 							
-							if(_engine.storage.html.get() != false){
+							if( _engine.storage.html.get() != false ){
 								// Gather html for modal
 								var _html = _engine.storage.html.get();
+								
+								
 								
 								// Clear html storage
 								_engine.storage.html.clear();
 								
 								//Build modal
-								_engine.ui.modal.build( _note, _html );
+								_engine.ui.modal.build( _note, _html, 'casenote' );
 								
 								clearInterval( buildFrame );
 								
