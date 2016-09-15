@@ -752,15 +752,15 @@ var _engine = {
 						
 					});
 					
-					if(_engine.beta.enabled){
+					_engine.beta.enableRelease();
+					
+					_engine.ui.scriptMenu.build( _engine.ui.scriptMenu.items );
+					
+					if( _engine.beta.enabled ){
 						_engine.ui.topNotification("Scripts Enabled: Beta");
 					} else {
 						_engine.ui.topNotification("Scripts Enabled: Release");
 					}
-					
-					_engine.ui.scriptMenu.build( _engine.ui.scriptMenu.items );
-					
-					_engine.beta.enableRelease();
 					
 					_engine.storage.engineStatus.set( true );
 				
@@ -1241,9 +1241,9 @@ var _engine = {
 		enabled: _engine.storage.betaStatus.get(),
 		enableBeta: function(){
 			//Enable Beta
-			_engine.beta.enabled = _engine.storage.betaStatus.set( true );
+			_engine.storage.betaStatus.set( true );
 			//Enable Debugging
-			_engine.debug.enabled = _engine.storage.debugStatus.set( true );
+			_engine.storage.debugStatus.set( true );
 			
 			var _betaCommit = _engine.advanced.betaCommit();
 			
@@ -1256,9 +1256,9 @@ var _engine = {
 		},
 		enableRelease: function(){
 			//Enable Beta
-			_engine.beta.enabled = _engine.storage.betaStatus.set( false );
+			_engine.storage.betaStatus.set( false );
 			//Enable Debugging
-			_engine.debug.enabled = _engine.storage.debugStatus.set( false );
+			_engine.storage.debugStatus.set( false );
 			
 			var _releaseCommit = _engine.advanced.releaseCommit();
 			
