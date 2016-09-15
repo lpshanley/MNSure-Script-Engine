@@ -720,6 +720,17 @@ var _engine = {
 	events: {
 		_startUp: function() {
 			
+<<<<<<< HEAD
+			if( !_engine.storage.mnsEngine_Status ){
+			
+				setTimeout(function(){
+					/* Loaded
+					/* Scripts Main Button
+					========================*/
+					
+					//********** Left Click **********//
+					// Opens a small settings menu
+=======
 			setTimeout(function(){
 				/* Loaded
 				/* Scripts Main Button
@@ -727,38 +738,41 @@ var _engine = {
 				
 				//********** Left Click **********//
 				// Opens a small settings menu
+>>>>>>> origin/master
 
-				$('#script-launcher a').click(function(){
+					$('#script-launcher a').click(function(){
 
-					console.log('SETTINGS MENU - NON FUNCTIONAL');
+						console.log('SETTINGS MENU - NON FUNCTIONAL');
 
-				});
+					});
 
-				//********** Right Click **********//
-				// Performs Quick Load of Searches
+					//********** Right Click **********//
+					// Performs Quick Load of Searches
 
-				$('#script-launcher a').contextmenu(function(e){
+					$('#script-launcher a').contextmenu(function(e){
+						
+							// Prevent context menu pop-up
+						e.preventDefault();
+						
+							// Open Case Search
+						_engine.search._case();
+						
+							// Open Person Search
+						_engine.search._person();
+						
+					});
 					
-						// Prevent context menu pop-up
-					e.preventDefault();
+					if(_engine.beta.enabled){
+						_engine.ui.topNotification("Scripts Enabled: Beta");
+					} else {
+						_engine.ui.topNotification("Scripts Enabled: Release");
+					}
 					
-						// Open Case Search
-					_engine.search._case();
-					
-						// Open Person Search
-					_engine.search._person();
-					
-				});
+					_engine.ui.scriptMenu.build( _engine.ui.scriptMenu.items );
 				
-				if(_engine.beta.enabled){
-					_engine.ui.topNotification("Scripts Enabled: Beta");
-				} else {
-					_engine.ui.topNotification("Scripts Enabled: Release");
-				}
-				
-				_engine.ui.scriptMenu.build( _engine.ui.scriptMenu.items );
+				},2000);
 			
-			},2000);
+			}
 
 		},
 		handleClickEvent: function( e ){
@@ -1164,6 +1178,21 @@ var _engine = {
 			},
 			clear: function(){
 				localStorage.removeItem( "mnsEngine_modalParams" );
+			}
+		},
+		engineStatus: {
+			set: function( _status ){
+				
+				window.localStorage.setItem( "mnsEngine_Status", _status );
+				
+			},
+			get: function(){
+					
+					return window.localStorage.mnsEngine_Status
+
+			},
+			clear: function(){
+				localStorage.removeItem( "mnsEngine_Status" );
 			}
 		}
 	},

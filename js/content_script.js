@@ -3,6 +3,8 @@
 /* Dependency Loading
 -------------------------------------------------*/
 
+window.localStorage.setItem( "mnsEngine_Status", false );
+
 var _betaCommit = null;
 var _masterCommit = null;
 
