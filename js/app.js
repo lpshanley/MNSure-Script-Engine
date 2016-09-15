@@ -1178,7 +1178,7 @@ var _engine = {
 			},
 			get: function(){
 					
-					return window.localStorage.mnsEngine_Status
+					return String( window.localStorage.mnsEngine_Status.toLowerCase() ) == "true";
 
 			},
 			clear: function(){
