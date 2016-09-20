@@ -700,6 +700,8 @@ var _engine = {
 							_engine.ui.modal._storeParams();
 						
 							_engine.caseWork.note._completeNote();
+							
+							_engine.ui.modal.destroy();
 						
 						} else {
 							
@@ -712,6 +714,8 @@ var _engine = {
 						
 						_engine.debug.error("- * Fail Reason: Modal Error [ _engine.ui.modal._button( error ) ]: Error modal. Unable to fetch proper template file.");
 						
+						_engine.ui.modal.destroy();
+						
 						break;
 					case "close":
 						
@@ -723,8 +727,6 @@ var _engine = {
 						break;
 					
 				}
-				
-				_engine.ui.modal.destroy();
 				
 			},
 			_validateModal: function(){
