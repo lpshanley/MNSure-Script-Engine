@@ -221,6 +221,17 @@
 	width: 66%;
 }
 
+.mns-input-group.col-2 span.mns-input-label {
+	width: 33%;
+	display: block;
+	float: left;
+}
+
+.mns-input-group.col-2 input,
+.mns-input-group.col-2 select {
+	width: 66%;
+}
+
 .mns-input-group.col-2 {
 	width: 50%;
 	float: left;
