@@ -695,14 +695,22 @@ var _engine = {
 				switch( _type.toLowerCase() ){
 					case "case notes":
 						
-						_engine.ui.modal._storeParams();
+						if( _engine.ui.modal._validateModal() ){
+							
+							_engine.ui.modal._storeParams();
 						
-						_engine.caseWork.note._completeNote();
+							_engine.caseWork.note._completeNote();
+						
+						} else {
+							
+							_engine.debug.info("- * [ _engine.ui.modal._button( case notes ) ]: Invalid modal submission. Correct highlighted fields.");
+							
+						}
 
 						break;
 					case "error":
 						
-						_engine.debug.error("- * Fail Reason: Modal Error [ _engine.ui.modal._button( error ) ]: Error modal. Unable to fetch proper template file.")
+						_engine.debug.error("- * Fail Reason: Modal Error [ _engine.ui.modal._button( error ) ]: Error modal. Unable to fetch proper template file.");
 						
 						break;
 					case "close":
@@ -717,6 +725,33 @@ var _engine = {
 				}
 				
 				_engine.ui.modal.destroy();
+				
+			},
+			_validateModal: function(){
+				
+				var _invalidFields = 0;
+
+				$.each( $('div.modal-content-container .required'),function( k,v ){ 
+
+					if( $( v ).find('input').val() == "" ){
+					
+						$( v ).addClass("input-error");
+						
+						++_invalidFields;
+					
+					} else {
+					
+						$( v ).removeClass("input-error");
+					
+					}
+					
+				});
+
+				if( _invalidFields == 0 ){
+					return true;
+				} else {
+					return false;
+				}
 				
 			}
 		},
