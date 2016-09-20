@@ -975,7 +975,7 @@ var _engine = {
 								_engine.debug.info("- * Perform info grab type: " + _sc);
 								
 								break;
-							default;
+							default:
 								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
 								break;
 						}
