@@ -488,6 +488,9 @@ var _engine = {
 						"Returned Mail...":{
 							_events: "caseWork[writeNote(Returned Mail)]"
 						},
+						"Client Contact...":{
+							_events: "caseWork[writeNote(Client Contact)]"
+						},
 						"Add Member...":{
 							_events: "caseWork[writeNote(Add Member)]"
 						},
@@ -500,53 +503,83 @@ var _engine = {
 					}
 				}
 			},			
-			build: function( menu ){ 
+			build: function(){
 				
-				/* Build menu */
-				var nav = $('<ul>',{id: 'script-launcher-nav'});
+				var menu = null;
 				
-				/* Attach built menu */
-				$('#script-launcher').append( nav );
+				var _commit = _engine.advanced.currentCommit();
 				
-				$.each(menu, function(k,v){
+				var _url = _engine.advanced.baseUrl();
 				
-					var navItem = $('<li>');
-					var navLink = $('<a>',{text: k, onClick: '_engine.events.handleClickEvent("'+v._events+'")' });
+				var filePath = "json/script menu.json"
+				
+				$.ajax({
+					dataType: "json",
+					url: _url + filePath,
+					async: false,
+					success: function( data ){
 					
-					/* Attach anchor to list item */
-					$( navItem ).append( navLink );
-					/* Attach list item to list */
-					$( '#script-launcher-nav' ).append( navItem )
+						menu = data;
 					
-					if(typeof v._submenu === "object"){
-						
-						/* Build Subnav Menu */
-						var subnav = $('<ul>',{class: 'script-launcher-subnav'});
-						
-						/* Attach built menu */
-						$( navItem ).append( subnav );
-						
-						$.each(v._submenu, function(k2,v2){ 
-						
-							var navItemSub = $('<li>');
-							var navLinkSub = $('<a>',{text: k2, onClick: '_engine.events.handleClickEvent("'+v2._events+'")'});
-						
-							/* Attach anchor to list item */
-							$( navItemSub ).append( navLinkSub );
-							/* Attach list item to list */
-							$( subnav ).append(navItemSub)
-						
-						});
 					}
-					
 				});
+				
+				if( menu != null ){
+				
+					/* Build menu */
+					var nav = $('<ul>',{id: 'script-launcher-nav'});
+					
+					/* Attach built menu */
+					$('#script-launcher').append( nav );
+					
+					$.each(menu, function(k,v){
+					
+						var navItem = $('<li>');
+						var navLink = $('<a>',{text: k, onClick: '_engine.events.handleClickEvent("'+v._events+'")' });
+						
+						/* Attach anchor to list item */
+						$( navItem ).append( navLink );
+						/* Attach list item to list */
+						$( '#script-launcher-nav' ).append( navItem )
+						
+						if(typeof v._submenu === "object"){
+							
+							/* Build Subnav Menu */
+							var subnav = $('<ul>',{class: 'script-launcher-subnav'});
+							
+							/* Attach built menu */
+							$( navItem ).append( subnav );
+							
+							$.each(v._submenu, function(k2,v2){ 
+							
+								var navItemSub = $('<li>');
+								var navLinkSub = $('<a>',{text: k2, onClick: '_engine.events.handleClickEvent("'+v2._events+'")'});
+							
+								/* Attach anchor to list item */
+								$( navItemSub ).append( navLinkSub );
+								/* Attach list item to list */
+								$( subnav ).append(navItemSub)
+							
+							});
+						}
+						
+					});
+				
+				}
 			
 			},
 			destroy: function(){
 				
 				$('#script-launcher-nav').remove();
 				
-			} 
+			},
+			refresh: function(){
+				
+				_engine.ui.scriptMenu.destroy();
+				
+				_engine.ui.scriptMenu.build();
+				
+			}
 		},
 		modal: {
 			build: function( title, layout, type ){
@@ -689,7 +722,7 @@ var _engine = {
 				_engine.debug.info( "- * [ _engine.ui.modal._button() ] function started with type: " + _type );
 				
 				switch( _type.toLowerCase() ){
-					case "casenote":
+					case "case notes":
 						
 						_engine.ui.modal._storeParams();
 						
@@ -781,13 +814,18 @@ var _engine = {
 						
 					}
 					
-					
-					_engine.ui.scriptMenu.build( _engine.ui.scriptMenu.items );
+					//Build out menu
+					_engine.ui.scriptMenu.refresh();
 					
 					_engine.storage.engineStatus.set( true );
 				
 				},2000);
 			
+			} else {
+				
+				//Build menu again if repo is updated
+				_engine.ui.scriptMenu.refresh();
+				
 			}
 
 		},
@@ -881,29 +919,37 @@ var _engine = {
 	caseWork: {
 		note: {
 			write: function( _note ){
-				// Verifies a view has been specified
 				
-				_noteLocation = null;
+				// Define extra vars
+				var _noteLocation = null;
+				var _modalType = null;
 				
-				_modalType = "casenote";
+				// Grab an array of elements that are defined in the menu as available case notes
+				var _noteArray = $('#script-launcher > ul > li:contains("Case Notes") ul li');
 				
-				switch( _note.toLowerCase() ){
-					case "returned mail":
-						_noteLocation = "case notes/returned mail.html";
-						break;
-					case "add member":
-						_noteLocation = "case notes/add member.html";
-						break;
-					case "income":
-						_noteLocation = "case notes/income.html";
-						break;
-					case "ats":
-						_noteLocation = "case notes/ats.html";
-						break;
-					default:
-						break;
+				// Create the container array to compare against
+				var _validNotes = [];
+
+				// Iterate over element array
+				$.each(_noteArray,function(k,v){
+					
+					// Grab the text only without the "..." from the case note elements and push to second array
+					_validNotes.push( $( v ).text().replace(/[.]/g,"").toLowerCase() );
+
+				});
+
+				// Check if the requested case note type is in the list of valid case notes
+				if( $.inArray( _note.toLowerCase(), _validNotes) > -1 ){
+					
+					// If its a valid request set the modal type to case notes
+					_modalType = "case notes";
+					
+					// Set the location to the dir that stores the html
+					_noteLocation = _modalType + "/" + _note.toLowerCase() + ".html";
+					
 				}
-				
+
+				// If the request was invalid then error out the request as invalid
 				if( _noteLocation != null ){
 					
 					// Gathers HTML for view and stores to local storage
@@ -1121,6 +1167,15 @@ var _engine = {
 		}
 	},
 	advanced: {
+		baseUrl: function(){
+			
+			var _commit = _engine.advanced.currentCommit();
+			
+			var _url = "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/" + _commit + "/";
+			
+			return _url;
+			
+		},
 		extensionURL: function(){
 			return $('script[data-scriptengine]').attr('data-chromeurl');
 		},
@@ -1133,15 +1188,18 @@ var _engine = {
 		masterCommit: function(){
 			return $('script[data-scriptengine]').attr('data-master');
 		},
+		currentCommit: function(){
+			if( _engine.storage.betaStatus.get() ){
+				return _engine.advanced.betaCommit();
+			} else {
+				return _engine.advanced.masterCommit();
+			}
+		},
 		getView: function( _f ){
 
 			var _html = null;
 			
-			if( _engine.storage.betaStatus.get() ){
-				var _c = _engine.advanced.betaCommit();
-			} else {
-				var _c = _engine.advanced.masterCommit();
-			}
+			var _c = _engine.advanced.currentCommit();
 			
 			chrome.runtime.sendMessage( _engine.advanced.extensionID(), { file: _f, commit: _c },
 				function( response ){
@@ -1300,8 +1358,11 @@ var _engine = {
 			$('link[data-scriptengine]').attr("href", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _betaCommit +"/css/appStyles.css");
 			//Change Script Repo
 			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _betaCommit +"/js/app.js" );
-			_engine.ui.topNotification("Scripts Enabled: Beta");
+			
 			_engine.debug.debug("Beta User Access Enabled. Logging Enabled.");
+			
+			_engine.ui.topNotification("Scripts Enabled: Beta");
+			
 		},
 		betaURL: function(){
 			var url = window.location.href;
