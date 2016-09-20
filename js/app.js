@@ -287,6 +287,56 @@ var _engine = {
 					return false;
 				}
 			},
+			hcrTabActiveType: function(){
+				
+				_activeTab = _engine.domTools.get.hcrTabActive();
+
+				if ( _activeTab.innerText.match(/\d+/g) == null ){
+					// Titles without numbers
+						
+						//Titles Containg Search
+					if ( _activeTab.innerText.indexOf("Search") != -1 ){
+						
+							// Case Search
+						if ( _activeTab.innerText.indexOf("Case") != -1 ){
+							return "Case Search";
+							// Person Search
+						} else if( _activeTab.innerText.indexOf("Person") != -1 ){
+							return "Person Search";
+						}
+					
+					} else {
+						
+						_engine.debug.info("- * UNDEFINED ( w/o numbers )");
+						return "UNDEFINED";
+						
+					}
+					
+				} else {
+					// Titles with numbers
+					
+						// Titles containing "Insurance Affordability"
+					if( _activeTab.innerText.indexOf("Insurance Affordability") != -1 ){
+							// Integrated Case Screen
+						if( _activeTab.innerText.indexOf("Insurance Affordability") == 0 ){
+							return  "Integrated Case";
+							// Evidence Screen
+						} else if( _activeTab.innerText.indexOf("Insurance Affordability") > 0 ) {
+							return  "Evidence|" + _activeTab.innerText.split("-")[0].trim() ;
+						}
+					} else if ( $.inArray( _activeTab.innerText.replace(/[0-9]/g,"").trim().toLowerCase(), ["medical assistance", "minnesotacare", "unassisted qualified health plan", "insurance assistance"] ) != -1 ) {
+						
+						return "PDC|" + _activeTab.innerText.replace(/[0-9]/g,"").trim();
+						
+					} else {
+						
+						_engine.debug.info("- * UNDEFINED ( w/numbers )");
+						return "UNDEFINED";
+						
+					}
+					
+				}
+			},
 			icFrame: {
 				contactTab: {
 					caseNoteModal:{
@@ -868,6 +918,7 @@ var _engine = {
 								break;
 							default:
 								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
+								break;
 						}
 						break;
 						
@@ -885,6 +936,7 @@ var _engine = {
 								break;
 							default:
 								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
+								break;
 						}						
 						break;
 						
@@ -898,6 +950,7 @@ var _engine = {
 								break;
 							default:
 								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
+								break;
 						}
 						break;
 						
@@ -910,6 +963,21 @@ var _engine = {
 								break;
 							default:
 								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
+								break;
+						}
+						
+						break;
+						
+					case "tools":
+						switch( _c ){
+							case "getInfo":
+								
+								_engine.debug.info("- * Perform info grab type: " + _sc);
+								
+								break;
+							default;
+								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
+								break;
 						}
 						
 						break;
@@ -1172,6 +1240,13 @@ var _engine = {
 			_engine.debug.info("- * [ _engine.caseWork.caseSelection() ] Starting integrated case selection.");
 			_engine.debug.error("- * [ _engine.caseWork.caseSelection() ] Case selection feature is in development. Please manually select an IC.");
 			
+		}
+	},
+	tools: {
+		gatherData: {
+			address: function(){
+				
+			}
 		}
 	},
 	advanced: {
