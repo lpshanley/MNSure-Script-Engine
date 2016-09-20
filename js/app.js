@@ -503,46 +503,69 @@ var _engine = {
 					}
 				}
 			},			
-			build: function( menu ){ 
+			build: function(){ 
 				
-				/* Build menu */
-				var nav = $('<ul>',{id: 'script-launcher-nav'});
+				var menu = null;
 				
-				/* Attach built menu */
-				$('#script-launcher').append( nav );
+				var _commit = _engine.advanced.currentCommit();
 				
-				$.each(menu, function(k,v){
+				var _url = _engine.advanced.baseUrl();
 				
-					var navItem = $('<li>');
-					var navLink = $('<a>',{text: k, onClick: '_engine.events.handleClickEvent("'+v._events+'")' });
+				var filePath = "json/script menu.json"
+				
+				$.ajax({
+					dataType: "json",
+					url: _url + filePath,
+					async: false,
+					success: function( data ){
 					
-					/* Attach anchor to list item */
-					$( navItem ).append( navLink );
-					/* Attach list item to list */
-					$( '#script-launcher-nav' ).append( navItem )
+						menu = data;
 					
-					if(typeof v._submenu === "object"){
-						
-						/* Build Subnav Menu */
-						var subnav = $('<ul>',{class: 'script-launcher-subnav'});
-						
-						/* Attach built menu */
-						$( navItem ).append( subnav );
-						
-						$.each(v._submenu, function(k2,v2){ 
-						
-							var navItemSub = $('<li>');
-							var navLinkSub = $('<a>',{text: k2, onClick: '_engine.events.handleClickEvent("'+v2._events+'")'});
-						
-							/* Attach anchor to list item */
-							$( navItemSub ).append( navLinkSub );
-							/* Attach list item to list */
-							$( subnav ).append(navItemSub)
-						
-						});
 					}
-					
 				});
+				
+				if( menu != null ){
+				
+					/* Build menu */
+					var nav = $('<ul>',{id: 'script-launcher-nav'});
+					
+					/* Attach built menu */
+					$('#script-launcher').append( nav );
+					
+					$.each(menu, function(k,v){
+					
+						var navItem = $('<li>');
+						var navLink = $('<a>',{text: k, onClick: '_engine.events.handleClickEvent("'+v._events+'")' });
+						
+						/* Attach anchor to list item */
+						$( navItem ).append( navLink );
+						/* Attach list item to list */
+						$( '#script-launcher-nav' ).append( navItem )
+						
+						if(typeof v._submenu === "object"){
+							
+							/* Build Subnav Menu */
+							var subnav = $('<ul>',{class: 'script-launcher-subnav'});
+							
+							/* Attach built menu */
+							$( navItem ).append( subnav );
+							
+							$.each(v._submenu, function(k2,v2){ 
+							
+								var navItemSub = $('<li>');
+								var navLinkSub = $('<a>',{text: k2, onClick: '_engine.events.handleClickEvent("'+v2._events+'")'});
+							
+								/* Attach anchor to list item */
+								$( navItemSub ).append( navLinkSub );
+								/* Attach list item to list */
+								$( subnav ).append(navItemSub)
+							
+							});
+						}
+						
+					});
+				
+				}
 			
 			},
 			destroy: function(){
@@ -554,7 +577,7 @@ var _engine = {
 				
 				_engine.ui.scriptMenu.destroy();
 				
-				_engine.ui.scriptMenu.build( _engine.ui.scriptMenu.items );
+				_engine.ui.scriptMenu.build();
 				
 			}
 		},
@@ -1144,6 +1167,15 @@ var _engine = {
 		}
 	},
 	advanced: {
+		baseUrl: function(){
+			
+			var _commit = _engine.advanced.currentCommit();
+			
+			var _url = "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/" + _commit + "/";
+			
+			return _url;
+			
+		},
 		extensionURL: function(){
 			return $('script[data-scriptengine]').attr('data-chromeurl');
 		},
@@ -1156,15 +1188,18 @@ var _engine = {
 		masterCommit: function(){
 			return $('script[data-scriptengine]').attr('data-master');
 		},
+		currentCommit: function(){
+			if( _engine.storage.betaStatus.get() ){
+				return _engine.advanced.betaCommit();
+			} else {
+				return _engine.advanced.masterCommit();
+			}
+		},
 		getView: function( _f ){
 
 			var _html = null;
 			
-			if( _engine.storage.betaStatus.get() ){
-				var _c = _engine.advanced.betaCommit();
-			} else {
-				var _c = _engine.advanced.masterCommit();
-			}
+			var _c = _engine.advanced.currentCommit();
 			
 			chrome.runtime.sendMessage( _engine.advanced.extensionID(), { file: _f, commit: _c },
 				function( response ){
