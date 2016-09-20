@@ -211,13 +211,14 @@
 }
 
 .mns-input-group span.mns-input-label {
-	width: 40%;
+	width: 33%;
 	display: block;
 	float: left;
 }
 
-.mns-input-group input {
-	width: 50%;
+.mns-input-group input,
+.mns-input-group select {
+	width: 66%;
 }
 
 .mns-input-group.col-2 {
