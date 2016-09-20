@@ -488,6 +488,9 @@ var _engine = {
 						"Returned Mail...":{
 							_events: "caseWork[writeNote(Returned Mail)]"
 						},
+						"Client Contact...":{
+							_events: "caseWork[writeNote(Client Contact)]"
+						},
 						"Add Member...":{
 							_events: "caseWork[writeNote(Add Member)]"
 						},
@@ -546,7 +549,14 @@ var _engine = {
 				
 				$('#script-launcher-nav').remove();
 				
-			} 
+			},
+			refresh: function {
+				
+				_engine.ui.scriptMenu.destroy();
+				
+				_engine.ui.scriptMenu.build( _engine.ui.scriptMenu.items );
+				
+			}
 		},
 		modal: {
 			build: function( title, layout, type ){
@@ -689,7 +699,7 @@ var _engine = {
 				_engine.debug.info( "- * [ _engine.ui.modal._button() ] function started with type: " + _type );
 				
 				switch( _type.toLowerCase() ){
-					case "casenote":
+					case "case notes":
 						
 						_engine.ui.modal._storeParams();
 						
@@ -780,9 +790,6 @@ var _engine = {
 						_engine.beta.enableRelease();
 						
 					}
-					
-					
-					_engine.ui.scriptMenu.build( _engine.ui.scriptMenu.items );
 					
 					_engine.storage.engineStatus.set( true );
 				
@@ -881,29 +888,37 @@ var _engine = {
 	caseWork: {
 		note: {
 			write: function( _note ){
-				// Verifies a view has been specified
 				
-				_noteLocation = null;
+				// Define extra vars
+				var _noteLocation = null;
+				var _modalType = null;
 				
-				_modalType = "casenote";
+				// Grab an array of elements that are defined in the menu as available case notes
+				var _noteArray = $('#script-launcher > ul > li:contains("Case Notes") ul li');
 				
-				switch( _note.toLowerCase() ){
-					case "returned mail":
-						_noteLocation = "case notes/returned mail.html";
-						break;
-					case "add member":
-						_noteLocation = "case notes/add member.html";
-						break;
-					case "income":
-						_noteLocation = "case notes/income.html";
-						break;
-					case "ats":
-						_noteLocation = "case notes/ats.html";
-						break;
-					default:
-						break;
+				// Create the container array to compare against
+				var _validNotes = [];
+
+				// Iterate over element array
+				$.each(_noteArray,function(k,v){
+					
+					// Grab the text only without the "..." from the case note elements and push to second array
+					_validNotes.push( $( v ).text().replace(/[.]/g,"").toLowerCase() );
+
+				});
+
+				// Check if the requested case note type is in the list of valid case notes
+				if( $.inArray( _note.toLowerCase(), _validNotes) > -1 ){
+					
+					// If its a valid request set the modal type to case notes
+					_modalType = "case notes";
+					
+					// Set the location to the dir that stores the html
+					_noteLocation = _modalType + "/" + _note.toLowerCase() + ".html";
+					
 				}
-				
+
+				// If the request was invalid then error out the request as invalid
 				if( _noteLocation != null ){
 					
 					// Gathers HTML for view and stores to local storage
@@ -1300,8 +1315,13 @@ var _engine = {
 			$('link[data-scriptengine]').attr("href", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _betaCommit +"/css/appStyles.css");
 			//Change Script Repo
 			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _betaCommit +"/js/app.js" );
-			_engine.ui.topNotification("Scripts Enabled: Beta");
+			
 			_engine.debug.debug("Beta User Access Enabled. Logging Enabled.");
+			
+			_engine.ui.scriptMenu.refresh();
+			
+			_engine.ui.topNotification("Scripts Enabled: Beta");
+			
 		},
 		betaURL: function(){
 			var url = window.location.href;
@@ -1339,6 +1359,8 @@ var _engine = {
 			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/js/app.js" );
 			
 			console.debug("_engine.debug: Release Access Enabled. Logging Disabled.");
+			
+			_engine.ui.scriptMenu.refresh();
 			
 			_engine.ui.topNotification("Scripts Enabled: Release");
 
