@@ -470,39 +470,6 @@ var _engine = {
 	
 	ui: {
 		scriptMenu: {
-			items: {
-				'Searches' : {
-					_events: "",
-					_submenu: {
-						"Person...": {
-							_events: "search[_person]"
-						},
-						"Case...": {
-							_events: "search[_case]"
-						}
-					}
-				},
-				'Case Notes': {
-					_events:"",
-					_submenu: {
-						"Returned Mail...":{
-							_events: "caseWork[writeNote(Returned Mail)]"
-						},
-						"Client Contact...":{
-							_events: "caseWork[writeNote(Client Contact)]"
-						},
-						"Add Member...":{
-							_events: "caseWork[writeNote(Add Member)]"
-						},
-						"Income...":{
-							_events: "caseWork[writeNote(Income)]"
-						},
-						"ATS...":{
-							_events: "caseWork[writeNote(ATS)]"
-						}
-					}
-				}
-			},			
 			build: function(){
 				
 				var menu = null;
