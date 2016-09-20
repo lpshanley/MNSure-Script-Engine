@@ -214,6 +214,7 @@
 	width: 33%;
 	display: block;
 	float: left;
+	padding-top: 3px;
 }
 
 .mns-input-group input,
@@ -225,6 +226,7 @@
 	width: 46%;
 	display: block;
 	float: left;
+	padding-top: 3px;
 }
 
 .mns-input-group.col-2 input,
