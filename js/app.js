@@ -503,7 +503,7 @@ var _engine = {
 					}
 				}
 			},			
-			build: function(){ 
+			build: function(){
 				
 				var menu = null;
 				
