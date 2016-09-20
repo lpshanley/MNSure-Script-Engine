@@ -210,6 +210,16 @@
 	margin: 15px 0;
 }
 
+.mns-input-group span.mns-input-label {
+	width: 40%;
+	display: block;
+	float: left;
+}
+
+.mns-input-group input {
+	width: 50%;
+}
+
 .mns-input-group.col-2 {
 	width: 50%;
 	float: left;
