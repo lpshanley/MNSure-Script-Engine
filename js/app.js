@@ -550,7 +550,7 @@ var _engine = {
 				$('#script-launcher-nav').remove();
 				
 			},
-			refresh: function {
+			refresh: function(){
 				
 				_engine.ui.scriptMenu.destroy();
 				
