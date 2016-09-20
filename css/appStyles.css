@@ -217,6 +217,10 @@
 	padding-top: 3px;
 }
 
+.mns-input-group select {
+	height: 21px;
+}
+
 .mns-input-group input,
 .mns-input-group select {
 	width: 66%;
