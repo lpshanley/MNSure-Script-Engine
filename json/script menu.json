@@ -16,6 +16,9 @@
 			"Returned Mail...": {
 				"_events": "caseWork[writeNote(Returned Mail)]"
 			},
+			"Client Contact...": {
+				"_events": "caseWork[writeNote(Client Contact)]"
+			},
 			"Add Member...": {
 				"_events": "caseWork[writeNote(Add Member)]"
 			},
