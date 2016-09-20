@@ -661,6 +661,10 @@ var _engine = {
 								var _input = $( v ).find( 'select' ).val().replace(/"/g,'&quot;');
 								_input = _input.replace('"','\"');
 								break;
+							case "date":
+								var _date = $( v ).find( 'input' ).val().split("-");
+								_input = _date[1] + "/" + _date[2] + "/" + _date[0];
+								break;
 							default:
 								var _input = "";
 								break;
