@@ -791,10 +791,18 @@ var _engine = {
 						
 					}
 					
+					//Build out menu
+					_engine.ui.scriptMenu.refresh();
+					
 					_engine.storage.engineStatus.set( true );
 				
 				},2000);
 			
+			} else {
+				
+				//Build menu again if repo is updated
+				_engine.ui.scriptMenu.refresh();
+				
 			}
 
 		},
@@ -1318,8 +1326,6 @@ var _engine = {
 			
 			_engine.debug.debug("Beta User Access Enabled. Logging Enabled.");
 			
-			_engine.ui.scriptMenu.refresh();
-			
 			_engine.ui.topNotification("Scripts Enabled: Beta");
 			
 		},
@@ -1359,8 +1365,6 @@ var _engine = {
 			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/js/app.js" );
 			
 			console.debug("_engine.debug: Release Access Enabled. Logging Disabled.");
-			
-			_engine.ui.scriptMenu.refresh();
 			
 			_engine.ui.topNotification("Scripts Enabled: Release");
 
