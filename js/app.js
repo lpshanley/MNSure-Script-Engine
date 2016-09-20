@@ -305,6 +305,11 @@ var _engine = {
 							return "Person Search";
 						}
 					
+						//Person Page
+					} else if($( _engine.domTools.get.hcrTabActiveFrame() ).find('iframe.detailsPanelFrame').attr('src').split("/")[1].split(".")[0].replace("TabDetailsPage", "").toLowerCase() == "person_home" ){ 
+					
+						return "Person Page";
+					
 					} else {
 						
 						_engine.debug.info("- * UNDEFINED ( w/o numbers )");
