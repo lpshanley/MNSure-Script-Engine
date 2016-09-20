@@ -223,6 +223,18 @@
 	display: none;
 }
 
+.mns-modal-template .input-error .mns-input-label::before {
+	content: "* ";
+}
+
+.mns-modal-template .input-error .mns-input-label {
+	color: #FF2222;
+}
+
+.mns-modal-template .input-error input {
+	border: 2px solid #FF2222;
+}
+
 /* Top notification bar layout
 =================================================================*/
 
