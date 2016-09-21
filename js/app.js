@@ -737,8 +737,6 @@ var _engine = {
 					}
 					_params += '"value":"'+ _input +'"';
 					
-					
-					
 					//End object accounting for multiple inputs
 					if(k != _fieldCount-1){
 						_params += "},"
@@ -746,17 +744,16 @@ var _engine = {
 						_params += "}"
 					}
 					
+						//If there is a descriptor AND an input and the input is blank -> dont log the descriptor
+					if( _descriptor != "" && $( v ).find( 'input, select' ).length > 0 && _input == "" ){
+						_params = "";
+					}
+					
 					_allParams += _params;
 					
 					_params = "";
 					
 				});
-				
-				_engine.debug.info("- * Below are the stored params being used for the case note.");
-				
-				var _paramObject = $.parseJSON( '[' + _allParams + ']' );
-				
-				_engine.debug.info( $( _paramObject ) );
 				
 				//Place objects into an array
 				_engine.storage.modalParams.set( '[' + _allParams + ']' );
