@@ -858,6 +858,23 @@ var _engine = {
 						}
 
 						break;
+					case "queries":
+					
+						if( _engine.ui.modal._validateModal() ){
+							
+							_engine.ui.modal._storeParams();
+						
+							_engine.caseWork.unifiedSearch._finish();
+							
+							_engine.ui.modal.destroy();
+						
+						} else {
+							
+							_engine.debug.info("- * [ _engine.ui.modal._button( queries ) ]: Invalid modal submission. Correct highlighted fields.");
+							
+						}
+					
+						break;
 					case "error":
 						
 						_engine.debug.error("- * Fail Reason: Modal Error [ _engine.ui.modal._button( error ) ]: Error modal. Unable to fetch proper template file.");
@@ -1054,6 +1071,11 @@ var _engine = {
 						switch( _c ){
 							case "writeNote":
 								_engine.caseWork.note.write( _sc );
+								break;
+							
+							case "unifiedSearch":
+							
+								_engine.caseWork.unifiedSearch.start();
 								break;
 							
 							case "":
@@ -1355,6 +1377,73 @@ var _engine = {
 			}
 		},
 		
+		/* [Case Work] Performs a dynamic search type using a single input
+		/********************************************************************/
+		
+		unifiedSearch: {
+
+			start: function(){
+				
+				var _modalType = "queries";
+				var _title = "Query";
+				
+				var _url = _engine.advanced.baseUrl();
+				_url += "views/queries/unified search.html"
+				
+				_engine.advanced.getView( _url );
+				
+				// Check every 100ms for info in local storage. Timeout after 2000ms.
+					
+				var _c = 0;
+				
+				var buildFrame = setInterval(function(){
+					if(_c <= 25){
+						
+						if( _engine.storage.html.get() != false ){
+							// Gather html for modal
+							var _html = _engine.storage.html.get();
+							
+							if( $('<div>', {'html': _engine.storage.html.get() }).find('div').hasClass('mns-error-modal') ){
+								_title = "Error";
+								_modalType = "error";
+							}
+							
+							// Clear html storage
+							_engine.storage.html.clear();
+							
+							//Build modal
+							_engine.ui.modal.build( _title, _html, _modalType );
+							
+							clearInterval( buildFrame );
+							
+						}
+						
+						_c++;
+						
+					} else {
+						_engine.debug.error("- * Fail Reason: [ _engine.caseWork.unifiedSearch.start() ]: Build frame html timed out.");	
+						_engine.storage.html.clear();
+						clearInterval( buildFrame );
+					}
+				}, 100);
+				
+				buildFrame;
+				
+			},
+
+			_finish: function(){
+				
+				_engine.debug.info("- * You MADE IT!!!");
+				
+				_engine.debug.info("- * Clearing params");
+				
+				_engine.storage.modalParams.clear();
+				
+				
+			}
+			
+		},
+		
 		/* [Case Work] Opens a modal to select from currently open cases
 		/********************************************************************/
 		
@@ -1364,6 +1453,7 @@ var _engine = {
 			_engine.debug.error("- * [ _engine.caseWork.caseSelection() ] Case selection feature is in development. Please manually select an IC.");
 			
 		}
+		
 	},
 	
 	//*************//

@@ -1,6 +1,6 @@
 {
 	"Searches": {
-		"_events": "",
+		"_events": "caseWork[unifiedSearch]",
 		"_submenu": {
 			"Person...": {
 				"_events": "search[_person]"
