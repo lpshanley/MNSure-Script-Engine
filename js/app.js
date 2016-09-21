@@ -235,7 +235,51 @@ var _engine = {
 						}
 					}
 				}
+			},
+			
+			/* These get elements on the searches screens 
+			\*----------------------------------------------------------*/
+				
+			searches: {
+				
+				_person: {
+					
+					_init: function(){
+						if(_engine.domTools.test.hcrTabActiveType() == "Person Search"){
+							
+							return $( _engine.domTools.get.hcrTabActiveFrame() );
+						
+						} else {
+							
+							return false;
+							
+							_engine.debug.error("- * [ _engine.domTools.get.searches._person._init() ] You must be on a Person Search page to use these queries.");
+							
+						}
+					}
+					
+				},
+				
+				_case: {
+					
+					_init: function(){
+						if(_engine.domTools.test.hcrTabActiveType() == "Case Search"){
+						
+							return $( _engine.domTools.get.hcrTabActiveFrame() );
+						
+						} else {
+							
+							return false;
+							
+							_engine.debug.error("- * [ _engine.domTools.get.searches._case._init() ] You must be on a Case Search page to use these queries.");
+							
+						}
+					}
+					
+				}
+				
 			}
+			
 		},
 		
 		/* [DOM Toolbox] Used to change DOM elements, usualy various inputs.
@@ -1454,7 +1498,40 @@ var _engine = {
 							
 							$.each( _engine.storage.modalParams.get(),function(k,v){
 								
-								console.log( v );
+									//Remove Special Characters and Trim
+								var _input = v.value.replace(/[^\w\s]/gi, '').replace(/ +(?= )/g,'').trim();
+								
+								if( $.isNumeric( _input ) ){
+									
+									if( _input.length == 8 ){
+										// Case Number
+										_engine.search._case();
+										
+									} else if ( _input.length == 9 || _input.length == 10 ){
+										// SSN or MNS ID
+										_engine.search._person();
+										
+									} else {
+										// Unknown
+										
+									}
+									
+								} else {
+									// Name
+									
+									_engine.search._person();
+									
+									if( _input.split(" ").length > 1 ){
+										
+										
+										
+									} else {
+										
+										
+										
+									}
+									
+								}
 								
 							});
 							
