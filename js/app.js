@@ -749,11 +749,15 @@ var _engine = {
 						_params = "";
 					}
 					
+					console.log( _params );
+					
 					_allParams += _params;
 					
 					_params = "";
 					
 				});
+				
+				console.log( '[' + _allParams + ']' );
 				
 				//Place objects into an array
 				_engine.storage.modalParams.set( '[' + _allParams + ']' );
