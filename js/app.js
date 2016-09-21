@@ -477,7 +477,7 @@ var _engine = {
 						
 						if( typeof _searchFrame != "undefined" ){
 							
-							var _searchBody = $( _searchFrame ).find('iframe').contents();
+							var _searchBody = $( _searchFrame ).find('iframe').contents().find('input');
 							
 							//Search is open
 							if ( typeof _searchBody[0] != 'undefined' ){
