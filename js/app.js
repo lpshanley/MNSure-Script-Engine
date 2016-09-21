@@ -1559,16 +1559,49 @@ var _engine = {
 								if( $.isNumeric( _input ) ){
 									
 									if( _input.length == 8 ){
+										
 										// Case Number
 										_engine.search._case();
 										
-										_engine.domTools.set.searches.fieldFill("Reference",_input);
+										_c2 = 0;
 										
+										var _openSearch = setInterval(function(){
+											_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
+											if(_c2 <= 40){
+												if( _engine.domTools.test.searches.windowLoaded() ){
+													
+													_engine.domTools.set.searches.fieldFill("Reference",_input);
+													
+													clearInterval( _openSearch );
+												}
+												++_c2;
+											} else {
+												clearInterval( _openSearch );
+											}
+										}, 100);
+										_openSearch;
+
 									} else if ( _input.length == 9 || _input.length == 10 ){
 										// SSN or MNS ID
 										_engine.search._person();
 										
-										_engine.domTools.set.searches.fieldFill("Reference",_input);
+										_c2 = 0;
+										
+										var _openSearch = setInterval(function(){
+											_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
+											if(_c2 <= 40){
+												if( _engine.domTools.test.searches.windowLoaded() ){
+													
+													_engine.domTools.set.searches.fieldFill("Reference",_input);
+													
+													clearInterval( _openSearch );
+												}
+												++_c2;
+											} else {
+												clearInterval( _openSearch );
+											}
+										}, 100);
+										_openSearch;
 										
 									} else {
 										// Unknown
@@ -1584,9 +1617,25 @@ var _engine = {
 									
 									if( _name.length > 1 ){
 										
-										_engine.domTools.set.searches.fieldFill("First Name",_name[0]);
+										_c2 = 0;
 										
-										_engine.domTools.set.searches.fieldFill("Last Name",_name[1]);
+										var _openSearch = setInterval(function(){
+											_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
+											if(_c2 <= 40){
+												if( _engine.domTools.test.searches.windowLoaded() ){
+													
+													_engine.domTools.set.searches.fieldFill("First Name",_name[0]);
+										
+													_engine.domTools.set.searches.fieldFill("Last Name",_name[1]);
+													
+													clearInterval( _openSearch );
+												}
+												++_c2;
+											} else {
+												clearInterval( _openSearch );
+											}
+										}, 100);
+										_openSearch;
 										
 									} else {
 										
