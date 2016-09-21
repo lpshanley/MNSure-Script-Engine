@@ -1572,6 +1572,8 @@ var _engine = {
 													
 													_engine.domTools.set.searches.fieldFill("Reference",_input);
 													
+													_engine.domTools.get.searches.fieldQuery("Search").click();
+													
 													clearInterval( _openSearch );
 												}
 												++_c2;
@@ -1593,6 +1595,8 @@ var _engine = {
 												if( _engine.domTools.test.searches.windowLoaded() ){
 													
 													_engine.domTools.set.searches.fieldFill("Reference",_input);
+													
+													_engine.domTools.get.searches.fieldQuery("Search").click();
 													
 													clearInterval( _openSearch );
 												}
@@ -1628,6 +1632,8 @@ var _engine = {
 										
 													_engine.domTools.set.searches.fieldFill("Last Name",_name[1]);
 													
+													_engine.domTools.get.searches.fieldQuery("Search").click();
+													
 													clearInterval( _openSearch );
 												}
 												++_c2;
@@ -1639,7 +1645,23 @@ var _engine = {
 										
 									} else {
 										
+										_c2 = 0;
 										
+										var _openSearch = setInterval(function(){
+											_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
+											if(_c2 <= 40){
+												if( _engine.domTools.test.searches.windowLoaded() ){
+													
+													_engine.domTools.set.searches.fieldFill("First Name",_name[0]);
+													
+													clearInterval( _openSearch );
+												}
+												++_c2;
+											} else {
+												clearInterval( _openSearch );
+											}
+										}, 100);
+										_openSearch;
 										
 									}
 									
