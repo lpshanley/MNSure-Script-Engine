@@ -1384,6 +1384,8 @@ var _engine = {
 
 			start: function(){
 				
+				_engine.navigation.hcr();
+				
 				var _modalType = "queries";
 				var _title = "Unified Search Query";
 				
