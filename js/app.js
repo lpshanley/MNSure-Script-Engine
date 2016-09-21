@@ -741,6 +741,8 @@ var _engine = {
 					
 					_allParams += _params;
 					
+					_params = "";
+					
 				});
 				
 				//Place objects into an array
