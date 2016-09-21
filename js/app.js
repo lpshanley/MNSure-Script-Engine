@@ -251,9 +251,9 @@ var _engine = {
 						
 						} else {
 							
-							return false;
-							
 							_engine.debug.error("- * [ _engine.domTools.get.searches._person._init() ] You must be on a Person Search page to use these queries.");
+
+							return false;
 							
 						}
 					}
@@ -269,9 +269,9 @@ var _engine = {
 						
 						} else {
 							
-							return false;
-							
 							_engine.debug.error("- * [ _engine.domTools.get.searches._case._init() ] You must be on a Case Search page to use these queries.");
+							
+							return false;
 							
 						}
 					}
