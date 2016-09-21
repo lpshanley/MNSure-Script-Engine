@@ -242,38 +242,22 @@ var _engine = {
 				
 			searches: {
 				
-				_person: {
+				fieldQuery: function( _field ){
 					
-					_init: function(){
-						if(_engine.domTools.test.hcrTabActiveType() == "Person Search"){
-							
-							return $( _engine.domTools.get.hcrTabActiveFrame() );
+					var screenType = _engine.domTools.test.hcrTabActiveType();
+					
+					if( screenType == "Case Search" || screenType == "Person Search" ){
 						
-						} else {
-							
-							_engine.debug.error("- * [ _engine.domTools.get.searches._person._init() ] You must be on a Person Search page to use these queries.");
+						var _frame = $( _engine.domTools.get.hcrTabActiveFrame() );
+						
+						return $( _frame ).find('iframe').contents().find('input[title="' + _field + '"]');
+						
+					} else {
+						
+						_engine.debug.error("- * [ _engine.domTools.get.searches.fieldQuery( _field ) ] You must be on a search page to use this dom query.");
 
-							return false;
-							
-						}
-					}
-					
-				},
-				
-				_case: {
-					
-					_init: function(){
-						if(_engine.domTools.test.hcrTabActiveType() == "Case Search"){
+						return false;
 						
-							return $( _engine.domTools.get.hcrTabActiveFrame() );
-						
-						} else {
-							
-							_engine.debug.error("- * [ _engine.domTools.get.searches._case._init() ] You must be on a Case Search page to use these queries.");
-							
-							return false;
-							
-						}
 					}
 					
 				}
