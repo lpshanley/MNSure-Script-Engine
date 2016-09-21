@@ -1385,7 +1385,7 @@ var _engine = {
 			start: function(){
 				
 				var _modalType = "queries";
-				var _title = "Query";
+				var _title = "Unified Search Query";
 				
 				var _url = _engine.advanced.baseUrl();
 				_url += "views/queries/unified search.html"
@@ -1433,11 +1433,49 @@ var _engine = {
 
 			_finish: function(){
 				
-				_engine.debug.info("- * You MADE IT!!!");
-				
-				_engine.debug.info("- * Clearing params");
-				
-				_engine.storage.modalParams.clear();
+				//Start param gather counter
+				_c1 = 0;
+
+				var _gatherParams = setInterval(function(){
+					
+					//Setup loop to gather modal params
+					
+					if( _c1 <= 25 ){
+						
+						_engine.debug.info("- * Attempting to gather params [ attempt: "+ _c1 +" ]");
+						
+						if( _engine.storage.modalParams.get() != false ){
+							
+							//Perform actions on the stored params
+							
+							_engine.debug.info("- * Params Gathered");
+							
+							$.each( _engine.storage.modalParams.get(),function(k,v){
+								
+								console.log( v );
+								
+							});
+							
+							_engine.debug.info("- * Clearing params");
+							
+							_engine.storage.modalParams.clear();
+							
+							clearInterval( _gatherParams );
+						
+						}
+						
+						++_c1;
+						
+					} else {
+						
+						_engine.debug.info("- * Fail Reason: Error [_engine.caseWork.note._completeNote()]: Failed to gather params.");							
+						clearInterval( _gatherParams );
+						
+					}
+
+				}, 100);
+
+				_gatherParams;
 				
 				
 			}
