@@ -1,5 +1,1 @@
-function(){
-
-	alert("Working!");
-
-}
+alert("Hello World");
