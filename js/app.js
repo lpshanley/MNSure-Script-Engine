@@ -1,28 +1,58 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 
-/*   Script Engine Functions
----------------------------------------------*/
-	
+//		 /$$      /$$ /$$   /$$  /$$$$$$                               
+//		| $$$    /$$$| $$$ | $$ /$$__  $$                              
+//		| $$$$  /$$$$| $$$$| $$| $$  \__/ /$$   /$$  /$$$$$$   /$$$$$$ 
+//		| $$ $$/$$ $$| $$ $$ $$|  $$$$$$ | $$  | $$ /$$__  $$ /$$__  $$
+//		| $$  $$$| $$| $$  $$$$ \____  $$| $$  | $$| $$  \__/| $$$$$$$$
+//		| $$\  $ | $$| $$\  $$$ /$$  \ $$| $$  | $$| $$      | $$_____/
+//		| $$ \/  | $$| $$ \  $$|  $$$$$$/|  $$$$$$/| $$      |  $$$$$$$
+//		|__/     |__/|__/  \__/ \______/  \______/ |__/       \_______/
+//			/$$$$$$                      /$$             /$$             
+//		 /$$__  $$                    |__/            | $$             
+//		| $$  \__/  /$$$$$$$  /$$$$$$  /$$  /$$$$$$  /$$$$$$           
+//		|  $$$$$$  /$$_____/ /$$__  $$| $$ /$$__  $$|_  $$_/           
+//		 \____  $$| $$      | $$  \__/| $$| $$  \ $$  | $$             
+//		 /$$  \ $$| $$      | $$      | $$| $$  | $$  | $$ /$$         
+//		|  $$$$$$/|  $$$$$$$| $$      | $$| $$$$$$$/  |  $$$$/         
+//		 \______/  \_______/|__/      |__/| $$____/    \___/           
+//																			| $$                         
+//		 /$$$$$$$$                     /$$| $$                         
+//		| $$_____/                    |__/|__/                         
+//		| $$       /$$$$$$$   /$$$$$$  /$$ /$$$$$$$   /$$$$$$          
+//		| $$$$$   | $$__  $$ /$$__  $$| $$| $$__  $$ /$$__  $$         
+//		| $$__/   | $$  \ $$| $$  \ $$| $$| $$  \ $$| $$$$$$$$         
+//		| $$      | $$  | $$| $$  | $$| $$| $$  | $$| $$_____/         
+//		| $$$$$$$$| $$  | $$|  $$$$$$$| $$| $$  | $$|  $$$$$$$         
+//		|________/|__/  |__/ \____  $$|__/|__/  |__/ \_______/         
+//												 /$$  \ $$                                 
+//												|  $$$$$$/                                 
+//												 \______/                               	
+
 var _engine = {
-	
-	/* Core Functions
-	===================*/
 
 	//**************//
 	//*   Search   *//
 	//**************//
 	
 	search: {
-		//Navigate to HCR tab and open person search
+		
+		/* [Search] Opens a new person search
+		/********************************************************************/
+		
 		_person: function(){
 			_engine.navigation.hcr();
 			curam.ui.SectionShortcutsPanel.handleClickOnAnchorElement("Person_search1","");
 		},
-		//Navigate to HCR tab and open case search
+		
+		/* [Search] Opens a new case search
+		/********************************************************************/
+		
 		_case: function(){
 			_engine.navigation.hcr();
 			curam.ui.SectionShortcutsPanel.handleClickOnAnchorElement("Case_search1",""); 
 		}
+		
 	},
 	
 	//***************//
@@ -31,10 +61,8 @@ var _engine = {
 	
 	domTools: {
 		
-		/* Tools in the "Get" section of the 
-		|* toolbox are designed to return elements
-		|* of the webpage.
-		\*-----------------------------------------------*/
+		/* [DOM Toolbox] Performs the gathering of specific elements
+		/********************************************************************/
 		
 		get: {
 			
@@ -209,6 +237,10 @@ var _engine = {
 				}
 			}
 		},
+		
+		/* [DOM Toolbox] Used to change DOM elements, usualy various inputs.
+		/********************************************************************/
+		
 		set:{
 			icFrame: {
 				contactTab: {
@@ -275,6 +307,10 @@ var _engine = {
 				}
 			}
 		},
+		
+		/* [DOM Toolbox] Performs logic operations and comparisons on DOM
+		/********************************************************************/
+		
 		test: {
 			hcrTabActiveIsIC: function(){
 				if(_engine.domTools.get.hcrTabActive().innerText.indexOf("Insurance Affordability") != -1){
@@ -381,29 +417,48 @@ var _engine = {
 	//***************//
 	
 	navigation: {
-		//Nav functions fire only if the user is not already on the
-		//screen they are trying to get to.
+		
+		/* [Nav] Navigates to the HCR tab
+		/********************************************************************/
+		
 		hcr: function(){
 			if( $( "[title='HCR Cases and Outcomes']", _engine.domTools.get.mainTabActive() ).length !== 1 ){
 				$('[title="HCR Cases and Outcomes"]')[0].click();
 			}
 		},
+		
+		/* [Nav] Navigates to the Home tab
+		/********************************************************************/
+		
 		home: function(){
 			if( $( "[title='Home']", _engine.domTools.get.mainTabActive() ).length !== 1 ){
 				$('[title="Home"]')[0].click();
 			}
 		},
+		
+		/* [Nav] Navigates to the Inbox tab
+		/********************************************************************/
+		
 		inbox: function(){
 			if( $( "[title='Inbox']", _engine.domTools.get.mainTabActive() ).length !== 1 ){
 				$('[title="Inbox"]')[0].click();
 			}
 		},
+		
+		/* [Nav] Navigates to the Calendar tab
+		/********************************************************************/
+		
 		calendar: function(){
 			if( $( "[title='Calendar']", _engine.domTools.get.mainTabActive() ).length !== 1 ){
 				$('[title="Calendar"]')[0].click();
 			}
 		},
+		
+		/* [Nav] Performs navigation on the sub tabs when on a case
+		/********************************************************************/
+		
 		icTabs: {
+			
 			home: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -413,6 +468,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			evidence: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -422,6 +478,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			participants: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -431,6 +488,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			assessments: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -440,6 +498,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			services: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -449,6 +508,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			referrals: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -458,6 +518,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			contact: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -467,6 +528,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			tasks: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -476,6 +538,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			issuesAndProceedings: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -485,6 +548,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			administration: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -494,6 +558,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			elections: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -503,6 +568,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			icNavCore: function( _t ){
 				var _tl = _engine.domTools.get.icFrame.icTabList();
 				$.each( _tl, function( k, v ){
@@ -515,15 +581,20 @@ var _engine = {
 					}
 				});
 			}
+			
 		}
 		
 	},
 	
 	//***************//
-	//* UI Building *//
+	//*     UI      *//
 	//***************//
 	
 	ui: {
+		
+		/* [UI] Makes AJAX request for menu structure and builds menu
+		/********************************************************************/
+		
 		scriptMenu: {
 			build: function(){
 				
@@ -603,6 +674,10 @@ var _engine = {
 				
 			}
 		},
+		
+		/* [UI] Performs all actions related to custom modals
+		/********************************************************************/		
+		
 		modal: {
 			build: function( title, layout, type ){
 
@@ -830,6 +905,10 @@ var _engine = {
 				
 			}
 		},
+		
+		/* [UI] Edits the text in the custom notification window
+		/********************************************************************/
+		
 		topNotification: function( msg ){
 			
 			//Create Element
@@ -851,6 +930,10 @@ var _engine = {
 	//
 	
 	events: {
+		
+		/* [Events] Runs on program startup
+		/********************************************************************/
+		
 		_startUp: function() {
 			
 			if( !_engine.storage.engineStatus.get() ){
@@ -910,6 +993,10 @@ var _engine = {
 			}
 
 		},
+		
+		/* [Events] Converts click events into useable sets of functions
+		/********************************************************************/
+		
 		handleClickEvent: function( e ){
 			
 			var eventLog = e.split('/');
@@ -1015,7 +1102,16 @@ var _engine = {
 			
 		}
 	},
+	
+	//*************//
+	//* Case Work *//
+	//*************//
+	
 	caseWork: {
+		
+		/* [Case Work] Contains feature set for writing case notes
+		/********************************************************************/
+		
 		note: {
 			write: function( _note ){
 				
@@ -1094,7 +1190,7 @@ var _engine = {
 				} else {
 					_engine.debug.error("- * Fail Reason: [_engine.caseWork.note.write( note )]: A valid note type must be specified to run this command.")
 				}
-			},
+			},			
 			_completeNote: function(){
 				
 				// Timeout Counter
@@ -1258,6 +1354,10 @@ var _engine = {
 				
 			}
 		},
+		
+		/* [Case Work] Opens a modal to select from currently open cases
+		/********************************************************************/
+		
 		caseSelection: function(){
 			
 			_engine.debug.info("- * [ _engine.caseWork.caseSelection() ] Starting integrated case selection.");
@@ -1265,14 +1365,31 @@ var _engine = {
 			
 		}
 	},
+	
+	//*************//
+	//*   Tools   *//
+	//*************//
+	
 	tools: {
 		gatherData: {
 			address: function(){
 				
 			}
+		},
+		closeCurrentTab: function(){
+			$( _engine.domTools.get.hcrTabActive() ).find('span.dijitTabCloseButton').click();
 		}
 	},
+	
+	//************//
+	//* Advanced *//
+	//************//
+	
 	advanced: {
+		
+		/* [Advanced] Returns the needed base URL for ajax requests 
+		/********************************************************************/
+		
 		baseUrl: function(){
 			
 			var _commit = _engine.advanced.currentCommit();
@@ -1282,18 +1399,38 @@ var _engine = {
 			return _url;
 			
 		},
+		
+		/* [Advanced] Returns the entensions URL
+		/********************************************************************/
+		
 		extensionURL: function(){
 			return $('script[data-scriptengine]').attr('data-chromeurl');
 		},
+		
+		/* [Advanced] Returns the ID of the extension
+		/********************************************************************/
+		
 		extensionID: function(){
 			return $('script[data-scriptengine]').attr('data-extensionID');
 		},
+		
+		/* [Advanced] Returns the current Beta Repo Commit Sha
+		/********************************************************************/
+		
 		betaCommit: function(){
 			return $('script[data-scriptengine]').attr('data-beta');
 		},
+		
+		/* [Advanced] Returns the current Master Repo Commit Sha
+		/********************************************************************/
+		
 		masterCommit: function(){
 			return $('script[data-scriptengine]').attr('data-master');
 		},
+		
+		/* [Advanced] Returns the commit that the engine is currently using
+		/********************************************************************/
+		
 		currentCommit: function(){
 			if( _engine.storage.betaStatus.get() ){
 				return _engine.advanced.betaCommit();
@@ -1301,6 +1438,10 @@ var _engine = {
 				return _engine.advanced.masterCommit();
 			}
 		},
+		
+		/* [Advanced] ajax request to grab html template for modals
+		/********************************************************************/
+		
 		getView: function( _f ){
 
 			var _html = null;
@@ -1327,7 +1468,16 @@ var _engine = {
 			
 		}
 	},
+	
+	//*************//
+	//*  Storage  *//
+	//*************//
+	
 	storage: {
+		
+		/* [Storage] HTML
+		/********************************************************************/
+		
 		html: {
 			set: function( _html ){
 				window.localStorage.setItem( "mnsEngine_html", _html );
@@ -1343,6 +1493,10 @@ var _engine = {
 				localStorage.removeItem( "mnsEngine_html" );
 			}
 		},
+		
+		/* [Storage] Modal Parameters
+		/********************************************************************/
+		
 		modalParams: {
 			set: function( _params ){
 				
@@ -1365,6 +1519,10 @@ var _engine = {
 				localStorage.removeItem( "mnsEngine_modalParams" );
 			}
 		},
+		
+		/* [Storage] Engine Status
+		/********************************************************************/
+		
 		engineStatus: {
 			set: function( _status ){
 				
@@ -1380,6 +1538,10 @@ var _engine = {
 				localStorage.removeItem( "mnsEngine_Status" );
 			}
 		},
+		
+		/* [Storage] Beta Status
+		/********************************************************************/
+		
 		betaStatus: {
 			set: function( _status ){
 				
@@ -1399,6 +1561,10 @@ var _engine = {
 				localStorage.removeItem( "mnsEngine_betaStatus" );
 			}
 		},
+		
+		/* [Storage] Debug Status
+		/********************************************************************/
+		
 		debugStatus: {
 			set: function( _status ){
 				
@@ -1419,39 +1585,76 @@ var _engine = {
 			}
 		}
 	},
+	
+	//*************//
+	//*   Debug   *//
+	//*************//
+	
 	debug: {
+		
+		/* [Debug] Toggle debuging on/off
+		/********************************************************************/
+		
 		toggle: function(){
-			//Set debug status to oppo
 			_engine.storage.debugStatus.set( !_engine.storage.debugStatus.get() );
 			console.debug("_engine.debug: Debugging status changed to - " + _engine.storage.debugStatus.get() );
 		},
+		
+		/* [Debug] Log message when debug is enabled
+		/********************************************************************/
+		
 		log: function( msg ){
 			if( _engine.storage.debugStatus.get() ){
 				console.log("_engine.debug: " + msg);
 			}
 		},
+		
+		/* [Debug] Info message when debug is enabled
+		/********************************************************************/
+		
 		info: function( msg ){
 			if( _engine.storage.debugStatus.get() ){
 				console.info("_engine.debug: " + msg); 
 			}
 		},
+		
+		/* [Debug] Warn message when debug is enabled
+		/********************************************************************/
+		
 		warn: function( msg ){
 			if( _engine.storage.debugStatus.get() ){
 				console.warn("_engine.debug: " + msg);
 			}
 		},
+		
+		/* [Debug] Error message when debug is enabled
+		/********************************************************************/
+		
 		error: function( msg ){
 			if( _engine.storage.debugStatus.get() ){
 				console.error("_engine.debug: " + msg);
 			}
 		},
+		
+		/* [Debug] Debug message when debug is enabled
+		/********************************************************************/
+		
 		debug: function( msg ){
 			if( _engine.storage.debugStatus.get() ){
 				console.debug("_engine.debug: " + msg);
 			}
 		}
 	},
+	
+	//************//
+	//*   Beta   *//
+	//************//
+	
 	beta: {
+		
+		/* [Beta] Enable default set of Beta features 
+		/********************************************************************/
+		
 		enableBeta: function(){
 			//Enable Debugging
 			_engine.storage.debugStatus.set( true );
@@ -1470,6 +1673,10 @@ var _engine = {
 			_engine.ui.topNotification("Scripts Enabled: Beta");
 			
 		},
+		
+		/* [Beta] Return true/false based on if beta flag is in url
+		/********************************************************************/
+		
 		betaURL: function(){
 			var url = window.location.href;
 			
@@ -1492,6 +1699,10 @@ var _engine = {
 			}
 			
 		},
+		
+		/* [Beta] Enable default set of Release features 
+		/********************************************************************/
+		
 		enableRelease: function(){
 			//Enable Debugging
 			_engine.storage.debugStatus.set( false );
@@ -1513,7 +1724,7 @@ var _engine = {
 	}
 }
 
-/*   Onload
----------------------------------------------*/
+/* [Program Start] Runs the startup function 
+/********************************************************************/
 
 _engine.events._startUp();
