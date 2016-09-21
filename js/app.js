@@ -756,7 +756,7 @@ var _engine = {
 				
 				var _paramObject = $.parseJSON( '[' + _allParams + ']' );
 				
-				_engine.debug.info( _paramObject );
+				_engine.debug.info( $( _paramObject ) );
 				
 				//Place objects into an array
 				_engine.storage.modalParams.set( '[' + _allParams + ']' );
