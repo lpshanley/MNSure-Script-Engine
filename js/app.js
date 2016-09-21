@@ -703,14 +703,7 @@ var _engine = {
 					}
 					
 					_params += '"descriptor":"' + _descriptor + '",';
-					
-					//Cleaning up label
-					var _label = '';
-					if($( v ).find( '.mns-input-label' ).length > 0){
-						_label = $( v ).find( '.mns-input-label' ).text().replace(": ", "");
-					}
-					
-					_params += '"label":"' + _label + '",';
+
 					
 					//Cleaning up input text
 					var _input = '';
@@ -751,6 +744,10 @@ var _engine = {
 				});
 				
 				//Place objects into an array
+				
+				_engine.debug.info("- * Below are the stored params being used for the case note.")
+				_engine.debug.info( $.parseJSON( '[' + _allParams + ']' ) );
+				
 				_engine.storage.modalParams.set( '[' + _allParams + ']' );
 				
 				return;
