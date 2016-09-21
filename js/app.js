@@ -250,7 +250,19 @@ var _engine = {
 						
 						var _frame = $( _engine.domTools.get.hcrTabActiveFrame() );
 						
-						return $( _frame ).find('iframe').contents().find('input[title="' + _field + '"]');
+						var _result = $( _frame ).find('iframe').contents().find('input[title="' + _field + '"]');
+						
+						if( _result.length > 0 ){
+							
+							return _result;
+							
+						} else {
+							
+							_engine.debug.error("- * [ _engine.domTools.get.searches.fieldQuery( _field ) ] Could not find requested field: " + _field);
+							
+							return false;
+							
+						}
 						
 					} else {
 						
