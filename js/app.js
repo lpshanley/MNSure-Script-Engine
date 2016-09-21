@@ -345,7 +345,24 @@ var _engine = {
 						}
 					}
 				}
+			},
+			
+			searches: {
+				
+				fieldFill: function( _field, _value ){
+					
+					var _f = _engine.domTools.get.searches.fieldQuery( _field );
+					
+					if( _f != false ){
+						
+						$( _f ).val( _value );
+						
+					}
+					
+				}
+				
 			}
+			
 		},
 		
 		/* [DOM Toolbox] Performs logic operations and comparisons on DOM
