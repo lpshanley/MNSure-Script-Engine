@@ -737,30 +737,26 @@ var _engine = {
 					}
 					_params += '"value":"'+ _input +'"';
 					
-					//End object accounting for multiple inputs
-					if(k != _fieldCount-1){
-						_params += "},"
-					} else {
-						_params += "}"
-					}
+
+					_params += "},";
 					
 						//If there is a descriptor AND an input and the input is blank -> dont log the descriptor
 					if( _descriptor != "" && $( v ).find( 'input, select' ).length > 0 && _input == "" ){
 						_params = "";
 					}
-					
-					console.log( _params );
-					
+			
 					_allParams += _params;
 					
 					_params = "";
 					
 				});
+
+				_allParams = '[' + _allParams + ']';
 				
-				console.log( '[' + _allParams + ']' );
+				_allParams = _allParams.replace(",]","]");
 				
 				//Place objects into an array
-				_engine.storage.modalParams.set( '[' + _allParams + ']' );
+				_engine.storage.modalParams.set( _allParams );
 				
 				return;
 				
