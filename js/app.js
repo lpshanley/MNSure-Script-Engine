@@ -1195,7 +1195,7 @@ var _engine = {
 														
 														}
 														
-														_c3++;
+														++_c3;
 														
 													} else {
 														
@@ -1215,7 +1215,7 @@ var _engine = {
 											
 											//Modal window is not yet open advance counter
 											
-											_c2++;
+											++_c2;
 											
 										} else {
 											
@@ -1236,7 +1236,7 @@ var _engine = {
 								
 							}
 							
-							_c1++
+							++_c1;
 						
 						} else {
 						
