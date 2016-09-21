@@ -753,7 +753,10 @@ var _engine = {
 				});
 				
 				_engine.debug.info("- * Below are the stored params being used for the case note.");
-				_engine.debug.info( $.parseJSON( '[' + _allParams + ']' ) );
+				
+				var _paramObject = $.parseJSON( '[' + _allParams + ']' );
+				
+				_engine.debug.info( _paramObject );
 				
 				//Place objects into an array
 				_engine.storage.modalParams.set( '[' + _allParams + ']' );
