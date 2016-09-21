@@ -1520,9 +1520,13 @@ var _engine = {
 										// Case Number
 										_engine.search._case();
 										
+										_engine.domTools.set.searches.fieldFill("Reference",_input);
+										
 									} else if ( _input.length == 9 || _input.length == 10 ){
 										// SSN or MNS ID
 										_engine.search._person();
+										
+										_engine.domTools.set.searches.fieldFill("Reference",_input);
 										
 									} else {
 										// Unknown
@@ -1534,9 +1538,13 @@ var _engine = {
 									
 									_engine.search._person();
 									
-									if( _input.split(" ").length > 1 ){
+									var _name = _input.split(" ");
+									
+									if( _name.length > 1 ){
 										
+										_engine.domTools.set.searches.fieldFill("First Name",_name[0]);
 										
+										_engine.domTools.set.searches.fieldFill("Last Name",_name[1]);
 										
 									} else {
 										
