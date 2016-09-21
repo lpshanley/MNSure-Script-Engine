@@ -465,7 +465,34 @@ var _engine = {
 						return false;
 					}
 				}
-			}
+			},
+			searches: {
+				windowLoaded: function(){
+					
+					var _searchFrame = _engine.domTools.get.hcrTabActiveFrame();
+							
+					if( typeof _searchFrame != "undefined" ){
+						
+						var _searchBody = $( _searchFrame ).find('iframe').contents();
+						
+						//Search is open
+						if ( typeof _searchBody[0] != 'undefined' ){
+							
+							//Search is loaded
+							_engine.debug.info("- * [ _engine.domTools.test.searches.windowLoaded() ] Search is open and fully loaded.");
+							return _modalFrame;
+							
+						} else {
+							_engine.debug.warn("- * Fail Reason: [ _engine.domTools.test.searches.windowLoaded() ]: Search is open but not fully loaded.");
+							return false;
+						}
+					} else {
+						_engine.debug.warn("- * Fail Reason: [ _engine.domTools.test.searches.windowLoaded() ]: Unable to target search.");
+						return false;
+					}
+					
+				}
+			}			
 		}
 	},
 	
