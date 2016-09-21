@@ -699,8 +699,16 @@ var _engine = {
 					if($( v ).find( '.mns-input-descriptor' ).length > 0){
 						_descriptor = $( v ).find( '.mns-input-descriptor' ).text();
 					}
+					
 					_params += '"descriptor":"' + _descriptor + '",';
 					
+					//Cleaning up label
+					var _label = '';
+					if($( v ).find( '.mns-input-label' ).length > 0){
+						_label = $( v ).find( '.mns-input-label' ).text().replace(": ", "");
+					}
+					
+					_params += '"label":"' + _label + '",';
 					
 					//Cleaning up input text
 					var _input = '';
