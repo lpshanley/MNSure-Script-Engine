@@ -1,1 +1,5 @@
-alert("Hello World");
+(function(){
+	
+	alert("Working");
+	
+});
