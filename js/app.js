@@ -687,6 +687,8 @@ var _engine = {
 				
 				var _fieldCount = $('.mns-modal-template > .mns-input-group').length;
 				
+				var _allParams = "";
+				
 				var _params = "";
 				
 				$.each(_fields,function(k,v){
@@ -736,6 +738,7 @@ var _engine = {
 					_params += '"value":"'+ _input +'"';
 					
 					
+					
 					//End object accounting for multiple inputs
 					if(k != _fieldCount-1){
 						_params += "},"
@@ -743,10 +746,12 @@ var _engine = {
 						_params += "}"
 					}
 					
+					_allParams += _params;
+					
 				});
 				
 				//Place objects into an array
-				_engine.storage.modalParams.set( '[' + _params + ']' );
+				_engine.storage.modalParams.set( '[' + _allParams + ']' );
 				
 				return;
 				

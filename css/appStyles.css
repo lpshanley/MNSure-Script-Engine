@@ -39,7 +39,7 @@
 }
 
 #app-banner .center-box {
-	width: 450px;
+	width: 200px;
 	float: left;
 	display: inline-block;
 	height: 24px;
@@ -56,8 +56,8 @@
 =================================================================*/
 
 .soria .expand-list-dropdown {
-    margin: 0px;
-    padding: 3px 1px 1px 3px;
+	margin: 0px;
+	padding: 3px 1px 1px 3px;
 }
 
 /* Script dropdown menu system
