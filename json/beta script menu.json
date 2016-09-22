@@ -1,14 +1,6 @@
 {
 	"Unified Search": {
-		"_events": "caseWork[unifiedSearch]",
-		"_submenu": {
-			"Person Search...": {
-				"_events": "search[_person]"
-			},
-			"Case Search...": {
-				"_events": "search[_case]"
-			}
-		}
+		"_events": "caseWork[unifiedSearch]"
 	},
 	"Case Notes": {
 		"_events": "",
