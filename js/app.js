@@ -727,7 +727,7 @@ var _engine = {
 							$.each(v._submenu, function(k2,v2){ 
 							
 								var navItemSub = $('<li>');
-								var navLinkSub = $('<a>',{text: k2, onClick: '_engine.events.handleClickEvent("'+v2._events+'")'});
+								var navLinkSub = $('<a>',{text: k2, 'data-click': v2._events });
 							
 								/* Attach anchor to list item */
 								$( navItemSub ).append( navLinkSub );
@@ -752,6 +752,12 @@ var _engine = {
 				_engine.ui.scriptMenu.destroy();
 				
 				_engine.ui.scriptMenu.build();
+				
+				$('#script-launcher-nav li').on('click',function( e ){ 
+					var _event = $(this).children('a').attr('data-click');
+					console.log( _event );
+					_engine.events.handleClickEvent( _event );
+				});
 				
 			}
 		},
@@ -1096,12 +1102,6 @@ var _engine = {
 						
 					});
 					
-					/* Menu Click handle
-					========================*/
-					$('#script-launcher-nav li').on('click',function( e ){ 
-						var _event = $(this).children('a').attr('data-click');
-						_engine.events.handleClickEvent( _event );
-					});
 					
 					clearInterval( _loading );
 					
@@ -1126,6 +1126,9 @@ var _engine = {
 				
 				//Build menu again if repo is updated
 				_engine.ui.scriptMenu.refresh();
+				
+				
+				
 				
 			}
 
