@@ -226,6 +226,10 @@
 	width: 66%;
 }
 
+.mns-input-group .mns-input-infotext{
+	width: 100%;
+}
+
 .mns-input-group.col-2 span.mns-input-label {
 	width: 46%;
 	display: block;
