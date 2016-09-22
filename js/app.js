@@ -754,9 +754,11 @@ var _engine = {
 				_engine.ui.scriptMenu.build();
 				
 				$('#script-launcher-nav li').on('click',function( e ){ 
+
 					var _event = $(this).children('a').attr('data-click');
-					console.log( _event );
+					
 					_engine.events.handleClickEvent( _event );
+
 				});
 				
 			}
