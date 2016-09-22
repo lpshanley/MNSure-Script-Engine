@@ -1044,7 +1044,7 @@ var _engine = {
 			
 			if( !_engine.storage.engineStatus.get() ){
 				
-				var _t = [".","..","...","&nbsp...","&nbsp;&nbsp...","&nbsp;&nbsp;&nbsp;...","&nbsp;&nbsp;&nbsp;&nbsp;..","&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.",""];
+				var _t = ["Script Library: Loading.","Script Library: Loading..","Script Library: Loading...","Script Library: Loading&nbsp...","Script Library: Loading&nbsp;&nbsp...","Script Library: Loading&nbsp;&nbsp;&nbsp;...","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;..","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.","Script Library: Loading"];
 
 				var _ele = document.getElementsByClassName('center-box')[0];
 
@@ -2031,7 +2031,7 @@ var _engine = {
 			
 			_engine.debug.debug("Beta User Access Enabled. Logging Enabled.");
 			
-			_engine.ui.topNotification("Scripts Enabled: Beta");
+			_engine.ui.topNotification("Script Library: Beta");
 			
 		},
 		
@@ -2079,7 +2079,7 @@ var _engine = {
 			
 			console.debug("_engine.debug: Release Access Enabled. Logging Disabled.");
 			
-			_engine.ui.topNotification("Scripts Enabled: Release");
+			_engine.ui.topNotification("Script Library: Release");
 
 		}
 	}
