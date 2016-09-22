@@ -709,7 +709,7 @@ var _engine = {
 					$.each(menu, function(k,v){
 					
 						var navItem = $('<li>');
-						var navLink = $('<a>',{text: k, onClick: '_engine.events.handleClickEvent("'+v._events+'")' });
+						var navLink = $('<a>',{text: k, 'data-click': v._events });
 						
 						/* Attach anchor to list item */
 						$( navItem ).append( navLink );
@@ -1094,6 +1094,13 @@ var _engine = {
 							// Open Person Search
 						_engine.search._person();
 						
+					});
+					
+					/* Menu Click handle
+					========================*/
+					$('#script-launcher-nav li').on('click',function( e ){ 
+						var _event = $(this).children('a').attr('data-click');
+						_engine.events.handleClickEvent( _event );
 					});
 					
 					clearInterval( _loading );
