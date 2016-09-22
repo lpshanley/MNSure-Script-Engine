@@ -2,10 +2,10 @@
 	"Unified Search": {
 		"_events": "caseWork[unifiedSearch]",
 		"_submenu": {
-			"New Person Search...": {
+			"Person Search...": {
 				"_events": "search[_person]"
 			},
-			"New Case Search...": {
+			"Case Search...": {
 				"_events": "search[_case]"
 			}
 		}
