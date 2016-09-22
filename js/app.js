@@ -892,7 +892,11 @@ var _engine = {
 								break;
 							case "date":
 								var _date = $( v ).find( 'input' ).val().split("-");
-								_input = _date[1] + "/" + _date[2] + "/" + _date[0];
+								if( _date.length == 3 ){
+									_input = _date[1] + "/" + _date[2] + "/" + _date[0];
+								} else {
+									_input = "";
+								}
 								break;
 							default:
 								var _input = "";
