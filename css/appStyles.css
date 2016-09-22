@@ -196,6 +196,7 @@
 	display: block;
 	margin: 5px 0;
 	width: 100%;
+	clear: both;
 }
 
 .mns-input-group:first-child {
