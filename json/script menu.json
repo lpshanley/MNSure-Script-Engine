@@ -1,11 +1,11 @@
 {
-	"Searches": {
-		"_events": "",
+	"Unified Search": {
+		"_events": "caseWork[unifiedSearch]",
 		"_submenu": {
-			"Person...": {
+			"Person Search...": {
 				"_events": "search[_person]"
 			},
-			"Case...": {
+			"Case Search...": {
 				"_events": "search[_case]"
 			}
 		}
@@ -27,6 +27,14 @@
 			},
 			"ATS...": {
 				"_events": "caseWork[writeNote(ATS)]"
+			}
+		}
+	},
+	"Tools": {
+		"_events": "",
+		"_submenu": {
+			"ATS Mileage Rate...": {
+				"_events": "tools[getInfo(ATS Mileage)]"
 			}
 		}
 	}

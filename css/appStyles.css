@@ -39,7 +39,7 @@
 }
 
 #app-banner .center-box {
-	width: 450px;
+	width: 200px;
 	float: left;
 	display: inline-block;
 	height: 24px;
@@ -56,8 +56,8 @@
 =================================================================*/
 
 .soria .expand-list-dropdown {
-    margin: 0px;
-    padding: 3px 1px 1px 3px;
+	margin: 0px;
+	padding: 3px 1px 1px 3px;
 }
 
 /* Script dropdown menu system
@@ -208,6 +208,34 @@
 
 .mns-input-group:only-child {
 	margin: 15px 0;
+}
+
+.mns-input-group span.mns-input-label {
+	width: 33%;
+	display: block;
+	float: left;
+	padding-top: 3px;
+}
+
+.mns-input-group select {
+	height: 21px;
+}
+
+.mns-input-group input,
+.mns-input-group select {
+	width: 66%;
+}
+
+.mns-input-group.col-2 span.mns-input-label {
+	width: 46%;
+	display: block;
+	float: left;
+	padding-top: 3px;
+}
+
+.mns-input-group.col-2 input,
+.mns-input-group.col-2 select {
+	width: 50%;
 }
 
 .mns-input-group.col-2 {

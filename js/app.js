@@ -1,28 +1,58 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 
-/*   Script Engine Functions
----------------------------------------------*/
-	
+//		 /$$      /$$ /$$   /$$  /$$$$$$                               
+//		| $$$    /$$$| $$$ | $$ /$$__  $$                              
+//		| $$$$  /$$$$| $$$$| $$| $$  \__/ /$$   /$$  /$$$$$$   /$$$$$$ 
+//		| $$ $$/$$ $$| $$ $$ $$|  $$$$$$ | $$  | $$ /$$__  $$ /$$__  $$
+//		| $$  $$$| $$| $$  $$$$ \____  $$| $$  | $$| $$  \__/| $$$$$$$$
+//		| $$\  $ | $$| $$\  $$$ /$$  \ $$| $$  | $$| $$      | $$_____/
+//		| $$ \/  | $$| $$ \  $$|  $$$$$$/|  $$$$$$/| $$      |  $$$$$$$
+//		|__/     |__/|__/  \__/ \______/  \______/ |__/       \_______/
+//			/$$$$$$                      /$$             /$$             
+//		 /$$__  $$                    |__/            | $$             
+//		| $$  \__/  /$$$$$$$  /$$$$$$  /$$  /$$$$$$  /$$$$$$           
+//		|  $$$$$$  /$$_____/ /$$__  $$| $$ /$$__  $$|_  $$_/           
+//		 \____  $$| $$      | $$  \__/| $$| $$  \ $$  | $$             
+//		 /$$  \ $$| $$      | $$      | $$| $$  | $$  | $$ /$$         
+//		|  $$$$$$/|  $$$$$$$| $$      | $$| $$$$$$$/  |  $$$$/         
+//		 \______/  \_______/|__/      |__/| $$____/    \___/           
+//																			| $$                         
+//		 /$$$$$$$$                     /$$| $$                         
+//		| $$_____/                    |__/|__/                         
+//		| $$       /$$$$$$$   /$$$$$$  /$$ /$$$$$$$   /$$$$$$          
+//		| $$$$$   | $$__  $$ /$$__  $$| $$| $$__  $$ /$$__  $$         
+//		| $$__/   | $$  \ $$| $$  \ $$| $$| $$  \ $$| $$$$$$$$         
+//		| $$      | $$  | $$| $$  | $$| $$| $$  | $$| $$_____/         
+//		| $$$$$$$$| $$  | $$|  $$$$$$$| $$| $$  | $$|  $$$$$$$         
+//		|________/|__/  |__/ \____  $$|__/|__/  |__/ \_______/         
+//												 /$$  \ $$                                 
+//												|  $$$$$$/                                 
+//												 \______/                               	
+
 var _engine = {
-	
-	/* Core Functions
-	===================*/
 
 	//**************//
 	//*   Search   *//
 	//**************//
 	
 	search: {
-		//Navigate to HCR tab and open person search
+		
+		/* [Search] Opens a new person search
+		/********************************************************************/
+		
 		_person: function(){
 			_engine.navigation.hcr();
 			curam.ui.SectionShortcutsPanel.handleClickOnAnchorElement("Person_search1","");
 		},
-		//Navigate to HCR tab and open case search
+		
+		/* [Search] Opens a new case search
+		/********************************************************************/
+		
 		_case: function(){
 			_engine.navigation.hcr();
 			curam.ui.SectionShortcutsPanel.handleClickOnAnchorElement("Case_search1",""); 
 		}
+		
 	},
 	
 	//***************//
@@ -31,10 +61,8 @@ var _engine = {
 	
 	domTools: {
 		
-		/* Tools in the "Get" section of the 
-		|* toolbox are designed to return elements
-		|* of the webpage.
-		\*-----------------------------------------------*/
+		/* [DOM Toolbox] Performs the gathering of specific elements
+		/********************************************************************/
 		
 		get: {
 			
@@ -207,8 +235,52 @@ var _engine = {
 						}
 					}
 				}
+			},
+			
+			/* These get elements on the searches screens 
+			\*----------------------------------------------------------*/
+				
+			searches: {
+				
+				fieldQuery: function( _field ){
+					
+					var screenType = _engine.domTools.test.hcrTabActiveType();
+					
+					if( screenType == "Case Search" || screenType == "Person Search" ){
+						
+						var _frame = $( _engine.domTools.get.hcrTabActiveFrame() );
+						
+						var _result = $( _frame ).find('iframe').contents().find('input[title="' + _field + '"]');
+						
+						if( _result.length > 0 ){
+							
+							return _result;
+							
+						} else {
+							
+							_engine.debug.error("- * [ _engine.domTools.get.searches.fieldQuery( _field ) ] Could not find requested field: " + _field);
+							
+							return false;
+							
+						}
+						
+					} else {
+						
+						_engine.debug.error("- * [ _engine.domTools.get.searches.fieldQuery( _field ) ] You must be on a search page to use this dom query.");
+
+						return false;
+						
+					}
+					
+				}
+				
 			}
+			
 		},
+		
+		/* [DOM Toolbox] Used to change DOM elements, usualy various inputs.
+		/********************************************************************/
+		
 		set:{
 			icFrame: {
 				contactTab: {
@@ -273,8 +345,29 @@ var _engine = {
 						}
 					}
 				}
+			},
+			
+			searches: {
+				
+				fieldFill: function( _field, _value ){
+					
+					var _f = _engine.domTools.get.searches.fieldQuery( _field );
+					
+					if( _f != false ){
+						
+						$( _f ).val( _value );
+						
+					}
+					
+				}
+				
 			}
+			
 		},
+		
+		/* [DOM Toolbox] Performs logic operations and comparisons on DOM
+		/********************************************************************/
+		
 		test: {
 			hcrTabActiveIsIC: function(){
 				if(_engine.domTools.get.hcrTabActive().innerText.indexOf("Insurance Affordability") != -1){
@@ -285,6 +378,61 @@ var _engine = {
 					}
 				} else {
 					return false;
+				}
+			},
+			hcrTabActiveType: function(){
+				
+				_activeTab = _engine.domTools.get.hcrTabActive();
+
+				if ( _activeTab.innerText.match(/\d+/g) == null ){
+					// Titles without numbers
+						
+						//Titles Containg Search
+					if ( _activeTab.innerText.indexOf("Search") != -1 ){
+						
+							// Case Search
+						if ( _activeTab.innerText.indexOf("Case") != -1 ){
+							return "Case Search";
+							// Person Search
+						} else if( _activeTab.innerText.indexOf("Person") != -1 ){
+							return "Person Search";
+						}
+					
+						//Person Page
+					} else if($( _engine.domTools.get.hcrTabActiveFrame() ).find('iframe.detailsPanelFrame').attr('src').split("/")[1].split(".")[0].replace("TabDetailsPage", "").toLowerCase() == "person_home" ){ 
+					
+						return "Person Page";
+					
+					} else {
+						
+						_engine.debug.info("- * UNDEFINED ( w/o numbers )");
+						return "UNDEFINED";
+						
+					}
+					
+				} else {
+					// Titles with numbers
+					
+						// Titles containing "Insurance Affordability"
+					if( _activeTab.innerText.indexOf("Insurance Affordability") != -1 ){
+							// Integrated Case Screen
+						if( _activeTab.innerText.indexOf("Insurance Affordability") == 0 ){
+							return  "Integrated Case";
+							// Evidence Screen
+						} else if( _activeTab.innerText.indexOf("Insurance Affordability") > 0 ) {
+							return  "Evidence|" + _activeTab.innerText.split("-")[0].trim() ;
+						}
+					} else if ( $.inArray( _activeTab.innerText.replace(/[0-9]/g,"").trim().toLowerCase(), ["medical assistance", "minnesotacare", "unassisted qualified health plan", "insurance assistance"] ) != -1 ) {
+						
+						return "PDC|" + _activeTab.innerText.replace(/[0-9]/g,"").trim();
+						
+					} else {
+						
+						_engine.debug.info("- * UNDEFINED ( w/numbers )");
+						return "UNDEFINED";
+						
+					}
+					
 				}
 			},
 			icFrame: {
@@ -317,7 +465,49 @@ var _engine = {
 						return false;
 					}
 				}
-			}
+			},
+			searches: {
+				windowLoaded: function(){
+					
+					var _screenType = _engine.domTools.test.hcrTabActiveType();
+					
+					if( _screenType == "Person Search" || _screenType == "Case Search" ){
+					
+						var _searchFrame = _engine.domTools.get.hcrTabActiveFrame();
+						
+						if( typeof _searchFrame != "undefined" ){
+							
+							var _searchBody = $( _searchFrame ).find('iframe').contents().find('input');
+							
+							//Search is open
+							if ( typeof _searchBody[0] != 'undefined' ){
+								
+								//Search is loaded
+								_engine.debug.info("- * [ _engine.domTools.test.searches.windowLoaded() ] Search is open and fully loaded.");
+								return true;
+								
+							} else {
+								
+								_engine.debug.warn("- * Fail Reason: [ _engine.domTools.test.searches.windowLoaded() ] Search is open but not fully loaded.");
+								return false;
+								
+							}
+						} else {
+							
+							_engine.debug.warn("- * Fail Reason: [ _engine.domTools.test.searches.windowLoaded() ] Unable to target search.");
+							return false;
+							
+						}
+					
+					} else {
+						
+						_engine.debug.warn("- * Fail Reason: [ _engine.domTools.test.searches.windowLoaded() ] Not on a valid search screen.");
+						return false;
+						
+					}
+					
+				}
+			}			
 		}
 	},
 	
@@ -326,29 +516,48 @@ var _engine = {
 	//***************//
 	
 	navigation: {
-		//Nav functions fire only if the user is not already on the
-		//screen they are trying to get to.
+		
+		/* [Nav] Navigates to the HCR tab
+		/********************************************************************/
+		
 		hcr: function(){
 			if( $( "[title='HCR Cases and Outcomes']", _engine.domTools.get.mainTabActive() ).length !== 1 ){
 				$('[title="HCR Cases and Outcomes"]')[0].click();
 			}
 		},
+		
+		/* [Nav] Navigates to the Home tab
+		/********************************************************************/
+		
 		home: function(){
 			if( $( "[title='Home']", _engine.domTools.get.mainTabActive() ).length !== 1 ){
 				$('[title="Home"]')[0].click();
 			}
 		},
+		
+		/* [Nav] Navigates to the Inbox tab
+		/********************************************************************/
+		
 		inbox: function(){
 			if( $( "[title='Inbox']", _engine.domTools.get.mainTabActive() ).length !== 1 ){
 				$('[title="Inbox"]')[0].click();
 			}
 		},
+		
+		/* [Nav] Navigates to the Calendar tab
+		/********************************************************************/
+		
 		calendar: function(){
 			if( $( "[title='Calendar']", _engine.domTools.get.mainTabActive() ).length !== 1 ){
 				$('[title="Calendar"]')[0].click();
 			}
 		},
+		
+		/* [Nav] Performs navigation on the sub tabs when on a case
+		/********************************************************************/
+		
 		icTabs: {
+			
 			home: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -358,6 +567,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			evidence: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -367,6 +577,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			participants: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -376,6 +587,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			assessments: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -385,6 +597,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			services: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -394,6 +607,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			referrals: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -403,6 +617,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			contact: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -412,6 +627,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			tasks: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -421,6 +637,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			issuesAndProceedings: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -430,6 +647,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			administration: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -439,6 +657,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			elections: function(){
 				_engine.navigation.hcr();
 				if(_engine.domTools.test.hcrTabActiveIsIC()){
@@ -448,6 +667,7 @@ var _engine = {
 					return false;
 				}
 			},
+			
 			icNavCore: function( _t ){
 				var _tl = _engine.domTools.get.icFrame.icTabList();
 				$.each( _tl, function( k, v ){
@@ -460,15 +680,20 @@ var _engine = {
 					}
 				});
 			}
+			
 		}
 		
 	},
 	
 	//***************//
-	//* UI Building *//
+	//*     UI      *//
 	//***************//
 	
 	ui: {
+		
+		/* [UI] Makes AJAX request for menu structure and builds menu
+		/********************************************************************/
+		
 		scriptMenu: {
 			build: function(){
 				
@@ -548,6 +773,10 @@ var _engine = {
 				
 			}
 		},
+		
+		/* [UI] Performs all actions related to custom modals
+		/********************************************************************/		
+		
 		modal: {
 			build: function( title, layout, type ){
 
@@ -632,6 +861,8 @@ var _engine = {
 				
 				var _fieldCount = $('.mns-modal-template > .mns-input-group').length;
 				
+				var _allParams = "";
+				
 				var _params = "";
 				
 				$.each(_fields,function(k,v){
@@ -644,8 +875,16 @@ var _engine = {
 					if($( v ).find( '.mns-input-descriptor' ).length > 0){
 						_descriptor = $( v ).find( '.mns-input-descriptor' ).text();
 					}
+					
 					_params += '"descriptor":"' + _descriptor + '",';
 					
+					//Cleaning up label
+					var _label = '';
+					if($( v ).find( '.mns-input-label' ).length > 0){
+						_label = $( v ).find( '.mns-input-label' ).text().replace(": ", "");
+					}
+					
+					_params += '"label":"' + _label + '",';
 					
 					//Cleaning up input text
 					var _input = '';
@@ -672,18 +911,26 @@ var _engine = {
 					}
 					_params += '"value":"'+ _input +'"';
 					
+
+					_params += "},";
 					
-					//End object accounting for multiple inputs
-					if(k != _fieldCount-1){
-						_params += "},"
-					} else {
-						_params += "}"
+						//If there is a descriptor AND an input and the input is blank -> dont log the descriptor
+					if( _descriptor != "" && $( v ).find( 'input, select' ).length > 0 && _input == "" ){
+						_params = "";
 					}
+			
+					_allParams += _params;
+					
+					_params = "";
 					
 				});
+
+				_allParams = '[' + _allParams + ']';
+				
+				_allParams = _allParams.replace(",]","]");
 				
 				//Place objects into an array
-				_engine.storage.modalParams.set( '[' + _params + ']' );
+				_engine.storage.modalParams.set( _allParams );
 				
 				return;
 				
@@ -709,6 +956,23 @@ var _engine = {
 							
 						}
 
+						break;
+					case "queries":
+					
+						if( _engine.ui.modal._validateModal() ){
+							
+							_engine.ui.modal._storeParams();
+						
+							_engine.caseWork.unifiedSearch._finish();
+							
+							_engine.ui.modal.destroy();
+						
+						} else {
+							
+							_engine.debug.info("- * [ _engine.ui.modal._button( queries ) ]: Invalid modal submission. Correct highlighted fields.");
+							
+						}
+					
 						break;
 					case "error":
 						
@@ -757,6 +1021,10 @@ var _engine = {
 				
 			}
 		},
+		
+		/* [UI] Edits the text in the custom notification window
+		/********************************************************************/
+		
 		topNotification: function( msg ){
 			
 			//Create Element
@@ -778,9 +1046,43 @@ var _engine = {
 	//
 	
 	events: {
+		
+		/* [Events] Runs on program startup
+		/********************************************************************/
+		
 		_startUp: function() {
 			
 			if( !_engine.storage.engineStatus.get() ){
+				
+				var _t = [".","..","...","&nbsp...","&nbsp;&nbsp...","&nbsp;&nbsp;&nbsp;...","&nbsp;&nbsp;&nbsp;&nbsp;..","&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.",""];
+
+				var _ele = document.getElementsByClassName('center-box')[0];
+
+				_ele.innerHTML = "";
+
+				var _span = document.createElement('span');
+
+				_span.id = "mns-scripts-loading";
+
+				_ele.appendChild( _span );
+
+				var _loadSpan = document.getElementById("mns-scripts-loading");
+					
+				var counter = 0;
+					
+				var _loading = setInterval(function(){
+
+					_loadSpan.innerHTML = _t[counter];
+					
+					++counter;
+					
+					if(counter == _t.length){
+						counter = 0;
+					}
+
+				}, 100);
+
+				_loading;
 			
 				setTimeout(function(){
 					/* Loaded
@@ -812,6 +1114,8 @@ var _engine = {
 						
 					});
 					
+					clearInterval( _loading );
+					
 					if( _engine.beta.betaURL() ){
 						
 						_engine.beta.enableBeta();
@@ -837,6 +1141,10 @@ var _engine = {
 			}
 
 		},
+		
+		/* [Events] Converts click events into useable sets of functions
+		/********************************************************************/
+		
 		handleClickEvent: function( e ){
 			
 			var eventLog = e.split('/');
@@ -868,6 +1176,7 @@ var _engine = {
 								break;
 							default:
 								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
+								break;
 						}
 						break;
 						
@@ -885,6 +1194,7 @@ var _engine = {
 								break;
 							default:
 								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
+								break;
 						}						
 						break;
 						
@@ -894,10 +1204,16 @@ var _engine = {
 								_engine.caseWork.note.write( _sc );
 								break;
 							
+							case "unifiedSearch":
+							
+								_engine.caseWork.unifiedSearch.start();
+								break;
+							
 							case "":
 								break;
 							default:
 								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
+								break;
 						}
 						break;
 						
@@ -910,6 +1226,21 @@ var _engine = {
 								break;
 							default:
 								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
+								break;
+						}
+						
+						break;
+						
+					case "tools":
+						switch( _c ){
+							case "getInfo":
+								
+								_engine.debug.info("- * Perform info grab type: " + _sc);
+								
+								break;
+							default:
+								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
+								break;
 						}
 						
 						break;
@@ -924,7 +1255,16 @@ var _engine = {
 			
 		}
 	},
+	
+	//*************//
+	//* Case Work *//
+	//*************//
+	
 	caseWork: {
+		
+		/* [Case Work] Contains feature set for writing case notes
+		/********************************************************************/
+		
 		note: {
 			write: function( _note ){
 				
@@ -1003,7 +1343,7 @@ var _engine = {
 				} else {
 					_engine.debug.error("- * Fail Reason: [_engine.caseWork.note.write( note )]: A valid note type must be specified to run this command.")
 				}
-			},
+			},			
 			_completeNote: function(){
 				
 				// Timeout Counter
@@ -1104,7 +1444,7 @@ var _engine = {
 														
 														}
 														
-														_c3++;
+														++_c3;
 														
 													} else {
 														
@@ -1124,7 +1464,7 @@ var _engine = {
 											
 											//Modal window is not yet open advance counter
 											
-											_c2++;
+											++_c2;
 											
 										} else {
 											
@@ -1145,7 +1485,7 @@ var _engine = {
 								
 							}
 							
-							_c1++
+							++_c1;
 						
 						} else {
 						
@@ -1167,14 +1507,256 @@ var _engine = {
 				
 			}
 		},
+		
+		/* [Case Work] Performs a dynamic search type using a single input
+		/********************************************************************/
+		
+		unifiedSearch: {
+
+			start: function(){
+				
+				_engine.navigation.hcr();
+				
+				var _modalType = "queries";
+				var _title = "Unified Search Query";
+				
+				var _url = _engine.advanced.baseUrl();
+				_url += "views/queries/unified search.html"
+				
+				_engine.advanced.getView( _url );
+				
+				// Check every 100ms for info in local storage. Timeout after 2000ms.
+					
+				var _c = 0;
+				
+				var buildFrame = setInterval(function(){
+					if(_c <= 25){
+						
+						if( _engine.storage.html.get() != false ){
+							// Gather html for modal
+							var _html = _engine.storage.html.get();
+							
+							if( $('<div>', {'html': _engine.storage.html.get() }).find('div').hasClass('mns-error-modal') ){
+								_title = "Error";
+								_modalType = "error";
+							}
+							
+							// Clear html storage
+							_engine.storage.html.clear();
+							
+							//Build modal
+							_engine.ui.modal.build( _title, _html, _modalType );
+							
+							clearInterval( buildFrame );
+							
+						}
+						
+						_c++;
+						
+					} else {
+						_engine.debug.error("- * Fail Reason: [ _engine.caseWork.unifiedSearch.start() ]: Build frame html timed out.");	
+						_engine.storage.html.clear();
+						clearInterval( buildFrame );
+					}
+				}, 100);
+				
+				buildFrame;
+				
+			},
+
+			_finish: function(){
+				
+				//Start param gather counter
+				_c1 = 0;
+
+				var _gatherParams = setInterval(function(){
+					
+					//Setup loop to gather modal params
+					
+					if( _c1 <= 25 ){
+						
+						_engine.debug.info("- * Attempting to gather params [ attempt: "+ _c1 +" ]");
+						
+						if( _engine.storage.modalParams.get() != false ){
+							
+							//Perform actions on the stored params
+							
+							_engine.debug.info("- * Params Gathered");
+							
+							$.each( _engine.storage.modalParams.get(),function(k,v){
+								
+									//Remove Special Characters and Trim
+								var _input = v.value.replace(/[^\w\s]/gi, '').replace(/ +(?= )/g,'').trim();
+								
+								if( $.isNumeric( _input ) ){
+									
+									if( _input.length == 8 ){
+										
+										// Case Number
+										_engine.search._case();
+										
+										_c2 = 0;
+										
+										var _openSearch = setInterval(function(){
+											_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
+											if(_c2 <= 40){
+												if( _engine.domTools.test.searches.windowLoaded() ){
+													
+													_engine.domTools.set.searches.fieldFill("Reference",_input);
+													
+													clearInterval( _openSearch );
+												}
+												++_c2;
+											} else {
+												clearInterval( _openSearch );
+											}
+										}, 100);
+										_openSearch;
+
+									} else if ( _input.length == 9 || _input.length == 10 ){
+										// SSN or MNS ID
+										_engine.search._person();
+										
+										_c2 = 0;
+										
+										var _openSearch = setInterval(function(){
+											_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
+											if(_c2 <= 40){
+												if( _engine.domTools.test.searches.windowLoaded() ){
+													
+													_engine.domTools.set.searches.fieldFill("Reference",_input);
+													
+													clearInterval( _openSearch );
+												}
+												++_c2;
+											} else {
+												clearInterval( _openSearch );
+											}
+										}, 100);
+										_openSearch;
+										
+									} else {
+										// Unknown
+										
+									}
+									
+								} else {
+									// Name
+									
+									_engine.search._person();
+									
+									var _name = _input.split(" ");
+									
+									if( _name.length > 1 ){
+										
+										_c2 = 0;
+										
+										var _openSearch = setInterval(function(){
+											_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
+											if(_c2 <= 40){
+												if( _engine.domTools.test.searches.windowLoaded() ){
+													
+													_engine.domTools.set.searches.fieldFill("First Name",_name[0]);
+										
+													_engine.domTools.set.searches.fieldFill("Last Name",_name[1]);
+													
+													clearInterval( _openSearch );
+												}
+												++_c2;
+											} else {
+												clearInterval( _openSearch );
+											}
+										}, 100);
+										_openSearch;
+										
+									} else {
+										
+										_c2 = 0;
+										
+										var _openSearch = setInterval(function(){
+											_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
+											if(_c2 <= 40){
+												if( _engine.domTools.test.searches.windowLoaded() ){
+													
+													_engine.domTools.set.searches.fieldFill("First Name",_name[0]);
+													
+													clearInterval( _openSearch );
+												}
+												++_c2;
+											} else {
+												clearInterval( _openSearch );
+											}
+										}, 100);
+										_openSearch;
+										
+									}
+									
+								}
+								
+							});
+							
+							_engine.debug.info("- * Clearing params");
+							
+							_engine.storage.modalParams.clear();
+							
+							clearInterval( _gatherParams );
+						
+						}
+						
+						++_c1;
+						
+					} else {
+						
+						_engine.debug.info("- * Fail Reason: Error [_engine.caseWork.note._completeNote()]: Failed to gather params.");							
+						clearInterval( _gatherParams );
+						
+					}
+
+				}, 100);
+
+				_gatherParams;
+				
+				
+			}
+			
+		},
+		
+		/* [Case Work] Opens a modal to select from currently open cases
+		/********************************************************************/
+		
 		caseSelection: function(){
 			
 			_engine.debug.info("- * [ _engine.caseWork.caseSelection() ] Starting integrated case selection.");
 			_engine.debug.error("- * [ _engine.caseWork.caseSelection() ] Case selection feature is in development. Please manually select an IC.");
 			
 		}
+		
 	},
+	
+	//*************//
+	//*   Tools   *//
+	//*************//
+	
+	tools: {
+		gatherData: {
+			address: function(){
+				
+			}
+		},
+		closeCurrentTab: function(){
+			$( _engine.domTools.get.hcrTabActive() ).find('span.dijitTabCloseButton').click();
+		}
+	},
+	
+	//************//
+	//* Advanced *//
+	//************//
+	
 	advanced: {
+		
+		/* [Advanced] Returns the needed base URL for ajax requests 
+		/********************************************************************/
+		
 		baseUrl: function(){
 			
 			var _commit = _engine.advanced.currentCommit();
@@ -1184,18 +1766,38 @@ var _engine = {
 			return _url;
 			
 		},
+		
+		/* [Advanced] Returns the entensions URL
+		/********************************************************************/
+		
 		extensionURL: function(){
 			return $('script[data-scriptengine]').attr('data-chromeurl');
 		},
+		
+		/* [Advanced] Returns the ID of the extension
+		/********************************************************************/
+		
 		extensionID: function(){
 			return $('script[data-scriptengine]').attr('data-extensionID');
 		},
+		
+		/* [Advanced] Returns the current Beta Repo Commit Sha
+		/********************************************************************/
+		
 		betaCommit: function(){
 			return $('script[data-scriptengine]').attr('data-beta');
 		},
+		
+		/* [Advanced] Returns the current Master Repo Commit Sha
+		/********************************************************************/
+		
 		masterCommit: function(){
 			return $('script[data-scriptengine]').attr('data-master');
 		},
+		
+		/* [Advanced] Returns the commit that the engine is currently using
+		/********************************************************************/
+		
 		currentCommit: function(){
 			if( _engine.storage.betaStatus.get() ){
 				return _engine.advanced.betaCommit();
@@ -1203,6 +1805,10 @@ var _engine = {
 				return _engine.advanced.masterCommit();
 			}
 		},
+		
+		/* [Advanced] ajax request to grab html template for modals
+		/********************************************************************/
+		
 		getView: function( _f ){
 
 			var _html = null;
@@ -1229,7 +1835,16 @@ var _engine = {
 			
 		}
 	},
+	
+	//*************//
+	//*  Storage  *//
+	//*************//
+	
 	storage: {
+		
+		/* [Storage] HTML
+		/********************************************************************/
+		
 		html: {
 			set: function( _html ){
 				window.localStorage.setItem( "mnsEngine_html", _html );
@@ -1245,6 +1860,10 @@ var _engine = {
 				localStorage.removeItem( "mnsEngine_html" );
 			}
 		},
+		
+		/* [Storage] Modal Parameters
+		/********************************************************************/
+		
 		modalParams: {
 			set: function( _params ){
 				
@@ -1267,6 +1886,10 @@ var _engine = {
 				localStorage.removeItem( "mnsEngine_modalParams" );
 			}
 		},
+		
+		/* [Storage] Engine Status
+		/********************************************************************/
+		
 		engineStatus: {
 			set: function( _status ){
 				
@@ -1282,6 +1905,10 @@ var _engine = {
 				localStorage.removeItem( "mnsEngine_Status" );
 			}
 		},
+		
+		/* [Storage] Beta Status
+		/********************************************************************/
+		
 		betaStatus: {
 			set: function( _status ){
 				
@@ -1301,6 +1928,10 @@ var _engine = {
 				localStorage.removeItem( "mnsEngine_betaStatus" );
 			}
 		},
+		
+		/* [Storage] Debug Status
+		/********************************************************************/
+		
 		debugStatus: {
 			set: function( _status ){
 				
@@ -1321,39 +1952,76 @@ var _engine = {
 			}
 		}
 	},
+	
+	//*************//
+	//*   Debug   *//
+	//*************//
+	
 	debug: {
+		
+		/* [Debug] Toggle debuging on/off
+		/********************************************************************/
+		
 		toggle: function(){
-			//Set debug status to oppo
 			_engine.storage.debugStatus.set( !_engine.storage.debugStatus.get() );
 			console.debug("_engine.debug: Debugging status changed to - " + _engine.storage.debugStatus.get() );
 		},
+		
+		/* [Debug] Log message when debug is enabled
+		/********************************************************************/
+		
 		log: function( msg ){
 			if( _engine.storage.debugStatus.get() ){
 				console.log("_engine.debug: " + msg);
 			}
 		},
+		
+		/* [Debug] Info message when debug is enabled
+		/********************************************************************/
+		
 		info: function( msg ){
 			if( _engine.storage.debugStatus.get() ){
 				console.info("_engine.debug: " + msg); 
 			}
 		},
+		
+		/* [Debug] Warn message when debug is enabled
+		/********************************************************************/
+		
 		warn: function( msg ){
 			if( _engine.storage.debugStatus.get() ){
 				console.warn("_engine.debug: " + msg);
 			}
 		},
+		
+		/* [Debug] Error message when debug is enabled
+		/********************************************************************/
+		
 		error: function( msg ){
 			if( _engine.storage.debugStatus.get() ){
 				console.error("_engine.debug: " + msg);
 			}
 		},
+		
+		/* [Debug] Debug message when debug is enabled
+		/********************************************************************/
+		
 		debug: function( msg ){
 			if( _engine.storage.debugStatus.get() ){
 				console.debug("_engine.debug: " + msg);
 			}
 		}
 	},
+	
+	//************//
+	//*   Beta   *//
+	//************//
+	
 	beta: {
+		
+		/* [Beta] Enable default set of Beta features 
+		/********************************************************************/
+		
 		enableBeta: function(){
 			//Enable Debugging
 			_engine.storage.debugStatus.set( true );
@@ -1372,6 +2040,10 @@ var _engine = {
 			_engine.ui.topNotification("Scripts Enabled: Beta");
 			
 		},
+		
+		/* [Beta] Return true/false based on if beta flag is in url
+		/********************************************************************/
+		
 		betaURL: function(){
 			var url = window.location.href;
 			
@@ -1394,6 +2066,10 @@ var _engine = {
 			}
 			
 		},
+		
+		/* [Beta] Enable default set of Release features 
+		/********************************************************************/
+		
 		enableRelease: function(){
 			//Enable Debugging
 			_engine.storage.debugStatus.set( false );
@@ -1415,7 +2091,7 @@ var _engine = {
 	}
 }
 
-/*   Onload
----------------------------------------------*/
+/* [Program Start] Runs the startup function 
+/********************************************************************/
 
 _engine.events._startUp();
