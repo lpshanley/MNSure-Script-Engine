@@ -29,13 +29,5 @@
 				"_events": "caseWork[writeNote(ATS)]"
 			}
 		}
-	},
-	"Tools": {
-		"_events": "",
-		"_submenu": {
-			"ATS Mileage Rate...": {
-				"_events": "tools[getInfo(ATS Mileage)]"
-			}
-		}
 	}
 }
