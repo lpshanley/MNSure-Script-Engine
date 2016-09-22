@@ -687,8 +687,6 @@ var _engine = {
 					var filePath = "json/release script menu.json";
 				}
 				
-				var filePath = "json/script menu.json"
-				
 				$.ajax({
 					dataType: "json",
 					url: _url + filePath,
