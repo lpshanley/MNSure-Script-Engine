@@ -1079,8 +1079,6 @@ var _engine = {
 					if(counter == _t.length){
 						counter = 0;
 					}
-					
-					console.log( counter );
 
 				}, 100);
 
