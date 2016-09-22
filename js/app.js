@@ -1044,7 +1044,7 @@ var _engine = {
 			
 			if( !_engine.storage.engineStatus.get() ){
 				
-				var _t = [".","..","...","&nbsp...","&nbsp;&nbsp...","&nbsp;&nbsp;&nbsp;...","&nbsp;&nbsp;&nbsp;&nbsp;..","&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.",""];
+				var _t = ["Scripts Disabled: Loading.","Scripts Disabled: Loading..","Scripts Disabled: Loading...","Scripts Disabled: Loading&nbsp...","Scripts Disabled: Loading&nbsp;&nbsp...","Scripts Disabled: Loading&nbsp;&nbsp;&nbsp;...","Scripts Disabled: Loading&nbsp;&nbsp;&nbsp;&nbsp;..","Scripts Disabled: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.","Scripts Disabled: Loading"];
 
 				var _ele = document.getElementsByClassName('center-box')[0];
 
