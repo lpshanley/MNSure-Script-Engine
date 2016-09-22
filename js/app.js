@@ -1053,6 +1053,38 @@ var _engine = {
 		_startUp: function() {
 			
 			if( !_engine.storage.engineStatus.get() ){
+				
+				var _t = [".","..","...","&nbsp...","&nbsp;&nbsp...","&nbsp;&nbsp;&nbsp;...","&nbsp;&nbsp;&nbsp;&nbsp;..","&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.",""];
+
+				var _ele = document.getElementsByClassName('center-box')[0];
+
+				_ele.innerHTML = "";
+
+				var _span = document.createElement('span');
+
+				_span.id = "mns-scripts-loading";
+
+				_ele.appendChild( _span );
+
+				var _loadSpan = document.getElementById("mns-scripts-loading");
+					
+				var counter = 0;
+					
+				var _loading = setInterval(function(){
+
+					_loadSpan.innerHTML = _t[counter];
+					
+					++counter;
+					
+					if(counter == _t.length){
+						counter = 0;
+					}
+					
+					console.log( counter );
+
+				}, 100);
+
+				_loading;
 			
 				setTimeout(function(){
 					/* Loaded
@@ -1083,6 +1115,8 @@ var _engine = {
 						_engine.search._person();
 						
 					});
+					
+					clearInterval( _loading );
 					
 					if( _engine.beta.betaURL() ){
 						
