@@ -132,12 +132,11 @@ var _engine = {
 						_tab = _tab[0]:
 						_tab = _tab;
 				
-				console.log( _tab );
-				
 				var _id = $( _tab ).attr( 'widgetid' ).split('-')[1].split('_');
 				var _f = _id[2] + "_" + _id[3] + "_" + _id[4] + "_" + _id[5];
 				
 				return $('[widgetid="'+_f+'"]')[0];
+				
 			},
 			
 				/* These functions get elements that are contained inside the 
@@ -1878,6 +1877,43 @@ var _engine = {
 			}
 			
 		}
+		
+		/* [Tools] Waits for the requested element to be available.
+		/********************************************************************/
+		
+		waitOnLoad: function( _element, callback ){
+			
+			var count = 0;
+			
+			var timeout = setInterval(function(){
+				
+				if( count <= 30 ){
+					
+					if( typeof _element != 'undefined' ){
+						
+						//Element found - continue script
+						callback( _element );
+						
+						clearInterval( timeout );
+						
+					} else {
+						
+						//Element not found, wait and check again.
+						++count;
+						
+					}					
+					
+				} else {
+					
+					//Script timed out
+					clearInterval( timeout );
+					
+				}
+				
+			}, 100);
+			
+		}
+		
 	},
 	
 	//************//
