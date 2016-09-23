@@ -1878,8 +1878,6 @@ var _engine = {
 			
 			var screenType = _engine.domTools.test.hcrTabType();
 			
-			var resultSelected = false;
-			
 			_count = 0;
 			
 			var _loadWindow = setInterval(function(){
@@ -1888,25 +1886,21 @@ var _engine = {
 				
 				if(_count <= 40){
 					
-					if( _engine.domTools.test.searches.windowLoaded() ){
+					var _results = _engine.domTools.get.searches.searchResultsQuery();
+					
+					if( _engine.domTools.test.searches.windowLoaded() && _results.length > 0 ){
 						
 						if( screenType == "Case Search" || screenType == "Person Search" ){
-			
-							var _results = _engine.domTools.get.searches.searchResultsQuery();
 							
 							if( !_results ){
 								
 								if( _results.length == 1 ){
 									
-									_engine.tools.waitOnLoad({ node: _results, find:'td:nth-child(2) a' },function(_button){
-										
-										console.log( _button );
-										
-										_button[0].click()
-										
-										resultSelected = true;
-										
-									});
+									_results.find('td:nth-child(2) a')[0].click();
+									
+									_tabToClose = _engine.domTools.get.hcrTabListTypeQuery( screenType );
+									
+									_engine.tools.closeTabHCR( _tabToClose );
 									
 								}
 								
@@ -1919,13 +1913,6 @@ var _engine = {
 							return false;
 							
 						}
-						
-						if( resultSelected ){
-							
-							var _tabToClose = _engine.domTools.get.hcrTabListTypeQuery( screenType );
-							_engine.tools.closeTabHCR( _tabToClose );
-							
-						}										
 						
 						clearInterval( _loadWindow );
 					}
