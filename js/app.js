@@ -394,7 +394,7 @@ var _engine = {
 				
 				console.log( typeof _tab );
 				
-				if( typeof _input == 'undefined' ){
+				if( typeof _tab 'undefined' ){
 	
 					_tab = _engine.domTools.get.hcrTabActive();
 				
