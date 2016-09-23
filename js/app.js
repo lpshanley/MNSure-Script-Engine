@@ -1892,7 +1892,10 @@ var _engine = {
 					if( typeof _element != 'undefined' ){
 						
 						//Element found - continue script
-						callback( _element );
+						
+						if( typeof callback == 'function' ){
+							callback( _element );
+						}
 						
 						clearInterval( timeout );
 						
