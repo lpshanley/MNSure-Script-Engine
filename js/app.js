@@ -392,7 +392,11 @@ var _engine = {
 				
 				console.log( _tab );
 				
-				console.log( $(_tab) );
+				console.log( _tab[0] );
+				
+				console.log( $( _tab[0] ) );
+				
+				console.log( $( _tab )[0] );
 				
 				console.log( typeof _tab );
 				
