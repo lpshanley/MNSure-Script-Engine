@@ -390,21 +390,19 @@ var _engine = {
 			},
 			hcrTabType: function( _tab ){
 				
-				console.log( _tab );
+				typeof _tab == 'undefined' ? _tab = _engine.domTools.get.hcrTabActive() : _tab = _tab[0];
 				
-				console.log( _tab[0] );
-				
-				console.log( $( _tab[0] ) );
-				
-				console.log( $( _tab )[0] );
-				
-				console.log( typeof _tab );
-				
+				/*
 				if( typeof _tab == 'undefined' ){
 	
 					_tab = _engine.domTools.get.hcrTabActive();
 				
+				} else {
+					
+					_tab = _tab[0];
+					
 				}
+				*/
 				
 				console.log( _tab );
 
