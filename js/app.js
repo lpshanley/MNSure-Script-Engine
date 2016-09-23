@@ -68,6 +68,24 @@ var _engine = {
 				return $('[widgetid="HCRCASEAPPWorkspaceSection-stc_tablist"] div.dijitTabContainerTop-tabs div.dijitTab');
 			},
 			
+				/* Returns an array of the tabs that are currently 
+				|* open based on a specified tab type
+				\*----------------------------------------------------------*/
+			
+			hcrTabListTypeQuery: function(){
+				
+				var _openTabs = _engine.domTools.get.hcrTabList();
+			
+				$.each( _openTabs, function( k, v ){
+					
+					var _tabType = _engine.domTools.test.hcrTabType( v );
+					
+					console.log(  )
+					
+				});
+			
+			},
+			
 				/* Returns the tab that is currently the focus on the
 				|* HCR Cases and Outcomes screen.
 				\*----------------------------------------------------------*/
@@ -230,7 +248,7 @@ var _engine = {
 				
 				advancedQuery: function( _query ){
 					
-					var screenType = _engine.domTools.test.hcrTabActiveType();
+					var screenType = _engine.domTools.test.hcrTabType();
 					
 					if( screenType == "Case Search" || screenType == "Person Search" ){
 						
@@ -370,21 +388,25 @@ var _engine = {
 					return false;
 				}
 			},
-			hcrTabActiveType: function(){
+			hcrTabType: function( _tab ){
 				
-				_activeTab = _engine.domTools.get.hcrTabActive();
+				if( typeof _input == 'undefined' ){
+	
+					_tab = _engine.domTools.get.hcrTabActive();
+				
+				}
 
-				if ( _activeTab.innerText.match(/\d+/g) == null ){
+				if ( _tab.innerText.match(/\d+/g) == null ){
 					// Titles without numbers
 						
 						//Titles Containg Search
-					if ( _activeTab.innerText.indexOf("Search") != -1 ){
+					if ( _tab.innerText.indexOf("Search") != -1 ){
 						
 							// Case Search
-						if ( _activeTab.innerText.indexOf("Case") != -1 ){
+						if ( _tab.innerText.indexOf("Case") != -1 ){
 							return "Case Search";
 							// Person Search
-						} else if( _activeTab.innerText.indexOf("Person") != -1 ){
+						} else if( _tab.innerText.indexOf("Person") != -1 ){
 							return "Person Search";
 						}
 					
@@ -404,17 +426,17 @@ var _engine = {
 					// Titles with numbers
 					
 						// Titles containing "Insurance Affordability"
-					if( _activeTab.innerText.indexOf("Insurance Affordability") != -1 ){
+					if( _tab.innerText.indexOf("Insurance Affordability") != -1 ){
 							// Integrated Case Screen
-						if( _activeTab.innerText.indexOf("Insurance Affordability") == 0 ){
+						if( _tab.innerText.indexOf("Insurance Affordability") == 0 ){
 							return  "Integrated Case";
 							// Evidence Screen
-						} else if( _activeTab.innerText.indexOf("Insurance Affordability") > 0 ) {
-							return  "Evidence|" + _activeTab.innerText.split("-")[0].trim() ;
+						} else if( _tab.innerText.indexOf("Insurance Affordability") > 0 ) {
+							return  "Evidence|" + _tab.innerText.split("-")[0].trim() ;
 						}
-					} else if ( $.inArray( _activeTab.innerText.replace(/[0-9]/g,"").trim().toLowerCase(), ["medical assistance", "minnesotacare", "unassisted qualified health plan", "insurance assistance"] ) != -1 ) {
+					} else if ( $.inArray( _tab.innerText.replace(/[0-9]/g,"").trim().toLowerCase(), ["medical assistance", "minnesotacare", "unassisted qualified health plan", "insurance assistance"] ) != -1 ) {
 						
-						return "PDC|" + _activeTab.innerText.replace(/[0-9]/g,"").trim();
+						return "PDC|" + _tab.innerText.replace(/[0-9]/g,"").trim();
 						
 					} else {
 						
@@ -459,7 +481,7 @@ var _engine = {
 			searches: {
 				windowLoaded: function(){
 					
-					var _screenType = _engine.domTools.test.hcrTabActiveType();
+					var _screenType = _engine.domTools.test.hcrTabType();
 					
 					if( _screenType == "Person Search" || _screenType == "Case Search" ){
 					
@@ -1780,7 +1802,7 @@ var _engine = {
 		
 		selectResultOnSearch: function(){
 			
-			var screenType = _engine.domTools.test.hcrTabActiveType();
+			var screenType = _engine.domTools.test.hcrTabType();
 			
 			if( screenType == "Case Search" || screenType == "Person Search" ){
 				
@@ -1790,7 +1812,7 @@ var _engine = {
 					_results.find('td:nth-child(2) a')[0].click();
 				}
 				
-				var screenType = _engine.domTools.test.hcrTabActiveType();
+				var screenType = _engine.domTools.test.hcrTabType();
 				
 			} else {
 				
