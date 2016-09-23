@@ -1703,10 +1703,8 @@ var _engine = {
 												if( _engine.domTools.test.searches.windowLoaded() ){
 													
 													_engine.domTools.set.searches.fieldFill("Reference",_input);
-													
-													_engine.domTools.get.searches.advancedQuery(".action-set a:contains('Search')")[0].click();
-													
-													_engine.tools.selectResultOnSearch();
+
+													_engine.tools.selectSearchResult();
 													
 													clearInterval( _openSearch );
 												}
@@ -1734,9 +1732,7 @@ var _engine = {
 													
 													_engine.domTools.set.searches.fieldFill("Reference",_input);
 													
-													_engine.domTools.get.searches.advancedQuery(".action-set a:contains('Search')")[0].click();
-													
-													_engine.tools.selectResultOnSearch();											
+													_engine.tools.selectSearchResult();											
 													
 													clearInterval( _openSearch );
 												}
@@ -1772,9 +1768,7 @@ var _engine = {
 										
 													_engine.domTools.set.searches.fieldFill("Last Name",_name[1]);
 													
-													_engine.domTools.get.searches.advancedQuery(".action-set a:contains('Search')")[0].click();
-													
-													_engine.tools.selectResultOnSearch();
+													_engine.tools.selectSearchResult();
 													
 													clearInterval( _openSearch );
 												}
@@ -1878,48 +1872,70 @@ var _engine = {
 		/* [Tools] Chooses a specified result on the page
 		/********************************************************************/
 		
-		selectResultOnSearch: function(){
+		selectSearchResult: function(){
 			
 			var screenType = _engine.domTools.test.hcrTabType();
 			
 			var resultSelected = false;
 			
-			if( screenType == "Case Search" || screenType == "Person Search" ){
+			_count = 0;
+			
+			var _loadWindow = setInterval(function(){
 				
-				var _results = _engine.domTools.get.searches.searchResultsQuery();
+				_engine.debug.info("- * Attempting to load results screen [ attempt: "+ _count +" ]");
 				
-				if( !_results ){
+				if(_count <= 40){
 					
-					if( _results.length == 1 ){
+					if( _engine.domTools.test.searches.windowLoaded() ){
 						
-						_engine.tools.waitOnLoad({ node: _results, find:'td:nth-child(2) a' },function(_button){
+						if( screenType == "Case Search" || screenType == "Person Search" ){
+			
+							var _results = _engine.domTools.get.searches.searchResultsQuery();
 							
-							console.log( _button );
+							if( !_results ){
+								
+								if( _results.length == 1 ){
+									
+									_engine.tools.waitOnLoad({ node: _results, find:'td:nth-child(2) a' },function(_button){
+										
+										console.log( _button );
+										
+										_button[0].click()
+										
+										resultSelected = true;
+										
+									});
+									
+								}
+								
+							}
 							
-							_button[0].click()
+						} else {
 							
-							resultSelected = true;
+							_engine.debug.error("- * [ _engine.tools.selectSearchResult() ] You must be on a search page to use this tool.");
+
+							return false;
 							
-						});
+						}
 						
+						if( resultSelected ){
+							
+							var _tabToClose = _engine.domTools.get.hcrTabListTypeQuery( screenType );
+							_engine.tools.closeTabHCR( _tabToClose );
+							
+						}										
+						
+						clearInterval( _loadWindow );
 					}
 					
+					++_count;
+					
+				} else {
+					clearInterval( _loadWindow );
 				}
-				
-			} else {
-				
-				_engine.debug.error("- * [ _engine.tools.selectResultOnSearch() ] You must be on a search page to use this tool.");
-
-				return false;
-				
-			}
+			}, 100);
 			
-			if( resultSelected ){
-				
-				var _tabToClose = _engine.domTools.get.hcrTabListTypeQuery( screenType );
-				_engine.tools.closeTabHCR( _tabToClose );
-				
-			}
+			_loadWindow;
 			
 		},
 		
