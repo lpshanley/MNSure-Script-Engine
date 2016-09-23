@@ -1841,15 +1841,17 @@ var _engine = {
 				
 				var _results = _engine.domTools.get.searches.searchResultsQuery();
 				
-				if( _results.length == 1){
+				if( !_results ){
 					
-					_results.find('td:nth-child(2) a')[0].click();
+					if( _results.length == 1 ){
 					
-					resultSelected = true;
+						_results.find('td:nth-child(2) a')[0].click();
+					
+						resultSelected = true;
+					
+					}
 					
 				}
-				
-				var screenType = _engine.domTools.test.hcrTabType();
 				
 			} else {
 				
