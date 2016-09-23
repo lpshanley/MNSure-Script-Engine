@@ -74,6 +74,8 @@ var _engine = {
 			
 			hcrTabListTypeQuery: function( _queryType ){
 				
+				_engine.debug.info("Starting tab list query");
+				
 				var _openTabs = _engine.domTools.get.hcrTabList();
 				
 				var _returnArray = [];
@@ -88,11 +90,17 @@ var _engine = {
 						
 					}
 					
+					_engine.debug.info("Comparing query type [ "+ _queryType +" ] to tab type [ "+ _tabType +" ]");
+					
 					if( _tabType.toLowerCase() == _queryType.toLowerCase() ){
 						
-						_returnArray.push( $( v ) );
+						_engine.debug.info("Type matched. Added to array.");
+						
+						_returnArray.push( v );
 						
 					}
+					
+					_engine.debug.info("Completed tab list query.");
 					
 					return _returnArray;
 					
