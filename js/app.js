@@ -72,15 +72,29 @@ var _engine = {
 				|* open based on a specified tab type
 				\*----------------------------------------------------------*/
 			
-			hcrTabListTypeQuery: function(){
+			hcrTabListTypeQuery: function( _queryType ){
 				
 				var _openTabs = _engine.domTools.get.hcrTabList();
+				
+				var _returnArray = [];
 			
 				$.each( _openTabs, function( k, v ){
 					
 					var _tabType = _engine.domTools.test.hcrTabType( $( v ) );
 					
-					console.log( _tabType );
+					if( _tabType.split("|").length == 2 && _queryType.toLowerCase() == "pdc" ){
+						
+						_tabType = _tabType.split("|")[0].trim;
+						
+					}
+					
+					if( _tabType.toLowerCase() == _queryType.toLowerCase() ){
+						
+						_returnArray.push( $( v ) );
+						
+					}
+					
+					return _returnArray;
 					
 				});
 			
@@ -391,20 +405,6 @@ var _engine = {
 			hcrTabType: function( _tab ){
 				
 				typeof _tab == 'undefined' ? _tab = _engine.domTools.get.hcrTabActive() : _tab = _tab[0];
-				
-				/*
-				if( typeof _tab == 'undefined' ){
-	
-					_tab = _engine.domTools.get.hcrTabActive();
-				
-				} else {
-					
-					_tab = _tab[0];
-					
-				}
-				*/
-				
-				console.log( _tab );
 
 				if ( _tab.innerText.match(/\d+/g) == null ){
 					// Titles without numbers
