@@ -1882,9 +1882,11 @@ var _engine = {
 					
 					if( _results.length == 1 ){
 						
-						_engine.tools.waitOnLoad(_results.find('td:nth-child(2) a')[0],function(_button){
+						_engine.tools.waitOnLoad({ node: _results, find:'td:nth-child(2) a' },function(_button){
 							
-							_button.click()
+							console.log( _button );
+							
+							_button[0].click()
 							
 							resultSelected = true;
 							
@@ -1914,7 +1916,20 @@ var _engine = {
 		/* [Tools] Waits for the requested element to be available.
 		/********************************************************************/
 		
-		waitOnLoad: function( _element, callback ){
+		waitOnLoad: function( _input, callback ){
+			
+			if( typeof _input[0] == 'undefined' ){
+				
+				_node = _input.node;
+				_find = _input.find;
+				
+				_element = $( _node ).find( _find )[0];
+				
+			} else {
+				
+				_element = _input;
+				
+			}
 			
 			var count = 0;
 			
