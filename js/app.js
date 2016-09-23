@@ -126,7 +126,11 @@ var _engine = {
 				
 				_engine.navigation.hcr();
 				
-				typeof _tab == 'undefined' ? _tab = _engine.domTools.get.hcrTabActive() : _tab = _tab[0];
+				typeof _tab == 'undefined' ? 
+					_tab = _engine.domTools.get.hcrTabActive() : 
+					typeof _tab[0] != 'undefined' ?
+						_tab = _tab[0]:
+						_tab = _tab;
 				
 				console.log( _tab );
 				
