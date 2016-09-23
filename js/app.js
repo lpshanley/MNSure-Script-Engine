@@ -1876,7 +1876,7 @@ var _engine = {
 				
 			}
 			
-		}
+		},
 		
 		/* [Tools] Waits for the requested element to be available.
 		/********************************************************************/
