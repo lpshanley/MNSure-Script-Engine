@@ -78,9 +78,9 @@ var _engine = {
 			
 				$.each( _openTabs, function( k, v ){
 					
-					var _tabType = _engine.domTools.test.hcrTabType( v );
+					var _tabType = _engine.domTools.test.hcrTabType( $( v ) );
 					
-					console.log(  )
+					console.log( _tabType );
 					
 				});
 			
@@ -390,11 +390,17 @@ var _engine = {
 			},
 			hcrTabType: function( _tab ){
 				
+				console.log( _tab );
+				
+				console.log( typeof _tab );
+				
 				if( typeof _input == 'undefined' ){
 	
 					_tab = _engine.domTools.get.hcrTabActive();
 				
 				}
+				
+				console.log( _tab );
 
 				if ( _tab.innerText.match(/\d+/g) == null ){
 					// Titles without numbers
