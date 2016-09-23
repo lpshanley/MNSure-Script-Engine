@@ -438,16 +438,37 @@ var _engine = {
 						}
 					
 						//Person Page
-					} else if($( _engine.domTools.get.hcrTabFrame( _tab ) ).find('iframe.detailsPanelFrame').attr('src').split("/")[1].split(".")[0].replace("TabDetailsPage", "").toLowerCase() == "person_home" ){ 
-					
-						return "Person Page";
-					
 					} else {
 						
-						_engine.debug.info("- * UNDEFINED ( w/o numbers )");
-						return "UNDEFINED";
+						_tabFrame = $( _engine.domTools.get.hcrTabFrame( _tab ) ).find('iframe.detailsPanelFrame');
 						
-					}
+						if( _tabFrame.length != 1 ){
+	
+							_returnTab = _engine.domTools.get.hcrTabActive();
+							_tab.click();
+							_returnTab.click();
+							
+							return false;
+						
+						} else if( _tabFrame.length > 0 ){ 
+							
+							if( $( _tabFrame ).attr('src').split("/")[1].split(".")[0].replace("TabDetailsPage", "").toLowerCase() == "person_home" ){
+						
+								return "Person Page";
+								
+							}
+							
+							//UNDEFINED
+						} else {
+							
+							_engine.debug.info("- * UNDEFINED ( w/o numbers )");
+						
+							return "UNDEFINED";
+							
+						}
+						$( _engine.domTools.get.hcrTabFrame( _tab ) ).find('iframe.detailsPanelFrame').attr('src').split("/")[1].split(".")[0].replace("TabDetailsPage", "").toLowerCase() == "person_home"
+						
+					} 
 					
 				} else {
 					// Titles with numbers
