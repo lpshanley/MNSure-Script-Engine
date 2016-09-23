@@ -244,7 +244,7 @@ var _engine = {
 							
 						} else {
 							
-							_engine.debug.error("- * [ _engine.domTools.get.searches.advancedQuery( _query ) ] Could not find requested field: " + _field);
+							_engine.debug.error("- * [ _engine.domTools.get.searches.advancedQuery( _query ) ] Could not find requested field: " + _query);
 							
 							return false;
 							
@@ -258,6 +258,10 @@ var _engine = {
 						
 					}
 					
+				},
+				
+				searchResultsQuery: function (){
+					return _engine.domTools.get.searches.advancedQuery("table[summary='Search Results. Press INSERT + ESC to update list contents'] tbody tr:not('.list-details-row')");
 				}
 				
 			}
