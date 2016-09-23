@@ -1881,11 +1881,15 @@ var _engine = {
 				if( !_results ){
 					
 					if( _results.length == 1 ){
-					
-						_results.find('td:nth-child(2) a')[0].click();
-					
-						resultSelected = true;
-					
+						
+						_engine.tools.waitOnLoad(_results.find('td:nth-child(2) a')[0],function(_button){
+							
+							_button.click()
+							
+							resultSelected = true;
+							
+						});
+						
 					}
 					
 				}
