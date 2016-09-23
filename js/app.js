@@ -84,6 +84,10 @@ var _engine = {
 					
 					var _tabType = _engine.domTools.test.hcrTabType( $( v ) );
 					
+					if(_tabType == false){
+						_tabType == "Person Page";
+					}
+					
 					if( _tabType.split("|").length == 2 && _queryType.toLowerCase() == "pdc" ){
 						
 						_tabType = _tabType.split("|")[0].trim;
