@@ -224,7 +224,7 @@ var _engine = {
 				
 				inputQuery: function( _title ){
 					
-					_engine.domTools.get.searches.advancedQuery( 'input[title="' + _title + '"]' );
+					return _engine.domTools.get.searches.advancedQuery( 'input[title="' + _title + '"]' );
 					
 				},
 				
