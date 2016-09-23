@@ -1891,18 +1891,14 @@ var _engine = {
 					if( _engine.domTools.test.searches.windowLoaded() && _results.length > 0 ){
 						
 						if( screenType == "Case Search" || screenType == "Person Search" ){
-							
-							if( !_results ){
 								
-								if( _results.length == 1 ){
-									
-									_results.find('td:nth-child(2) a')[0].click();
-									
-									_tabToClose = _engine.domTools.get.hcrTabListTypeQuery( screenType );
-									
-									_engine.tools.closeTabHCR( _tabToClose );
-									
-								}
+							if( _results.length == 1 ){
+								
+								_results.find('td:nth-child(2) a')[0].click();
+								
+								_tabToClose = _engine.domTools.get.hcrTabListTypeQuery( screenType );
+								
+								_engine.tools.closeTabHCR( _tabToClose );
 								
 							}
 							
