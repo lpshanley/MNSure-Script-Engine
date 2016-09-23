@@ -421,7 +421,11 @@ var _engine = {
 			},
 			hcrTabType: function( _tab ){
 				
-				typeof _tab == 'undefined' ? _tab = _engine.domTools.get.hcrTabActive() : _tab = _tab[0];
+				typeof _tab == 'undefined' ? 
+					_tab = _engine.domTools.get.hcrTabActive() : 
+					typeof _tab[0] != 'undefined' ?
+						_tab = _tab[0] :
+						_tab = _tab;
 
 				if ( _tab.innerText.match(/\d+/g) == null ){
 					// Titles without numbers
