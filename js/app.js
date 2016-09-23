@@ -1894,7 +1894,7 @@ var _engine = {
 						//Element found - continue script
 						
 						if( typeof callback == 'function' ){
-							callback( _element );
+							callback( $(_element) );
 						}
 						
 						clearInterval( timeout );
