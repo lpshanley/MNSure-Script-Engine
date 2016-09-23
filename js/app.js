@@ -68,6 +68,47 @@ var _engine = {
 				return $('[widgetid="HCRCASEAPPWorkspaceSection-stc_tablist"] div.dijitTabContainerTop-tabs div.dijitTab');
 			},
 			
+				/* Returns an array of the tabs that are currently 
+				|* open based on a specified tab type
+				\*----------------------------------------------------------*/
+			
+			hcrTabListTypeQuery: function( _queryType ){
+				
+				_engine.debug.info("Starting tab list query");
+				
+				var _openTabs = _engine.domTools.get.hcrTabList();
+				
+				var _returnArray = [];
+			
+				$.each( _openTabs, function( k, v ){
+					
+					var _tabType = _engine.domTools.test.hcrTabType( $( v ) );
+					
+					if( _tabType.split("|").length == 2 && _queryType.toLowerCase() == "pdc" ){
+						
+						_tabType = _tabType.split("|")[0].trim;
+						
+					}
+					
+					_engine.debug.info("Comparing query type [ '"+ _queryType.toLowerCase() +"' ] to tab type [ '"+ _tabType.toLowerCase() +"' ]");
+					
+					if( _tabType.toLowerCase() == _queryType.toLowerCase() ){
+						
+						_engine.debug.info("Type matched. Added to array.");
+						
+						_returnArray.push( v );
+						
+					}
+
+					
+				});
+				
+				_engine.debug.info("Completed tab list query.");
+					
+				return _returnArray;
+			
+			},
+			
 				/* Returns the tab that is currently the focus on the
 				|* HCR Cases and Outcomes screen.
 				\*----------------------------------------------------------*/
@@ -222,15 +263,21 @@ var _engine = {
 				
 			searches: {
 				
-				fieldQuery: function( _field ){
+				inputQuery: function( _title ){
 					
-					var screenType = _engine.domTools.test.hcrTabActiveType();
+					return _engine.domTools.get.searches.advancedQuery( 'input[title="' + _title + '"]' );
+					
+				},
+				
+				advancedQuery: function( _query ){
+					
+					var screenType = _engine.domTools.test.hcrTabType();
 					
 					if( screenType == "Case Search" || screenType == "Person Search" ){
 						
 						var _frame = $( _engine.domTools.get.hcrTabActiveFrame() );
 						
-						var _result = $( _frame ).find('iframe').contents().find('input[title="' + _field + '"]');
+						var _result = $( _frame ).find('iframe').contents().find( _query );
 						
 						if( _result.length > 0 ){
 							
@@ -238,7 +285,7 @@ var _engine = {
 							
 						} else {
 							
-							_engine.debug.error("- * [ _engine.domTools.get.searches.fieldQuery( _field ) ] Could not find requested field: " + _field);
+							_engine.debug.error("- * [ _engine.domTools.get.searches.advancedQuery( _query ) ] Could not find requested field: " + _query);
 							
 							return false;
 							
@@ -246,12 +293,16 @@ var _engine = {
 						
 					} else {
 						
-						_engine.debug.error("- * [ _engine.domTools.get.searches.fieldQuery( _field ) ] You must be on a search page to use this dom query.");
+						_engine.debug.error("- * [ _engine.domTools.get.searches.advancedQuery( _query ) ] You must be on a search page to use this dom query.");
 
 						return false;
 						
 					}
 					
+				},
+				
+				searchResultsQuery: function (){
+					return _engine.domTools.get.searches.advancedQuery("table[summary='Search Results. Press INSERT + ESC to update list contents'] tbody tr:not('.list-details-row')");
 				}
 				
 			}
@@ -331,7 +382,7 @@ var _engine = {
 				
 				fieldFill: function( _field, _value ){
 					
-					var _f = _engine.domTools.get.searches.fieldQuery( _field );
+					var _f = _engine.domTools.get.searches.inputQuery( _field );
 					
 					if( _f != false ){
 						
@@ -360,21 +411,21 @@ var _engine = {
 					return false;
 				}
 			},
-			hcrTabActiveType: function(){
+			hcrTabType: function( _tab ){
 				
-				_activeTab = _engine.domTools.get.hcrTabActive();
+				typeof _tab == 'undefined' ? _tab = _engine.domTools.get.hcrTabActive() : _tab = _tab[0];
 
-				if ( _activeTab.innerText.match(/\d+/g) == null ){
+				if ( _tab.innerText.match(/\d+/g) == null ){
 					// Titles without numbers
 						
 						//Titles Containg Search
-					if ( _activeTab.innerText.indexOf("Search") != -1 ){
+					if ( _tab.innerText.indexOf("Search") != -1 ){
 						
 							// Case Search
-						if ( _activeTab.innerText.indexOf("Case") != -1 ){
+						if ( _tab.innerText.indexOf("Case") != -1 ){
 							return "Case Search";
 							// Person Search
-						} else if( _activeTab.innerText.indexOf("Person") != -1 ){
+						} else if( _tab.innerText.indexOf("Person") != -1 ){
 							return "Person Search";
 						}
 					
@@ -394,17 +445,17 @@ var _engine = {
 					// Titles with numbers
 					
 						// Titles containing "Insurance Affordability"
-					if( _activeTab.innerText.indexOf("Insurance Affordability") != -1 ){
+					if( _tab.innerText.indexOf("Insurance Affordability") != -1 ){
 							// Integrated Case Screen
-						if( _activeTab.innerText.indexOf("Insurance Affordability") == 0 ){
+						if( _tab.innerText.indexOf("Insurance Affordability") == 0 ){
 							return  "Integrated Case";
 							// Evidence Screen
-						} else if( _activeTab.innerText.indexOf("Insurance Affordability") > 0 ) {
-							return  "Evidence|" + _activeTab.innerText.split("-")[0].trim() ;
+						} else if( _tab.innerText.indexOf("Insurance Affordability") > 0 ) {
+							return  "Evidence|" + _tab.innerText.split("-")[0].trim() ;
 						}
-					} else if ( $.inArray( _activeTab.innerText.replace(/[0-9]/g,"").trim().toLowerCase(), ["medical assistance", "minnesotacare", "unassisted qualified health plan", "insurance assistance"] ) != -1 ) {
+					} else if ( $.inArray( _tab.innerText.replace(/[0-9]/g,"").trim().toLowerCase(), ["medical assistance", "minnesotacare", "unassisted qualified health plan", "insurance assistance"] ) != -1 ) {
 						
-						return "PDC|" + _activeTab.innerText.replace(/[0-9]/g,"").trim();
+						return "PDC|" + _tab.innerText.replace(/[0-9]/g,"").trim();
 						
 					} else {
 						
@@ -449,7 +500,7 @@ var _engine = {
 			searches: {
 				windowLoaded: function(){
 					
-					var _screenType = _engine.domTools.test.hcrTabActiveType();
+					var _screenType = _engine.domTools.test.hcrTabType();
 					
 					if( _screenType == "Person Search" || _screenType == "Case Search" ){
 					
@@ -1591,6 +1642,10 @@ var _engine = {
 									if( _input.length == 8 ){
 										
 										// Case Number
+										
+										var _tabToClose = _engine.domTools.get.hcrTabListTypeQuery("Case Search");
+										_engine.tools.closeTabHCR( _tabToClose );
+										
 										_engine.search._case();
 										
 										_c2 = 0;
@@ -1601,6 +1656,10 @@ var _engine = {
 												if( _engine.domTools.test.searches.windowLoaded() ){
 													
 													_engine.domTools.set.searches.fieldFill("Reference",_input);
+													
+													_engine.domTools.get.searches.advancedQuery(".action-set a:contains('Search')")[0].click();
+													
+													_engine.tools.selectResultOnSearch();
 													
 													clearInterval( _openSearch );
 												}
@@ -1613,6 +1672,10 @@ var _engine = {
 
 									} else if ( _input.length == 9 || _input.length == 10 ){
 										// SSN or MNS ID
+										
+										var _tabToClose = _engine.domTools.get.hcrTabListTypeQuery("Person Search");
+										_engine.tools.closeTabHCR( _tabToClose );
+										
 										_engine.search._person();
 										
 										_c2 = 0;
@@ -1623,6 +1686,10 @@ var _engine = {
 												if( _engine.domTools.test.searches.windowLoaded() ){
 													
 													_engine.domTools.set.searches.fieldFill("Reference",_input);
+													
+													_engine.domTools.get.searches.advancedQuery(".action-set a:contains('Search')")[0].click();
+													
+													_engine.tools.selectResultOnSearch();											
 													
 													clearInterval( _openSearch );
 												}
@@ -1657,6 +1724,10 @@ var _engine = {
 													_engine.domTools.set.searches.fieldFill("First Name",_name[0]);
 										
 													_engine.domTools.set.searches.fieldFill("Last Name",_name[1]);
+													
+													_engine.domTools.get.searches.advancedQuery(".action-set a:contains('Search')")[0].click();
+													
+													_engine.tools.selectResultOnSearch();
 													
 													clearInterval( _openSearch );
 												}
@@ -1736,13 +1807,65 @@ var _engine = {
 	//*************//
 	
 	tools: {
+		
+		/* [Tools] Queries for a specific info type
+		/********************************************************************/
+		
 		gatherData: {
 			address: function(){
 				
 			}
 		},
-		closeCurrentTab: function(){
-			$( _engine.domTools.get.hcrTabActive() ).find('span.dijitTabCloseButton').click();
+		
+		/* [Tools] Closes currently open tab
+		/********************************************************************/
+		
+		closeTabHCR: function( _tab ){
+			
+			typeof _tab == 'undefined' ? _tab = _engine.domTools.get.hcrTabActive() : _tab = _tab[0];
+			
+			$( _tab ).find('span.dijitTabCloseButton').click();
+			
+		},
+		
+		/* [Tools] Chooses a specified result on the page
+		/********************************************************************/
+		
+		selectResultOnSearch: function(){
+			
+			var screenType = _engine.domTools.test.hcrTabType();
+			
+			var resultSelected = false;
+			
+			if( screenType == "Case Search" || screenType == "Person Search" ){
+				
+				var _results = _engine.domTools.get.searches.searchResultsQuery();
+				
+				if( _results.length == 1){
+					
+					_results.find('td:nth-child(2) a')[0].click();
+					
+					resultSelected = true;
+					
+				}
+				
+				var screenType = _engine.domTools.test.hcrTabType();
+				
+			} else {
+				
+				_engine.debug.error("- * [ _engine.tools.selectResultOnSearch() ] You must be on a search page to use this tool.");
+
+				return false;
+				
+			}
+			
+			if( resultSelected ){
+				
+				var _tabToClose = _engine.domTools.get.hcrTabListTypeQuery( screenType );
+				_engine.tools.closeTabHCR( _tabToClose );
+				
+			}
+			
 		}
 	},
 	
