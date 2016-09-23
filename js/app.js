@@ -90,7 +90,7 @@ var _engine = {
 						
 					}
 					
-					_engine.debug.info("Comparing query type [ "+ _queryType +" ] to tab type [ "+ _tabType +" ]");
+					_engine.debug.info("Comparing query type [ "+ _queryType.toLowerCase() +" ] to tab type [ "+ _tabType.toLowerCase() +" ]");
 					
 					if( _tabType.toLowerCase() == _queryType.toLowerCase() ){
 						
