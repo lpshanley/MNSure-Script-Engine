@@ -1614,6 +1614,8 @@ var _engine = {
 													
 													_engine.domTools.get.searches.advancedQuery(".action-set a:contains('Search')")[0].click();
 													
+													_engine.tools.selectResultOnSearch();
+													
 													clearInterval( _openSearch );
 												}
 												++_c2;
@@ -1637,6 +1639,8 @@ var _engine = {
 													_engine.domTools.set.searches.fieldFill("Reference",_input);
 													
 													_engine.domTools.get.searches.advancedQuery(".action-set a:contains('Search')")[0].click();
+													
+													_engine.tools.selectResultOnSearch();
 													
 													clearInterval( _openSearch );
 												}
@@ -1673,6 +1677,8 @@ var _engine = {
 													_engine.domTools.set.searches.fieldFill("Last Name",_name[1]);
 													
 													_engine.domTools.get.searches.advancedQuery(".action-set a:contains('Search')")[0].click();
+													
+													_engine.tools.selectResultOnSearch();
 													
 													clearInterval( _openSearch );
 												}
@@ -1752,13 +1758,48 @@ var _engine = {
 	//*************//
 	
 	tools: {
+		
+		/* [Tools] Queries for a specific info type
+		/********************************************************************/
+		
 		gatherData: {
 			address: function(){
 				
 			}
 		},
+		
+		/* [Tools] Closes currently open tab
+		/********************************************************************/
+		
 		closeCurrentTab: function(){
 			$( _engine.domTools.get.hcrTabActive() ).find('span.dijitTabCloseButton').click();
+		},
+		
+		/* [Tools] Chooses a specified result on the page
+		/********************************************************************/
+		
+		selectResultOnSearch: function(){
+			
+			var screenType = _engine.domTools.test.hcrTabActiveType();
+			
+			if( screenType == "Case Search" || screenType == "Person Search" ){
+				
+				var _results = _engine.domTools.get.searches.searchResultsQuery();
+				
+				if( _results.length == 1){
+					_results.find('td:nth-child(2) a')[0].click();
+				}
+				
+				var screenType = _engine.domTools.test.hcrTabActiveType();
+				
+			} else {
+				
+				_engine.debug.error("- * [ _engine.tools.selectResultOnSearch() ] You must be on a search page to use this tool.");
+
+				return false;
+				
+			}			
+			
 		}
 	},
 	
