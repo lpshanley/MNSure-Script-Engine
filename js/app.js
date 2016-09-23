@@ -547,12 +547,22 @@ var _engine = {
 							
 							var _searchBody = $( _searchFrame ).find('iframe').contents().find('input');
 							
+							
 							//Search is open
 							if ( typeof _searchBody[0] != 'undefined' ){
 								
-								//Search is loaded
-								_engine.debug.info("- * [ _engine.domTools.test.searches.windowLoaded() ] Search is open and fully loaded.");
-								return true;
+								if( _engine.domTools.get.searches.advancedQuery(".action-set a:contains('Search')").length > 0 ){
+								
+									//Search is loaded
+									_engine.debug.info("- * [ _engine.domTools.test.searches.windowLoaded() ] Search is open and fully loaded.");
+									return true;
+								
+								} else {
+									
+									_engine.debug.warn("- * Fail Reason: [ _engine.domTools.test.searches.windowLoaded() ] Search is open but not fully loaded.");
+									return false;
+									
+								}
 								
 							} else {
 								
