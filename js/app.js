@@ -1931,6 +1931,8 @@ var _engine = {
 				
 			}
 			
+			console.log( _element );
+			
 			var count = 0;
 			
 			var timeout = setInterval(function(){
