@@ -1874,6 +1874,8 @@ var _engine = {
 		
 		selectSearchResult: function(){
 			
+			_engine.domTools.get.searches.advancedQuery(".action-set a:contains('Search')")[0].click();
+			
 			var screenType = _engine.domTools.test.hcrTabType();
 			
 			var resultSelected = false;
