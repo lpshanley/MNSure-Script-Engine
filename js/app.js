@@ -1918,24 +1918,22 @@ var _engine = {
 		
 		waitOnLoad: function( _input, callback ){
 			
-			if( typeof _input[0] == 'undefined' ){
-				
-				_node = _input.node;
-				_find = _input.find;
-				
-				_element = $( _node ).find( _find )[0];
-				
-			} else {
-				
-				_element = _input;
-				
-			}
-			
-			console.log( _element );
-			
 			var count = 0;
 			
 			var timeout = setInterval(function(){
+				
+				if( typeof _input[0] == 'undefined' ){
+				
+					_node = _input.node;
+					_find = _input.find;
+					
+					_element = $( _node ).find( _find )[0];
+					
+				} else {
+					
+					_element = _input;
+					
+				}
 				
 				if( count <= 30 ){
 					
@@ -1964,6 +1962,8 @@ var _engine = {
 				}
 				
 			}, 100);
+			
+			timeout;
 			
 		}
 		
