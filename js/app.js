@@ -99,12 +99,13 @@ var _engine = {
 						_returnArray.push( v );
 						
 					}
-					
-					_engine.debug.info("Completed tab list query.");
-					
-					return _returnArray;
+
 					
 				});
+				
+				_engine.debug.info("Completed tab list query.");
+					
+				return _returnArray;
 			
 			},
 			
