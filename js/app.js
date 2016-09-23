@@ -122,17 +122,20 @@ var _engine = {
 				|* This can be thought of as the wrapper for the tabs
 				|* content.
 				\*----------------------------------------------------------*/
-			hcrTabActiveFrame: function(){
+			hcrTabFrame: function( _tab ){
+				
 				_engine.navigation.hcr();
-				var _t = _engine.domTools.get.hcrTabActive();
-				var _id = $( _t ).attr( 'widgetid' ).split('-')[1].split('_');
+
+				typeof _tab == 'undefined' ? _tab = _engine.domTools.get.hcrTabActive() : _tab = _tab[0];
+				
+				var _id = $( _tab ).attr( 'widgetid' ).split('-')[1].split('_');
 				var _f = _id[2] + "_" + _id[3] + "_" + _id[4] + "_" + _id[5];
 				
 				return $('[widgetid="'+_f+'"]')[0];
 			},
 			
 				/* These functions get elements that are contained inside the 
-				|* iFrame returned from '_engine.domTools.get.hcrTabActiveFrame()' 
+				|* iFrame returned from '_engine.domTools.get.hcrTabFrame()' 
 				\*----------------------------------------------------------*/
 			icFrame: {
 				
@@ -143,7 +146,7 @@ var _engine = {
 				icTabList: function(){
 					_engine.navigation.hcr();
 					if(_engine.domTools.test.hcrTabActiveIsIC()){
-						var _tp = _engine.domTools.get.hcrTabActiveFrame();
+						var _tp = _engine.domTools.get.hcrTabFrame();
 						return $( _tp ).find('div.dijitTabNoLayout[role="tablist"] > div.dijitTab.visible');
 					} else {
 						_engine.caseWork.caseSelection();
@@ -157,7 +160,7 @@ var _engine = {
 				icTabActive: function(){
 					_engine.navigation.hcr();
 					if(_engine.domTools.test.hcrTabActiveIsIC()){
-						var _tp = _engine.domTools.get.hcrTabActiveFrame();
+						var _tp = _engine.domTools.get.hcrTabFrame();
 						return $( _tp ).find('div.dijitTabNoLayout[role="tablist"] > div.dijitTab.visible.dijitTabChecked.dijitChecked');
 					} else {
 						_engine.caseWork.caseSelection();
@@ -171,7 +174,7 @@ var _engine = {
 				icTabActiveSubMenu: function(){
 					_engine.navigation.hcr();
 					if(_engine.domTools.test.hcrTabActiveIsIC()){
-						var _tp = _engine.domTools.get.hcrTabActiveFrame();
+						var _tp = _engine.domTools.get.hcrTabFrame();
 						return $( _tp ).find('div.dijitStackContainer-child.dijitVisible');
 					}
 				},
@@ -183,7 +186,7 @@ var _engine = {
 				icTabActiveFrame: function(){
 					_engine.navigation.hcr();
 					if(_engine.domTools.test.hcrTabActiveIsIC()){
-						var _tp = _engine.domTools.get.hcrTabActiveFrame();
+						var _tp = _engine.domTools.get.hcrTabFrame();
 						
 						return $( _tp ).find('.content-area-container iframe').contents().find('body');
 					}
@@ -275,7 +278,7 @@ var _engine = {
 					
 					if( screenType == "Case Search" || screenType == "Person Search" ){
 						
-						var _frame = $( _engine.domTools.get.hcrTabActiveFrame() );
+						var _frame = $( _engine.domTools.get.hcrTabFrame() );
 						
 						var _result = $( _frame ).find('iframe').contents().find( _query );
 						
@@ -430,7 +433,7 @@ var _engine = {
 						}
 					
 						//Person Page
-					} else if($( _engine.domTools.get.hcrTabActiveFrame() ).find('iframe.detailsPanelFrame').attr('src').split("/")[1].split(".")[0].replace("TabDetailsPage", "").toLowerCase() == "person_home" ){ 
+					} else if($( _engine.domTools.get.hcrTabFrame( _tab ) ).find('iframe.detailsPanelFrame').attr('src').split("/")[1].split(".")[0].replace("TabDetailsPage", "").toLowerCase() == "person_home" ){ 
 					
 						return "Person Page";
 					
@@ -504,7 +507,7 @@ var _engine = {
 					
 					if( _screenType == "Person Search" || _screenType == "Case Search" ){
 					
-						var _searchFrame = _engine.domTools.get.hcrTabActiveFrame();
+						var _searchFrame = _engine.domTools.get.hcrTabFrame();
 						
 						if( typeof _searchFrame != "undefined" ){
 							
@@ -1408,11 +1411,11 @@ var _engine = {
 						
 						if( _contactNav != false){
 						
-							var _src = $( _engine.domTools.get.hcrTabActiveFrame() ).find('.content-area-container iframe').attr('src');
+							var _src = $( _engine.domTools.get.hcrTabFrame() ).find('.content-area-container iframe').attr('src');
 
 							if( typeof _src != "undefined" && _src.split("?")[0].split("/")[1].split("_")[1].split(".")[0].replace("Page",'').toLowerCase() == "listnote" ){
 
-								var _id = $( _engine.domTools.get.hcrTabActiveFrame() ).find('.content-area-container iframe').contents().find('body').attr('id');
+								var _id = $( _engine.domTools.get.hcrTabFrame() ).find('.content-area-container iframe').contents().find('body').attr('id');
 								
 								if( typeof _id != "undefined" && _id.split("_")[ _id.split("_").length - 1 ].toLowerCase() == "listnote" ){
 									
