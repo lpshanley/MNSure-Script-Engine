@@ -1642,6 +1642,10 @@ var _engine = {
 									if( _input.length == 8 ){
 										
 										// Case Number
+										
+										var _tabToClose = _engine.domTools.get.hcrTabListTypeQuery("Case Search");
+										_engine.tools.closeTabHCR( _tabToClose );
+										
 										_engine.search._case();
 										
 										_c2 = 0;
@@ -1668,6 +1672,10 @@ var _engine = {
 
 									} else if ( _input.length == 9 || _input.length == 10 ){
 										// SSN or MNS ID
+										
+										var _tabToClose = _engine.domTools.get.hcrTabListTypeQuery("Person Search");
+										_engine.tools.closeTabHCR( _tabToClose );
+										
 										_engine.search._person();
 										
 										_c2 = 0;
@@ -1681,7 +1689,7 @@ var _engine = {
 													
 													_engine.domTools.get.searches.advancedQuery(".action-set a:contains('Search')")[0].click();
 													
-													_engine.tools.selectResultOnSearch();
+													_engine.tools.selectResultOnSearch();											
 													
 													clearInterval( _openSearch );
 												}
@@ -1827,12 +1835,18 @@ var _engine = {
 			
 			var screenType = _engine.domTools.test.hcrTabType();
 			
+			var resultSelected = false;
+			
 			if( screenType == "Case Search" || screenType == "Person Search" ){
 				
 				var _results = _engine.domTools.get.searches.searchResultsQuery();
 				
 				if( _results.length == 1){
+					
 					_results.find('td:nth-child(2) a')[0].click();
+					
+					resultSelected = true;
+					
 				}
 				
 				var screenType = _engine.domTools.test.hcrTabType();
@@ -1843,7 +1857,14 @@ var _engine = {
 
 				return false;
 				
-			}			
+			}
+			
+			if( resultSelected ){
+				
+				var _tabToClose = _engine.domTools.get.hcrTabListTypeQuery( screenType );
+				_engine.tools.closeTabHCR( _tabToClose );
+				
+			}
 			
 		}
 	},
