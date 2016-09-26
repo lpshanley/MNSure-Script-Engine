@@ -935,12 +935,16 @@ var _engine = {
 					//Add cancel button
 				$( '#mns-modal-actions div.action-set' ).append( mnsModalFooterCancelButton );
 				
+				_engine.ui.modal._watch();
+				
 			},
 			destroy: function(){
 				
 				$('div.modal-overlay').remove();
 				
 				$('body').removeClass('modal');
+				
+				_engine.ui.modal._unwatch();
 				
 			},
 			_storeParams: function(){
@@ -1110,6 +1114,32 @@ var _engine = {
 				} else {
 					return false;
 				}
+				
+			},
+			_watch: function(){
+				$('.mns-modal-template').keypress(function(e){ 
+	
+					switch( e.key ){
+						case "Enter":
+							//Is the form able to be submitted?
+							if( $('.mns-modal-template').hasClass('submit-form') ){
+								//Are you in a textarea trying to submit?
+								if( !$( document.activeElement ).is('textarea') ){
+								
+									$('#mns-modal-actions a:contains("Submit")').click();
+								
+								}
+							}
+							break;
+						default:
+							break;
+					}
+
+				});
+			},
+			_unwatch: function(){
+				
+				$('.mns-modal-template').off('keypress');
 				
 			}
 		},
