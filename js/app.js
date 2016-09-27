@@ -1223,7 +1223,7 @@ var _engine = {
 
 					_clustersEnabled == "true" ? _clustersEnabled = true : _clustersEnabled = false;
 				
-					return _clustersActive;
+					return _clustersEnabled;
 					
 				}
 
