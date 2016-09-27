@@ -1309,7 +1309,7 @@ var _engine = {
 						counter = 0;
 					}
 
-				}, 100);
+				}, _engine.advanced_vars.timeout);
 
 				_loading;
 			
@@ -1536,12 +1536,12 @@ var _engine = {
 					// Gathers HTML for view and stores to local storage
 					_engine.advanced.getView( _noteLocation );
 
-					// Check every 100ms for info in local storage. Timeout after 2000ms.
+					// Check every 100ms for info in local storage.
 					
 					var _c = 0;
 					
 					var buildFrame = setInterval(function(){
-						if(_c <= 25){
+						if(_c <= _engine.advanced_vars.iterations){
 							
 							if( _engine.storage.html.get() != false ){
 								// Gather html for modal
@@ -1569,7 +1569,7 @@ var _engine = {
 							_engine.storage.html.clear();
 							clearInterval( buildFrame );
 						}
-					}, 100);
+					}, _engine.advanced_vars.timeout);
 					
 					buildFrame;
 
@@ -1584,7 +1584,7 @@ var _engine = {
 				
 				// Run a max of 2500ms
 				var _nav = setInterval(function(){
-					if(_c1 <= 25){
+					if(_c1 <= _engine.advanced_vars.iterations){
 						
 						_engine.debug.info("========== START NAVIGATING TO CONTACT [ attempt: " + _c1 + " ] ==========");
 						
@@ -1615,7 +1615,7 @@ var _engine = {
 										
 										_engine.debug.info("- * Attempting to target modal window [ attempt: "+ _c2 +" ]");
 										
-										if(_c2 <= 40){
+										if(_c2 <= _engine.advanced_vars.iterations){
 											
 											// _openModal interval has not timed out
 											
@@ -1632,7 +1632,7 @@ var _engine = {
 													
 													//Setup loop to gather modal params
 													
-													if( _c3 <= 25 ){
+													if( _c3 <= _engine.advanced_vars.iterations ){
 														
 														_engine.debug.info("- * Attempting to gather params [ attempt: "+ _c3 +" ]");
 														
@@ -1686,7 +1686,7 @@ var _engine = {
 														
 													}
 
-												}, 100);
+												}, _engine.advanced_vars.timeout);
 
 												_gatherParams;
 												
@@ -1708,7 +1708,7 @@ var _engine = {
 											
 										}
 											
-									}, 100);
+									}, _engine.advanced_vars.timeout);
 
 									_openModal;
 									
@@ -1734,7 +1734,7 @@ var _engine = {
 						
 					}
 					
-				},100);
+				},_engine.advanced_vars.timeout);
 
 				_nav;
 				
@@ -1763,7 +1763,7 @@ var _engine = {
 				var _c = 0;
 				
 				var buildFrame = setInterval(function(){
-					if(_c <= 25){
+					if(_c <= _engine.advanced_vars.iterations){
 						
 						if( _engine.storage.html.get() != false ){
 							// Gather html for modal
@@ -1791,7 +1791,7 @@ var _engine = {
 						_engine.storage.html.clear();
 						clearInterval( buildFrame );
 					}
-				}, 100);
+				}, _engine.advanced_vars.timeout);
 				
 				buildFrame;
 				
@@ -1806,7 +1806,7 @@ var _engine = {
 					
 					//Setup loop to gather modal params
 					
-					if( _c1 <= 25 ){
+					if( _c1 <= _engine.advanced_vars.iterations ){
 						
 						_engine.debug.info("- * Attempting to gather params [ attempt: "+ _c1 +" ]");
 						
@@ -1836,7 +1836,7 @@ var _engine = {
 										
 										var _openSearch = setInterval(function(){
 											_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
-											if(_c2 <= 40){
+											if(_c2 <= _engine.advanced_vars.iterations){
 												if( _engine.domTools.test.searches.windowLoaded() ){
 													
 													_engine.domTools.set.searches.fieldFill("Reference",_input);
@@ -1849,7 +1849,7 @@ var _engine = {
 											} else {
 												clearInterval( _openSearch );
 											}
-										}, 100);
+										}, _engine.advanced_vars.timeout);
 										_openSearch;
 
 									} else if ( _input.length == 9 || _input.length == 10 ){
@@ -1864,7 +1864,7 @@ var _engine = {
 										
 										var _openSearch = setInterval(function(){
 											_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
-											if(_c2 <= 40){
+											if(_c2 <= _engine.advanced_vars.iterations){
 												if( _engine.domTools.test.searches.windowLoaded() ){
 													
 													_engine.domTools.set.searches.fieldFill("Reference",_input);
@@ -1877,7 +1877,7 @@ var _engine = {
 											} else {
 												clearInterval( _openSearch );
 											}
-										}, 100);
+										}, _engine.advanced_vars.timeout);
 										_openSearch;
 										
 									} else {
@@ -1898,7 +1898,7 @@ var _engine = {
 										
 										var _openSearch = setInterval(function(){
 											_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
-											if(_c2 <= 40){
+											if(_c2 <= _engine.advanced_vars.iterations){
 												if( _engine.domTools.test.searches.windowLoaded() ){
 													
 													_engine.domTools.set.searches.fieldFill("First Name",_name[0]);
@@ -1913,7 +1913,7 @@ var _engine = {
 											} else {
 												clearInterval( _openSearch );
 											}
-										}, 100);
+										}, _engine.advanced_vars.timeout);
 										_openSearch;
 										
 									} else {
@@ -1922,7 +1922,7 @@ var _engine = {
 										
 										var _openSearch = setInterval(function(){
 											_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
-											if(_c2 <= 40){
+											if(_c2 <= _engine.advanced_vars.iterations){
 												if( _engine.domTools.test.searches.windowLoaded() ){
 													
 													_engine.domTools.set.searches.fieldFill("First Name",_name[0]);
@@ -1933,7 +1933,7 @@ var _engine = {
 											} else {
 												clearInterval( _openSearch );
 											}
-										}, 100);
+										}, _engine.advanced_vars.timeout);
 										_openSearch;
 										
 									}
@@ -1959,7 +1959,7 @@ var _engine = {
 						
 					}
 
-				}, 100);
+				}, _engine.advanced_vars.timeout);
 
 				_gatherParams;
 				
@@ -2021,7 +2021,7 @@ var _engine = {
 				
 				_engine.debug.info("- * Attempting to load results screen [ attempt: "+ _count +" ]");
 				
-				if(_count <= 40){
+				if(_count <= _engine.advanced_vars.iterations){
 					
 					var _results = _engine.domTools.get.searches.searchResultsQuery();
 					
@@ -2055,7 +2055,7 @@ var _engine = {
 				} else {
 					clearInterval( _loadWindow );
 				}
-			}, 100);
+			}, _engine.advanced_vars.timeout);
 			
 			_loadWindow;
 			
@@ -2083,7 +2083,7 @@ var _engine = {
 					
 				}
 				
-				if( count <= 30 ){
+				if( count <= _engine.advanced_vars.iterations ){
 					
 					if( typeof _element != 'undefined' ){
 						
@@ -2109,7 +2109,7 @@ var _engine = {
 					
 				}
 				
-			}, 100);
+			}, _engine.advanced_vars.timeout);
 			
 			timeout;
 			
@@ -2202,6 +2202,10 @@ var _engine = {
 			
 			return;
 			
+		},
+		_vars: {
+			timeout: 100,
+			iterations: 40
 		}
 	},
 	
