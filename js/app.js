@@ -953,6 +953,19 @@ var _engine = {
 				
 				var _fields = $('.mns-modal-template > .mns-input-group');
 				
+					//Push additional clusters if clustering is active
+				if( _engine.ui.modal._clustersActive() ){
+					
+					_clusterFields = $('.mns-modal-template > .mns-input-cluster.input-cluster-active > .mns-input-group');
+					
+					$.each(_clusterFields,function(k,v){
+						
+						_fields.push(v);
+						
+					});
+					
+				}
+				
 				var _fieldCount = $('.mns-modal-template > .mns-input-group').length;
 				
 				var _allParams = "";
@@ -1094,8 +1107,14 @@ var _engine = {
 			_validateModal: function(){
 				
 				var _invalidFields = 0;
-
-				$.each( $('div.modal-content-container .required'),function( k,v ){ 
+				
+				if( _engine.ui.modal._clustersActive() ){
+					var required = $('div.mns-modal-template > .mns-input-group.required, div.mns-modal-template > .input-cluster-active > .required');
+				} else {
+					var required = $('div.mns-modal-template .required');
+				}
+				
+				$.each( required,function( k,v ){ 
 
 					if( $( v ).find('input').val() == "" ){
 					
