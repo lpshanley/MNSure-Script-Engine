@@ -480,6 +480,7 @@ var _engine = {
 						
 						
 						//Person Page
+						
 					} else {
 						
 						_tabFrame = $( _engine.domTools.get.hcrTabFrame( _tab ) ).find('iframe.detailsPanelFrame');
@@ -490,21 +491,8 @@ var _engine = {
 							_tab.click();
 							_returnTab.click();
 
-							_tabFrame = $( _engine.domTools.get.hcrTabFrame( _tab ) ).find('div.tab-wrapper > div.nav-panel > div.navigation-tab-outer > div');
-							
-							if( _tabFrame.length != 1 ){
-								
-								if( $( _tabFrame ).attr('widgetid').split("-")[0].toLowerCase() == "personhome" ){
-									
-									return "Person Page";
-									
-								}
-								
-							} else {
-								
-								return false;
-								
-							}
+							return "Person Page";
+
 							
 						} else if( _tabFrame.length > 0 ){ 
 							
@@ -522,7 +510,6 @@ var _engine = {
 							return "UNDEFINED";
 							
 						}
-						$( _engine.domTools.get.hcrTabFrame( _tab ) ).find('iframe.detailsPanelFrame').attr('src').split("/")[1].split(".")[0].replace("TabDetailsPage", "").toLowerCase() == "person_home"
 						
 					} 
 					
