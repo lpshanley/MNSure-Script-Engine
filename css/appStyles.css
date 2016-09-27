@@ -275,7 +275,7 @@
 	display: none;
 }
 
-.mns-modal-template .mns-input-cluster.input-cluster-active:first-child {
+.mns-modal-template .mns-input-cluster.input-cluster-active .mns-input-group:first-child {
 	margin-top: 5px;
 }
 
