@@ -888,7 +888,7 @@ var _engine = {
 				$('div.modal-titlebar').append( dialogTitle );
 				
 					//Close X on title bar
-				var closeButton = $('<span>',{'class':'dijitDialogCloseIcon', 'onClick':'_engine.events.handleClickEvent("ui[closeModal]")'});
+				var closeButton = $('<span>',{'class':'dijitDialogCloseIcon', 'onClick':'_engine.events.handleClickEvent("ui[modalButton(close)]")'});
 				$('div.modal-titlebar').append( closeButton );
 				
 					//Wapper for the layout from the view template
@@ -935,6 +935,8 @@ var _engine = {
 					//Add cancel button
 				$( '#mns-modal-actions div.action-set' ).append( mnsModalFooterCancelButton );
 				
+				_engine.ui.modal._setupClusters();
+				
 				_engine.ui.modal._watch();
 				
 			},
@@ -950,6 +952,19 @@ var _engine = {
 			_storeParams: function(){
 				
 				var _fields = $('.mns-modal-template > .mns-input-group');
+				
+					//Push additional clusters if clustering is active
+				if( _engine.ui.modal._clustersActive() ){
+					
+					_clusterFields = $('.mns-modal-template > .mns-input-cluster.input-cluster-active > .mns-input-group');
+					
+					$.each(_clusterFields,function(k,v){
+						
+						_fields.push(v);
+						
+					});
+					
+				}
 				
 				var _fieldCount = $('.mns-modal-template > .mns-input-group').length;
 				
@@ -1092,8 +1107,14 @@ var _engine = {
 			_validateModal: function(){
 				
 				var _invalidFields = 0;
-
-				$.each( $('div.modal-content-container .required'),function( k,v ){ 
+				
+				if( _engine.ui.modal._clustersActive() ){
+					var required = $('div.mns-modal-template > .mns-input-group.required, div.mns-modal-template > .input-cluster-active > .required');
+				} else {
+					var required = $('div.mns-modal-template .required');
+				}
+				
+				$.each( required,function( k,v ){ 
 
 					if( $( v ).find('input').val() == "" ){
 					
@@ -1136,11 +1157,93 @@ var _engine = {
 					}
 
 				});
+				
+				if( _engine.ui.modal._clustersActive() ){
+					
+					var _subject = $( '.modal-content-container span.mns-input-group span:contains("SUBJECT")' );
+					
+					if( _subject.length == 1 ){
+						
+						var _select = $( _subject ).parent().find('select');
+					
+						$( _select ).on('change',function(){
+							
+							_selectVal = $( _subject ).parent().find('select').val();
+							
+							_engine.ui.modal._changeActiveCluster( _selectVal );
+							
+						});
+					
+					}
+				
+				}				
+				
 			},
 			_unwatch: function(){
 				
 				$('.mns-modal-template').off('keypress');
 				
+				$( '.modal-content-container span.mns-input-group span:contains("SUBJECT")' ).parent().find('select').off('change');
+				
+			},
+			_setupClusters(){
+
+				if( _engine.ui.modal._clustersActive() ){
+					
+					var _subject = $( '.modal-content-container span.mns-input-group span:contains("SUBJECT")' );
+					
+					if( _subject.length == 1 ){
+						
+						_selectVal = $( _subject ).parent().find('select').val();
+					
+						_engine.ui.modal._changeActiveCluster( _selectVal );
+						
+					}
+					
+				}
+				
+			},
+			_changeActiveCluster: function( subjectValue ){
+				
+				if( _engine.ui.modal._clustersActive() ){
+					
+					var _activeCluster = $('span.mns-input-cluster.input-cluster-active');
+					
+					if( _activeCluster.length == 1 ){
+						$( _activeCluster ).removeClass('input-cluster-active');
+					}
+					
+					var _clusters = $('span.mns-input-cluster');
+					
+					$.each(_clusters,function(k,v){
+						
+						var _clusterTitle = $(v).attr('data-cluster-title');
+						
+						if( _clusterTitle == subjectValue ){
+							
+							$( v ).addClass( 'input-cluster-active' );
+							
+						}
+						
+					});
+					
+				}
+				
+			},
+			_clustersActive: function(){
+				
+				_modal = $('div.mns-modal-template');
+				
+				if( _modal.length == 1 ){
+					
+					var _clustersEnabled = $( _modal ).attr('data-input-clusters');
+
+					_clustersEnabled == "true" ? _clustersEnabled = true : _clustersEnabled = false;
+				
+					return _clustersEnabled;
+					
+				}
+
 			}
 		},
 		

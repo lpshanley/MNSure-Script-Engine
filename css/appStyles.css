@@ -231,6 +231,9 @@
 	width: 100% !important;
 	padding-top: 0px !important;
 	float: none !important;
+}
+
+.mns-input-group .align-center{
 	text-align: center !important;
 }
 
@@ -269,6 +272,18 @@
 
 .mns-modal-template .input-error input {
 	border: 2px solid #FF2222;
+}
+
+.mns-modal-template .mns-input-cluster {
+	display: none;
+}
+
+.mns-modal-template .mns-input-cluster.input-cluster-active .mns-input-group:first-child {
+	margin-top: 5px;
+}
+
+.mns-modal-template .mns-input-cluster.input-cluster-active {
+	display: block;
 }
 
 /* Top notification bar layout
