@@ -297,7 +297,7 @@ var _engine = {
 							
 						} else {
 							
-							_engine.debug.error("- * [ _engine.domTools.get.searches.advancedQuery( _query ) ] Could not find requested field: " + _query);
+							_engine.debug.warn("- * [ _engine.domTools.get.searches.advancedQuery( _query ) ] Could not find requested field: " + _query);
 							
 							return false;
 							
@@ -305,7 +305,7 @@ var _engine = {
 						
 					} else {
 						
-						_engine.debug.error("- * [ _engine.domTools.get.searches.advancedQuery( _query ) ] You must be on a search page to use this dom query.");
+						_engine.debug.warn("- * [ _engine.domTools.get.searches.advancedQuery( _query ) ] You must be on a search page to use this dom query.");
 
 						return false;
 						
@@ -443,21 +443,57 @@ var _engine = {
 							// Person Search
 						} else if( _tab.innerText.indexOf("Person") != -1 ){
 							return "Person Search";
+						} else if( _tab.innerText.indexOf("Employer") != -1 ){
+							return "Employer Search";
+						} else if( _tab.innerText.indexOf("All Participants") != -1 ){
+							return "All Participants Search";
+						} else if( _tab.innerText.indexOf("Application") != -1 ){
+							return "Application Search";
+						} else if( _tab.innerText.indexOf("Investigation") != -1 ){
+							return "Investigation Search";
+						} else if( _tab.innerText.indexOf("Incident") != -1 ){
+							return "Incident Search";
+						} else if( _tab.innerText.indexOf("Educational Institute") != -1 ){
+							return "Educational Institute Search";
+						} else if( _tab.innerText.indexOf("External Party") != -1 ){
+							return "External Party Search";
+						} else if( _tab.innerText.indexOf("Utility") != -1 ){
+							return "Utility Search";
+						} else if( _tab.innerText.indexOf("External Party Office") != -1 ){
+							return "External Party Office Search";
 						}
 					
+					} else if( _tab.innerText.indexOf("My Applications") != -1 ){
+						return "My Applications";
+					} else if( _tab.innerText.indexOf("My Items of Interest") != -1 ){
+						return "My Items of Interest";
+					} else if( _tab.innerText.indexOf("My Cases") != -1 ){
+						return "My Cases";
+					} else if( _tab.innerText.indexOf("My Recently Approved Cases") != -1 ){
+						return "My Recently Approved Cases";
+					} else if( _tab.innerText.indexOf("Cases Recently Assigned to Me") != -1 ){
+						return "Cases Recently Assigned to Me";
+					}	else if( _tab.innerText.indexOf("Recently Viewed Cases") != -1 ){
+						return "Recently Viewed Cases";
+					}	else if( _tab.innerText.indexOf("My Service Plans") != -1 ){
+						return "My Service Plans";
+						
+						
 						//Person Page
+						
 					} else {
 						
 						_tabFrame = $( _engine.domTools.get.hcrTabFrame( _tab ) ).find('iframe.detailsPanelFrame');
 						
-						if( _tabFrame.length != 1 ){
-	
+						if( _tabFrame.length == 0 ){
+							
 							_returnTab = _engine.domTools.get.hcrTabActive();
 							_tab.click();
 							_returnTab.click();
+
+							return "Person Page";
+
 							
-							return false;
-						
 						} else if( _tabFrame.length > 0 ){ 
 							
 							if( $( _tabFrame ).attr('src').split("/")[1].split(".")[0].replace("TabDetailsPage", "").toLowerCase() == "person_home" ){
@@ -474,7 +510,6 @@ var _engine = {
 							return "UNDEFINED";
 							
 						}
-						$( _engine.domTools.get.hcrTabFrame( _tab ) ).find('iframe.detailsPanelFrame').attr('src').split("/")[1].split(".")[0].replace("TabDetailsPage", "").toLowerCase() == "person_home"
 						
 					} 
 					
@@ -1309,7 +1344,7 @@ var _engine = {
 						counter = 0;
 					}
 
-				}, 100);
+				}, _engine.advanced._vars.timeout);
 
 				_loading;
 			
@@ -1536,12 +1571,12 @@ var _engine = {
 					// Gathers HTML for view and stores to local storage
 					_engine.advanced.getView( _noteLocation );
 
-					// Check every 100ms for info in local storage. Timeout after 2000ms.
+					// Check every 100ms for info in local storage.
 					
 					var _c = 0;
 					
 					var buildFrame = setInterval(function(){
-						if(_c <= 25){
+						if(_c <= _engine.advanced._vars.iterations){
 							
 							if( _engine.storage.html.get() != false ){
 								// Gather html for modal
@@ -1569,7 +1604,7 @@ var _engine = {
 							_engine.storage.html.clear();
 							clearInterval( buildFrame );
 						}
-					}, 100);
+					}, _engine.advanced._vars.timeout);
 					
 					buildFrame;
 
@@ -1584,7 +1619,7 @@ var _engine = {
 				
 				// Run a max of 2500ms
 				var _nav = setInterval(function(){
-					if(_c1 <= 25){
+					if(_c1 <= _engine.advanced._vars.iterations){
 						
 						_engine.debug.info("========== START NAVIGATING TO CONTACT [ attempt: " + _c1 + " ] ==========");
 						
@@ -1615,7 +1650,7 @@ var _engine = {
 										
 										_engine.debug.info("- * Attempting to target modal window [ attempt: "+ _c2 +" ]");
 										
-										if(_c2 <= 40){
+										if(_c2 <= _engine.advanced._vars.iterations){
 											
 											// _openModal interval has not timed out
 											
@@ -1632,7 +1667,7 @@ var _engine = {
 													
 													//Setup loop to gather modal params
 													
-													if( _c3 <= 25 ){
+													if( _c3 <= _engine.advanced._vars.iterations ){
 														
 														_engine.debug.info("- * Attempting to gather params [ attempt: "+ _c3 +" ]");
 														
@@ -1686,7 +1721,7 @@ var _engine = {
 														
 													}
 
-												}, 100);
+												}, _engine.advanced._vars.timeout);
 
 												_gatherParams;
 												
@@ -1708,7 +1743,7 @@ var _engine = {
 											
 										}
 											
-									}, 100);
+									}, _engine.advanced._vars.timeout);
 
 									_openModal;
 									
@@ -1734,7 +1769,7 @@ var _engine = {
 						
 					}
 					
-				},100);
+				},_engine.advanced._vars.timeout);
 
 				_nav;
 				
@@ -1763,7 +1798,7 @@ var _engine = {
 				var _c = 0;
 				
 				var buildFrame = setInterval(function(){
-					if(_c <= 25){
+					if(_c <= _engine.advanced._vars.iterations){
 						
 						if( _engine.storage.html.get() != false ){
 							// Gather html for modal
@@ -1791,7 +1826,7 @@ var _engine = {
 						_engine.storage.html.clear();
 						clearInterval( buildFrame );
 					}
-				}, 100);
+				}, _engine.advanced._vars.timeout);
 				
 				buildFrame;
 				
@@ -1806,7 +1841,7 @@ var _engine = {
 					
 					//Setup loop to gather modal params
 					
-					if( _c1 <= 25 ){
+					if( _c1 <= _engine.advanced._vars.iterations ){
 						
 						_engine.debug.info("- * Attempting to gather params [ attempt: "+ _c1 +" ]");
 						
@@ -1836,7 +1871,7 @@ var _engine = {
 										
 										var _openSearch = setInterval(function(){
 											_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
-											if(_c2 <= 40){
+											if(_c2 <= _engine.advanced._vars.iterations){
 												if( _engine.domTools.test.searches.windowLoaded() ){
 													
 													_engine.domTools.set.searches.fieldFill("Reference",_input);
@@ -1849,7 +1884,7 @@ var _engine = {
 											} else {
 												clearInterval( _openSearch );
 											}
-										}, 100);
+										}, _engine.advanced._vars.timeout);
 										_openSearch;
 
 									} else if ( _input.length == 9 || _input.length == 10 ){
@@ -1864,7 +1899,7 @@ var _engine = {
 										
 										var _openSearch = setInterval(function(){
 											_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
-											if(_c2 <= 40){
+											if(_c2 <= _engine.advanced._vars.iterations){
 												if( _engine.domTools.test.searches.windowLoaded() ){
 													
 													_engine.domTools.set.searches.fieldFill("Reference",_input);
@@ -1877,7 +1912,7 @@ var _engine = {
 											} else {
 												clearInterval( _openSearch );
 											}
-										}, 100);
+										}, _engine.advanced._vars.timeout);
 										_openSearch;
 										
 									} else {
@@ -1898,7 +1933,7 @@ var _engine = {
 										
 										var _openSearch = setInterval(function(){
 											_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
-											if(_c2 <= 40){
+											if(_c2 <= _engine.advanced._vars.iterations){
 												if( _engine.domTools.test.searches.windowLoaded() ){
 													
 													_engine.domTools.set.searches.fieldFill("First Name",_name[0]);
@@ -1913,7 +1948,7 @@ var _engine = {
 											} else {
 												clearInterval( _openSearch );
 											}
-										}, 100);
+										}, _engine.advanced._vars.timeout);
 										_openSearch;
 										
 									} else {
@@ -1922,7 +1957,7 @@ var _engine = {
 										
 										var _openSearch = setInterval(function(){
 											_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
-											if(_c2 <= 40){
+											if(_c2 <= _engine.advanced._vars.iterations){
 												if( _engine.domTools.test.searches.windowLoaded() ){
 													
 													_engine.domTools.set.searches.fieldFill("First Name",_name[0]);
@@ -1933,7 +1968,7 @@ var _engine = {
 											} else {
 												clearInterval( _openSearch );
 											}
-										}, 100);
+										}, _engine.advanced._vars.timeout);
 										_openSearch;
 										
 									}
@@ -1959,7 +1994,7 @@ var _engine = {
 						
 					}
 
-				}, 100);
+				}, _engine.advanced._vars.timeout);
 
 				_gatherParams;
 				
@@ -2021,7 +2056,7 @@ var _engine = {
 				
 				_engine.debug.info("- * Attempting to load results screen [ attempt: "+ _count +" ]");
 				
-				if(_count <= 40){
+				if(_count <= _engine.advanced._vars.iterations){
 					
 					var _results = _engine.domTools.get.searches.searchResultsQuery();
 					
@@ -2055,7 +2090,7 @@ var _engine = {
 				} else {
 					clearInterval( _loadWindow );
 				}
-			}, 100);
+			}, _engine.advanced._vars.timeout);
 			
 			_loadWindow;
 			
@@ -2083,7 +2118,7 @@ var _engine = {
 					
 				}
 				
-				if( count <= 30 ){
+				if( count <= _engine.advanced._vars.iterations ){
 					
 					if( typeof _element != 'undefined' ){
 						
@@ -2109,7 +2144,7 @@ var _engine = {
 					
 				}
 				
-			}, 100);
+			}, _engine.advanced._vars.timeout);
 			
 			timeout;
 			
@@ -2202,6 +2237,10 @@ var _engine = {
 			
 			return;
 			
+		},
+		_vars: {
+			timeout: 100,
+			iterations: 40
 		}
 	},
 	
