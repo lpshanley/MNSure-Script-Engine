@@ -1156,15 +1156,33 @@ var _engine = {
 					
 					if( _subject.length == 1 ){
 						
-						_select = $( _subject ).parent().find('select');
+						_selectVal = $( _subject ).parent().find('select').val();
 					
-						$( _select ).on('change',function(){
+						var _clusters = $('span.mns-input-cluster');
+						
+						$.each(_clusters,function(k,v){
+							
+							var _clusterTitle = $(v).attr('data-cluster-title');
+							
+							if( _clusterTitle == _selectVal ){
+								
+								$( v ).addClass( 'input-cluster-active' );
+								
+								console.log( "Added Class" );		
+								
+							}
+							
+							console.log( _clusterTitle );							
+							
+						});
+						
+						//$( _select ).on('change',function(){
 						
 							//var _inputGroups = $( '.modal-content-container span.mns-input-group').attr('data-cluster-title');
 						
-							console.log( $( _select ).val() );
+						//	console.log( $( _select ).val() );
 						
-						})
+						//})
 						
 					}
 					
