@@ -2224,6 +2224,7 @@ var _engine = {
 							
 							if( v.commit.sha.substring(0,7) != _engine.advanced.betaCommit() ){
 								$('script[data-scriptengine]').attr('data-beta', v.commit.sha.substring(0,7));
+								_engine.debug.info('Updated Beta Commit Sha');
 							} else {
 								_engine.debug.info('Beta Commit is up to date.');
 							}
