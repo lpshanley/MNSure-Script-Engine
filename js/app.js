@@ -942,11 +942,11 @@ var _engine = {
 			},
 			destroy: function(){
 				
+				_engine.ui.modal._unwatch();
+				
 				$('div.modal-overlay').remove();
 				
 				$('body').removeClass('modal');
-				
-				_engine.ui.modal._unwatch();
 				
 			},
 			_storeParams: function(){
@@ -1138,6 +1138,9 @@ var _engine = {
 				
 			},
 			_watch: function(){
+				
+				$('.mns-modal-template span.mns-input-group:has("input") input').focus();
+				
 				$('.mns-modal-template').keypress(function(e){ 
 	
 					switch( e.key ){
