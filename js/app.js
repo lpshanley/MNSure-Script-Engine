@@ -1142,9 +1142,10 @@ var _engine = {
 				$('.mns-modal-template span.mns-input-group:has("input") input').focus();
 				
 				$('.mns-modal-template').keypress(function(e){ 
-	
-					switch( e.key ){
-						case "Enter":
+					
+					switch( e.keyCode ){
+						// Pressed the Enter Key
+						case 13:
 							//Is the form able to be submitted?
 							if( $('.mns-modal-template').hasClass('submit-form') ){
 								//Are you in a textarea trying to submit?
