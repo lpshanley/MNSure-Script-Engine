@@ -935,7 +935,7 @@ var _engine = {
 					//Add cancel button
 				$( '#mns-modal-actions div.action-set' ).append( mnsModalFooterCancelButton );
 				
-				_engine.ui.modal._setupCluters();
+				_engine.ui.modal._setupClusters();
 				
 				_engine.ui.modal._watch();
 				
