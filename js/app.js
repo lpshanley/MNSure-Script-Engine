@@ -1156,7 +1156,7 @@ var _engine = {
 					
 					if( _subject.length == 1 ){
 						
-						_select = $( _control ).parent().find('select');
+						_select = $( _subject ).parent().find('select');
 					
 						$( _select ).on('change',function(){
 						
