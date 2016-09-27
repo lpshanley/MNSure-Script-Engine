@@ -297,7 +297,7 @@ var _engine = {
 							
 						} else {
 							
-							_engine.debug.error("- * [ _engine.domTools.get.searches.advancedQuery( _query ) ] Could not find requested field: " + _query);
+							_engine.debug.warn("- * [ _engine.domTools.get.searches.advancedQuery( _query ) ] Could not find requested field: " + _query);
 							
 							return false;
 							
@@ -305,7 +305,7 @@ var _engine = {
 						
 					} else {
 						
-						_engine.debug.error("- * [ _engine.domTools.get.searches.advancedQuery( _query ) ] You must be on a search page to use this dom query.");
+						_engine.debug.warn("- * [ _engine.domTools.get.searches.advancedQuery( _query ) ] You must be on a search page to use this dom query.");
 
 						return false;
 						
