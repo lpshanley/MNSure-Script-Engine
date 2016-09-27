@@ -2215,6 +2215,7 @@ var _engine = {
 						
 						if(v.name == "master"){
 							if( v.commit.sha.substring(0,7) != _engine.advanced.masterCommit() ){
+								
 								$('script[data-scriptengine]').attr('data-master', v.commit.sha.substring(0,7));
 								_engine.debug.info('Updated Master Commit Sha');
 								
@@ -2288,7 +2289,8 @@ var _engine = {
 		},
 		_vars: {
 			timeout: 100,
-			iterations: 40
+			iterations: 40,
+			test: "working!"
 		}
 	},
 	
