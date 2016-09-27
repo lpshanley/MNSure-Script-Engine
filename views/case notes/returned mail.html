@@ -1,7 +1,7 @@
 <!-- MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */ -->
 
 <div class="mns-modal-template" data-input-clusters="true">
-
+	
 	<span class="mns-input-group">
 		<span class="mns-input-descriptor">SUBJECT</span>
 		<span class="mns-input-label">Returned Mail Type: </span> 
@@ -13,17 +13,85 @@
 			<option value="Returned Mail: Address Workaround">Address Workaround</option>
 		</select>
 	</span>
+	
+	<span class="mns-input-cluster" data-cluster-title="Returned Mail: Out of State">
 
-	<span class="mns-input-group required">
-		<span class="mns-input-descriptor">Received Date</span>
-		<span class="mns-input-label">Received Date: </span> 		
-		<input type="date" />
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">1Received Date</span>
+			<span class="mns-input-label">Received Date: </span> 		
+			<input type="date" />
+		</span>
+		
+		<span class="mns-input-group">
+			<span class="mns-input-descriptor">Actions Taken</span>
+			<span class="mns-input-label">Actions Taken: </span> 
+			<input type="text" />
+		</span>
+		
 	</span>
 	
-	<span class="mns-input-group">
-		<span class="mns-input-descriptor">Actions Taken</span>
-		<span class="mns-input-label">Actions Taken: </span> 
-		<input type="text" />
-	</span>	
+	<span class="mns-input-cluster" data-cluster-title="Returned Mail: Unable to Forward">
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">2Received Date</span>
+			<span class="mns-input-label">Received Date: </span> 		
+			<input type="date" />
+		</span>
+		
+		<span class="mns-input-group">
+			<span class="mns-input-descriptor">Actions Taken</span>
+			<span class="mns-input-label">Actions Taken: </span> 
+			<input type="text" />
+		</span>
+		
+	</span>
+	
+	<span class="mns-input-cluster" data-cluster-title="Returned Mail: Temporarily Away">
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">3Received Date</span>
+			<span class="mns-input-label">Received Date: </span> 		
+			<input type="date" />
+		</span>
+		
+		<span class="mns-input-group">
+			<span class="mns-input-descriptor">Actions Taken</span>
+			<span class="mns-input-label">Actions Taken: </span> 
+			<input type="text" />
+		</span>
+		
+	</span>
+	
+	<span class="mns-input-cluster" data-cluster-title="Returned Mail: Temporarily Away">
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">4Received Date</span>
+			<span class="mns-input-label">Received Date: </span> 		
+			<input type="date" />
+		</span>
+		
+		<span class="mns-input-group">
+			<span class="mns-input-descriptor">Actions Taken</span>
+			<span class="mns-input-label">Actions Taken: </span> 
+			<input type="text" />
+		</span>
+		
+	</span>
+	
+	<span class="mns-input-cluster" data-cluster-title="Returned Mail: Address Workaround">
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">5Received Date</span>
+			<span class="mns-input-label">Received Date: </span> 		
+			<input type="date" />
+		</span>
+		
+		<span class="mns-input-group">
+			<span class="mns-input-descriptor">Actions Taken</span>
+			<span class="mns-input-label">Actions Taken: </span> 
+			<input type="text" />
+		</span>
+		
+	</span>
 
 </div>

@@ -935,6 +935,8 @@ var _engine = {
 					//Add cancel button
 				$( '#mns-modal-actions div.action-set' ).append( mnsModalFooterCancelButton );
 				
+				_engine.ui.modal._setupCluters();
+				
 				_engine.ui.modal._watch();
 				
 			},
@@ -1140,6 +1142,31 @@ var _engine = {
 			_unwatch: function(){
 				
 				$('.mns-modal-template').off('keypress');
+				
+			},
+			_setupClusters(){
+				
+				var _clustersEnabled = _control.attr('data-input-clusters');
+
+				_clustersEnabled == "true" ? _clustersEnabled = true : _clustersEnabled = false;
+
+				if( _clustersEnabled ){
+					
+					var _subject = $( '.modal-content-container span.mns-input-group span:contains("SUBJECT")' );
+					
+					if( _subject.length == 1 ){
+						
+						_select = $( _control ).parent().find('select');
+					
+						$( _select ).on('change',function(){
+						
+							var _inputGroups = $( '.modal-content-container span.mns-input-group').attr('data-cluster-title');
+						
+						})
+						
+					}
+					
+				}
 				
 			}
 		},
