@@ -1146,7 +1146,7 @@ var _engine = {
 			},
 			_setupClusters(){
 				
-				var _clustersEnabled = _control.attr('data-input-clusters');
+				var _clustersEnabled = $('div.mns-modal-template').attr('data-input-clusters');
 
 				_clustersEnabled == "true" ? _clustersEnabled = true : _clustersEnabled = false;
 
@@ -1160,7 +1160,9 @@ var _engine = {
 					
 						$( _select ).on('change',function(){
 						
-							var _inputGroups = $( '.modal-content-container span.mns-input-group').attr('data-cluster-title');
+							//var _inputGroups = $( '.modal-content-container span.mns-input-group').attr('data-cluster-title');
+						
+							console.log( $( _select ).val() );
 						
 						})
 						
