@@ -2238,6 +2238,10 @@ var _engine = {
 			return;
 			
 		},
+		
+		/* [Advanced] Universal veriables
+		/********************************************************************/
+		
 		_vars: {
 			timeout: 100,
 			iterations: 40
