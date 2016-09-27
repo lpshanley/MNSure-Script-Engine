@@ -1286,7 +1286,62 @@ var _engine = {
 			},
 			_processPrefill: function(){
 				
+				var _fields = $('.mns-modal-template > .mns-input-group');
 				
+					//Push additional clusters if clustering is active
+				if( _engine.ui.modal._clustersActive() ){
+					
+					_clusterFields = $('.mns-modal-template > .mns-input-cluster.input-cluster-active > .mns-input-group');
+					
+					$.each(_clusterFields,function(k,v){
+						
+						_fields.push(v);
+						
+					});
+					
+				}
+				
+				$.each( _fields, function(k,v){
+					
+					if(typeof $( v ).find('input, select').attr('data-prefill') != 'undefined'){
+						
+						//Process prefill on field
+						
+						var _prefill = $( v ).find('input, select').attr('data-prefill').toLowerCase();
+						
+						var _prefillType = _prefill.split("|")[0];
+						var _prefillValue = _prefill.split("|")[1];
+						var _prefillValueReferance = null;
+						
+						if( _prefillValue.indexOf("(") > -1 ){
+							var _prefillValueReferance = _prefillValue.substring( _prefillValue.lastIndexOf("(")+1,_prefillValue.lastIndexOf(")") );
+							var _prefillValue = _prefillValue.substring( 0,_prefillValue.lastIndexOf("(") );
+						}
+						
+						switch( _prefillType ){
+							case "date":
+								switch( _prefillValue ){
+									case "today":
+										
+										var d = new Date();
+										
+										var prefillDate = d.toISOString().split('T')[0];
+										
+										$( v ).find('input').val( prefillDate );
+										
+										break;
+									default:
+										break;
+								}
+								break;
+							default:
+								_engine.debug.warn("unrecognised prefill type of: [ '" +_prefill+ " ']");
+								break;
+						}
+						
+					}
+					
+				});
 				
 			}
 		},
