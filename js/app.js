@@ -2215,18 +2215,19 @@ var _engine = {
 						if(v.name == "master"){
 							if( v.commit.sha.substring(0,7) != _engine.advanced.masterCommit() ){
 								$('script[data-scriptengine]').attr('data-master', v.commit.sha.substring(0,7));
+								_engine.debug.info('Updated Master Commit Sha');
+							} else {
+								_engine.debug.info('Master Commit is up to date.');
 							}
-							
-							_engine.debug.info('Updated Master Commit Sha');
-							
+
 						} else if(v.name == "beta"){
 							
 							if( v.commit.sha.substring(0,7) != _engine.advanced.betaCommit() ){
 								$('script[data-scriptengine]').attr('data-beta', v.commit.sha.substring(0,7));
+							} else {
+								_engine.debug.info('Beta Commit is up to date.');
 							}
-							
-							_engine.debug.info('Updated Beta Commit Sha');
-							
+
 						}
 						
 					});
