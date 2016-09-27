@@ -271,6 +271,14 @@
 	border: 2px solid #FF2222;
 }
 
+.mns-modal-template .mns-input-cluster {
+	display: none;
+}
+
+.mns-modal-template .mns-input-cluster.input.cluster-active {
+	display: block;
+}
+
 /* Top notification bar layout
 =================================================================*/
 
