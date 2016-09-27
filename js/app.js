@@ -1138,6 +1138,9 @@ var _engine = {
 				
 			},
 			_watch: function(){
+				
+				$('.mns-modal-template span.mns-input-group:has("input") input').focus();
+				
 				$('.mns-modal-template').keypress(function(e){ 
 	
 					switch( e.key ){
