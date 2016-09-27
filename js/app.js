@@ -942,11 +942,11 @@ var _engine = {
 			},
 			destroy: function(){
 				
+				_engine.ui.modal._unwatch();
+				
 				$('div.modal-overlay').remove();
 				
 				$('body').removeClass('modal');
-				
-				_engine.ui.modal._unwatch();
 				
 			},
 			_storeParams: function(){
