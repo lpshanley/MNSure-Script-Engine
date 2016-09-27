@@ -2202,7 +2202,8 @@ var _engine = {
 		/* [Advanced] Checks for new updated to the git hub sha
 		/********************************************************************/
 		
-		updateCommits: function(){
+		updateScripts: function(){
+			
 			$.ajax({
 				url: "https://api.github.com/repos/lpshanley/MNSure-Script-Engine/branches",
 				type: 'get',
@@ -2216,6 +2217,7 @@ var _engine = {
 							if( v.commit.sha.substring(0,7) != _engine.advanced.masterCommit() ){
 								$('script[data-scriptengine]').attr('data-master', v.commit.sha.substring(0,7));
 								_engine.debug.info('Updated Master Commit Sha');
+								
 							} else {
 								_engine.debug.info('Master Commit is up to date.');
 							}
@@ -2235,6 +2237,14 @@ var _engine = {
 					
 				}
 			});
+			
+			var updatedVersion = _engine.advanced.currentCommit();
+			
+			//Update CSS Repo
+			$('link[data-scriptengine]').attr("href", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ updatedVersion +"/css/appStyles.css");
+			//Update Script Repo
+			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ updatedVersion +"/js/app.js" );
+			
 		},
 		
 		/* [Advanced] Returns the commit that the engine is currently using
