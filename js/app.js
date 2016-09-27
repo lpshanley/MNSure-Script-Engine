@@ -443,21 +443,69 @@ var _engine = {
 							// Person Search
 						} else if( _tab.innerText.indexOf("Person") != -1 ){
 							return "Person Search";
+						} else if( _tab.innerText.indexOf("Employer") != -1 ){
+							return "Employer Search";
+						} else if( _tab.innerText.indexOf("All Participants") != -1 ){
+							return "All Participants Search";
+						} else if( _tab.innerText.indexOf("Application") != -1 ){
+							return "Application Search";
+						} else if( _tab.innerText.indexOf("Investigation") != -1 ){
+							return "Investigation Search";
+						} else if( _tab.innerText.indexOf("Incident") != -1 ){
+							return "Incident Search";
+						} else if( _tab.innerText.indexOf("Educational Institute") != -1 ){
+							return "Educational Institute Search";
+						} else if( _tab.innerText.indexOf("External Party") != -1 ){
+							return "External Party Search";
+						} else if( _tab.innerText.indexOf("Utility") != -1 ){
+							return "Utility Search";
+						} else if( _tab.innerText.indexOf("External Party Office") != -1 ){
+							return "External Party Office Search";
 						}
 					
+					} else if( _tab.innerText.indexOf("My Applications") != -1 ){
+						return "My Applications";
+					} else if( _tab.innerText.indexOf("My Items of Interest") != -1 ){
+						return "My Items of Interest";
+					} else if( _tab.innerText.indexOf("My Cases") != -1 ){
+						return "My Cases";
+					} else if( _tab.innerText.indexOf("My Recently Approved Cases") != -1 ){
+						return "My Recently Approved Cases";
+					} else if( _tab.innerText.indexOf("Cases Recently Assigned to Me") != -1 ){
+						return "Cases Recently Assigned to Me";
+					}	else if( _tab.innerText.indexOf("Recently Viewed Cases") != -1 ){
+						return "Recently Viewed Cases";
+					}	else if( _tab.innerText.indexOf("My Service Plans") != -1 ){
+						return "My Service Plans";
+						
+						
 						//Person Page
 					} else {
 						
 						_tabFrame = $( _engine.domTools.get.hcrTabFrame( _tab ) ).find('iframe.detailsPanelFrame');
 						
-						if( _tabFrame.length != 1 ){
-	
+						if( _tabFrame.length == 0 ){
+							
 							_returnTab = _engine.domTools.get.hcrTabActive();
 							_tab.click();
 							_returnTab.click();
+
+							_tabFrame = $( _engine.domTools.get.hcrTabFrame( _tab ) ).find('div.tab-wrapper > div.nav-panel > div.navigation-tab-outer > div');
 							
-							return false;
-						
+							if( _tabFrame.length != 1 ){
+								
+								if( $( _tabFrame ).attr('widgetid').split("-")[0].toLowerCase() == "personhome" ){
+									
+									return "Person Page";
+									
+								}
+								
+							} else {
+								
+								return false;
+								
+							}
+							
 						} else if( _tabFrame.length > 0 ){ 
 							
 							if( $( _tabFrame ).attr('src').split("/")[1].split(".")[0].replace("TabDetailsPage", "").toLowerCase() == "person_home" ){
