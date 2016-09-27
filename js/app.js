@@ -888,7 +888,7 @@ var _engine = {
 				$('div.modal-titlebar').append( dialogTitle );
 				
 					//Close X on title bar
-				var closeButton = $('<span>',{'class':'dijitDialogCloseIcon', 'onClick':'_engine.events.handleClickEvent("ui[closeModal]")'});
+				var closeButton = $('<span>',{'class':'dijitDialogCloseIcon', 'onClick':'_engine.events.handleClickEvent("ui[modalButton(close)]")'});
 				$('div.modal-titlebar').append( closeButton );
 				
 					//Wapper for the layout from the view template
