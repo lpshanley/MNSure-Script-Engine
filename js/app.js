@@ -1138,19 +1138,40 @@ var _engine = {
 					}
 
 				});
+				
+				if( _engine.ui.modal._clustersActive() ){
+					
+					var _subject = $( '.modal-content-container span.mns-input-group span:contains("SUBJECT")' );
+					
+					if( _subject.length == 1 ){
+						
+						var _select = $( _subject ).parent().find('select');
+					
+						$( _select ).on('change',function(){
+							
+							_selectVal = $( _subject ).parent().find('select').val();
+							
+							//_engine.ui.modal._changeActiveCluster( _selectVal );
+							
+							console.log( _selectVal );
+							
+						});
+					
+					}
+				
+				}				
+				
 			},
 			_unwatch: function(){
 				
 				$('.mns-modal-template').off('keypress');
 				
+				$( '.modal-content-container span.mns-input-group span:contains("SUBJECT")' ).parent().find('select').off('change');
+				
 			},
 			_setupClusters(){
-				
-				var _clustersEnabled = $('div.mns-modal-template').attr('data-input-clusters');
 
-				_clustersEnabled == "true" ? _clustersEnabled = true : _clustersEnabled = false;
-
-				if( _clustersEnabled ){
+				if( _engine.ui.modal._clustersActive() ){
 					
 					var _subject = $( '.modal-content-container span.mns-input-group span:contains("SUBJECT")' );
 					
@@ -1158,36 +1179,54 @@ var _engine = {
 						
 						_selectVal = $( _subject ).parent().find('select').val();
 					
-						var _clusters = $('span.mns-input-cluster');
-						
-						$.each(_clusters,function(k,v){
-							
-							var _clusterTitle = $(v).attr('data-cluster-title');
-							
-							if( _clusterTitle == _selectVal ){
-								
-								$( v ).addClass( 'input-cluster-active' );
-								
-								console.log( "Added Class" );		
-								
-							}
-							
-							console.log( _clusterTitle );							
-							
-						});
-						
-						//$( _select ).on('change',function(){
-						
-							//var _inputGroups = $( '.modal-content-container span.mns-input-group').attr('data-cluster-title');
-						
-						//	console.log( $( _select ).val() );
-						
-						//})
+						_engine.ui.modal._changeActiveCluster( _selectVal );
 						
 					}
 					
 				}
 				
+			},
+			_changeActiveCluster: function( subjectValue ){
+				
+				if( _engine.ui.modal._clustersActive() ){
+					
+					var _activeCluster = $('span.mns-input-cluster.input-cluster-active');
+					
+					if( _activeCluster.length == 1 ){
+						$( _activeCluster ).removeClass('input-cluster-active');
+					}
+					
+					var _clusters = $('span.mns-input-cluster');
+					
+					$.each(_clusters,function(k,v){
+						
+						var _clusterTitle = $(v).attr('data-cluster-title');
+						
+						if( _clusterTitle == subjectValue ){
+							
+							$( v ).addClass( 'input-cluster-active' );
+							
+						}
+						
+					});
+					
+				}
+				
+			},
+			_clustersActive: function(){
+				
+				_modal = $('div.mns-modal-template');
+				
+				if( _modal.length == 1 ){
+					
+					var _clustersEnabled = $( _modal ).attr('data-input-clusters');
+
+					_clustersEnabled == "true" ? _clustersEnabled = true : _clustersEnabled = false;
+				
+					return _clustersActive;
+					
+				}
+
 			}
 		},
 		
