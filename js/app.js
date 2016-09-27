@@ -1151,9 +1151,7 @@ var _engine = {
 							
 							_selectVal = $( _subject ).parent().find('select').val();
 							
-							//_engine.ui.modal._changeActiveCluster( _selectVal );
-							
-							console.log( _selectVal );
+							_engine.ui.modal._changeActiveCluster( _selectVal );
 							
 						});
 					
