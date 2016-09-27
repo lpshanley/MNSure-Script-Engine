@@ -1197,6 +1197,9 @@ var _engine = {
 
 				});
 				
+				//Process onLoad Prefill
+				_engine.ui.modal._processPrefill();
+				
 				if( _engine.ui.modal._clustersActive() ){
 					
 					var _subject = $( '.modal-content-container span.mns-input-group span:contains("SUBJECT")' );
@@ -1211,11 +1214,14 @@ var _engine = {
 							
 							_engine.ui.modal._changeActiveCluster( _selectVal );
 							
+							//Process dynamic Prefill on subject change
+							_engine.ui.modal._processPrefill();
+							
 						});
 					
 					}
 				
-				}				
+				}		
 				
 			},
 			_unwatch: function(){
