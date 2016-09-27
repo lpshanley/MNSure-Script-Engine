@@ -2199,6 +2199,42 @@ var _engine = {
 			return $('script[data-scriptengine]').attr('data-master');
 		},
 		
+		/* [Advanced] Checks for new updated to the git hub sha
+		/********************************************************************/
+		
+		updateCommits: function(){
+			$.ajax({
+				url: "https://api.github.com/repos/lpshanley/MNSure-Script-Engine/branches",
+				type: 'get',
+				dataType: 'json',
+				async: false,
+				success: function( data ){
+					
+					$.each(data,function(k,v){
+						
+						if(v.name == "master"){
+							if( v.commit.sha.substring(0,7) != _engine.advanced.masterCommit() ){
+								$('script[data-scriptengine]').attr('data-master', v.commit.sha.substring(0,7));
+							}
+							
+							_engine.debug.info('Updated Master Commit Sha');
+							
+						} else if(v.name == "beta"){
+							
+							if( v.commit.sha.substring(0,7) != _engine.advanced.betaCommit() ){
+								$('script[data-scriptengine]').attr('data-beta', v.commit.sha.substring(0,7));
+							}
+							
+							_engine.debug.info('Updated Beta Commit Sha');
+							
+						}
+						
+					});
+					
+				}
+			});
+		},
+		
 		/* [Advanced] Returns the commit that the engine is currently using
 		/********************************************************************/
 		
