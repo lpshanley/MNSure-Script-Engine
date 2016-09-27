@@ -2199,55 +2199,6 @@ var _engine = {
 			return $('script[data-scriptengine]').attr('data-master');
 		},
 		
-		/* [Advanced] Checks for new updated to the git hub sha
-		/********************************************************************/
-		
-		updateScripts: function(){
-			
-			$.ajax({
-				url: "https://api.github.com/repos/lpshanley/MNSure-Script-Engine/branches",
-				type: 'get',
-				dataType: 'json',
-				async: false,
-				success: function( data ){
-					
-					$.each(data,function(k,v){
-						
-						if(v.name == "master"){
-							if( v.commit.sha.substring(0,7) != _engine.advanced.masterCommit() ){
-								
-								$('script[data-scriptengine]').attr('data-master', v.commit.sha.substring(0,7));
-								_engine.debug.info('Updated Master Commit Sha');
-								
-							} else {
-								_engine.debug.info('Master Commit is up to date.');
-							}
-
-						} else if(v.name == "beta"){
-							
-							if( v.commit.sha.substring(0,7) != _engine.advanced.betaCommit() ){
-								$('script[data-scriptengine]').attr('data-beta', v.commit.sha.substring(0,7));
-								_engine.debug.info('Updated Beta Commit Sha');
-							} else {
-								_engine.debug.info('Beta Commit is up to date.');
-							}
-
-						}
-						
-					});
-					
-				}
-			});
-			
-			var updatedVersion = _engine.advanced.currentCommit();
-			
-			//Update CSS Repo
-			$('link[data-scriptengine]').attr("href", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ updatedVersion +"/css/appStyles.css");
-			//Update Script Repo
-			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ updatedVersion +"/js/app.js" );
-			
-		},
-		
 		/* [Advanced] Returns the commit that the engine is currently using
 		/********************************************************************/
 		
@@ -2287,10 +2238,13 @@ var _engine = {
 			return;
 			
 		},
+		
+		/* [Advanced] Universal veriables
+		/********************************************************************/
+		
 		_vars: {
 			timeout: 100,
-			iterations: 40,
-			test: "working!"
+			iterations: 40
 		}
 	},
 	
