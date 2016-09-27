@@ -275,7 +275,11 @@
 	display: none;
 }
 
-.mns-modal-template .mns-input-cluster.input.cluster-active {
+.mns-modal-template .mns-input-cluster.input-cluster-active:first-child {
+	margin-top: 5px;
+}
+
+.mns-modal-template .mns-input-cluster.input-cluster-active {
 	display: block;
 }
 
