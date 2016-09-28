@@ -1984,7 +1984,7 @@ var _engine = {
 								// Gather html for modal
 								var _html = _engine.storage.html.get();
 								
-								if( $('<div>', {'html': _engine.storage.html.get() }).find('div').hasClass('mns-error-modal') ){
+								if( $('<div>', {'html': _html }).find('div').hasClass('mns-error-modal') ){
 									_title = "Error";
 									_modalType = "error";
 								}
