@@ -671,119 +671,64 @@ var _engine = {
 		
 		icTabs: {
 			
+			/* DEPRECATED NAV FUNCTIONS TO BE REMOVED WHEN NO LONGER USED */
+			
 			home: function(){
-				_engine.navigation.hcr();
-				if(_engine.domTools.test.hcrTabActiveIsIC()){
-					_engine.navigation.icTabs.icNavCore("Home");
-				} else {
-					_engine.caseWork.caseSelection();
-					return false;
-				}
+				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
+				_engine.navigation.icTabs.icTabNavi("home");
 			},
 			
-			evidence: function(callback){
-				_engine.navigation.hcr();
-				if(_engine.domTools.test.hcrTabActiveIsIC()){
-					_engine.navigation.icTabs.icNavCore("EvidenceFolder");
-					
-					
-					
-					callback;
-				} else {
-					_engine.caseWork.caseSelection();
-					return false;
-				}
+			evidence: function(){
+				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
+				_engine.navigation.icTabs.icTabNavi("evidence");
 			},
 			
 			participants: function(){
-				_engine.navigation.hcr();
-				if(_engine.domTools.test.hcrTabActiveIsIC()){
-					_engine.navigation.icTabs.icNavCore("ParticipantFolder");
-				} else {
-					_engine.caseWork.caseSelection();
-					return false;
-				}
+				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
+				_engine.navigation.icTabs.icTabNavi("participants");
 			},
 			
 			assessments: function(){
-				_engine.navigation.hcr();
-				if(_engine.domTools.test.hcrTabActiveIsIC()){
-					_engine.navigation.icTabs.icNavCore("Assessments");
-				} else {
-					_engine.caseWork.caseSelection();
-					return false;
-				}
+				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
+				_engine.navigation.icTabs.icTabNavi("assessments");
 			},
 			
 			services: function(){
-				_engine.navigation.hcr();
-				if(_engine.domTools.test.hcrTabActiveIsIC()){
-					_engine.navigation.icTabs.icNavCore("Services");
-				} else {
-					_engine.caseWork.caseSelection();
-					return false;
-				}
+				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
+				_engine.navigation.icTabs.icTabNavi("services");
 			},
 			
 			referrals: function(){
-				_engine.navigation.hcr();
-				if(_engine.domTools.test.hcrTabActiveIsIC()){
-					_engine.navigation.icTabs.icNavCore("Referrals");
-				} else {
-					_engine.caseWork.caseSelection();
-					return false;
-				}
+				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
+				_engine.navigation.icTabs.icTabNavi("referrals");
 			},
 			
 			contact: function(){
-				_engine.navigation.hcr();
-				if(_engine.domTools.test.hcrTabActiveIsIC()){
-					_engine.navigation.icTabs.icNavCore("ContactFolder");
-				} else {
-					_engine.caseWork.caseSelection();
-					return false;
-				}
+				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
+				_engine.navigation.icTabs.icTabNavi("contact");
 			},
 			
 			tasks: function(){
-				_engine.navigation.hcr();
-				if(_engine.domTools.test.hcrTabActiveIsIC()){
-					_engine.navigation.icTabs.icNavCore("Tasks");
-				} else {
-					_engine.caseWork.caseSelection();
-					return false;
-				}
+				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
+				_engine.navigation.icTabs.icTabNavi("tasks");
 			},
 			
 			issuesAndProceedings: function(){
-				_engine.navigation.hcr();
-				if(_engine.domTools.test.hcrTabActiveIsIC()){
-					_engine.navigation.icTabs.icNavCore("IssuesAndProceedings");
-				} else {
-					_engine.caseWork.caseSelection();
-					return false;
-				}
+				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
+				_engine.navigation.icTabs.icTabNavi("issuesAndProceedings");
 			},
 			
 			administration: function(){
-				_engine.navigation.hcr();
-				if(_engine.domTools.test.hcrTabActiveIsIC()){
-					_engine.navigation.icTabs.icNavCore("AdminFolder");
-				} else {
-					_engine.caseWork.caseSelection();
-					return false;
-				}
+				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
+				_engine.navigation.icTabs.icTabNavi("administration");
 			},
 			
 			elections: function(){
-				_engine.navigation.hcr();
-				if(_engine.domTools.test.hcrTabActiveIsIC()){
-					_engine.navigation.icTabs.icNavCore("ElectionsFolder");
-				} else {
-					_engine.caseWork.caseSelection();
-					return false;
-				}
+				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
+				_engine.navigation.icTabs.icTabNavi("elections");
 			},
+			
+			/* END OF DEPRECATED NAV FUNCTIONS */
 			
 			icTabNavi: function( naviText, callback ){
 
