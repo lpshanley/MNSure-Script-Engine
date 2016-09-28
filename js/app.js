@@ -922,7 +922,7 @@ var _engine = {
 										_engine.debug.info("========== Completed navigation to " + naviText + " [ attempt: " + _counter + " ] ==========");
 
 										if( typeof callback == 'function' ){
-											callback( _engine.domTools.get.icFrame.icTabActiveFrame() );
+											callback( _engine.domTools.get.icFrame.icTabActiveFrame()[0] );
 										}
 										
 										clearInterval(_nav);
