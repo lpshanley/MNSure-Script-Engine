@@ -793,6 +793,8 @@ var _engine = {
 									
 									if( typeof _id != "undefined" && _id.split("_")[ _id.split("_").length - 1 ].toLowerCase() == pageValidation ){
 										
+										console.log( $( _engine.domTools.get.hcrTabFrame() ).find('.content-area-container iframe').contents().find('body div#content')[0] );
+										
 										_engine.debug.info("========== Completed navigation to " + naviText + " [ attempt: " + _counter + " ] ==========");
 
 										if( typeof callback == 'function' ){
