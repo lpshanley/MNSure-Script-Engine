@@ -628,42 +628,6 @@ var _engine = {
 	
 	navigation: {
 		
-		/* DEPRECATED NAVIGATION FUNCTIONS */
-		
-			/* [Nav] Navigates to the HCR tab
-			/********************************************************************/
-			
-			hcr: function(){
-				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.mainTabs.mainTabNavi( tab, callback ); ]');
-				_engine.navigation.mainTabs.mainTabNavi("hcr");
-			},
-			
-			/* [Nav] Navigates to the Home tab
-			/********************************************************************/
-			
-			home: function(){
-				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.mainTabs.mainTabNavi( tab, callback ); ]');
-				_engine.navigation.mainTabs.mainTabNavi("hcr");
-			},
-			
-			/* [Nav] Navigates to the Inbox tab
-			/********************************************************************/
-			
-			inbox: function(){
-				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.mainTabs.mainTabNavi( tab, callback ); ]');
-				_engine.navigation.mainTabs.mainTabNavi("hcr");
-			},
-			
-			/* [Nav] Navigates to the Calendar tab
-			/********************************************************************/
-			
-			calendar: function(){
-				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.mainTabs.mainTabNavi( tab, callback ); ]');
-				_engine.navigation.mainTabs.mainTabNavi("hcr");
-			},
-		
-		/* END OF DEPRECATED NAVIGATION FUNCTIONS */
-		
 		mainTabs: {
 			
 			mainTabNavi: function( tab, callback ){
@@ -747,65 +711,6 @@ var _engine = {
 		/********************************************************************/
 		
 		icTabs: {
-			
-			/* DEPRECATED NAV FUNCTIONS TO BE REMOVED WHEN NO LONGER USED */
-			
-			home: function(){
-				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
-				_engine.navigation.icTabs.icTabNavi("home");
-			},
-			
-			evidence: function(){
-				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
-				_engine.navigation.icTabs.icTabNavi("evidence");
-			},
-			
-			participants: function(){
-				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
-				_engine.navigation.icTabs.icTabNavi("participants");
-			},
-			
-			assessments: function(){
-				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
-				_engine.navigation.icTabs.icTabNavi("assessments");
-			},
-			
-			services: function(){
-				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
-				_engine.navigation.icTabs.icTabNavi("services");
-			},
-			
-			referrals: function(){
-				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
-				_engine.navigation.icTabs.icTabNavi("referrals");
-			},
-			
-			contact: function(){
-				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
-				_engine.navigation.icTabs.icTabNavi("contact");
-			},
-			
-			tasks: function(){
-				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
-				_engine.navigation.icTabs.icTabNavi("tasks");
-			},
-			
-			issuesAndProceedings: function(){
-				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
-				_engine.navigation.icTabs.icTabNavi("issuesAndProceedings");
-			},
-			
-			administration: function(){
-				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
-				_engine.navigation.icTabs.icTabNavi("administration");
-			},
-			
-			elections: function(){
-				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.icTabs.icTabNavi( tab, callback ); ]');
-				_engine.navigation.icTabs.icTabNavi("elections");
-			},
-			
-			/* END OF DEPRECATED NAV FUNCTIONS */
 			
 			icTabNavi: function( naviText, callback ){
 				
