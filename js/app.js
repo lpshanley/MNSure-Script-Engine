@@ -666,6 +666,87 @@ var _engine = {
 			}
 		},
 		
+		mainTabs: {
+			
+			mainTabNavi: function( tab, callback ){
+				
+				tab = tab.toLowerCase();
+				
+				let navTitle = "";
+				
+				if(tab === "hcr") tab = "hcr cases and outcomes";
+				
+				switch( tab ){
+					case "home":
+						navTitle = "Home";
+						break;
+					case "hcr cases and outcomes":
+						navTitle = "HCR Cases and Outcomes";
+						break;
+					case "inbox":
+						navTitle = "Inbox";
+						break;
+					case "calendar":
+						navTitle = "Calendar";
+						break;
+					default:
+						break;		
+				}
+				
+				if( navTitle != _engine.domTools.get.mainTabActive().innerText.trim() ){
+					
+					$(`[title='${navTitle}']`)[0].click();
+					
+					if(typeof callback === "function") callback();
+					
+				}
+				
+			}
+		
+		}
+		
+		/* [Nav] Performs navigation on the tabs in the hcr tab
+		/********************************************************************/
+		
+		hcrTabs: {
+			
+			hcrTabNavi: function( tabTitle, callback ){
+	
+				_engine.navigation.hcr();
+				
+				_engine.debug.info('=================== Starting HCR Tab Navigation. ===================');
+				
+				_engine.debug.info('- * Gathering return tab information.');
+				var returnTab = _engine.domTools.get.hcrTabActive();
+				
+				_engine.debug.info('- * Gathering list of open tabs.');
+				var openTabs = _engine.domTools.get.hcrTabList();
+				
+				_engine.debug.info('- * Iterating over list of tabs.');
+				$.each(openTabs, function(k,v){
+					
+					if( v.innerText.trim() == tabTitle ){
+						
+						_engine.debug.info('- * Navigating match found - selecting match.');
+						
+						$(v).click();
+						
+						_engine.debug.info('- * Gathering frame of new window.');			
+						var tabFrame = _engine.domTools.get.hcrTabFrame();
+						
+						if(typeof callback == 'function'){
+							_engine.debug.info('- * Executing callback.');
+							callback( _engine.domTools.get.hcrTabFrame(), returnTab );
+						}
+						
+					};
+					
+				});
+				
+			}
+			
+		},
+		
 		/* [Nav] Performs navigation on the sub tabs when on a case
 		/********************************************************************/
 		
