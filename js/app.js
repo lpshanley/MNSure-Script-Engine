@@ -2163,7 +2163,7 @@ var _engine = {
 				
 				_engine.debug.info("- * Attempting to load results screen [ attempt: "+ _count +" ]");
 				
-				if(_count <= _engine.advanced._vars.iterations){
+				if( _count <= _engine.advanced._vars.iterations ){
 					
 					var _results = _engine.domTools.get.searches.searchResultsQuery();
 					
@@ -2173,11 +2173,27 @@ var _engine = {
 								
 							if( _results.length == 1 ){
 								
-								_results.find('td:nth-child(2) a')[0].click();
+								if( typeof _results.find('td:nth-child(2) a')[0] !== "undefined" ){
 								
-								_tabToClose = _engine.domTools.get.hcrTabListTypeQuery( screenType );
+									_results.find('td:nth-child(2) a')[0].click();
 								
-								_engine.tools.closeTabHCR( _tabToClose );
+									_tabToClose = _engine.domTools.get.hcrTabListTypeQuery( screenType );
+								
+									_engine.tools.closeTabHCR( _tabToClose );
+								
+								} else {
+									
+									_engine.debug.info("- * [ _engine.tools.selectSearchResult() ] Your search returned zero results.");
+									
+									clearInterval( _loadWindow );
+									
+								}
+								
+							} else {
+								
+								_engine.debug.info("- * [ _engine.tools.selectSearchResult() ] Your search returned more than one result. Please manually select.");
+									
+								clearInterval( _loadWindow );
 								
 							}
 							
@@ -2190,12 +2206,15 @@ var _engine = {
 						}
 						
 						clearInterval( _loadWindow );
+						
 					}
 					
 					++_count;
 					
 				} else {
+					
 					clearInterval( _loadWindow );
+					
 				}
 			}, _engine.advanced._vars.timeout);
 			
