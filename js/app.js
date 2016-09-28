@@ -801,57 +801,6 @@ var _engine = {
 						
 						if(_counter <= _engine.advanced._vars.iterations){
 							
-							switch( naviText ){
-								case "home":
-									pageValidation = "home";
-									pageNavigation = _engine.navigation.icTabs.home();
-									break;
-								case "evidence":
-									pageValidation = "dashboard";
-									pageNavigation = _engine.navigation.icTabs.evidence();
-									break;
-								case "participants":
-									pageValidation = "listcasemember";
-									pageNavigation = _engine.navigation.icTabs.participants();
-									break;
-								case "assessments":
-									pageValidation = "listassessment";
-									pageNavigation = _engine.navigation.icTabs.assessments();
-									break;
-								case "services":
-									pageValidation = "listservicedeliveries";
-									pageNavigation = _engine.navigation.icTabs.services();
-									break;
-								case "referrals":
-									pageValidation = "listreferrals";
-									pageNavigation = _engine.navigation.icTabs.referrals();
-									break;
-								case "contact":
-									pageValidation = "listnote";
-									pageNavigation = _engine.navigation.icTabs.contact();
-									break;
-								case "tasks":
-									pageValidation = "listtask";
-									pageNavigation = _engine.navigation.icTabs.tasks();
-									break;
-								case "issues and proceedings":
-									pageValidation = "listinvestigation";
-									pageNavigation = _engine.navigation.icTabs.issuesAndProceedings();
-									break;
-								case "administration":
-									pageValidation = "listcontest";
-									pageNavigation = _engine.navigation.icTabs.administration();
-									break;
-								case "elections":
-									pageValidation = "listcasemembersforelections";
-									pageNavigation = _engine.navigation.icTabs.elections();
-									break;
-								default:
-									pageValidation = "";
-									pageNavigation = false;
-									break;
-							}
-							
 							_engine.debug.info("- * Navigation attempt: " + _counter);
 							
 							if( pageNavigation != false){
