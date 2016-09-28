@@ -735,7 +735,7 @@ var _engine = {
 							var tabFrame = _engine.domTools.get.hcrTabFrame();
 							
 							if(typeof callback == 'function'){
-								_engine.debug.info('- * Executing callback.');
+								_engine.debug.info('=================== Comleted HCR Tab Navigation. ===================');
 								callback( _engine.domTools.get.hcrTabFrame(), returnTab );
 							}
 							
