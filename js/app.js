@@ -21,16 +21,18 @@ var _engine = {
 		/********************************************************************/
 		
 		_person: function(){
-			_engine.navigation.hcr();
-			curam.ui.SectionShortcutsPanel.handleClickOnAnchorElement("Person_search1","");
+			_engine.navigation.mainTabs.mainTabNavi('hcr',function(){
+				curam.ui.SectionShortcutsPanel.handleClickOnAnchorElement("Person_search1","");
+			});
 		},
 		
 		/* [Search] Opens a new case search
 		/********************************************************************/
 		
 		_case: function(){
-			_engine.navigation.hcr();
-			curam.ui.SectionShortcutsPanel.handleClickOnAnchorElement("Case_search1",""); 
+			_engine.navigation.mainTabs.mainTabNavi('hcr',function(){
+				curam.ui.SectionShortcutsPanel.handleClickOnAnchorElement("Case_search1",""); 
+			});
 		}
 		
 	},
@@ -64,7 +66,6 @@ var _engine = {
 				|* open on the HCR Cases and Outcomes screen.
 				\*----------------------------------------------------------*/
 			hcrTabList: function(){
-				_engine.navigation.hcr();
 				return $('[widgetid="HCRCASEAPPWorkspaceSection-stc_tablist"] div.dijitTabContainerTop-tabs div.dijitTab');
 			},
 			
@@ -117,9 +118,7 @@ var _engine = {
 				|* HCR Cases and Outcomes screen.
 				\*----------------------------------------------------------*/
 			hcrTabActive: function(){
-				_engine.navigation.mainTabs.mainTabNavi('hcr',function(){
-					return $('[widgetid="HCRCASEAPPWorkspaceSection-stc_tablist"] div.dijitTabContainerTop-tabs div.dijitTab.dijitTabChecked.dijitChecked')[0];
-				});
+				return $('[widgetid="HCRCASEAPPWorkspaceSection-stc_tablist"] div.dijitTabContainerTop-tabs div.dijitTab.dijitTabChecked.dijitChecked')[0];
 			},
 			
 				/* Returns the iFrame for the tab that is currently the
@@ -128,8 +127,6 @@ var _engine = {
 				|* content.
 				\*----------------------------------------------------------*/
 			hcrTabFrame: function( _tab ){
-				
-				_engine.navigation.hcr();
 				
 				typeof _tab == 'undefined' ? 
 					_tab = _engine.domTools.get.hcrTabActive() : 
@@ -154,7 +151,7 @@ var _engine = {
 					|* Assessments, Services, etc... )
 					\*----------------------------------------------------------*/
 				icTabList: function(){
-					_engine.navigation.hcr();
+
 					if(_engine.domTools.test.hcrTabActiveIsIC()){
 						var _tp = _engine.domTools.get.hcrTabFrame();
 						return $( _tp ).find('div.dijitTabNoLayout[role="tablist"] > div.dijitTab.visible');
@@ -168,7 +165,7 @@ var _engine = {
 					|* Assessments, Services, etc... )
 					\*----------------------------------------------------------*/
 				icTabActive: function(){
-					_engine.navigation.hcr();
+
 					if(_engine.domTools.test.hcrTabActiveIsIC()){
 						var _tp = _engine.domTools.get.hcrTabFrame();
 						return $( _tp ).find('div.dijitTabNoLayout[role="tablist"] > div.dijitTab.visible.dijitTabChecked.dijitChecked');
@@ -182,7 +179,7 @@ var _engine = {
 					|* Meeting Minutes, Communications]
 					\*----------------------------------------------------------*/
 				icTabActiveSubMenu: function(){
-					_engine.navigation.hcr();
+
 					if(_engine.domTools.test.hcrTabActiveIsIC()){
 						var _tp = _engine.domTools.get.hcrTabFrame();
 						return $( _tp ).find('div.dijitStackContainer-child.dijitVisible');
@@ -194,7 +191,7 @@ var _engine = {
 					|* of the currently open IC Tab.]
 					\*----------------------------------------------------------*/
 				icTabActiveFrame: function(){
-					_engine.navigation.hcr();
+
 					if(_engine.domTools.test.hcrTabActiveIsIC()){
 						var _tp = _engine.domTools.get.hcrTabFrame();
 						
@@ -210,7 +207,7 @@ var _engine = {
 						/* Returns an array of the cases that display on the Home Tab
 						\*----------------------------------------------------------*/
 					cases: function(){
-						_engine.navigation.hcr();
+
 						if(_engine.domTools.test.hcrTabActiveIsIC()){
 							var _tp = _engine.domTools.get.icFrame.icTabActiveFrame();
 							return $( _tp ).find('#content > div:nth-child(6)');
@@ -712,37 +709,33 @@ var _engine = {
 		hcrTabs: {
 			
 			hcrTabNavi: function( tabTitle, callback ){
-	
-				_engine.navigation.mainTabs.mainTabNavi("hcr",function(){
 				
-					_engine.debug.info('=================== Starting HCR Tab Navigation. ===================');
+				_engine.debug.info('=================== Starting HCR Tab Navigation. ===================');
+				
+				_engine.debug.info('- * Gathering return tab information.');
+				var returnTab = _engine.domTools.get.hcrTabActive();
+				
+				_engine.debug.info('- * Gathering list of open tabs.');
+				var openTabs = _engine.domTools.get.hcrTabList();
+				
+				_engine.debug.info('- * Iterating over list of tabs.');
+				$.each(openTabs, function(k,v){
 					
-					_engine.debug.info('- * Gathering return tab information.');
-					var returnTab = _engine.domTools.get.hcrTabActive();
-					
-					_engine.debug.info('- * Gathering list of open tabs.');
-					var openTabs = _engine.domTools.get.hcrTabList();
-					
-					_engine.debug.info('- * Iterating over list of tabs.');
-					$.each(openTabs, function(k,v){
+					if( v.innerText.trim() == tabTitle ){
 						
-						if( v.innerText.trim() == tabTitle ){
-							
-							_engine.debug.info('- * Navigating match found - selecting match.');
-							
-							$(v).click();
-							
-							_engine.debug.info('- * Gathering frame of new window.');			
-							var tabFrame = _engine.domTools.get.hcrTabFrame();
-							
-							if(typeof callback == 'function'){
-								_engine.debug.info('=================== Comleted HCR Tab Navigation. ===================');
-								callback( _engine.domTools.get.hcrTabFrame(), returnTab );
-							}
-							
-						};
+						_engine.debug.info('- * Navigating match found - selecting match.');
 						
-					});
+						$(v).click();
+						
+						_engine.debug.info('- * Gathering frame of new window.');			
+						var tabFrame = _engine.domTools.get.hcrTabFrame();
+						
+						if(typeof callback == 'function'){
+							_engine.debug.info('=================== Comleted HCR Tab Navigation. ===================');
+							callback( _engine.domTools.get.hcrTabFrame(), returnTab );
+						}
+						
+					};
 					
 				});
 			
@@ -815,8 +808,6 @@ var _engine = {
 			/* END OF DEPRECATED NAV FUNCTIONS */
 			
 			icTabNavi: function( naviText, callback ){
-
-				_engine.navigation.hcr();
 				
 				if( _engine.domTools.test.hcrTabType() == 'Integrated Case' ){
 
@@ -1664,7 +1655,7 @@ var _engine = {
 					case "navigation":
 						switch( _c ){
 							case "hcr":
-								_engine.navigation.hcr();
+								_engine.navigation.mainTabs.mainTabNavi('hcr');
 								break;
 								
 							case "":
