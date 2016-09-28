@@ -630,41 +630,41 @@ var _engine = {
 	
 	navigation: {
 		
-		/* [Nav] Navigates to the HCR tab
-		/********************************************************************/
+		/* DEPRECATED NAVIGATION FUNCTIONS */
 		
-		hcr: function(){
-			if( $( "[title='HCR Cases and Outcomes']", _engine.domTools.get.mainTabActive() ).length !== 1 ){
-				$('[title="HCR Cases and Outcomes"]')[0].click();
-			}
-		},
+			/* [Nav] Navigates to the HCR tab
+			/********************************************************************/
+			
+			hcr: function(){
+				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.mainTabs.mainTabNavi( tab, callback ); ]');
+				_engine.navigation.mainTabs.mainTabNavi("hcr");
+			},
+			
+			/* [Nav] Navigates to the Home tab
+			/********************************************************************/
+			
+			home: function(){
+				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.mainTabs.mainTabNavi( tab, callback ); ]');
+				_engine.navigation.mainTabs.mainTabNavi("hcr");
+			},
+			
+			/* [Nav] Navigates to the Inbox tab
+			/********************************************************************/
+			
+			inbox: function(){
+				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.mainTabs.mainTabNavi( tab, callback ); ]');
+				_engine.navigation.mainTabs.mainTabNavi("hcr");
+			},
+			
+			/* [Nav] Navigates to the Calendar tab
+			/********************************************************************/
+			
+			calendar: function(){
+				_engine.debug.warn('USING DEPRECATED NAVIGATION FUNCTION -> Update to [ _engine.navigation.mainTabs.mainTabNavi( tab, callback ); ]');
+				_engine.navigation.mainTabs.mainTabNavi("hcr");
+			},
 		
-		/* [Nav] Navigates to the Home tab
-		/********************************************************************/
-		
-		home: function(){
-			if( $( "[title='Home']", _engine.domTools.get.mainTabActive() ).length !== 1 ){
-				$('[title="Home"]')[0].click();
-			}
-		},
-		
-		/* [Nav] Navigates to the Inbox tab
-		/********************************************************************/
-		
-		inbox: function(){
-			if( $( "[title='Inbox']", _engine.domTools.get.mainTabActive() ).length !== 1 ){
-				$('[title="Inbox"]')[0].click();
-			}
-		},
-		
-		/* [Nav] Navigates to the Calendar tab
-		/********************************************************************/
-		
-		calendar: function(){
-			if( $( "[title='Calendar']", _engine.domTools.get.mainTabActive() ).length !== 1 ){
-				$('[title="Calendar"]')[0].click();
-			}
-		},
+		/* END OF DEPRECATED NAVIGATION FUNCTIONS */
 		
 		mainTabs: {
 			
