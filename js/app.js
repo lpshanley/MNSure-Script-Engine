@@ -797,7 +797,7 @@ var _engine = {
 										
 										switch( pageValidation ){
 											case "dashboard":
-												if( $( _engine.domTools.get.icFrame.icTabActiveFrame()[0] ).find('td:has("a")').length < 1 ){
+												if( $( _engine.domTools.get.icFrame.icTabActiveFrame()[0] ).find('td:has("a")').length > 1 ){
 													
 													_engine.debug.info("========== Completed navigation to " + naviText + " [ attempt: " + _counter + " ] ==========");
 
