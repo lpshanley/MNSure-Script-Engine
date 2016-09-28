@@ -697,9 +697,9 @@ var _engine = {
 					
 					$(`[title='${navTitle}']`)[0].click();
 					
-					if(typeof callback === "function") callback();
-					
 				}
+				
+				if(typeof callback === "function") callback();
 				
 			}
 		
