@@ -700,6 +700,8 @@ var _engine = {
 					
 				}
 				
+				if(typeof callback === 'function') callback();
+				
 			}
 		
 		},
