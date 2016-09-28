@@ -117,8 +117,9 @@ var _engine = {
 				|* HCR Cases and Outcomes screen.
 				\*----------------------------------------------------------*/
 			hcrTabActive: function(){
-				_engine.navigation.hcr();
-				return $('[widgetid="HCRCASEAPPWorkspaceSection-stc_tablist"] div.dijitTabContainerTop-tabs div.dijitTab.dijitTabChecked.dijitChecked')[0];
+				_engine.navigation.mainTabs.mainTabNavi('hcr',function(){
+					return $('[widgetid="HCRCASEAPPWorkspaceSection-stc_tablist"] div.dijitTabContainerTop-tabs div.dijitTab.dijitTabChecked.dijitChecked')[0];
+				});
 			},
 			
 				/* Returns the iFrame for the tab that is currently the
