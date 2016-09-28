@@ -703,7 +703,7 @@ var _engine = {
 				
 			}
 		
-		}
+		},
 		
 		/* [Nav] Performs navigation on the tabs in the hcr tab
 		/********************************************************************/
