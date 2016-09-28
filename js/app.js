@@ -793,13 +793,35 @@ var _engine = {
 									
 									if( typeof _id != "undefined" && _id.split("_")[ _id.split("_").length - 1 ].toLowerCase() == pageValidation ){
 										
-										_engine.debug.info("========== Completed navigation to " + naviText + " [ attempt: " + _counter + " ] ==========");
-
-										if( typeof callback == 'function' ){
-											callback( _engine.domTools.get.icFrame.icTabActiveFrame()[0] );
-										}
+										/* Extra screen specific validations */
 										
-										clearInterval(_nav);
+										switch( pageValidation ){
+											case "dashboard":
+												if( $( _engine.domTools.get.icFrame.icTabActiveFrame()[0] ).find('td:has("a")').length < 1 ){
+													
+													_engine.debug.info("========== Completed navigation to " + naviText + " [ attempt: " + _counter + " ] ==========");
+
+													if( typeof callback == 'function' ){
+														callback( _engine.domTools.get.icFrame.icTabActiveFrame()[0] );
+													}
+													
+													clearInterval(_nav);
+													
+												}											
+												break;
+											default:
+											
+												_engine.debug.info("========== Completed navigation to " + naviText + " [ attempt: " + _counter + " ] ==========");
+
+												if( typeof callback == 'function' ){
+													callback( _engine.domTools.get.icFrame.icTabActiveFrame()[0] );
+												}
+												
+												clearInterval(_nav);
+											
+												break;
+											
+										}
 										
 									}
 									
