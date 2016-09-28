@@ -2173,9 +2173,11 @@ var _engine = {
 								
 							if( _results.length == 1 ){
 								
-								if( typeof _results.find('td:nth-child(2) a')[0] !== "undefined" ){
+								var singleResult = _results.find('td:nth-child(2) a')[0];
 								
-									_results.find('td:nth-child(2) a')[0].click();
+								if( typeof singleResult === 'object' ){
+								
+									singleResult.click();
 								
 									_tabToClose = _engine.domTools.get.hcrTabListTypeQuery( screenType );
 								
