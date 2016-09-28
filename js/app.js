@@ -712,37 +712,39 @@ var _engine = {
 			
 			hcrTabNavi: function( tabTitle, callback ){
 	
-				_engine.navigation.hcr();
+				_engine.navigation.mainTabs.mainTabNavi("hcr",function(){
 				
-				_engine.debug.info('=================== Starting HCR Tab Navigation. ===================');
-				
-				_engine.debug.info('- * Gathering return tab information.');
-				var returnTab = _engine.domTools.get.hcrTabActive();
-				
-				_engine.debug.info('- * Gathering list of open tabs.');
-				var openTabs = _engine.domTools.get.hcrTabList();
-				
-				_engine.debug.info('- * Iterating over list of tabs.');
-				$.each(openTabs, function(k,v){
+					_engine.debug.info('=================== Starting HCR Tab Navigation. ===================');
 					
-					if( v.innerText.trim() == tabTitle ){
+					_engine.debug.info('- * Gathering return tab information.');
+					var returnTab = _engine.domTools.get.hcrTabActive();
+					
+					_engine.debug.info('- * Gathering list of open tabs.');
+					var openTabs = _engine.domTools.get.hcrTabList();
+					
+					_engine.debug.info('- * Iterating over list of tabs.');
+					$.each(openTabs, function(k,v){
 						
-						_engine.debug.info('- * Navigating match found - selecting match.');
+						if( v.innerText.trim() == tabTitle ){
+							
+							_engine.debug.info('- * Navigating match found - selecting match.');
+							
+							$(v).click();
+							
+							_engine.debug.info('- * Gathering frame of new window.');			
+							var tabFrame = _engine.domTools.get.hcrTabFrame();
+							
+							if(typeof callback == 'function'){
+								_engine.debug.info('- * Executing callback.');
+								callback( _engine.domTools.get.hcrTabFrame(), returnTab );
+							}
+							
+						};
 						
-						$(v).click();
-						
-						_engine.debug.info('- * Gathering frame of new window.');			
-						var tabFrame = _engine.domTools.get.hcrTabFrame();
-						
-						if(typeof callback == 'function'){
-							_engine.debug.info('- * Executing callback.');
-							callback( _engine.domTools.get.hcrTabFrame(), returnTab );
-						}
-						
-					};
+					});
 					
 				});
-				
+			
 			}
 			
 		},
