@@ -2301,7 +2301,7 @@ var _engine = {
 											
 												_engine.debug.info( `Evidence query complete` );
 												
-												if( typeof callback === 'function' ) callback( returnArray );
+												if( typeof callback === 'function' ) callback( returnArray, type );
 												
 												_engine.tools.closeTabHCR();
 										
