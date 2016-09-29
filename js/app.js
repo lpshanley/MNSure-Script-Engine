@@ -2195,6 +2195,8 @@ var _engine = {
 									_tabToClose = _engine.domTools.get.hcrTabListTypeQuery( screenType );
 								
 									_engine.tools.closeTabHCR( _tabToClose );
+									
+									clearInterval( _loadWindow );
 								
 								} else {
 									
@@ -2221,9 +2223,7 @@ var _engine = {
 							return false;
 							
 						}
-						
-						clearInterval( _loadWindow );
-						
+
 					}
 					
 					++_count;
