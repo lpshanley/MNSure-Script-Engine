@@ -1453,7 +1453,7 @@ var _engine = {
 				
 				var builtQueries = ['address'];
 				
-				if( builtQueries.indexOf( type ){
+				if( builtQueries.indexOf( type ) !== -1 ){
 					
 					_engine.tools.evidenceQuery.parsedEvidenceQuery(type,function( results, type ){
 			
