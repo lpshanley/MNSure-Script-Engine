@@ -1430,6 +1430,13 @@ var _engine = {
 										break;
 								}
 								break;
+							case "evidence":
+								if( _prefillValue != "" ){
+									_engine.ui.modal._prefillFromDataQuery(_prefillValue,function( prefillString ){
+										$( v ).find('input').val( prefillString );
+									});
+								}							
+								break;
 							default:
 								_engine.debug.warn("unrecognised prefill type of: [ '" +_prefill+ " ']");
 								break;
@@ -1438,6 +1445,55 @@ var _engine = {
 					}
 					
 				});
+				
+			},
+			_prefillFromDataQuery: function(type, callback ){
+				
+				type = type.toLowerCase();
+				
+				var builtQueries = ['address'];
+				
+				if( builtQueries.indexOf( type ) !== -1 ){
+					
+					_engine.tools.evidenceQuery.parsedEvidenceQuery(type,function( results, type ){
+			
+						var prefillString = "";
+						
+						switch( type ){
+							case 'address':
+								
+								if( results.length == 1 ){
+							
+									result = results[0];
+									
+									if( result.apt_suite != "" ) prefillString += result.apt_suite + ", "; 
+									if( result.street_1 != "" ) prefillString += result.street_1 + ", "; 
+									if( result.street_2 != "" ) prefillString += result.street_2 + ", "; 
+									if( result.city != "" ) prefillString += result.city + ", "; 
+									if( result.state != "" ) prefillString += result.state + ", "; 
+									if( result.zip != "" ) prefillString += result.zip; 
+									
+								} else if (results.length > 1) {
+									
+									_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
+									
+								}
+								
+								break;
+								
+							default:
+								break;
+						}
+						
+						if(typeof callback === 'function') callback( prefillString );
+						
+					});
+					
+				} else {
+					
+					_engine.debug.error(`No query return strategy exists for request type of: ${ type }. Correct type or build new strategy.`);
+					
+				}
 				
 			}
 		},
@@ -2134,18 +2190,258 @@ var _engine = {
 	
 	tools: {
 		
-		/* [Tools] Queries for a specific info type
+		/* [Tools] Queries for a specific info type on an integrated case
 		/********************************************************************/
 		
-		infoQuery: {
-			address: function(){
+		evidenceQuery: {
+			
+			parsedEvidenceQuery: function(type, callback){
 				
-				if( _engine.domTools.test.hcrTabType() == "Integrated Case"){
+				_engine.tools.evidenceQuery._queryRawEvidence( type, function( evidenceArray, queryType ){
+
+					var parsedEvidence = [];
 					
+					$.each(evidenceArray,function(k,v){
+						
+						var evidence = $(v)[0];
+						
+						var jsonString = "";
+						
+						var unassigned = 0;
+						
+						$.each( $( evidence ).find('div table th.label'), function(k,v){
+							
+							var info = $( v )[0];
+							
+							var key = info.innerText.trim().toLowerCase().replace(/ |\//g,"_");
+							var value = $( info ).next()[0].innerText.trim();
+							
+							if( key !== "" || value !== "" ){
+								if( key === "" ){
+									if( unassigned === 0 ){
+										key = "case_participant";
+									} else {
+										key = unassigned;
+									}
+								}
+								
+								jsonString += '"' + key + '":"' + value + '",'
+								
+							}
+							
+						}); 
+
+						jsonString = jsonString.substring(0,jsonString.length-1);
+						
+						parsedEvidence.push( $.parseJSON( "{" + jsonString + "}" ) );
+						
+					});
 					
-				}
+					if(typeof callback === 'function') callback( parsedEvidence, type );
+					
+				});
 				
+			},
+			
+			_queryRawEvidence: function( type, callback ){
+				
+				type = type.toLowerCase();
+				
+				_engine.navigation.icTabs.icTabNavi("evidence",function( evidenceFrame ){
+				
+					_engine.debug.info(`- * Attempting evidence query of type: ${type}`);
+					
+					var evidence = $( evidenceFrame ).find('td:has("a")');
+					
+					$.each(evidence,function(k,v){
+						
+						if( v.innerText.trim().toLowerCase() === type ){
+							
+							_engine.debug.info(`- * Found valid evidence type match - Opening`);
+							
+							var returnTab = _engine.domTools.get.hcrTabActive();
+							
+							$(v).find('a')[0].click();
+							
+							var _counter = 0;
+							
+							var returnArray = [];
+							
+							var loadEvidencePanel = setInterval(function(){
+								if( _counter <= _engine.advanced._vars.iterationsLong ){
+									
+									var tabTypeVerif = _engine.domTools.test.hcrTabType();
+									
+									typeof tabTypeVerif == 'undefined' ?
+										tabTypeVerif = [] :					
+										tabTypeVerif = tabTypeVerif.toLowerCase().split("|");
+										
+									
+									if( tabTypeVerif.length > 1 && tabTypeVerif[0] == "evidence" && tabTypeVerif[1] == type ){
+									
+										var evidenceFrame = _engine.domTools.get.hcrTabFrame();
+										
+										var internalFrame = $( evidenceFrame ).find('iframe.contentPanelFrame').contents()[0];
+										
+										var evidenceArray = $( internalFrame ).find('div.list tbody tr:not(".list-details-row")');
+										
+										if( evidenceArray.length > 0 ){
+											
+											/* Toggle open all evidence pieces tier 1 */
+											
+											$.each(evidenceArray,function(k,v){
+												
+												if(typeof returnArray[k] == 'undefined'){
+												
+													var toggleDetails = $(v).find('td a')[0];
+													
+													var detailsRow = $(v).next()[0];
+													
+													if( $( detailsRow ).hasClass('collapsed') ){
+														_engine.debug.info(`- * Toggling open evidence details`);
+														toggleDetails.click();
+													}
+												
+												}
+												
+											});
+											
+											/* Alert toggles completed teir 1 */
+											
+											_engine.debug.info(`- * All details toggled | Attempt Count: ${_counter}`);
+											
+											/* Toggle open all evidence pieces tier 2 */
+											
+											$.each(evidenceArray,function(k,v){
+												
+												if(typeof returnArray[k] == 'undefined'){
+												
+													var detailsRow = $(v).next()[0];
+													
+													var detailsSubframe1 = $( detailsRow ).find('iframe')[0];
+													
+													if( typeof detailsSubframe1 != 'undefined' ){
+														
+														var detailsSubframe1Contents = $( detailsSubframe1 ).contents().find('tbody tr:not("list-details-row")')[0];
+														
+														if( typeof detailsSubframe1Contents != 'undefined' ){
+															
+															var toggleDetails = $(detailsSubframe1Contents).find('td a')[0];
+													
+															var detailsRow = $(detailsSubframe1Contents).next()[0];
+															
+															if( $( detailsRow ).hasClass('collapsed') ){
+																_engine.debug.info(`- * Toggling open subframe evidence details`);
+																toggleDetails.click();
+															}
+														
+														}
+														
+													}
+													
+												}
+												
+											});
+											
+											_engine.debug.info(`- * All details toggled tier 2 | Attempt Count: ${_counter}`);
+											
+											/* Target all evidence in subframes */
+											
+											$.each(evidenceArray,function(k,v){
+												
+												if(typeof returnArray[k] == 'undefined'){
+													
+													var detailsRow = $(v).next()[0];
+													
+													var detailsSubframe1 = $( detailsRow ).find('iframe')[0];
+													
+													if( typeof detailsSubframe1 != 'undefined' ){
+														
+														var detailsSubframe1Contents = $( detailsSubframe1 ).contents().find('tbody tr:not("list-details-row")')[0];
+														
+														if( typeof detailsSubframe1Contents != 'undefined' ){
+													
+															var detailsRow = $(detailsSubframe1Contents).next()[0];
+															
+															var detailsSubframe2 = $( detailsRow ).find('iframe')[0];
+															
+															if( typeof detailsSubframe2 != 'undefined' ){
+																
+																var detailsSubframe2Contents = $( detailsSubframe2 ).contents().find('form#mainForm div.in-page-nav-contentWrapper')[0];
+																
+																if( typeof detailsSubframe2Contents != 'undefined' ){
+																	
+																	_engine.debug.info( `Evidence item ${k} has loaded and been added to return array` );
+																	
+																	returnArray[k] = detailsSubframe2Contents;
+																
+																} else {
+																
+																	_engine.debug.warn( `Evidence item ${k} tier 2 subframe contents have not finished loading` );
+																	
+																}
+															
+															}
+														
+														} else {
+														
+															_engine.debug.warn( `Evidence item ${k} subframe contents have not finished loading` );
+															
+														}
+														
+													}
+												
+												}
+												
+											});
+											
+											if( returnArray.length == evidenceArray.length ){
+												
+												var countUndefined = 0;
+												
+												$.each(returnArray,function(k,v){
+													
+													if(typeof returnArray[k] === 'undefined') countUndefined++;
+
+												});
+												
+												if(countUndefined === 0){
+												
+													_engine.debug.info( `Evidence query complete` );
+													
+													_engine.tools.closeTabHCR();
+											
+													returnTab.click();
+													
+													if( typeof callback === 'function' ) callback( returnArray, type );
+													
+													clearInterval( loadEvidencePanel );
+												
+												}
+												
+											}
+
+										}
+
+									}
+									
+								} else {
+									_engine.debug.error(`- * Timed out waiting for evidence screen to open`);
+									clearInterval( loadEvidencePanel );
+								}
+								_counter++;
+							},_engine.advanced._vars.timeoutLong);
+							
+							loadEvidencePanel;				
+							
+						}
+						
+					});
+					
+				});
+			
 			}
+			
 		},
 		
 		/* [Tools] Closes currently open tab
@@ -2389,7 +2685,9 @@ var _engine = {
 		
 		_vars: {
 			timeout: 100,
-			iterations: 40
+			iterations: 40,
+			timeoutLong: 200,
+			iterationsLong: 50
 		}
 	},
 	
