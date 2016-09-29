@@ -2141,7 +2141,7 @@ var _engine = {
 			
 			parsedEvidenceQuery: function(type, callback){
 				
-				_engine.tools.queryEvidence( type ,function( evidenceArray, queryType ){
+				_engine.tools.evidenceQuery._queryRawEvidence( type ,function( evidenceArray, queryType ){
 	
 					var parsedEvidence = [];
 					
