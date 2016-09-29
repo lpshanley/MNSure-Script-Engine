@@ -2170,6 +2170,8 @@ var _engine = {
 			
 			_count = 0;
 			
+			_zeroResultCounter = 0;
+			
 			var _loadWindow = setInterval(function(){
 				
 				_engine.debug.info("- * Attempting to load results screen [ attempt: "+ _count +" ]");
@@ -2196,9 +2198,11 @@ var _engine = {
 								
 								} else {
 									
-									_engine.debug.info("- * [ _engine.tools.selectSearchResult() ] Your search returned zero results.");
+									_engine.debug.info(`- * [ _engine.tools.selectSearchResult() ] Found zero results. Checking again in ${_engine.advanced._vars.timeout}ms. Attempt: ${_zeroResultCounter}`);
 									
-									clearInterval( _loadWindow );
+									if(  <= _engine.advanced._vars.iterations ) clearInterval( _loadWindow );
+									
+									_zeroResultCounter++;
 									
 								}
 								
