@@ -2141,8 +2141,8 @@ var _engine = {
 			
 			parsedEvidenceQuery: function(type, callback){
 				
-				_engine.tools.evidenceQuery._queryRawEvidence( type ,function( evidenceArray, queryType ){
-	
+				_engine.tools.evidenceQuery._queryRawEvidence( type, function( evidenceArray, queryType ){
+
 					var parsedEvidence = [];
 					
 					$.each(evidenceArray,function(k,v){
@@ -2151,64 +2151,37 @@ var _engine = {
 						
 						var jsonString = "";
 						
-						var previousType = "";
-						
-						var keyPair = "";
-						
 						var unassigned = 0;
 						
-						$.each( $( evidence ).find('div table th.label, div table td.field'), function(k,v){
+						$.each( $( evidence ).find('div table th.label'), function(k,v){
 							
 							var info = $( v )[0];
 							
-							if( $( info ).hasClass('label') && ( previousType == "value" || previousType == "" ) ){
-								
-								previousType = "key";
-								
-								//console.log(`Key: ${ info.innerText }`);
-								
-								keyPair += '"' + info.innerText.trim().toLowerCase().replace(/ /g,"_") + '":"';
-								
-							} else if ( $( info ).hasClass('field') && previousType == "key" ){
-								
-								previousType = "value";
-								
-								//console.log(`Value: ${ info.innerText }`);
-								
-								keyPair += info.innerText.trim() + '",';
-								
-							}
+							var key = info.innerText.trim().toLowerCase().replace(/ |\//g,"_");
+							var value = $( info ).next()[0].innerText.trim();
 							
-							if(previousType == "value"){
-								
-								if( keyPair != '"":"",' ) {
-									
-									if( keyPair.indexOf('"":') === 0){
-										if( unassigned == 0 ){
-											keyPair = keyPair.replace('"":','"case_participant":');
-										} else {
-											keyPair = keyPair.replace('"":','"'+unassigned+'":');
-										}
-										unassigned++;
+							if( key !== "" || value !== "" ){
+								if( key === "" ){
+									if( unassigned === 0 ){
+										key = "case_participant";
+									} else {
+										key = unassigned;
 									}
-									
-									jsonString += keyPair;
-									
 								}
 								
-								keyPair = "";
+								jsonString += '"' + key + '":"' + value + '",'
 								
 							}
 							
-						});
-						
+						}); 
+
 						jsonString = jsonString.substring(0,jsonString.length-1);
 						
 						parsedEvidence.push( $.parseJSON( "{" + jsonString + "}" ) );
 						
 					});
 					
-					if(typeof callback === 'function') callback( parsedEvidence );
+					if(typeof callback === 'function') callback( parsedEvidence, type );
 					
 				});
 				
