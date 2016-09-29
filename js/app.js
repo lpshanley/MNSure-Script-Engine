@@ -2138,7 +2138,9 @@ var _engine = {
 		/********************************************************************/
 		
 		queryEvidence: function( type, callback ){
-
+			
+			type = type.toLowerCase();
+			
 			_engine.navigation.icTabs.icTabNavi("evidence",function( evidenceFrame ){
 			
 				_engine.debug.info(`- * Attempting evidence query of type: ${type}`);
@@ -2301,11 +2303,11 @@ var _engine = {
 											
 												_engine.debug.info( `Evidence query complete` );
 												
-												if( typeof callback === 'function' ) callback( returnArray, type );
-												
 												_engine.tools.closeTabHCR();
 										
 												returnTab.click();
+												
+												if( typeof callback === 'function' ) callback( returnArray, type );
 												
 												clearInterval( loadEvidencePanel );
 											
