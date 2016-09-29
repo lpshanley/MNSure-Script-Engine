@@ -1430,6 +1430,13 @@ var _engine = {
 										break;
 								}
 								break;
+							case "evidence":
+								if( _prefillValue != "" ){
+									prefillFromDataQuery(_prefillValue,function( prefillString ){
+										$( v ).find('input').val( prefillString );
+									});
+								}							
+								break;
 							default:
 								_engine.debug.warn("unrecognised prefill type of: [ '" +_prefill+ " ']");
 								break;
@@ -1438,6 +1445,55 @@ var _engine = {
 					}
 					
 				});
+				
+			},
+			_prefillFromDataQuery: function(type, callback ){
+				
+				type = type.toLowerCase();
+				
+				var builtQueries = ['address'];
+				
+				if( builtQueries.indexOf( type ){
+					
+					_engine.tools.evidenceQuery.parsedEvidenceQuery(type,function( results, type ){
+			
+						var prefillString = "";
+						
+						switch( type ){
+							case 'address':
+								
+								if( results.length == 1 ){
+							
+									result = results[0];
+									
+									if( result.apt_suite != "" ) prefillString += result.apt_suite + ", "; 
+									if( result.street_1 != "" ) prefillString += result.street_1 + ", "; 
+									if( result.street_2 != "" ) prefillString += result.street_2 + ", "; 
+									if( result.city != "" ) prefillString += result.city + ", "; 
+									if( result.state != "" ) prefillString += result.state + ", "; 
+									if( result.zip != "" ) prefillString += result.zip; 
+									
+								} else if (results.length > 1) {
+									
+									_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
+									
+								}
+								
+								break;
+								
+							default:
+								break;
+						}
+						
+						if(typeof callback === 'function') callback( prefillString );
+						
+					});
+					
+				} else {
+					
+					_engine.debug.error(`No query return strategy exists for request type of: ${ type }. Correct type or build new strategy.`);
+					
+				}
 				
 			}
 		},
