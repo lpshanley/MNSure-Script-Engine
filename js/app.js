@@ -2200,7 +2200,7 @@ var _engine = {
 									
 									_engine.debug.info(`- * [ _engine.tools.selectSearchResult() ] Found zero results. Checking again in ${_engine.advanced._vars.timeout}ms. Attempt: ${_zeroResultCounter}`);
 									
-									if(  <= _engine.advanced._vars.iterations ) clearInterval( _loadWindow );
+									if( _zeroResultCounter <= _engine.advanced._vars.iterations ) clearInterval( _loadWindow );
 									
 									_zeroResultCounter++;
 									
