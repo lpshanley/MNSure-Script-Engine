@@ -2204,6 +2204,8 @@ var _engine = {
 									
 									if( _zeroResultCounter <= _engine.advanced._vars.iterations ) clearInterval( _loadWindow );
 									
+									console.log("ALKDJSLKD");
+									
 									_zeroResultCounter++;
 									
 								}
