@@ -1432,7 +1432,7 @@ var _engine = {
 								break;
 							case "evidence":
 								if( _prefillValue != "" ){
-									prefillFromDataQuery(_prefillValue,function( prefillString ){
+									_engine.ui.modal._prefillFromDataQuery(_prefillValue,function( prefillString ){
 										$( v ).find('input').val( prefillString );
 									});
 								}							
