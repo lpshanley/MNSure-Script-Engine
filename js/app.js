@@ -2389,7 +2389,9 @@ var _engine = {
 		
 		_vars: {
 			timeout: 100,
-			iterations: 40
+			iterations: 40,
+			timeoutLong: 200,
+			iterationsLong: 50
 		}
 	},
 	
