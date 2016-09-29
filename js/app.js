@@ -2137,202 +2137,281 @@ var _engine = {
 		/* [Tools] Queries for a specific info type on an integrated case
 		/********************************************************************/
 		
-		queryEvidence: function( type, callback ){
+		evidenceQuery: {
 			
-			type = type.toLowerCase();
-			
-			_engine.navigation.icTabs.icTabNavi("evidence",function( evidenceFrame ){
-			
-				_engine.debug.info(`- * Attempting evidence query of type: ${type}`);
+			parsedEvidenceQuery: function(type, callback){
 				
-				var evidence = $( evidenceFrame ).find('td:has("a")');
-				
-				$.each(evidence,function(k,v){
+				_engine.tools.queryEvidence( type ,function( evidenceArray, queryType ){
+	
+					var parsedEvidence = [];
 					
-					if( v.innerText.trim().toLowerCase() === type ){
+					$.each(evidenceArray,function(k,v){
 						
-						_engine.debug.info(`- * Found valid evidence type match - Opening`);
+						var evidence = $(v)[0];
 						
-						var returnTab = _engine.domTools.get.hcrTabActive();
+						var jsonString = "";
 						
-						$(v).find('a')[0].click();
+						var previousType = "";
 						
-						var _counter = 0;
+						var keyPair = "";
 						
-						var returnArray = [];
+						var unassigned = 0;
 						
-						var loadEvidencePanel = setInterval(function(){
-							if( _counter <= _engine.advanced._vars.iterationsLong ){
+						$.each( $( evidence ).find('div table th.label, div table td.field'), function(k,v){
+							
+							var info = $( v )[0];
+							
+							if( $( info ).hasClass('label') && ( previousType == "value" || previousType == "" ) ){
 								
-								var tabTypeVerif = _engine.domTools.test.hcrTabType();
+								previousType = "key";
 								
-								typeof tabTypeVerif == 'undefined' ?
-									tabTypeVerif = [] :					
-									tabTypeVerif = tabTypeVerif.toLowerCase().split("|");
-									
+								//console.log(`Key: ${ info.innerText }`);
 								
-								if( tabTypeVerif.length > 1 && tabTypeVerif[0] == "evidence" && tabTypeVerif[1] == type ){
+								keyPair += '"' + info.innerText.trim().toLowerCase().replace(/ /g,"_") + '":"';
 								
-									var evidenceFrame = _engine.domTools.get.hcrTabFrame();
+							} else if ( $( info ).hasClass('field') && previousType == "key" ){
+								
+								previousType = "value";
+								
+								//console.log(`Value: ${ info.innerText }`);
+								
+								keyPair += info.innerText.trim() + '",';
+								
+							}
+							
+							if(previousType == "value"){
+								
+								if( keyPair != '"":"",' ) {
 									
-									var internalFrame = $( evidenceFrame ).find('iframe.contentPanelFrame').contents()[0];
-									
-									var evidenceArray = $( internalFrame ).find('div.list tbody tr:not(".list-details-row")');
-									
-									if( evidenceArray.length > 0 ){
-										
-										/* Toggle open all evidence pieces tier 1 */
-										
-										$.each(evidenceArray,function(k,v){
-											
-											if(typeof returnArray[k] == 'undefined'){
-											
-												var toggleDetails = $(v).find('td a')[0];
-												
-												var detailsRow = $(v).next()[0];
-												
-												if( $( detailsRow ).hasClass('collapsed') ){
-													_engine.debug.info(`- * Toggling open evidence details`);
-													toggleDetails.click();
-												}
-											
-											}
-											
-										});
-										
-										/* Alert toggles completed teir 1 */
-										
-										_engine.debug.info(`- * All details toggled | Attempt Count: ${_counter}`);
-										
-										/* Toggle open all evidence pieces tier 2 */
-										
-										$.each(evidenceArray,function(k,v){
-											
-											if(typeof returnArray[k] == 'undefined'){
-											
-												var detailsRow = $(v).next()[0];
-												
-												var detailsSubframe1 = $( detailsRow ).find('iframe')[0];
-												
-												if( typeof detailsSubframe1 != 'undefined' ){
-													
-													var detailsSubframe1Contents = $( detailsSubframe1 ).contents().find('tbody tr:not("list-details-row")')[0];
-													
-													if( typeof detailsSubframe1Contents != 'undefined' ){
-														
-														var toggleDetails = $(detailsSubframe1Contents).find('td a')[0];
-												
-														var detailsRow = $(detailsSubframe1Contents).next()[0];
-														
-														if( $( detailsRow ).hasClass('collapsed') ){
-															_engine.debug.info(`- * Toggling open subframe evidence details`);
-															toggleDetails.click();
-														}
-													
-													}
-													
-												}
-												
-											}
-											
-										});
-										
-										_engine.debug.info(`- * All details toggled tier 2 | Attempt Count: ${_counter}`);
-										
-										/* Target all evidence in subframes */
-										
-										$.each(evidenceArray,function(k,v){
-											
-											if(typeof returnArray[k] == 'undefined'){
-												
-												var detailsRow = $(v).next()[0];
-												
-												var detailsSubframe1 = $( detailsRow ).find('iframe')[0];
-												
-												if( typeof detailsSubframe1 != 'undefined' ){
-													
-													var detailsSubframe1Contents = $( detailsSubframe1 ).contents().find('tbody tr:not("list-details-row")')[0];
-													
-													if( typeof detailsSubframe1Contents != 'undefined' ){
-												
-														var detailsRow = $(detailsSubframe1Contents).next()[0];
-														
-														var detailsSubframe2 = $( detailsRow ).find('iframe')[0];
-														
-														if( typeof detailsSubframe2 != 'undefined' ){
-															
-															var detailsSubframe2Contents = $( detailsSubframe2 ).contents().find('form#mainForm div.in-page-nav-contentWrapper')[0];
-															
-															if( typeof detailsSubframe2Contents != 'undefined' ){
-																
-																_engine.debug.info( `Evidence item ${k} has loaded and been added to return array` );
-																
-																returnArray[k] = detailsSubframe2Contents;
-															
-															} else {
-															
-																_engine.debug.warn( `Evidence item ${k} tier 2 subframe contents have not finished loading` );
-																
-															}
-														
-														}
-													
-													} else {
-													
-														_engine.debug.warn( `Evidence item ${k} subframe contents have not finished loading` );
-														
-													}
-													
-												}
-											
-											}
-											
-										});
-										
-										if( returnArray.length == evidenceArray.length ){
-											
-											var countUndefined = 0;
-											
-											$.each(returnArray,function(k,v){
-												
-												if(typeof returnArray[k] === 'undefined') countUndefined++;
-
-											});
-											
-											if(countUndefined === 0){
-											
-												_engine.debug.info( `Evidence query complete` );
-												
-												_engine.tools.closeTabHCR();
-										
-												returnTab.click();
-												
-												if( typeof callback === 'function' ) callback( returnArray, type );
-												
-												clearInterval( loadEvidencePanel );
-											
-											}
-											
+									if( keyPair.indexOf('"":') === 0){
+										if( unassigned == 0 ){
+											keyPair = keyPair.replace('"":','"case_participant":');
+										} else {
+											keyPair = keyPair.replace('"":','"'+unassigned+'":');
 										}
-
+										unassigned++;
 									}
-
+									
+									jsonString += keyPair;
+									
 								}
 								
-							} else {
-								_engine.debug.error(`- * Timed out waiting for evidence screen to open`);
-								clearInterval( loadEvidencePanel );
+								keyPair = "";
+								
 							}
-							_counter++;
-						},_engine.advanced._vars.timeoutLong);
+							
+						});
 						
-						loadEvidencePanel;				
+						jsonString = jsonString.substring(0,jsonString.length-1);
 						
-					}
+						parsedEvidence.push( $.parseJSON( "{" + jsonString + "}" ) );
+						
+					});
+					
+					if(typeof callback === 'function') callback( parsedEvidence );
 					
 				});
 				
-			});
+			},
+			
+			_queryRawEvidence: function( type, callback ){
+				
+				type = type.toLowerCase();
+				
+				_engine.navigation.icTabs.icTabNavi("evidence",function( evidenceFrame ){
+				
+					_engine.debug.info(`- * Attempting evidence query of type: ${type}`);
+					
+					var evidence = $( evidenceFrame ).find('td:has("a")');
+					
+					$.each(evidence,function(k,v){
+						
+						if( v.innerText.trim().toLowerCase() === type ){
+							
+							_engine.debug.info(`- * Found valid evidence type match - Opening`);
+							
+							var returnTab = _engine.domTools.get.hcrTabActive();
+							
+							$(v).find('a')[0].click();
+							
+							var _counter = 0;
+							
+							var returnArray = [];
+							
+							var loadEvidencePanel = setInterval(function(){
+								if( _counter <= _engine.advanced._vars.iterationsLong ){
+									
+									var tabTypeVerif = _engine.domTools.test.hcrTabType();
+									
+									typeof tabTypeVerif == 'undefined' ?
+										tabTypeVerif = [] :					
+										tabTypeVerif = tabTypeVerif.toLowerCase().split("|");
+										
+									
+									if( tabTypeVerif.length > 1 && tabTypeVerif[0] == "evidence" && tabTypeVerif[1] == type ){
+									
+										var evidenceFrame = _engine.domTools.get.hcrTabFrame();
+										
+										var internalFrame = $( evidenceFrame ).find('iframe.contentPanelFrame').contents()[0];
+										
+										var evidenceArray = $( internalFrame ).find('div.list tbody tr:not(".list-details-row")');
+										
+										if( evidenceArray.length > 0 ){
+											
+											/* Toggle open all evidence pieces tier 1 */
+											
+											$.each(evidenceArray,function(k,v){
+												
+												if(typeof returnArray[k] == 'undefined'){
+												
+													var toggleDetails = $(v).find('td a')[0];
+													
+													var detailsRow = $(v).next()[0];
+													
+													if( $( detailsRow ).hasClass('collapsed') ){
+														_engine.debug.info(`- * Toggling open evidence details`);
+														toggleDetails.click();
+													}
+												
+												}
+												
+											});
+											
+											/* Alert toggles completed teir 1 */
+											
+											_engine.debug.info(`- * All details toggled | Attempt Count: ${_counter}`);
+											
+											/* Toggle open all evidence pieces tier 2 */
+											
+											$.each(evidenceArray,function(k,v){
+												
+												if(typeof returnArray[k] == 'undefined'){
+												
+													var detailsRow = $(v).next()[0];
+													
+													var detailsSubframe1 = $( detailsRow ).find('iframe')[0];
+													
+													if( typeof detailsSubframe1 != 'undefined' ){
+														
+														var detailsSubframe1Contents = $( detailsSubframe1 ).contents().find('tbody tr:not("list-details-row")')[0];
+														
+														if( typeof detailsSubframe1Contents != 'undefined' ){
+															
+															var toggleDetails = $(detailsSubframe1Contents).find('td a')[0];
+													
+															var detailsRow = $(detailsSubframe1Contents).next()[0];
+															
+															if( $( detailsRow ).hasClass('collapsed') ){
+																_engine.debug.info(`- * Toggling open subframe evidence details`);
+																toggleDetails.click();
+															}
+														
+														}
+														
+													}
+													
+												}
+												
+											});
+											
+											_engine.debug.info(`- * All details toggled tier 2 | Attempt Count: ${_counter}`);
+											
+											/* Target all evidence in subframes */
+											
+											$.each(evidenceArray,function(k,v){
+												
+												if(typeof returnArray[k] == 'undefined'){
+													
+													var detailsRow = $(v).next()[0];
+													
+													var detailsSubframe1 = $( detailsRow ).find('iframe')[0];
+													
+													if( typeof detailsSubframe1 != 'undefined' ){
+														
+														var detailsSubframe1Contents = $( detailsSubframe1 ).contents().find('tbody tr:not("list-details-row")')[0];
+														
+														if( typeof detailsSubframe1Contents != 'undefined' ){
+													
+															var detailsRow = $(detailsSubframe1Contents).next()[0];
+															
+															var detailsSubframe2 = $( detailsRow ).find('iframe')[0];
+															
+															if( typeof detailsSubframe2 != 'undefined' ){
+																
+																var detailsSubframe2Contents = $( detailsSubframe2 ).contents().find('form#mainForm div.in-page-nav-contentWrapper')[0];
+																
+																if( typeof detailsSubframe2Contents != 'undefined' ){
+																	
+																	_engine.debug.info( `Evidence item ${k} has loaded and been added to return array` );
+																	
+																	returnArray[k] = detailsSubframe2Contents;
+																
+																} else {
+																
+																	_engine.debug.warn( `Evidence item ${k} tier 2 subframe contents have not finished loading` );
+																	
+																}
+															
+															}
+														
+														} else {
+														
+															_engine.debug.warn( `Evidence item ${k} subframe contents have not finished loading` );
+															
+														}
+														
+													}
+												
+												}
+												
+											});
+											
+											if( returnArray.length == evidenceArray.length ){
+												
+												var countUndefined = 0;
+												
+												$.each(returnArray,function(k,v){
+													
+													if(typeof returnArray[k] === 'undefined') countUndefined++;
+
+												});
+												
+												if(countUndefined === 0){
+												
+													_engine.debug.info( `Evidence query complete` );
+													
+													_engine.tools.closeTabHCR();
+											
+													returnTab.click();
+													
+													if( typeof callback === 'function' ) callback( returnArray, type );
+													
+													clearInterval( loadEvidencePanel );
+												
+												}
+												
+											}
+
+										}
+
+									}
+									
+								} else {
+									_engine.debug.error(`- * Timed out waiting for evidence screen to open`);
+									clearInterval( loadEvidencePanel );
+								}
+								_counter++;
+							},_engine.advanced._vars.timeoutLong);
+							
+							loadEvidencePanel;				
+							
+						}
+						
+					});
+					
+				});
+			
+			}
 			
 		},
 		
