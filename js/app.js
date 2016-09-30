@@ -3024,7 +3024,17 @@ var _engine = {
 					
 				}
 			}	
+		},			
+		_curamCreatedObject: {
+			
+			get: function(){
+				
+				return $.parseJSON( $.parseJSON( window.localStorage.__default_curam_selected_tab ) );
+				
+			}
+			
 		}
+			
 	},
 	
 	//*************//
