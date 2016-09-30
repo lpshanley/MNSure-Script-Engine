@@ -2233,7 +2233,6 @@ var _engine = {
 			}
 			
 		},
-		
 		/* [Case Work] Opens a modal to select from currently open cases
 		/********************************************************************/
 		
@@ -2257,6 +2256,15 @@ var _engine = {
 		
 		evidenceQuery: {
 			
+			queryAndCache: function(type){
+				
+				var evidenceObject = {};
+	
+				evidenceObject[type] = results;
+				
+				_engine.storage.prefillCache.add( evidenceObject );
+				
+			},			
 			parsedEvidenceQuery: function(type, callback){
 				
 				_engine.tools.evidenceQuery._queryRawEvidence( type, function( evidenceArray, queryType ){
