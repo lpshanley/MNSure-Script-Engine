@@ -1495,6 +1495,22 @@ var _engine = {
 										
 										break;
 										
+									case 'service agency':
+										
+										if( evidenceFromCacheObj.length == 1 ){
+									
+											evidenceFromCache = evidenceFromCacheObj[0];
+											
+											if( evidenceFromCache[0] != "" ) prefillString += evidenceFromCache[0];
+											
+										} else if (evidenceFromCacheObj.length > 1) {
+											
+											_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
+											
+										}
+										
+										break;
+										
 									default:
 										break;
 								}
@@ -1534,6 +1550,22 @@ var _engine = {
 											if( result.zip != "" ) prefillString += result.zip; 
 											
 										} else if (results.length > 1) {
+											
+											_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
+											
+										}
+										
+										break;
+										
+									case 'service agency':
+										
+										if( evidenceFromCacheObj.length == 1 ){
+									
+											evidenceFromCache = evidenceFromCacheObj[0];
+											
+											if( evidenceFromCache[0] != "" ) prefillString += evidenceFromCache[0];
+											
+										} else if (evidenceFromCacheObj.length > 1) {
 											
 											_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
 											
