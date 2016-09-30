@@ -3078,11 +3078,11 @@ var _engine = {
 			//Change Script Repo
 			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _betaCommit +"/js/app.js" );
 			
+			_engine.storage.prefillCache.clear();
+			
 			_engine.debug.debug("Beta User Access Enabled. Logging Enabled.");
 			
 			_engine.ui.topNotification("Script Library: Beta");
-
-			_engine.storage.prefillCache.clear();
 			
 		},
 		
@@ -3128,11 +3128,11 @@ var _engine = {
 			//Change Script Repo
 			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/js/app.js" );
 			
+			_engine.storage.prefillCache.clear();
+			
 			console.debug("_engine.debug: Release Access Enabled. Logging Disabled.");
 			
 			_engine.ui.topNotification("Script Library: Release");
-
-			_engine.storage.prefillCache.clear();
 
 		}
 	}
