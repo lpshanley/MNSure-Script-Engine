@@ -2812,7 +2812,7 @@ var _engine = {
 		prefillCache: {
 			init: function(){
 				
-				window.localStorage.setItem( "mnsEngine_prefillCache", '' );
+				window.localStorage.setItem( "mnsEngine_prefillCache", '{}' );
 				
 			},
 			add: function( object ){
