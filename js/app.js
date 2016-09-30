@@ -2805,6 +2805,122 @@ var _engine = {
 			clear: function(){
 				localStorage.removeItem( "mnsEngine_debugStatus" );
 			}
+		},
+		
+		/* [Storage] Prefill Caching
+		/********************************************************************/
+		
+		prefillCache: {
+			init: function(){
+				
+				window.localStorage.setItem( "mnsEngine_prefillCache", '' );
+				
+			},
+			add: function( object ){
+				
+				if( typeof object === 'string' ) object = $.parseJSON( object );
+
+				if( typeof object !== 'undefined' ){
+				
+					var cacheObject = _engine.storage.prefillCache.get();
+					
+					var cacheProps = Object.getOwnPropertyNames( cacheObject );
+					var objectProps = Object.getOwnPropertyNames( object );
+					
+					$.each(objectProps, function(k,v){
+
+						if( cacheProps.indexOf( v ) !== -1 ) _engine.storage.prefillCache.remove( v );
+						
+						cacheObject[v] = object[v];
+						
+					});
+					
+					_engine.storage.prefillCache._updateCacheInfo( cacheObject );
+
+				} else {
+					
+					return false;
+					
+				}
+				
+			},
+			remove: function( type ){
+				
+				if( typeof type === 'string' ){
+					
+					var cacheObject = _engine.storage.prefillCache.get();
+					var item = cacheObject[ type ];
+					
+					if( typeof item !== 'undefined' ){
+						
+						delete cacheObject[ type ];
+						
+						_engine.storage.prefillCache._updateCacheInfo( cacheObject );
+						
+						return true;
+						
+					} else {
+						
+						return false;
+						
+					}
+					
+				} else {
+					
+					return false;
+					
+				}
+				
+			},
+			get: function( type ){
+				
+				if(typeof window.localStorage.mnsEngine_prefillCache === 'undefined'){
+					
+					_engine.storage.prefillCache.init();
+					
+				}
+				
+				var cacheObject = $.parseJSON( decodeURIComponent( window.localStorage.mnsEngine_prefillCache ) );
+				
+				if( typeof type === 'string' ){
+					return cacheObject[type];
+				} else {
+					return cacheObject;
+				}
+				
+			},
+			_updateCacheInfo: function( object ){
+				
+				if( typeof object === 'object' ) object = JSON.stringify( object );
+				
+				var encodedObject = encodeURIComponent( object );
+				
+				window.localStorage.setItem( "mnsEngine_prefillCache", encodedObject );
+
+			},
+			clear: function(){
+				
+				localStorage.removeItem( "mnsEngine_prefillCache" );
+				
+			},
+			checkPrefillCache: function( type, callback ){
+				
+				var cacheObject = _engine.storage.prefillCache.get();
+				
+				var cacheProps = Object.getOwnPropertyNames( cacheObject );
+				
+				if( cacheProps.indexOf( type ) !== -1 ){
+					
+					if( typeof callback === 'function' ){ callback( cacheObject[ type ] ); }
+					else return true;
+				
+				} else {
+					
+					if( typeof callback === 'function' ){ callback( undefined ); }
+					else return false;
+					
+				}
+			}	
 		}
 	},
 	
