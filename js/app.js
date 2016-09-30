@@ -1073,6 +1073,8 @@ var _engine = {
 				
 				$('body').removeClass('modal');
 				
+				_engine.storage.prefillCache.clear();
+				
 			},
 			_storeParams: function(){
 				
@@ -1614,9 +1616,6 @@ var _engine = {
 				
 				//Build menu again if repo is updated
 				_engine.ui.scriptMenu.refresh();
-				
-				
-				
 				
 			}
 
@@ -3009,6 +3008,8 @@ var _engine = {
 			_engine.debug.debug("Beta User Access Enabled. Logging Enabled.");
 			
 			_engine.ui.topNotification("Script Library: Beta");
+
+			_engine.storage.prefillCache.clear();
 			
 		},
 		
@@ -3057,6 +3058,8 @@ var _engine = {
 			console.debug("_engine.debug: Release Access Enabled. Logging Disabled.");
 			
 			_engine.ui.topNotification("Script Library: Release");
+
+			_engine.storage.prefillCache.clear();
 
 		}
 	}
