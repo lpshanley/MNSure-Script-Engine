@@ -2258,14 +2258,19 @@ var _engine = {
 			
 			queryAndCache: function(type){
 				
-				var evidenceObject = {};
+				_engine.tools.evidenceQuery.parsedEvidenceQuery( type ,function( results, type ){
+
+					/* Caching Query Results */
+					
+					var evidenceObject = {};
 	
-				evidenceObject[type] = results;
+					evidenceObject[type] = results;
 				
-				_engine.storage.prefillCache.add( evidenceObject );
-				
-				_engine.debug.log( _engine.storage.prefillCache.get() );
-				
+					_engine.storage.prefillCache.add( evidenceObject );
+					
+					_engine.debug.log( _engine.storage.prefillCache.get() );
+					
+				});				
 			},			
 			parsedEvidenceQuery: function(type, callback){
 				
