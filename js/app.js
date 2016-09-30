@@ -2264,6 +2264,8 @@ var _engine = {
 				
 				_engine.storage.prefillCache.add( evidenceObject );
 				
+				_engine.debug.log( _engine.storage.prefillCache.get() );
+				
 			},			
 			parsedEvidenceQuery: function(type, callback){
 				
