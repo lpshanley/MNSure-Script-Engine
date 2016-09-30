@@ -1559,13 +1559,13 @@ var _engine = {
 										
 									case 'service agency':
 										
-										if( evidenceFromCacheObj.length == 1 ){
+										if( results.length == 1 ){
 									
-											evidenceFromCache = evidenceFromCacheObj[0];
+											result = results[0];
 											
-											if( evidenceFromCache[0] != "" ) prefillString += evidenceFromCache[0];
+											if( result[0] != "" ) prefillString += result[0];
 											
-										} else if (evidenceFromCacheObj.length > 1) {
+										} else if (results.length > 1) {
 											
 											_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
 											
