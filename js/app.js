@@ -1434,6 +1434,9 @@ var _engine = {
 								break;
 							case "evidence":
 								if( _prefillValue != "" ){
+									
+									
+									
 									_engine.ui.modal._prefillFromDataQuery(_prefillValue,function( prefillString ){
 										$( v ).find('input').val( prefillString );
 									});
@@ -1457,40 +1460,95 @@ var _engine = {
 				
 				if( builtQueries.indexOf( type ) !== -1 ){
 					
-					_engine.tools.evidenceQuery.parsedEvidenceQuery(type,function( results, type ){
-			
-						var prefillString = "";
-						
-						switch( type ){
-							case 'address':
-								
-								if( results.length == 1 ){
+					_engine.storage.prefillCache.checkPrefillCache(type,function( evidenceFromCacheObj ){
+
+						if( typeof evidenceFromCacheObj === 'object' ){
 							
-									result = results[0];
+							_engine.debug.info("Cached source found. Using available cache.");
+							
+							var prefillString = "";
+							
+							switch( type ){
+									case 'address':
+										
+										if( evidenceFromCacheObj.length == 1 ){
 									
-									if( result.apt_suite != "" ) prefillString += result.apt_suite + ", "; 
-									if( result.street_1 != "" ) prefillString += result.street_1 + ", "; 
-									if( result.street_2 != "" ) prefillString += result.street_2 + ", "; 
-									if( result.city != "" ) prefillString += result.city + ", "; 
-									if( result.state != "" ) prefillString += result.state + ", "; 
-									if( result.zip != "" ) prefillString += result.zip; 
-									
-								} else if (results.length > 1) {
-									
-									_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
-									
+											evidenceFromCache = evidenceFromCacheObj[0];
+											
+											if( evidenceFromCache.apt_suite != "" ) prefillString += evidenceFromCache.apt_suite + ", "; 
+											if( evidenceFromCache.street_1 != "" ) prefillString += evidenceFromCache.street_1 + ", "; 
+											if( evidenceFromCache.street_2 != "" ) prefillString += evidenceFromCache.street_2 + ", "; 
+											if( evidenceFromCache.city != "" ) prefillString += evidenceFromCache.city + ", "; 
+											if( evidenceFromCache.state != "" ) prefillString += evidenceFromCache.state + ", "; 
+											if( evidenceFromCache.zip != "" ) prefillString += evidenceFromCache.zip; 
+											
+										} else if (evidenceFromCacheObj.length > 1) {
+											
+											_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
+											
+										}
+										
+										break;
+										
+									default:
+										break;
 								}
 								
-								break;
+								if(typeof callback === 'function') callback( prefillString );
+							
+						} else {
+							
+							_engine.debug.info("Cached source not available. Fetching and caching resource for use.");
+							
+							_engine.tools.evidenceQuery.parsedEvidenceQuery(type,function( results, type ){
+					
+								/* Caching Query Results */
 								
-							default:
-								break;
+								var evidenceObject = {};
+								
+								evidenceObject[type] = results;
+								
+								_engine.storage.prefillCache.add( evidenceObject );
+								
+								/* End of Caching */
+								
+								var prefillString = "";
+								
+								switch( type ){
+									case 'address':
+										
+										if( results.length == 1 ){
+									
+											result = results[0];
+											
+											if( result.apt_suite != "" ) prefillString += result.apt_suite + ", "; 
+											if( result.street_1 != "" ) prefillString += result.street_1 + ", "; 
+											if( result.street_2 != "" ) prefillString += result.street_2 + ", "; 
+											if( result.city != "" ) prefillString += result.city + ", "; 
+											if( result.state != "" ) prefillString += result.state + ", "; 
+											if( result.zip != "" ) prefillString += result.zip; 
+											
+										} else if (results.length > 1) {
+											
+											_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
+											
+										}
+										
+										break;
+										
+									default:
+										break;
+								}
+								
+								if(typeof callback === 'function') callback( prefillString );
+
+							});
+							
 						}
 						
-						if(typeof callback === 'function') callback( prefillString );
 						
 					});
-					
+
 				} else {
 					
 					_engine.debug.error(`No query return strategy exists for request type of: ${ type }. Correct type or build new strategy.`);
