@@ -2534,7 +2534,7 @@ var _engine = {
 									clearInterval( loadEvidencePanel );
 								}
 								_counter++;
-							},_engine.advanced._vars.timeoutLong);
+							},_engine.advanced._vars.timeout);
 							
 							loadEvidencePanel;				
 							
@@ -2788,10 +2788,9 @@ var _engine = {
 		/********************************************************************/
 		
 		_vars: {
-			timeout: 100,
-			iterations: 40,
-			timeoutLong: 200,
-			iterationsLong: 50
+			timeout: 50,
+			iterations: 80,
+			iterationsLong: 200
 		}
 	},
 	
