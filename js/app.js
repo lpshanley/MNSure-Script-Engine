@@ -2263,7 +2263,7 @@ var _engine = {
 					/* Caching Query Results */
 					
 					var evidenceObject = {};
-	
+					
 					evidenceObject[type] = results;
 				
 					_engine.storage.prefillCache.add( evidenceObject );
@@ -2294,11 +2294,7 @@ var _engine = {
 							
 							if( key !== "" || value !== "" ){
 								if( key === "" ){
-									if( unassigned === 0 ){
-										key = "case_participant";
-									} else {
-										key = unassigned;
-									}
+									key = unassigned;
 								}
 								
 								jsonString += '"' + key + '":"' + value + '",'
