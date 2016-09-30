@@ -2268,8 +2268,6 @@ var _engine = {
 				
 					_engine.storage.prefillCache.add( evidenceObject );
 					
-					_engine.storage.prefillCache.get();
-					
 				});		
 				
 			},			
