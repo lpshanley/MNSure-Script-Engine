@@ -1461,7 +1461,7 @@ var _engine = {
 				
 				type = type.toLowerCase();
 				
-				var builtQueries = ['address'];
+				var builtQueries = ['address','service agency'];
 				
 				if( builtQueries.indexOf( type ) !== -1 ){
 					
