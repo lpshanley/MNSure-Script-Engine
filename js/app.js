@@ -1073,6 +1073,8 @@ var _engine = {
 				
 				$('body').removeClass('modal');
 				
+				_engine.storage.prefillCache.clear();
+				
 			},
 			_storeParams: function(){
 				
@@ -1383,7 +1385,7 @@ var _engine = {
 			_processPrefill: function(){
 				
 				var _fields = $('.mns-modal-template > .mns-input-group');
-				
+
 					//Push additional clusters if clustering is active
 				if( _engine.ui.modal._clustersActive() ){
 					
@@ -1396,50 +1398,58 @@ var _engine = {
 					});
 					
 				}
-				
+
 				$.each( _fields, function(k,v){
-					
-					if(typeof $( v ).find('input, select').attr('data-prefill') != 'undefined'){
 						
-						//Process prefill on field
+					if( $( v ).find('input').length !== 0 ){
 						
-						var _prefill = $( v ).find('input, select').attr('data-prefill').toLowerCase();
+						var input = $( v ).find('input')[0];
 						
-						var _prefillType = _prefill.split("|")[0];
-						var _prefillValue = _prefill.split("|")[1];
-						var _prefillValueReferance = null;
-						
-						if( _prefillValue.indexOf("(") > -1 ){
-							var _prefillValueReferance = _prefillValue.substring( _prefillValue.lastIndexOf("(")+1,_prefillValue.lastIndexOf(")") );
-							var _prefillValue = _prefillValue.substring( 0,_prefillValue.lastIndexOf("(") );
-						}
-						
-						switch( _prefillType ){
-							case "date":
-								switch( _prefillValue ){
-									case "today":
+						if( typeof $( input ).attr('data-prefill') !== 'undefined' ){
+							
+							//Process prefill on field(s)
+							
+							var _prefill = $( input ).attr('data-prefill').toLowerCase();
+
+							var _prefillType = _prefill.split("|")[0];
+							var _prefillValue = _prefill.split("|")[1];
+							var _prefillValueReferance = null;
+							
+							if( _prefillValue.indexOf("(") > -1 ){
+								var _prefillValueReferance = _prefillValue.substring( _prefillValue.lastIndexOf("(")+1,_prefillValue.lastIndexOf(")") );
+								var _prefillValue = _prefillValue.substring( 0,_prefillValue.lastIndexOf("(") );
+							}
+							
+							switch( _prefillType ){
+								case "date":
+									switch( _prefillValue ){
+										case "today":
+											
+											var d = new Date();
+											
+											var prefillDate = d.toISOString().split('T')[0];
+											
+											$( v ).find('input').val( prefillDate );
+											
+											break;
+										default:
+											break;
+									}
+									break;
+								case "evidence":
+									if( _prefillValue != "" ){
 										
-										var d = new Date();
+										_engine.ui.modal._prefillFromDataQuery(_prefillValue,function( prefillString ){
+											$( v ).find('input').val( prefillString );
+										});
 										
-										var prefillDate = d.toISOString().split('T')[0];
-										
-										$( v ).find('input').val( prefillDate );
-										
-										break;
-									default:
-										break;
-								}
-								break;
-							case "evidence":
-								if( _prefillValue != "" ){
-									_engine.ui.modal._prefillFromDataQuery(_prefillValue,function( prefillString ){
-										$( v ).find('input').val( prefillString );
-									});
-								}							
-								break;
-							default:
-								_engine.debug.warn("unrecognised prefill type of: [ '" +_prefill+ " ']");
-								break;
+									}							
+									break;
+								default:
+									_engine.debug.warn("unrecognised prefill type of: [ '" +_prefill+ " ']");
+									break;
+							}
+						
 						}
 						
 					}
@@ -1451,44 +1461,131 @@ var _engine = {
 				
 				type = type.toLowerCase();
 				
-				var builtQueries = ['address'];
+				var builtQueries = ['address','service agency'];
 				
 				if( builtQueries.indexOf( type ) !== -1 ){
 					
-					_engine.tools.evidenceQuery.parsedEvidenceQuery(type,function( results, type ){
-			
-						var prefillString = "";
-						
-						switch( type ){
-							case 'address':
-								
-								if( results.length == 1 ){
+					_engine.storage.prefillCache.checkPrefillCache(type,function( evidenceFromCacheObj ){
+
+						if( typeof evidenceFromCacheObj === 'object' ){
 							
-									result = results[0];
+							_engine.debug.info("Cached source found. Using available cache.");
+							
+							var prefillString = "";
+							
+							switch( type ){
+									case 'address':
+										
+										if( evidenceFromCacheObj.length == 1 ){
 									
-									if( result.apt_suite != "" ) prefillString += result.apt_suite + ", "; 
-									if( result.street_1 != "" ) prefillString += result.street_1 + ", "; 
-									if( result.street_2 != "" ) prefillString += result.street_2 + ", "; 
-									if( result.city != "" ) prefillString += result.city + ", "; 
-									if( result.state != "" ) prefillString += result.state + ", "; 
-									if( result.zip != "" ) prefillString += result.zip; 
+											evidenceFromCache = evidenceFromCacheObj[0];
+											
+											if( evidenceFromCache.apt_suite != "" ) prefillString += evidenceFromCache.apt_suite + ", "; 
+											if( evidenceFromCache.street_1 != "" ) prefillString += evidenceFromCache.street_1 + ", "; 
+											if( evidenceFromCache.street_2 != "" ) prefillString += evidenceFromCache.street_2 + ", "; 
+											if( evidenceFromCache.city != "" ) prefillString += evidenceFromCache.city + ", "; 
+											if( evidenceFromCache.state != "" ) prefillString += evidenceFromCache.state + ", "; 
+											if( evidenceFromCache.zip != "" ) prefillString += evidenceFromCache.zip; 
+											
+										} else if (evidenceFromCacheObj.length > 1) {
+											
+											_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
+											
+										}
+										
+										break;
+										
+									case 'service agency':
+										
+										if( evidenceFromCacheObj.length == 1 ){
 									
-								} else if (results.length > 1) {
-									
-									_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
-									
+											evidenceFromCache = evidenceFromCacheObj[0];
+											
+											if( evidenceFromCache[0] != "" ) prefillString += evidenceFromCache[0];
+											
+										} else if (evidenceFromCacheObj.length > 1) {
+											
+											_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
+											
+										}
+										
+										break;
+										
+									default:
+										break;
 								}
 								
-								break;
+								if(typeof callback === 'function') callback( prefillString );
+							
+						} else {
+							
+							_engine.debug.info("Cached source not available. Fetching and caching resource for use.");
+							
+							_engine.tools.evidenceQuery.parsedEvidenceQuery(type,function( results, type ){
+					
+								/* Caching Query Results */
 								
-							default:
-								break;
+								var evidenceObject = {};
+								
+								evidenceObject[type] = results;
+								
+								_engine.storage.prefillCache.add( evidenceObject );
+								
+								/* End of Caching */
+								
+								var prefillString = "";
+								
+								switch( type ){
+									case 'address':
+										
+										if( results.length == 1 ){
+									
+											result = results[0];
+											
+											if( result.apt_suite != "" ) prefillString += result.apt_suite + ", "; 
+											if( result.street_1 != "" ) prefillString += result.street_1 + ", "; 
+											if( result.street_2 != "" ) prefillString += result.street_2 + ", "; 
+											if( result.city != "" ) prefillString += result.city + ", "; 
+											if( result.state != "" ) prefillString += result.state + ", "; 
+											if( result.zip != "" ) prefillString += result.zip; 
+											
+										} else if (results.length > 1) {
+											
+											_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
+											
+										}
+										
+										break;
+										
+									case 'service agency':
+										
+										if( results.length == 1 ){
+									
+											result = results[0];
+											
+											if( result[0] != "" ) prefillString += result[0];
+											
+										} else if (results.length > 1) {
+											
+											_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
+											
+										}
+										
+										break;
+										
+									default:
+										break;
+								}
+								
+								if(typeof callback === 'function') callback( prefillString );
+
+							});
+							
 						}
 						
-						if(typeof callback === 'function') callback( prefillString );
 						
 					});
-					
+
 				} else {
 					
 					_engine.debug.error(`No query return strategy exists for request type of: ${ type }. Correct type or build new strategy.`);
@@ -1614,9 +1711,6 @@ var _engine = {
 				
 				//Build menu again if repo is updated
 				_engine.ui.scriptMenu.refresh();
-				
-				
-				
 				
 			}
 
@@ -2171,7 +2265,6 @@ var _engine = {
 			}
 			
 		},
-		
 		/* [Case Work] Opens a modal to select from currently open cases
 		/********************************************************************/
 		
@@ -2195,6 +2288,21 @@ var _engine = {
 		
 		evidenceQuery: {
 			
+			queryAndCache: function(type){
+				
+				_engine.tools.evidenceQuery.parsedEvidenceQuery( type ,function( results, type ){
+
+					/* Caching Query Results */
+					
+					var evidenceObject = {};
+					
+					evidenceObject[type] = results;
+				
+					_engine.storage.prefillCache.add( evidenceObject );
+					
+				});		
+				
+			},			
 			parsedEvidenceQuery: function(type, callback){
 				
 				_engine.tools.evidenceQuery._queryRawEvidence( type, function( evidenceArray, queryType ){
@@ -2218,11 +2326,7 @@ var _engine = {
 							
 							if( key !== "" || value !== "" ){
 								if( key === "" ){
-									if( unassigned === 0 ){
-										key = "case_participant";
-									} else {
-										key = unassigned;
-									}
+									key = unassigned;
 								}
 								
 								jsonString += '"' + key + '":"' + value + '",'
@@ -2430,7 +2534,7 @@ var _engine = {
 									clearInterval( loadEvidencePanel );
 								}
 								_counter++;
-							},_engine.advanced._vars.timeoutLong);
+							},_engine.advanced._vars.timeout);
 							
 							loadEvidencePanel;				
 							
@@ -2684,10 +2788,9 @@ var _engine = {
 		/********************************************************************/
 		
 		_vars: {
-			timeout: 100,
-			iterations: 40,
-			timeoutLong: 200,
-			iterationsLong: 50
+			timeout: 50,
+			iterations: 80,
+			iterationsLong: 200
 		}
 	},
 	
@@ -2805,6 +2908,122 @@ var _engine = {
 			clear: function(){
 				localStorage.removeItem( "mnsEngine_debugStatus" );
 			}
+		},
+		
+		/* [Storage] Prefill Caching
+		/********************************************************************/
+		
+		prefillCache: {
+			init: function(){
+				
+				window.localStorage.setItem( "mnsEngine_prefillCache", '{}' );
+				
+			},
+			add: function( object ){
+				
+				if( typeof object === 'string' ) object = $.parseJSON( object );
+
+				if( typeof object !== 'undefined' ){
+				
+					var cacheObject = _engine.storage.prefillCache.get();
+					
+					var cacheProps = Object.getOwnPropertyNames( cacheObject );
+					var objectProps = Object.getOwnPropertyNames( object );
+					
+					$.each(objectProps, function(k,v){
+
+						if( cacheProps.indexOf( v ) !== -1 ) _engine.storage.prefillCache.remove( v );
+						
+						cacheObject[v] = object[v];
+						
+					});
+					
+					_engine.storage.prefillCache._updateCacheInfo( cacheObject );
+
+				} else {
+					
+					return false;
+					
+				}
+				
+			},
+			remove: function( type ){
+				
+				if( typeof type === 'string' ){
+					
+					var cacheObject = _engine.storage.prefillCache.get();
+					var item = cacheObject[ type ];
+					
+					if( typeof item !== 'undefined' ){
+						
+						delete cacheObject[ type ];
+						
+						_engine.storage.prefillCache._updateCacheInfo( cacheObject );
+						
+						return true;
+						
+					} else {
+						
+						return false;
+						
+					}
+					
+				} else {
+					
+					return false;
+					
+				}
+				
+			},
+			get: function( type ){
+				
+				if(typeof window.localStorage.mnsEngine_prefillCache === 'undefined'){
+					
+					_engine.storage.prefillCache.init();
+					
+				}
+				
+				var cacheObject = $.parseJSON( decodeURIComponent( window.localStorage.mnsEngine_prefillCache ) );
+				
+				if( typeof type === 'string' ){
+					return cacheObject[type];
+				} else {
+					return cacheObject;
+				}
+				
+			},
+			_updateCacheInfo: function( object ){
+				
+				if( typeof object === 'object' ) object = JSON.stringify( object );
+				
+				var encodedObject = encodeURIComponent( object );
+				
+				window.localStorage.setItem( "mnsEngine_prefillCache", encodedObject );
+
+			},
+			clear: function(){
+				
+				localStorage.removeItem( "mnsEngine_prefillCache" );
+				
+			},
+			checkPrefillCache: function( type, callback ){
+				
+				var cacheObject = _engine.storage.prefillCache.get();
+				
+				var cacheProps = Object.getOwnPropertyNames( cacheObject );
+				
+				if( cacheProps.indexOf( type ) !== -1 ){
+					
+					if( typeof callback === 'function' ){ callback( cacheObject[ type ] ); }
+					else return true;
+				
+				} else {
+					
+					if( typeof callback === 'function' ){ callback( undefined ); }
+					else return false;
+					
+				}
+			}	
 		}
 	},
 	
@@ -2890,6 +3109,8 @@ var _engine = {
 			//Change Script Repo
 			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _betaCommit +"/js/app.js" );
 			
+			_engine.storage.prefillCache.clear();
+			
 			_engine.debug.debug("Beta User Access Enabled. Logging Enabled.");
 			
 			_engine.ui.topNotification("Script Library: Beta");
@@ -2937,6 +3158,8 @@ var _engine = {
 			$('link[data-scriptengine]').attr("href", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/css/appStyles.css");
 			//Change Script Repo
 			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/js/app.js" );
+			
+			_engine.storage.prefillCache.clear();
 			
 			console.debug("_engine.debug: Release Access Enabled. Logging Disabled.");
 			
