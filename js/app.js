@@ -2266,19 +2266,22 @@ var _engine = {
 				
 				parsedQuery: function(type, callback){
 	
-					_engine.tools.customApi.evidence._evidenceApiRaw( type, function( evidenceArray, queryType ){
-
+					_evidenceApiRaw( type, function( evidenceArray, queryType ){
+						
+						var masterArray = [];
 						var parsedEvidence = [];
 						
-						$.each(evidenceArray,function(k,v){
+						$.each( evidenceArray, function( key, rawQuery ){
 							
-							var evidence = $(v)[0];
+							var scope = $(rawQuery).attr('data-scope');
 							
 							var jsonString = "";
 							
 							var unassigned = 0;
 							
-							$.each( $( evidence ).find('div table th.label'), function(k,v){
+							if( scope === 'current' ) parsedEvidence = [];
+							
+							$.each( $( rawQuery ).find('div table th.label'), function(k,v){
 								
 								var info = $( v )[0];
 								
@@ -2298,11 +2301,13 @@ var _engine = {
 
 							jsonString = jsonString.substring(0,jsonString.length-1);
 							
-							parsedEvidence.push( $.parseJSON( "{" + jsonString + "}" ) );
+							parsedEvidence[ scope ] = $.parseJSON( "{" + jsonString + "}" );
+							
+							if(scope === 'history') masterArray.push( parsedEvidence );
 							
 						});
 						
-						if(typeof callback === 'function') callback( parsedEvidence, type );
+						if(typeof callback === 'function') callback( masterArray, type );
 						
 					});
 					
@@ -2318,7 +2323,7 @@ var _engine = {
 						
 						var evidencePageContent = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( reqUrl );
 						
-						var evidencePageSubQueries = _engine.tools.customApi.evidence._getSubQueries( evidencePageContent );
+						var evidencePageSubQueries = _getSubQueries( evidencePageContent );
 						
 						if( evidencePageSubQueries !== false ){
 							
@@ -2326,17 +2331,68 @@ var _engine = {
 								
 								var evidenceItemContent = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( evidencePageSubQuery );
 								
-								var evidenceItemSubQueries = _engine.tools.customApi.evidence._getSubQueries( evidenceItemContent );
+								var evidenceItemSubQueries = _getSubQueries( evidenceItemContent );
 								
 								if( evidenceItemSubQueries !== false ){
-							
-									$.each( evidenceItemSubQueries, function(key, evidenceItemSubQuery){
+									
+									var usedEvidence = [];
+									
+									usedEvidence.push( evidenceItemSubQueries[0] );
+									
+									var urlArray = [];
+									
+									$.each( usedEvidence, function(key, evidenceItemSubQuery){
 										
 										var currentEvidenceContent = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( evidenceItemSubQuery );
 										
-										var evidenceWrapper = $( currentEvidenceContent ).find('form#mainForm div.in-page-nav-contentWrapper')[0];
+										var evidenceScope = $( currentEvidenceContent ).find('ul.in-page-navigation-tabs li a');
 										
-										returnArray.push( $(evidenceWrapper) );
+										$.each( evidenceScope, function( key, value ){
+											
+											var href = $(value).attr('href').replace( "kDynEvd", "DynEvd" );
+											
+											urlArray.push( "en_us/" + href );
+											
+										});
+										
+										$.each( urlArray, function( key, url ){
+											
+											var contentContainer = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( url );
+											
+											var evidenceScope = $(contentContainer).find('form#mainForm').attr('action').split("_")[1];
+											
+											var evidenceWrapper = $( contentContainer ).find('form#mainForm div.in-page-nav-contentWrapper')[0];
+											
+											switch( evidenceScope ){
+												case "viewCh":
+													
+													/* Current Info */
+													
+													evidenceWrapper = $(evidenceWrapper).attr('data-scope','current');
+													
+													returnArray.push( evidenceWrapper[0] );
+													
+													break;
+												case "viewChHistory":
+													
+													var historyDataRow = $(evidenceWrapper).find('table tbody tr.list-details-row')[0];
+													
+													var historyUrl = "en_us/" + $( historyDataRow ).find('div').attr('url');
+													
+													var historyContainer = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( historyUrl );
+													
+													var historyWrapper = $( historyContainer ).find('form#mainForm div')[0];
+													
+													historyWrapper = $(historyWrapper).attr('data-scope','history');
+													
+													returnArray.push( historyWrapper[0] );
+													
+													break;
+												default:
+													break;							
+											}
+											
+										});
 										
 									});
 									
@@ -2348,7 +2404,7 @@ var _engine = {
 						
 					}
 					
-					if( typeof callback === 'function' ) callback( returnArray, type );
+					if(typeof callback === 'function') callback( returnArray, type );
 					else return returnArray;
 					
 				},
@@ -2377,11 +2433,11 @@ var _engine = {
 				_getSubQueries: function( contentElement ){
 					
 					returnArray = [];
-	
+
 					var queryElements = $( contentElement ).find('table tbody tr, table tbody script');
 					
 					$.each(queryElements,function(key, queryElement){
-
+						
 						if( $( queryElement ).hasClass('empty-row') && key === 0 ){
 							
 							return false;
