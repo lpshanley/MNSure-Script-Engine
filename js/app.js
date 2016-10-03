@@ -2555,7 +2555,7 @@ var _engine = {
 			
 			evidence: {
 				
-				_evidenceApiRaw: function( type ){
+				_evidenceApiRaw: function( type, callback ){
 					
 					var returnArray = [];
 
@@ -2595,7 +2595,8 @@ var _engine = {
 						
 					}
 					
-					return returnArray;
+					if( typeof callback === 'function' ) callback( returnArray, type );
+					else return returnArray;
 					
 				},
 				
