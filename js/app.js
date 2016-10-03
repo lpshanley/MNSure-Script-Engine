@@ -2747,6 +2747,8 @@ var _engine = {
 							return reqUrl;
 						
 						} else {
+							
+							_engine.debug.info(`Your generated request url is invalid. Please define type of: ${ type }.`);
 						
 							return false;
 							
