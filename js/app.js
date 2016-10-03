@@ -2559,7 +2559,7 @@ var _engine = {
 					
 					var returnArray = [];
 
-					var reqUrl = _engine.tools.customApi._evidenceQueryUrlConstructor( type );
+					var reqUrl = _engine.tools.customApi.evidence._evidenceQueryUrlConstructor( type );
 
 					if( reqUrl !== false  ){
 						
