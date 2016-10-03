@@ -2786,11 +2786,11 @@ var _engine = {
 			timeout: 50,
 			iterations: 80,
 			iterationsLong: 200,
-			queryDefinitions: [
+			queryDefinitions: {
 				'address': 'evidenceType=DET0026039',
 				'income': 'evidenceType=DET0026030',
 				'service agency': 'evidenceType=DET0001029'
-			]
+			}
 		}
 	},
 	
