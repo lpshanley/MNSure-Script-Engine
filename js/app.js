@@ -1521,7 +1521,7 @@ var _engine = {
 							
 							_engine.debug.info("Cached source not available. Fetching and caching resource for use.");
 							
-							_engine.tools.evidenceQuery.parsedEvidenceQuery(type,function( results, type ){
+							_engine.tools.customApi.evidence.parsedQuery(type,function( results, type ){
 					
 								/* Caching Query Results */
 								
