@@ -2555,6 +2555,66 @@ var _engine = {
 			
 			evidence: {
 				
+				queryAndCache: function(type){
+				
+					_engine.tools.customApi.evidence.parsedQuery( type ,function( results, type ){
+
+						/* Caching Query Results */
+						
+						var evidenceObject = {};
+						
+						evidenceObject[type] = results;
+					
+						_engine.storage.prefillCache.add( evidenceObject );
+						
+					});		
+					
+				},
+				
+				parsedQuery: function(type, callback){
+	
+					_engine.tools.customApi.evidence._evidenceApiRaw( type, function( evidenceArray, queryType ){
+
+						var parsedEvidence = [];
+						
+						$.each(evidenceArray,function(k,v){
+							
+							var evidence = $(v)[0];
+							
+							var jsonString = "";
+							
+							var unassigned = 0;
+							
+							$.each( $( evidence ).find('div table th.label'), function(k,v){
+								
+								var info = $( v )[0];
+								
+								var key = info.innerText.trim().toLowerCase().replace(/ |\//g,"_");
+								var value = $( info ).next()[0].innerText.trim();
+								
+								if( key !== "" || value !== "" ){
+									if( key === "" ){
+										key = unassigned;
+									}
+									
+									jsonString += '"' + key + '":"' + value + '",'
+									
+								}
+								
+							}); 
+
+							jsonString = jsonString.substring(0,jsonString.length-1);
+							
+							parsedEvidence.push( $.parseJSON( "{" + jsonString + "}" ) );
+							
+						});
+						
+						if(typeof callback === 'function') callback( parsedEvidence, type );
+						
+					});
+					
+				},
+				
 				_evidenceApiRaw: function( type, callback ){
 					
 					var returnArray = [];
