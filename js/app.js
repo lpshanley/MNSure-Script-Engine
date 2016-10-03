@@ -2733,7 +2733,8 @@ var _engine = {
 					
 					var evidenceType = {
 						'address': 'evidenceType=DET0026039',
-						'income': 'evidenceType=DET0026030'
+						'income': 'evidenceType=DET0026030',
+						'service agency': 'evidenceType=DET0001029'
 					}
 					
 					if( _engine.domTools.test.hcrTabType() === "Integrated Case" ){
