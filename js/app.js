@@ -2785,7 +2785,7 @@ var _engine = {
 		_vars: {
 			timeout: 50,
 			iterations: 80,
-			iterationsLong: 200
+			iterationsLong: 200,
 			queryDefinitions: {
 				'address': 'evidenceType=DET0026039',
 				'income': 'evidenceType=DET0026030',
