@@ -1461,128 +1461,84 @@ var _engine = {
 				
 				type = type.toLowerCase();
 				
-				var builtQueries = ['address','service agency'];
+				var builtQueries = Object.getOwnPropertyNames( _engine.advanced._vars.queryDefinitions );
 				
 				if( builtQueries.indexOf( type ) !== -1 ){
 					
-					_engine.storage.prefillCache.checkPrefillCache(type,function( evidenceFromCacheObj ){
-
-						if( typeof evidenceFromCacheObj === 'object' ){
+					var returnConstructor = function( dataObject ){
+						
+						var prefillString = "";
 							
-							_engine.debug.info("Cached source found. Using available cache.");
+						switch( type ){
+							case 'income':
+								
+								_engine.debug.warn('income prefill is in need of definition');
+								
+								break;
+							case 'address':
+								
+								if( dataObject.length == 1 ){
 							
-							var prefillString = "";
-							
-							switch( type ){
-									case 'address':
-										
-										if( evidenceFromCacheObj.length == 1 ){
+									result = dataObject[0];
 									
-											evidenceFromCache = evidenceFromCacheObj[0];
-											
-											if( evidenceFromCache.apt_suite != "" ) prefillString += evidenceFromCache.apt_suite + ", "; 
-											if( evidenceFromCache.street_1 != "" ) prefillString += evidenceFromCache.street_1 + ", "; 
-											if( evidenceFromCache.street_2 != "" ) prefillString += evidenceFromCache.street_2 + ", "; 
-											if( evidenceFromCache.city != "" ) prefillString += evidenceFromCache.city + ", "; 
-											if( evidenceFromCache.state != "" ) prefillString += evidenceFromCache.state + ", "; 
-											if( evidenceFromCache.zip != "" ) prefillString += evidenceFromCache.zip; 
-											
-										} else if (evidenceFromCacheObj.length > 1) {
-											
-											_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
-											
-										}
-										
-										break;
-										
-									case 'service agency':
-										
-										if( evidenceFromCacheObj.length == 1 ){
+									if( result.apt_suite != "" ) prefillString += result.apt_suite + ", "; 
+									if( result.street_1 != "" ) prefillString += result.street_1 + ", "; 
+									if( result.street_2 != "" ) prefillString += result.street_2 + ", "; 
+									if( result.city != "" ) prefillString += result.city + ", "; 
+									if( result.state != "" ) prefillString += result.state + ", "; 
+									if( result.zip != "" ) prefillString += result.zip; 
 									
-											evidenceFromCache = evidenceFromCacheObj[0];
-											
-											if( evidenceFromCache[0] != "" ) prefillString += evidenceFromCache[0];
-											
-										} else if (evidenceFromCacheObj.length > 1) {
-											
-											_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
-											
-										}
-										
-										break;
-										
-									default:
-										break;
+								} else if (dataObject.length > 1) {
+									
+									_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
+									
 								}
 								
-								if(typeof callback === 'function') callback( prefillString );
+								break;
+								
+							case 'service agency':
+								
+								if( dataObject.length == 1 ){
 							
-						} else {
-							
-							_engine.debug.info("Cached source not available. Fetching and caching resource for use.");
-							
-							_engine.tools.evidenceQuery.parsedEvidenceQuery(type,function( results, type ){
-					
-								/* Caching Query Results */
-								
-								var evidenceObject = {};
-								
-								evidenceObject[type] = results;
-								
-								_engine.storage.prefillCache.add( evidenceObject );
-								
-								/* End of Caching */
-								
-								var prefillString = "";
-								
-								switch( type ){
-									case 'address':
-										
-										if( results.length == 1 ){
+									result = dataObject[0];
 									
-											result = results[0];
-											
-											if( result.apt_suite != "" ) prefillString += result.apt_suite + ", "; 
-											if( result.street_1 != "" ) prefillString += result.street_1 + ", "; 
-											if( result.street_2 != "" ) prefillString += result.street_2 + ", "; 
-											if( result.city != "" ) prefillString += result.city + ", "; 
-											if( result.state != "" ) prefillString += result.state + ", "; 
-											if( result.zip != "" ) prefillString += result.zip; 
-											
-										} else if (results.length > 1) {
-											
-											_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
-											
-										}
-										
-										break;
-										
-									case 'service agency':
-										
-										if( results.length == 1 ){
+									if( result[0] != "" ) prefillString += result[0];
 									
-											result = results[0];
-											
-											if( result[0] != "" ) prefillString += result[0];
-											
-										} else if (results.length > 1) {
-											
-											_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
-											
-										}
-										
-										break;
-										
-									default:
-										break;
+								} else if (dataObject.length > 1) {
+									
+									_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
+									
 								}
 								
-								if(typeof callback === 'function') callback( prefillString );
-
-							});
-							
+								break;
+								
+							default:
+								break;
 						}
 						
+						if(typeof callback === 'function') callback( prefillString );
+					
+					}
+					
+					_engine.storage.prefillCache.checkPrefillCache( type, function( evidenceFromCacheObj ){
+
+						if( typeof evidenceFromCacheObj === 'undefined' ){
+						
+							_engine.debug.info(`Obtaining result set from via data query for request type: ${ type }`);
+							
+							_engine.tools.customApi.evidence.queryAndCache( type, function(results){
+							
+								returnConstructor( results );
+							
+							});
+						
+						} else {
+						
+							_engine.debug.info(`Obtaining result set from internal cache for request type: ${ type }`);
+						
+							returnConstructor( evidenceFromCacheObj );
+						
+						}
 						
 					});
 
@@ -2283,268 +2239,265 @@ var _engine = {
 	
 	tools: {
 		
-		/* [Tools] Queries for a specific info type on an integrated case
+		/* [Tools] Custom Api
 		/********************************************************************/
 		
-		evidenceQuery: {
+		customApi: {
 			
-			queryAndCache: function(type){
+			evidence: {
 				
-				_engine.tools.evidenceQuery.parsedEvidenceQuery( type ,function( results, type ){
+				queryAndCache: function(type, callback){
+				
+					_engine.tools.customApi.evidence.parsedQuery( type ,function( results, type ){
 
-					/* Caching Query Results */
+						/* Caching Query Results */
+						
+						var evidenceObject = {};
+						
+						evidenceObject[type] = results;
 					
-					var evidenceObject = {};
+						_engine.storage.prefillCache.add( evidenceObject );
+						
+						if(typeof callback === 'function') callback( results );
+						
+					});		
 					
-					evidenceObject[type] = results;
+				},
 				
-					_engine.storage.prefillCache.add( evidenceObject );
-					
-				});		
-				
-			},			
-			parsedEvidenceQuery: function(type, callback){
-				
-				_engine.tools.evidenceQuery._queryRawEvidence( type, function( evidenceArray, queryType ){
+				parsedQuery: function(type, callback){
+	
+					_engine.tools.customApi.evidence._evidenceApiRaw( type, function( evidenceArray, queryType ){
 
-					var parsedEvidence = [];
-					
-					$.each(evidenceArray,function(k,v){
+						var parsedEvidence = [];
 						
-						var evidence = $(v)[0];
-						
-						var jsonString = "";
-						
-						var unassigned = 0;
-						
-						$.each( $( evidence ).find('div table th.label'), function(k,v){
+						$.each(evidenceArray,function(k,v){
 							
-							var info = $( v )[0];
+							var evidence = $(v)[0];
 							
-							var key = info.innerText.trim().toLowerCase().replace(/ |\//g,"_");
-							var value = $( info ).next()[0].innerText.trim();
+							var jsonString = "";
 							
-							if( key !== "" || value !== "" ){
-								if( key === "" ){
-									key = unassigned;
+							var unassigned = 0;
+							
+							$.each( $( evidence ).find('div table th.label'), function(k,v){
+								
+								var info = $( v )[0];
+								
+								var key = info.innerText.trim().toLowerCase().replace(/ |\//g,"_");
+								var value = $( info ).next()[0].innerText.trim();
+								
+								if( key !== "" || value !== "" ){
+									if( key === "" ){
+										key = unassigned;
+									}
+									
+									jsonString += '"' + key + '":"' + value + '",'
+									
 								}
 								
-								jsonString += '"' + key + '":"' + value + '",'
-								
-							}
-							
-						}); 
+							}); 
 
-						jsonString = jsonString.substring(0,jsonString.length-1);
+							jsonString = jsonString.substring(0,jsonString.length-1);
+							
+							parsedEvidence.push( $.parseJSON( "{" + jsonString + "}" ) );
+							
+						});
 						
-						parsedEvidence.push( $.parseJSON( "{" + jsonString + "}" ) );
+						if(typeof callback === 'function') callback( parsedEvidence, type );
 						
 					});
 					
-					if(typeof callback === 'function') callback( parsedEvidence, type );
+				},
+				
+				_evidenceApiRaw: function( type, callback ){
 					
-				});
-				
-			},
-			
-			_queryRawEvidence: function( type, callback ){
-				
-				type = type.toLowerCase();
-				
-				_engine.navigation.icTabs.icTabNavi("evidence",function( evidenceFrame ){
-				
-					_engine.debug.info(`- * Attempting evidence query of type: ${type}`);
-					
-					var evidence = $( evidenceFrame ).find('td:has("a")');
-					
-					$.each(evidence,function(k,v){
+					var returnArray = [];
+
+					var reqUrl = _engine.tools.customApi.evidence._evidenceQueryUrlConstructor( type );
+
+					if( reqUrl !== false  ){
 						
-						if( v.innerText.trim().toLowerCase() === type ){
+						var evidencePageContent = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( reqUrl );
+						
+						var evidencePageSubQueries = _engine.tools.customApi.evidence._getSubQueries( evidencePageContent );
+						
+						if( evidencePageSubQueries !== false ){
 							
-							_engine.debug.info(`- * Found valid evidence type match - Opening`);
+							$.each( evidencePageSubQueries, function(key, evidencePageSubQuery){
+								
+								var evidenceItemContent = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( evidencePageSubQuery );
+								
+								var evidenceItemSubQueries = _engine.tools.customApi.evidence._getSubQueries( evidenceItemContent );
+								
+								if( evidenceItemSubQueries !== false ){
 							
-							var returnTab = _engine.domTools.get.hcrTabActive();
-							
-							$(v).find('a')[0].click();
-							
-							var _counter = 0;
-							
-							var returnArray = [];
-							
-							var loadEvidencePanel = setInterval(function(){
-								if( _counter <= _engine.advanced._vars.iterationsLong ){
-									
-									var tabTypeVerif = _engine.domTools.test.hcrTabType();
-									
-									typeof tabTypeVerif == 'undefined' ?
-										tabTypeVerif = [] :					
-										tabTypeVerif = tabTypeVerif.toLowerCase().split("|");
+									$.each( evidenceItemSubQueries, function(key, evidenceItemSubQuery){
 										
+										var currentEvidenceContent = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( evidenceItemSubQuery );
+										
+										var evidenceWrapper = $( currentEvidenceContent ).find('form#mainForm div.in-page-nav-contentWrapper')[0];
+										
+										returnArray.push( $(evidenceWrapper) );
+										
+									});
 									
-									if( tabTypeVerif.length > 1 && tabTypeVerif[0] == "evidence" && tabTypeVerif[1] == type ){
-									
-										var evidenceFrame = _engine.domTools.get.hcrTabFrame();
-										
-										var internalFrame = $( evidenceFrame ).find('iframe.contentPanelFrame').contents()[0];
-										
-										var evidenceArray = $( internalFrame ).find('div.list tbody tr:not(".list-details-row")');
-										
-										if( evidenceArray.length > 0 ){
-											
-											/* Toggle open all evidence pieces tier 1 */
-											
-											$.each(evidenceArray,function(k,v){
-												
-												if(typeof returnArray[k] == 'undefined'){
-												
-													var toggleDetails = $(v).find('td a')[0];
-													
-													var detailsRow = $(v).next()[0];
-													
-													if( $( detailsRow ).hasClass('collapsed') ){
-														_engine.debug.info(`- * Toggling open evidence details`);
-														toggleDetails.click();
-													}
-												
-												}
-												
-											});
-											
-											/* Alert toggles completed teir 1 */
-											
-											_engine.debug.info(`- * All details toggled | Attempt Count: ${_counter}`);
-											
-											/* Toggle open all evidence pieces tier 2 */
-											
-											$.each(evidenceArray,function(k,v){
-												
-												if(typeof returnArray[k] == 'undefined'){
-												
-													var detailsRow = $(v).next()[0];
-													
-													var detailsSubframe1 = $( detailsRow ).find('iframe')[0];
-													
-													if( typeof detailsSubframe1 != 'undefined' ){
-														
-														var detailsSubframe1Contents = $( detailsSubframe1 ).contents().find('tbody tr:not("list-details-row")')[0];
-														
-														if( typeof detailsSubframe1Contents != 'undefined' ){
-															
-															var toggleDetails = $(detailsSubframe1Contents).find('td a')[0];
-													
-															var detailsRow = $(detailsSubframe1Contents).next()[0];
-															
-															if( $( detailsRow ).hasClass('collapsed') ){
-																_engine.debug.info(`- * Toggling open subframe evidence details`);
-																toggleDetails.click();
-															}
-														
-														}
-														
-													}
-													
-												}
-												
-											});
-											
-											_engine.debug.info(`- * All details toggled tier 2 | Attempt Count: ${_counter}`);
-											
-											/* Target all evidence in subframes */
-											
-											$.each(evidenceArray,function(k,v){
-												
-												if(typeof returnArray[k] == 'undefined'){
-													
-													var detailsRow = $(v).next()[0];
-													
-													var detailsSubframe1 = $( detailsRow ).find('iframe')[0];
-													
-													if( typeof detailsSubframe1 != 'undefined' ){
-														
-														var detailsSubframe1Contents = $( detailsSubframe1 ).contents().find('tbody tr:not("list-details-row")')[0];
-														
-														if( typeof detailsSubframe1Contents != 'undefined' ){
-													
-															var detailsRow = $(detailsSubframe1Contents).next()[0];
-															
-															var detailsSubframe2 = $( detailsRow ).find('iframe')[0];
-															
-															if( typeof detailsSubframe2 != 'undefined' ){
-																
-																var detailsSubframe2Contents = $( detailsSubframe2 ).contents().find('form#mainForm div.in-page-nav-contentWrapper')[0];
-																
-																if( typeof detailsSubframe2Contents != 'undefined' ){
-																	
-																	_engine.debug.info( `Evidence item ${k} has loaded and been added to return array` );
-																	
-																	returnArray[k] = detailsSubframe2Contents;
-																
-																} else {
-																
-																	_engine.debug.warn( `Evidence item ${k} tier 2 subframe contents have not finished loading` );
-																	
-																}
-															
-															}
-														
-														} else {
-														
-															_engine.debug.warn( `Evidence item ${k} subframe contents have not finished loading` );
-															
-														}
-														
-													}
-												
-												}
-												
-											});
-											
-											if( returnArray.length == evidenceArray.length ){
-												
-												var countUndefined = 0;
-												
-												$.each(returnArray,function(k,v){
-													
-													if(typeof returnArray[k] === 'undefined') countUndefined++;
+								}
+							
+							});
+								
+						}
+						
+					}
+					
+					if( typeof callback === 'function' ) callback( returnArray, type );
+					else return returnArray;
+					
+				},
+				
+				_ajaxAndReturnIframeContentDiv: function( reqUrl ){
+	
+					var returnArray = [];
+					
+					$.ajax({
+						url: reqUrl,
+						async: false,
+						success: function( data ){
+							var parsed = $.parseHTML( data );
+							$.each(parsed,function(key,value){
+								if( $(value).attr('id') === 'content' ){
+									returnArray.push( value );
+								}
+							});
+						}
+					});
+					
+					return returnArray[0];
+					
+				},
+				
+				_getSubQueries: function( contentElement ){
+					
+					returnArray = [];
+	
+					var queryElements = $( contentElement ).find('table tbody tr, table tbody script');
+					
+					$.each(queryElements,function(key, queryElement){
 
-												});
-												
-												if(countUndefined === 0){
-												
-													_engine.debug.info( `Evidence query complete` );
-													
-													_engine.tools.closeTabHCR();
-											
-													returnTab.click();
-													
-													if( typeof callback === 'function' ) callback( returnArray, type );
-													
-													clearInterval( loadEvidencePanel );
-												
-												}
-												
-											}
-
-										}
-
+						if( $( queryElement ).hasClass('empty-row') && key === 0 ){
+							
+							return false;
+							
+						} else {
+							
+							if( $( queryElement ).is('script') ){
+								
+								var parsedScriptElements = $.parseHTML( $( queryElement )[0].innerText );
+								
+								$.each( parsedScriptElements, function( key, parsedScriptElement ){
+									
+									if( $( parsedScriptElement ).hasClass('list-details-row') ){
+										
+										var parsedScriptElementUrl = "en_us/" + $( parsedScriptElement ).find('div').attr('url');
+										
+										returnArray.push( parsedScriptElementUrl );
+										
 									}
 									
-								} else {
-									_engine.debug.error(`- * Timed out waiting for evidence screen to open`);
-									clearInterval( loadEvidencePanel );
-								}
-								_counter++;
-							},_engine.advanced._vars.timeout);
-							
-							loadEvidencePanel;				
+								});
+								
+							}
 							
 						}
 						
 					});
 					
-				});
-			
+					return returnArray;
+				
+				
+				},
+				_evidenceQueryUrlConstructor: function( type ){
+				
+					var root = "en_US/Evidence_workspaceTypeListPage.do?";
+					
+					var curamObject = _engine.storage._curamCreatedObject.get();
+					
+					var caseID = curamObject.tabSignature.split("|")[1];
+					
+					var oc3tx = "o3ctx=" + curamObject.tabContent.parameters.o3ctx;
+					
+					var evidenceType = _engine.advanced._vars.queryDefinitions;
+					
+					if( _engine.domTools.test.hcrTabType() === "Integrated Case" ){
+
+						var reqUrl = root + oc3tx + "&" + caseID + "&" + evidenceType[ type ];
+						
+						if( typeof evidenceType[ type ] !== 'undefined' ){
+							
+							_engine.debug.info(`Your generated request url is valid. This may be used to request results.`);
+							
+							return reqUrl;
+						
+						} else {
+							
+							_engine.debug.info(`Your generated request url is invalid. Please define type of: ${ type }.`);
+						
+							return false;
+							
+						}
+						
+					} else if ( _engine.domTools.test.hcrTabType().split("|")[0] === "Evidence" ){
+						
+						type = _engine.domTools.test.hcrTabType().split("|")[1].toLowerCase();
+						
+						var srcUrl = $('iframe[title="Content Panel - Evidence"]').attr('src');
+						
+						if( typeof evidenceType[ type ] !== 'undefined' ){
+						
+							var reqUrl = root + oc3tx + "&" + caseID + "&" + evidenceType[ type ];
+
+							if( srcUrl === reqUrl ) {
+								
+								_engine.debug.info(`Your generated request url is valid. This may be used to request results.`);
+								
+								_engine.debug.info(`Generated: ${reqUrl} | Sourced: ${srcUrl}`);
+								
+								return reqUrl;
+								
+							} else {
+								
+								_engine.debug.warn(`Your generated request url is invalid. Please Verify.`);
+								
+								_engine.debug.warn(`Generated: ${reqUrl} | Sourced: ${srcUrl}`);
+								
+								return false;
+								
+							}
+						
+						} else {
+						
+						var evidenceString = srcUrl.split('&');
+						
+						var evidenceValidator = "";
+						
+						$.each(evidenceString,function(k,v){
+							if( v.indexOf("evidenceType") > -1 ){
+								
+								evidenceValidator += v;
+								
+							}
+						});
+						
+						_engine.debug.warn(`Type of: [ '${ type }' ] is undefined. Define using: ${ evidenceValidator }`);
+						
+						return false;
+							
+						}
+						
+					}
+					
+				}
+				
 			}
+			
 			
 		},
 		
@@ -2790,7 +2743,12 @@ var _engine = {
 		_vars: {
 			timeout: 50,
 			iterations: 80,
-			iterationsLong: 200
+			iterationsLong: 200,
+			queryDefinitions: {
+				'address': 'evidenceType=DET0026039',
+				'income': 'evidenceType=DET0026030',
+				'service agency': 'evidenceType=DET0001029'
+			}
 		}
 	},
 	
@@ -3024,7 +2982,17 @@ var _engine = {
 					
 				}
 			}	
+		},			
+		_curamCreatedObject: {
+			
+			get: function(){
+				
+				return $.parseJSON( $.parseJSON( window.localStorage.__default_curam_selected_tab ) );
+				
+			}
+			
 		}
+			
 	},
 	
 	//*************//
