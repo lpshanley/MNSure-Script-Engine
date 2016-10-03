@@ -1465,133 +1465,80 @@ var _engine = {
 				
 				if( builtQueries.indexOf( type ) !== -1 ){
 					
-					_engine.storage.prefillCache.checkPrefillCache(type,function( evidenceFromCacheObj ){
-
-						if( typeof evidenceFromCacheObj === 'object' ){
+					var returnConstructor = function( dataObject ){
+						
+						var prefillString = "";
 							
-							_engine.debug.info("Cached source found. Using available cache.");
-							
-							var prefillString = "";
-							
-							switch( type ){
-									case 'income':
-									
-										_engine.degug.warn('income prefill is in need of definition');
+						switch( type ){
+							case 'income':
 								
-									case 'address':
-										
-										if( evidenceFromCacheObj.length == 1 ){
+								_engine.debug.warn('income prefill is in need of definition');
+								
+								break;
+							case 'address':
+								
+								if( dataObject.length == 1 ){
+							
+									result = dataObject[0];
 									
-											evidenceFromCache = evidenceFromCacheObj[0];
-											
-											if( evidenceFromCache.apt_suite != "" ) prefillString += evidenceFromCache.apt_suite + ", "; 
-											if( evidenceFromCache.street_1 != "" ) prefillString += evidenceFromCache.street_1 + ", "; 
-											if( evidenceFromCache.street_2 != "" ) prefillString += evidenceFromCache.street_2 + ", "; 
-											if( evidenceFromCache.city != "" ) prefillString += evidenceFromCache.city + ", "; 
-											if( evidenceFromCache.state != "" ) prefillString += evidenceFromCache.state + ", "; 
-											if( evidenceFromCache.zip != "" ) prefillString += evidenceFromCache.zip; 
-											
-										} else if (evidenceFromCacheObj.length > 1) {
-											
-											_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
-											
-										}
-										
-										break;
-										
-									case 'service agency':
-										
-										if( evidenceFromCacheObj.length == 1 ){
+									if( result.apt_suite != "" ) prefillString += result.apt_suite + ", "; 
+									if( result.street_1 != "" ) prefillString += result.street_1 + ", "; 
+									if( result.street_2 != "" ) prefillString += result.street_2 + ", "; 
+									if( result.city != "" ) prefillString += result.city + ", "; 
+									if( result.state != "" ) prefillString += result.state + ", "; 
+									if( result.zip != "" ) prefillString += result.zip; 
 									
-											evidenceFromCache = evidenceFromCacheObj[0];
-											
-											if( evidenceFromCache[0] != "" ) prefillString += evidenceFromCache[0];
-											
-										} else if (evidenceFromCacheObj.length > 1) {
-											
-											_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
-											
-										}
-										
-										break;
-										
-									default:
-										break;
+								} else if (dataObject.length > 1) {
+									
+									_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
+									
 								}
 								
-								if(typeof callback === 'function') callback( prefillString );
+								break;
+								
+							case 'service agency':
+								
+								if( dataObject.length == 1 ){
 							
-						} else {
-							
-							_engine.debug.info("Cached source not available. Fetching and caching resource for use.");
-							
-							_engine.tools.customApi.evidence.parsedQuery(type,function( results, type ){
-					
-								/* Caching Query Results */
-								
-								var evidenceObject = {};
-								
-								evidenceObject[type] = results;
-								
-								_engine.storage.prefillCache.add( evidenceObject );
-								
-								/* End of Caching */
-								
-								var prefillString = "";
-								
-								switch( type ){
-									case 'income':
-										
-										_engine.degug.warn('income prefill is in need of definition');
-										
-										break;
-									case 'address':
-										
-										if( results.length == 1 ){
+									result = dataObject[0];
 									
-											result = results[0];
-											
-											if( result.apt_suite != "" ) prefillString += result.apt_suite + ", "; 
-											if( result.street_1 != "" ) prefillString += result.street_1 + ", "; 
-											if( result.street_2 != "" ) prefillString += result.street_2 + ", "; 
-											if( result.city != "" ) prefillString += result.city + ", "; 
-											if( result.state != "" ) prefillString += result.state + ", "; 
-											if( result.zip != "" ) prefillString += result.zip; 
-											
-										} else if (results.length > 1) {
-											
-											_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
-											
-										}
-										
-										break;
-										
-									case 'service agency':
-										
-										if( results.length == 1 ){
+									if( result[0] != "" ) prefillString += result[0];
 									
-											result = results[0];
-											
-											if( result[0] != "" ) prefillString += result[0];
-											
-										} else if (results.length > 1) {
-											
-											_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
-											
-										}
-										
-										break;
-										
-									default:
-										break;
+								} else if (dataObject.length > 1) {
+									
+									_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
+									
 								}
 								
-								if(typeof callback === 'function') callback( prefillString );
-
-							});
-							
+								break;
+								
+							default:
+								break;
 						}
 						
+						if(typeof callback === 'function') callback( prefillString );
+					
+					}
+					
+					_engine.storage.prefillCache.checkPrefillCache( type, function( evidenceFromCacheObj ){
+
+						if( typeof evidenceFromCacheObj === 'undefined' ){
+						
+							_engine.debug.info(`Obtaining result set from via data query for request type: ${ type }`);
+							
+							_engine.tools.customApi.evidence.queryAndCache( type, function(results){
+							
+								returnConstructor( results );
+							
+							});
+						
+						} else {
+						
+							_engine.debug.info(`Obtaining result set from internal cache for request type: ${ type }`);
+						
+							returnConstructor( evidenceFromCacheObj );
+						
+						}
 						
 					});
 
