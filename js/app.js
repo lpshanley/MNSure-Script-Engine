@@ -2783,8 +2783,20 @@ var _engine = {
 							}
 						
 						} else {
-							
-						_engine.debug.warn(`Type of: [ '${ type }' ] is undefined. Define using: ${ srcUrl }`);
+						
+						var evidenceString = srcUrl.split('&');
+						
+						var evidenceValidator = "";
+						
+						$.each(evidenceString,function(k,v){
+							if( v.indexOf("evidenceType") > -1 ){
+								
+								evidenceValidator += v;
+								
+							}
+						});
+						
+						_engine.debug.warn(`Type of: [ '${ type }' ] is undefined. Define using: ${ evidenceValidator }`);
 						
 						return false;
 							
