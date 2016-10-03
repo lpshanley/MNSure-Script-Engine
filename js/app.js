@@ -1461,7 +1461,7 @@ var _engine = {
 				
 				type = type.toLowerCase();
 				
-				var builtQueries = ['address','service agency'];
+				var builtQueries = Object.getOwnPropertyNames( _engine.advanced._vars.queryDefinitions );
 				
 				if( builtQueries.indexOf( type ) !== -1 ){
 					
@@ -1474,6 +1474,10 @@ var _engine = {
 							var prefillString = "";
 							
 							switch( type ){
+									case 'income':
+									
+										_engine.degug.warn('income prefill is in need of definition');
+								
 									case 'address':
 										
 										if( evidenceFromCacheObj.length == 1 ){
@@ -1536,6 +1540,11 @@ var _engine = {
 								var prefillString = "";
 								
 								switch( type ){
+									case 'income':
+										
+										_engine.degug.warn('income prefill is in need of definition');
+										
+										break;
 									case 'address':
 										
 										if( results.length == 1 ){
@@ -2290,7 +2299,7 @@ var _engine = {
 			
 			evidence: {
 				
-				queryAndCache: function(type){
+				queryAndCache: function(type, callback){
 				
 					_engine.tools.customApi.evidence.parsedQuery( type ,function( results, type ){
 
@@ -2301,6 +2310,8 @@ var _engine = {
 						evidenceObject[type] = results;
 					
 						_engine.storage.prefillCache.add( evidenceObject );
+						
+						if(typeof callback === 'function') callback( results );
 						
 					});		
 					
