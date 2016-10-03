@@ -2548,6 +2548,194 @@ var _engine = {
 			
 		},
 		
+		/* [Tools] Custom Api
+		/********************************************************************/
+		
+		customApi: {
+			
+			evidence: {
+				
+				_evidenceApiRaw: function( type ){
+					
+					var returnArray = [];
+
+					var reqUrl = _engine.tools.customApi._evidenceQueryUrlConstructor( type );
+
+					if( reqUrl !== false  ){
+						
+						var evidencePageContent = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( reqUrl );
+						
+						var evidencePageSubQueries = _engine.tools.customApi.evidence._getSubQueries( evidencePageContent );
+						
+						if( evidencePageSubQueries !== false ){
+							
+							$.each( evidencePageSubQueries, function(key, evidencePageSubQuery){
+								
+								var evidenceItemContent = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( evidencePageSubQuery );
+								
+								var evidenceItemSubQueries = _engine.tools.customApi.evidence._getSubQueries( evidenceItemContent );
+								
+								if( evidenceItemSubQueries !== false ){
+							
+									$.each( evidenceItemSubQueries, function(key, evidenceItemSubQuery){
+										
+										var currentEvidenceContent = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( evidenceItemSubQuery );
+										
+										var evidenceWrapper = $( currentEvidenceContent ).find('form#mainForm div.in-page-nav-contentWrapper')[0];
+										
+										returnArray.push( $(evidenceWrapper) );
+										
+									});
+									
+								}
+							
+							});
+								
+						}
+						
+					}
+					
+					return returnArray;
+					
+				},
+				
+				_ajaxAndReturnIframeContentDiv: function( reqUrl ){
+	
+					var returnArray = [];
+					
+					$.ajax({
+						url: reqUrl,
+						async: false,
+						success: function( data ){
+							var parsed = $.parseHTML( data );
+							$.each(parsed,function(key,value){
+								if( $(value).attr('id') === 'content' ){
+									returnArray.push( value );
+								}
+							});
+						}
+					});
+					
+					return returnArray[0];
+					
+				},
+				
+				_getSubQueries: function( contentElement ){
+					
+					returnArray = [];
+	
+					var queryElements = $( contentElement ).find('table tbody tr, table tbody script');
+					
+					$.each(queryElements,function(key, queryElement){
+
+						if( $( queryElement ).hasClass('empty-row') && key === 0 ){
+							
+							return false;
+							
+						} else {
+							
+							if( $( queryElement ).is('script') ){
+								
+								var parsedScriptElements = $.parseHTML( $( queryElement )[0].innerText );
+								
+								$.each( parsedScriptElements, function( key, parsedScriptElement ){
+									
+									if( $( parsedScriptElement ).hasClass('list-details-row') ){
+										
+										var parsedScriptElementUrl = "en_us/" + $( parsedScriptElement ).find('div').attr('url');
+										
+										returnArray.push( parsedScriptElementUrl );
+										
+									}
+									
+								});
+								
+							}
+							
+						}
+						
+					});
+					
+					return returnArray;
+				
+				
+				},
+				_evidenceQueryUrlConstructor: function( type ){
+				
+					var root = "en_US/Evidence_workspaceTypeListPage.do?";
+					
+					var curamObject = _engine.storage._curamCreatedObject.get();
+					
+					var caseID = curamObject.tabSignature.split("|")[1];
+					
+					var oc3tx = "o3ctx=" + curamObject.tabContent.parameters.o3ctx;
+					
+					var evidenceType = {
+						'address': 'evidenceType=DET0026039',
+						'income': 'evidenceType=DET0026030'
+					}
+					
+					if( _engine.domTools.test.hcrTabType() === "Integrated Case" ){
+
+						var reqUrl = root + oc3tx + "&" + caseID + "&" + evidenceType[ type ];
+						
+						if( typeof evidenceType[ type ] !== 'undefined' ){
+							
+							_engine.debug.info(`Your generated request url is valid. This may be used to request results.`);
+							
+							return reqUrl;
+						
+						} else {
+						
+							return false;
+							
+						}
+						
+					} else if ( _engine.domTools.test.hcrTabType().split("|")[0] === "Evidence" ){
+						
+						type = _engine.domTools.test.hcrTabType().split("|")[1].toLowerCase();
+						
+						var srcUrl = $('iframe[title="Content Panel - Evidence"]').attr('src');
+						
+						if( typeof evidenceType[ type ] !== 'undefined' ){
+						
+							var reqUrl = root + oc3tx + "&" + caseID + "&" + evidenceType[ type ];
+
+							if( srcUrl === reqUrl ) {
+								
+								_engine.debug.info(`Your generated request url is valid. This may be used to request results.`);
+								
+								_engine.debug.info(`Generated: ${reqUrl} | Sourced: ${srcUrl}`);
+								
+								return reqUrl;
+								
+							} else {
+								
+								_engine.debug.warn(`Your generated request url is invalid. Please Verify.`);
+								
+								_engine.debug.warn(`Generated: ${reqUrl} | Sourced: ${srcUrl}`);
+								
+								return false;
+								
+							}
+						
+						} else {
+							
+						_engine.debug.warn(`Type of: [ '${ type }' ] is undefined. Define using: ${ srcUrl }`);
+						
+						return false;
+							
+						}
+						
+					}
+					
+				}
+				
+			}
+			
+			
+		}
+		
 		/* [Tools] Closes currently open tab
 		/********************************************************************/
 		
