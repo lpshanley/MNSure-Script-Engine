@@ -2266,7 +2266,7 @@ var _engine = {
 				
 				parsedQuery: function(type, callback){
 	
-					_evidenceApiRaw( type, function( evidenceArray, queryType ){
+					_engine.tools.customApi.evidence._evidenceApiRaw( type, function( evidenceArray, queryType ){
 						
 						var masterArray = [];
 						var parsedEvidence = [];
@@ -2323,7 +2323,7 @@ var _engine = {
 						
 						var evidencePageContent = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( reqUrl );
 						
-						var evidencePageSubQueries = _getSubQueries( evidencePageContent );
+						var evidencePageSubQueries = _engine.tools.customApi.evidence._getSubQueries( evidencePageContent );
 						
 						if( evidencePageSubQueries !== false ){
 							
@@ -2331,7 +2331,7 @@ var _engine = {
 								
 								var evidenceItemContent = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( evidencePageSubQuery );
 								
-								var evidenceItemSubQueries = _getSubQueries( evidenceItemContent );
+								var evidenceItemSubQueries = _engine.tools.customApi.evidence._getSubQueries( evidenceItemContent );
 								
 								if( evidenceItemSubQueries !== false ){
 									
