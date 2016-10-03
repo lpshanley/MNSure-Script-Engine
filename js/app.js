@@ -2374,13 +2374,9 @@ var _engine = {
 					
 				},
 				
-				_getSubQueries: function( contentElement, scope ){
+				_getSubQueries: function( contentElement ){
 					
 					returnArray = [];
-					
-					typeof scope === 'undefined' ?
-						scope = 'current':
-						scope = scope;
 	
 					var queryElements = $( contentElement ).find('table tbody tr, table tbody script');
 					
@@ -2401,8 +2397,6 @@ var _engine = {
 									if( $( parsedScriptElement ).hasClass('list-details-row') ){
 										
 										var parsedScriptElementUrl = "en_us/" + $( parsedScriptElement ).find('div').attr('url');
-										
-										if( scope === 'history' ) parsedScriptElementUrl.replace("viewCh","viewChHistory");
 										
 										returnArray.push( parsedScriptElementUrl );
 										
