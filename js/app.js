@@ -1456,8 +1456,6 @@ var _engine = {
 				
 				type = type.toLowerCase();
 				
-				console.log( type );
-				
 				var scope = 'current';
 
 				if( type.indexOf("(") !== -1 ){
@@ -1478,8 +1476,6 @@ var _engine = {
 						
 					}
 				}
-				
-				console.log( scope );
 				
 				var builtQueries = Object.getOwnPropertyNames( _engine.advanced._vars.queryDefinitions );
 				
@@ -1509,18 +1505,26 @@ var _engine = {
 								break;
 							case 'address':
 								
-								if( isSingleObject && isAvailable('0') ){
+								if( isSingleObject ){
 									
-									result = dataObject[0][scope];
+									if( isAvailable('0') ){
 									
-									console.log( result );
-									
-									if( result.apt_suite != "" ) prefillString += result.apt_suite + ", "; 
-									if( result.street_1 != "" ) prefillString += result.street_1 + ", "; 
-									if( result.street_2 != "" ) prefillString += result.street_2 + ", "; 
-									if( result.city != "" ) prefillString += result.city + ", "; 
-									if( result.state != "" ) prefillString += result.state + ", "; 
-									if( result.zip != "" ) prefillString += result.zip; 
+										result = dataObject[0][scope];
+										
+										console.log( result );
+										
+										if( result.apt_suite != "" ) prefillString += result.apt_suite + ", "; 
+										if( result.street_1 != "" ) prefillString += result.street_1 + ", "; 
+										if( result.street_2 != "" ) prefillString += result.street_2 + ", "; 
+										if( result.city != "" ) prefillString += result.city + ", "; 
+										if( result.state != "" ) prefillString += result.state + ", "; 
+										if( result.zip != "" ) prefillString += result.zip; 
+										
+									} else {
+										
+										prefillString = "n/a";
+										
+									}
 									
 								} else if (dataObject.length > 1) {
 									
@@ -1532,11 +1536,19 @@ var _engine = {
 								
 							case 'service agency':
 								
-								if( isSingleObject && isAvailable('0') ){
-							
-									result = dataObject[0][scope];
+								if( isSingleObject ){
 									
-									if( result[0] != "" ) prefillString += result[0];
+									if( isAvailable('0') ){
+							
+										result = dataObject[0][scope];
+										
+										if( result[0] != "" ) prefillString += result[0];
+									
+									} else {
+										
+										prefillString = "n/a";
+										
+									}
 									
 								} else if (dataObject.length > 1) {
 									
