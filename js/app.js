@@ -1460,6 +1460,27 @@ var _engine = {
 			_prefillFromDataQuery: function(type, callback ){
 				
 				type = type.toLowerCase();
+
+				var scope = 'current';
+
+				if( type.indexOf("(") !== -1 ){
+					var scope = type.substring( type.lastIndexOf("(")+1,type.lastIndexOf(")") );
+					var type = type.substring( 0 ,type.lastIndexOf("(") );
+				} else {
+					
+					_engine.debug.warn(`No scope defined in prefill call. Defaulting to current.`);
+					
+				}
+
+				if( scope !== 'history' ){
+					if( scope !== 'current' ){
+						
+						_engine.debug.warn(`Invalid use of prefill scope: ${ scope }. Using current instead.`);
+						
+						scope = 'current';
+						
+					}
+				}
 				
 				var builtQueries = Object.getOwnPropertyNames( _engine.advanced._vars.queryDefinitions );
 				
@@ -1467,8 +1488,11 @@ var _engine = {
 					
 					var returnConstructor = function( dataObject ){
 						
+						var dataObjectLength = Object.getOwnPropertyNames( dataObject ).length;
+						var isSingleObject = dataObjectLength === 1;
+						
 						var prefillString = "";
-							
+						
 						switch( type ){
 							case 'income':
 								
@@ -1477,9 +1501,9 @@ var _engine = {
 								break;
 							case 'address':
 								
-								if( dataObject.length == 1 ){
-							
-									result = dataObject[0];
+								if( isSingleObject ){
+									
+									result = dataObject[0][scope];
 									
 									if( result.apt_suite != "" ) prefillString += result.apt_suite + ", "; 
 									if( result.street_1 != "" ) prefillString += result.street_1 + ", "; 
@@ -1498,9 +1522,9 @@ var _engine = {
 								
 							case 'service agency':
 								
-								if( dataObject.length == 1 ){
+								if( isSingleObject ){
 							
-									result = dataObject[0];
+									result = dataObject[0][scope];
 									
 									if( result[0] != "" ) prefillString += result[0];
 									
@@ -2250,15 +2274,14 @@ var _engine = {
 				
 					_engine.tools.customApi.evidence.parsedQuery( type ,function( results, type ){
 
-						/* Caching Query Results */
-						
 						var evidenceObject = {};
 						
 						evidenceObject[type] = results;
-					
+						
 						_engine.storage.prefillCache.add( evidenceObject );
 						
 						if(typeof callback === 'function') callback( results );
+						else return results;
 						
 					});		
 					
@@ -2267,18 +2290,24 @@ var _engine = {
 				parsedQuery: function(type, callback){
 	
 					_engine.tools.customApi.evidence._evidenceApiRaw( type, function( evidenceArray, queryType ){
-
-						var parsedEvidence = [];
 						
-						$.each(evidenceArray,function(k,v){
+						var masterObject = {};
+						
+						count = 0;
+						
+						var parsedEvidence = {};
+						
+						$.each( evidenceArray, function( key, rawQuery ){
 							
-							var evidence = $(v)[0];
+							var scope = $(rawQuery).attr('data-scope');
 							
 							var jsonString = "";
 							
 							var unassigned = 0;
 							
-							$.each( $( evidence ).find('div table th.label'), function(k,v){
+							if( scope === 'current' ) parsedEvidence = {};
+							
+							$.each( $( rawQuery ).find('div table th.label'), function(k,v){
 								
 								var info = $( v )[0];
 								
@@ -2298,11 +2327,16 @@ var _engine = {
 
 							jsonString = jsonString.substring(0,jsonString.length-1);
 							
-							parsedEvidence.push( $.parseJSON( "{" + jsonString + "}" ) );
+							parsedEvidence[ scope ] = $.parseJSON( "{" + jsonString + "}" );
+							
+							if(scope === 'history'){
+								masterObject[count] = parsedEvidence;
+								count++;
+							}
 							
 						});
 						
-						if(typeof callback === 'function') callback( parsedEvidence, type );
+						if(typeof callback === 'function') callback( masterObject, type );
 						
 					});
 					
@@ -2329,14 +2363,65 @@ var _engine = {
 								var evidenceItemSubQueries = _engine.tools.customApi.evidence._getSubQueries( evidenceItemContent );
 								
 								if( evidenceItemSubQueries !== false ){
-							
-									$.each( evidenceItemSubQueries, function(key, evidenceItemSubQuery){
+									
+									var usedEvidence = [];
+									
+									usedEvidence.push( evidenceItemSubQueries[0] );
+									
+									var urlArray = [];
+									
+									$.each( usedEvidence, function(key, evidenceItemSubQuery){
 										
 										var currentEvidenceContent = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( evidenceItemSubQuery );
 										
-										var evidenceWrapper = $( currentEvidenceContent ).find('form#mainForm div.in-page-nav-contentWrapper')[0];
+										var evidenceScope = $( currentEvidenceContent ).find('ul.in-page-navigation-tabs li a');
 										
-										returnArray.push( $(evidenceWrapper) );
+										$.each( evidenceScope, function( key, value ){
+											
+											var href = $(value).attr('href').replace( "kDynEvd", "DynEvd" );
+											
+											urlArray.push( "en_us/" + href );
+											
+										});
+										
+										$.each( urlArray, function( key, url ){
+											
+											var contentContainer = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( url );
+											
+											var evidenceScope = $(contentContainer).find('form#mainForm').attr('action').split("_")[1];
+											
+											var evidenceWrapper = $( contentContainer ).find('form#mainForm div.in-page-nav-contentWrapper')[0];
+											
+											switch( evidenceScope ){
+												case "viewCh":
+													
+													/* Current Info */
+													
+													evidenceWrapper = $(evidenceWrapper).attr('data-scope','current');
+													
+													returnArray.push( evidenceWrapper[0] );
+													
+													break;
+												case "viewChHistory":
+													
+													var historyDataRow = $(evidenceWrapper).find('table tbody tr.list-details-row')[0];
+													
+													var historyUrl = "en_us/" + $( historyDataRow ).find('div').attr('url');
+													
+													var historyContainer = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( historyUrl );
+													
+													var historyWrapper = $( historyContainer ).find('form#mainForm div')[0];
+													
+													historyWrapper = $(historyWrapper).attr('data-scope','history');
+													
+													returnArray.push( historyWrapper[0] );
+													
+													break;
+												default:
+													break;							
+											}
+											
+										});
 										
 									});
 									
@@ -2348,7 +2433,7 @@ var _engine = {
 						
 					}
 					
-					if( typeof callback === 'function' ) callback( returnArray, type );
+					if(typeof callback === 'function') callback( returnArray, type );
 					else return returnArray;
 					
 				},
@@ -2377,11 +2462,11 @@ var _engine = {
 				_getSubQueries: function( contentElement ){
 					
 					returnArray = [];
-	
+
 					var queryElements = $( contentElement ).find('table tbody tr, table tbody script');
 					
 					$.each(queryElements,function(key, queryElement){
-
+						
 						if( $( queryElement ).hasClass('empty-row') && key === 0 ){
 							
 							return false;
@@ -2474,21 +2559,21 @@ var _engine = {
 						
 						} else {
 						
-						var evidenceString = srcUrl.split('&');
-						
-						var evidenceValidator = "";
-						
-						$.each(evidenceString,function(k,v){
-							if( v.indexOf("evidenceType") > -1 ){
-								
-								evidenceValidator += v;
-								
-							}
-						});
-						
-						_engine.debug.warn(`Type of: [ '${ type }' ] is undefined. Define using: ${ evidenceValidator }`);
-						
-						return false;
+							var evidenceString = srcUrl.split('&');
+							
+							var evidenceValidator = "";
+							
+							$.each(evidenceString,function(k,v){
+								if( v.indexOf("evidenceType") > -1 ){
+									
+									evidenceValidator += v;
+									
+								}
+							});
+							
+							_engine.debug.warn(`Type of: [ '${ type }' ] is undefined. Define using: ${ evidenceValidator }`);
+							
+							return false;
 							
 						}
 						
@@ -2886,6 +2971,7 @@ var _engine = {
 					var cacheObject = _engine.storage.prefillCache.get();
 					
 					var cacheProps = Object.getOwnPropertyNames( cacheObject );
+					
 					var objectProps = Object.getOwnPropertyNames( object );
 					
 					$.each(objectProps, function(k,v){
