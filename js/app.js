@@ -1127,7 +1127,8 @@ var _engine = {
 						//Preform storage action based on input type
 						switch( $( v ).find( 'input, select' ).attr("type") ){
 							case "text":
-								var _input = $( v ).find( 'input' ).val().replace(/"/g,'&quot;');
+								var _input = $( v ).find( 'input' ).val().toString();
+								_input = _input.replace(/"/g,'&quot;')
 								_input = _input.replace('"','\"');
 								break;
 							case "select":
