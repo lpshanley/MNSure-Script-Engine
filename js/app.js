@@ -1488,9 +1488,8 @@ var _engine = {
 					
 					var returnConstructor = function( dataObject ){
 						
-						console.log( dataObject );
-						console.log( type );
-						console.log( scope );
+						var dataObjectLength = Object.getOwnPropertyNames( dataObject ).length;
+						var isSingleObject = dataObjectLength === 1;
 						
 						var prefillString = "";
 						
@@ -1502,9 +1501,11 @@ var _engine = {
 								break;
 							case 'address':
 								
-								if( dataObject.length == 1 ){
+								if( isSingleObject ){
 									
 									result = dataObject[0][scope];
+									
+									console.log( result );
 									
 									if( result.apt_suite != "" ) prefillString += result.apt_suite + ", "; 
 									if( result.street_1 != "" ) prefillString += result.street_1 + ", "; 
@@ -1523,7 +1524,7 @@ var _engine = {
 								
 							case 'service agency':
 								
-								if( dataObject.length == 1 ){
+								if( isSingleObject ){
 							
 									result = dataObject[0][scope];
 									
