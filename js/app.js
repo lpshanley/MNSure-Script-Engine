@@ -2306,23 +2306,31 @@ var _engine = {
 							
 							if( scope === 'current' ) parsedEvidence = {};
 							
-							$.each( $( contentObj.content ).find('div table th.label'), function(k,v){
-								
-								var info = $( v )[0];
-								
-								var key = info.innerText.trim().toLowerCase().replace(/ |\//g,"_");
-								var value = $( info ).next()[0].innerText.trim();
-								
-								if( key !== "" || value !== "" ){
-									if( key === "" ){
-										key = unassigned;
+							if( contentObj.content !== 'undefined' ){
+							
+								$.each( $( contentObj.content ).find('div table th.label'), function(k,v){
+									
+									var info = $( v )[0];
+									
+									var key = info.innerText.trim().toLowerCase().replace(/ |\//g,"_");
+									var value = $( info ).next()[0].innerText.trim();
+									
+									if( key !== "" || value !== "" ){
+										if( key === "" ){
+											key = unassigned;
+										}
+										
+										jsonString += '"' + key + '":"' + value + '",'
+										
 									}
 									
-									jsonString += '"' + key + '":"' + value + '",'
-									
-								}
+								});
+							
+							} else {
 								
-							});
+								jsonString = '"evidence_unavailable":"undefined",'
+								
+							}
 							
 							jsonString = jsonString.substring(0,jsonString.length-1);
 							
@@ -2334,7 +2342,7 @@ var _engine = {
 							}
 							
 						});
-												
+						
 						if(typeof callback === 'function') callback( masterObject, type );
 						
 					});
@@ -2379,23 +2387,30 @@ var _engine = {
 					
 					$.each(processObj,function(scope,data){
 						
-						console.log( scope );
-						console.log( data );
+						if( typeof data.url !== 'undefined' ){
 						
-						$.ajax({
-							url: data.url,
-							async: false,
-							success: function( data ){
-								var parsed = $.parseHTML( data );
-								$.each(parsed,function(keyParsed,valueParsed){
-									if( $(valueParsed).attr('id') === 'content' ){
-										returnObj[scope] = {
-											"content" : valueParsed
+							$.ajax({
+								url: data.url,
+								async: false,
+								success: function( data ){
+									var parsed = $.parseHTML( data );
+									$.each(parsed,function(keyParsed,valueParsed){
+										if( $(valueParsed).attr('id') === 'content' ){
+											returnObj[scope] = {
+												"content" : valueParsed
+											}
 										}
-									}
-								});
+									});
+								}
+							});
+						
+						} else {
+							
+							returnObj[scope] = {
+								"content" : undefined
 							}
-						});
+							
+						}
 						
 					});
 					
