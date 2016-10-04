@@ -2379,6 +2379,9 @@ var _engine = {
 					
 					$.each(processObj,function(scope,data){
 						
+						console.log( scope );
+						console.log( data );
+						
 						$.ajax({
 							url: data.url,
 							async: false,
@@ -2505,8 +2508,8 @@ var _engine = {
 											
 										});
 										
-										console.log( pastEnd );
-										pastUrl = "en_us/" + $( pastObj ).find('div').attr('url');
+										if( pastEnd === '' ) pastUrl = undefined;
+										else pastUrl = "en_us/" + $( pastObj ).find('div').attr('url');
 										
 										returnObj[returnScope] = {
 											"current": {
