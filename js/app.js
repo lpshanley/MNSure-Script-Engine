@@ -1511,7 +1511,7 @@ var _engine = {
 								break;
 							case 'address':
 								
-								if( isSingleObject && isAvailable( 0 ) ){
+								if( isSingleObject && isAvailable('0') ){
 									
 									result = dataObject[0][scope];
 									
@@ -1532,7 +1532,7 @@ var _engine = {
 								
 							case 'service agency':
 								
-								if( isSingleObject && isAvailable( 0 ) ){
+								if( isSingleObject && isAvailable('0') ){
 							
 									result = dataObject[0][scope];
 									
