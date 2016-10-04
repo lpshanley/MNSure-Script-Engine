@@ -1493,7 +1493,7 @@ var _engine = {
 						var isSingleObject = dataObjectLength === 1;
 						var isAvailable = function( number ){
 							var result;	
-							typeof dataObject[type][number][scope]['evidence_unavailable'] === 'undefined' ?
+							typeof dataObject[number][scope]['evidence_unavailable'] === 'undefined' ?
 								result = true :
 								result = false;
 							
