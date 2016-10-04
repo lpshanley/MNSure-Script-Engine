@@ -2250,15 +2250,14 @@ var _engine = {
 				
 					_engine.tools.customApi.evidence.parsedQuery( type ,function( results, type ){
 
-						/* Caching Query Results */
-						
 						var evidenceObject = {};
 						
 						evidenceObject[type] = results;
-					
+						
 						_engine.storage.prefillCache.add( evidenceObject );
 						
 						if(typeof callback === 'function') callback( results );
+						else return results;
 						
 					});		
 					
