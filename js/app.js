@@ -2268,8 +2268,11 @@ var _engine = {
 	
 					_engine.tools.customApi.evidence._evidenceApiRaw( type, function( evidenceArray, queryType ){
 						
-						var masterArray = [];
-						var parsedEvidence = [];
+						var masterObject = {};
+						
+						count = 0;
+						
+						var parsedEvidence = {};
 						
 						$.each( evidenceArray, function( key, rawQuery ){
 							
@@ -2279,7 +2282,7 @@ var _engine = {
 							
 							var unassigned = 0;
 							
-							if( scope === 'current' ) parsedEvidence = [];
+							if( scope === 'current' ) parsedEvidence = {};
 							
 							$.each( $( rawQuery ).find('div table th.label'), function(k,v){
 								
@@ -2303,11 +2306,14 @@ var _engine = {
 							
 							parsedEvidence[ scope ] = $.parseJSON( "{" + jsonString + "}" );
 							
-							if(scope === 'history') masterArray.push( parsedEvidence );
+							if(scope === 'history'){
+								masterObject[count] = parsedEvidence;
+								count++;
+							}
 							
 						});
 						
-						if(typeof callback === 'function') callback( masterArray, type );
+						if(typeof callback === 'function') callback( masterObject, type );
 						
 					});
 					
@@ -2942,6 +2948,7 @@ var _engine = {
 					var cacheObject = _engine.storage.prefillCache.get();
 					
 					var cacheProps = Object.getOwnPropertyNames( cacheObject );
+					
 					var objectProps = Object.getOwnPropertyNames( object );
 					
 					$.each(objectProps, function(k,v){
