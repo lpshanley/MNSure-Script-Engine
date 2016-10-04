@@ -1491,18 +1491,23 @@ var _engine = {
 						
 						var dataObjectLength = Object.getOwnPropertyNames( dataObject ).length;
 						var isSingleObject = dataObjectLength === 1;
+						var isAvailable = function( number ){
+							typeof dataObject[type][number][scope]['evidence_unavailable'] === 'undefined' ?
+								return true :
+								return false;
+						}
 						
 						var prefillString = "";
 						
 						switch( type ){
 							case 'income':
 								
-								_engine.debug.warn('income prefill is in need of definition');
+									_engine.debug.warn('income prefill is in need of definition');
 								
 								break;
 							case 'address':
 								
-								if( isSingleObject ){
+								if( isSingleObject && isAvailable( 0 ) ){
 									
 									result = dataObject[0][scope];
 									
@@ -1523,7 +1528,7 @@ var _engine = {
 								
 							case 'service agency':
 								
-								if( isSingleObject ){
+								if( isSingleObject && isAvailable( 0 ) ){
 							
 									result = dataObject[0][scope];
 									
