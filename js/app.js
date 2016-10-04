@@ -1414,12 +1414,6 @@ var _engine = {
 
 							var _prefillType = _prefill.split("|")[0];
 							var _prefillValue = _prefill.split("|")[1];
-							var _prefillValueReferance = null;
-							
-							if( _prefillValue.indexOf("(") > -1 ){
-								var _prefillValueReferance = _prefillValue.substring( _prefillValue.lastIndexOf("(")+1,_prefillValue.lastIndexOf(")") );
-								var _prefillValue = _prefillValue.substring( 0,_prefillValue.lastIndexOf("(") );
-							}
 							
 							switch( _prefillType ){
 								case "date":
