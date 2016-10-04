@@ -1488,6 +1488,8 @@ var _engine = {
 					
 					var returnConstructor = function( dataObject ){
 						
+						console.log( dataObject );
+						
 						var prefillString = "";
 						
 						switch( type ){
@@ -1501,8 +1503,6 @@ var _engine = {
 								if( dataObject.length == 1 ){
 									
 									result = dataObject[0][scope];
-									
-									console.log( result );
 									
 									if( result.apt_suite != "" ) prefillString += result.apt_suite + ", "; 
 									if( result.street_1 != "" ) prefillString += result.street_1 + ", "; 
