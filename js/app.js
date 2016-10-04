@@ -2306,7 +2306,7 @@ var _engine = {
 							
 							if( scope === 'current' ) parsedEvidence = {};
 							
-							if( contentObj.content !== 'undefined' ){
+							if( typeof contentObj.content !== 'undefined' ){
 							
 								$.each( $( contentObj.content ).find('div table th.label'), function(k,v){
 									
