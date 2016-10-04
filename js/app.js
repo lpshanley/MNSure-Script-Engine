@@ -1489,6 +1489,8 @@ var _engine = {
 					var returnConstructor = function( dataObject ){
 						
 						console.log( dataObject );
+						console.log( type );
+						console.log( scope );
 						
 						var prefillString = "";
 						
