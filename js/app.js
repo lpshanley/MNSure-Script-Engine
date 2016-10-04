@@ -1460,6 +1460,27 @@ var _engine = {
 			_prefillFromDataQuery: function(type, callback ){
 				
 				type = type.toLowerCase();
+
+				var scope = 'current';
+
+				if( type.indexOf("(") !== -1 ){
+					var scope = type.substring( type.lastIndexOf("(")+1,type.lastIndexOf(")") );
+					var type = type.substring( 0 ,type.lastIndexOf("(") );
+				} else {
+					
+					_engine.debug.warn(`No scope defined in prefill call. Defaulting to current.`);
+					
+				}
+
+				if( scope !== 'history' ){
+					if( scope !== 'current' ){
+						
+						_engine.debug.warn(`Invalid use of prefill scope: ${ scope }. Using current instead.`);
+						
+						scope = 'current';
+						
+					}
+				}
 				
 				var builtQueries = Object.getOwnPropertyNames( _engine.advanced._vars.queryDefinitions );
 				
@@ -1468,7 +1489,7 @@ var _engine = {
 					var returnConstructor = function( dataObject ){
 						
 						var prefillString = "";
-							
+						
 						switch( type ){
 							case 'income':
 								
@@ -1479,7 +1500,7 @@ var _engine = {
 								
 								if( dataObject.length == 1 ){
 							
-									result = dataObject[0];
+									result = dataObject[0][scope];
 									
 									if( result.apt_suite != "" ) prefillString += result.apt_suite + ", "; 
 									if( result.street_1 != "" ) prefillString += result.street_1 + ", "; 
@@ -1500,7 +1521,7 @@ var _engine = {
 								
 								if( dataObject.length == 1 ){
 							
-									result = dataObject[0];
+									result = dataObject[0][scope];
 									
 									if( result[0] != "" ) prefillString += result[0];
 									
