@@ -2300,9 +2300,6 @@ var _engine = {
 						
 						$.each( evidenceObj, function( scope, contentObj ){
 							
-							console.log( scope );
-							console.log( contentObj );
-							
 							var jsonString = "";
 							
 							var unassigned = 0;
@@ -2337,9 +2334,7 @@ var _engine = {
 							}
 							
 						});
-						
-						console.log( masterObject );
-						
+												
 						if(typeof callback === 'function') callback( masterObject, type );
 						
 					});
@@ -2510,6 +2505,7 @@ var _engine = {
 											
 										});
 										
+										console.log( pastEnd );
 										pastUrl = "en_us/" + $( pastObj ).find('div').attr('url');
 										
 										returnObj[returnScope] = {
