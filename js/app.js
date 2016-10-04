@@ -1461,7 +1461,9 @@ var _engine = {
 			_prefillFromDataQuery: function(type, callback ){
 				
 				type = type.toLowerCase();
-
+				
+				console.log( type );
+				
 				var scope = 'current';
 
 				if( type.indexOf("(") !== -1 ){
@@ -1482,6 +1484,8 @@ var _engine = {
 						
 					}
 				}
+				
+				console.log( scope );
 				
 				var builtQueries = Object.getOwnPropertyNames( _engine.advanced._vars.queryDefinitions );
 				
