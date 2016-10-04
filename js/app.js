@@ -2289,8 +2289,8 @@ var _engine = {
 				},
 				
 				parsedQuery: function(type, callback){
-	
-					_engine.tools.customApi.evidence._evidenceApiRaw( type, function( evidenceArray, queryType ){
+
+					_engine.tools.customApi.evidence._evidenceApiRaw( type, function( evidenceObj, queryType ){
 						
 						var masterObject = {};
 						
@@ -2298,9 +2298,10 @@ var _engine = {
 						
 						var parsedEvidence = {};
 						
-						$.each( evidenceArray, function( key, rawQuery ){
+						$.each( evidenceObj, function( scope, contentObj ){
 							
-							var scope = $(rawQuery).attr('data-scope');
+							console.log( scope );
+							console.log( contentObj );
 							
 							var jsonString = "";
 							
@@ -2308,7 +2309,7 @@ var _engine = {
 							
 							if( scope === 'current' ) parsedEvidence = {};
 							
-							$.each( $( rawQuery ).find('div table th.label'), function(k,v){
+							$.each( $( contentObj.content ).find('div table th.label'), function(k,v){
 								
 								var info = $( v )[0];
 								
@@ -2324,8 +2325,8 @@ var _engine = {
 									
 								}
 								
-							}); 
-
+							});
+							
 							jsonString = jsonString.substring(0,jsonString.length-1);
 							
 							parsedEvidence[ scope ] = $.parseJSON( "{" + jsonString + "}" );
@@ -2337,6 +2338,8 @@ var _engine = {
 							
 						});
 						
+						console.log( masterObject );
+						
 						if(typeof callback === 'function') callback( masterObject, type );
 						
 					});
@@ -2345,163 +2348,196 @@ var _engine = {
 				
 				_evidenceApiRaw: function( type, callback ){
 					
-					var returnArray = [];
-
-					var reqUrl = _engine.tools.customApi.evidence._evidenceQueryUrlConstructor( type );
-
-					if( reqUrl !== false  ){
-						
-						var evidencePageContent = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( reqUrl );
-						
-						var evidencePageSubQueries = _engine.tools.customApi.evidence._getSubQueries( evidencePageContent );
-						
-						if( evidencePageSubQueries !== false ){
-							
-							$.each( evidencePageSubQueries, function(key, evidencePageSubQuery){
-								
-								var evidenceItemContent = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( evidencePageSubQuery );
-								
-								var evidenceItemSubQueries = _engine.tools.customApi.evidence._getSubQueries( evidenceItemContent );
-								
-								if( evidenceItemSubQueries !== false ){
-									
-									var usedEvidence = [];
-									
-									usedEvidence.push( evidenceItemSubQueries[0] );
-									
-									var urlArray = [];
-									
-									$.each( usedEvidence, function(key, evidenceItemSubQuery){
-										
-										var currentEvidenceContent = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( evidenceItemSubQuery );
-										
-										var evidenceScope = $( currentEvidenceContent ).find('ul.in-page-navigation-tabs li a');
-										
-										$.each( evidenceScope, function( key, value ){
+					/* Grab Initial Url for data type */
+					_engine.tools.customApi.evidence._evidenceQueryUrlConstructor( type, function( initQueries ){
+						/* Axaj Evidence Page */
+						_engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( initQueries, function( evidenceItemObj ){
+							/* Obtain Urls of evidence summarys in evidence page */
+							_engine.tools.customApi.evidence._getSubQueries( evidenceItemObj, function( evidenceItemQueries ){
+								/* Query Evidence Summarys */
+								_engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( evidenceItemQueries, function( evidenceDataContainerObj ){
+									/* Obtain Urls of current/past evidence details */
+									_engine.tools.customApi.evidence._getSubQueries( evidenceDataContainerObj, function( evidenceDataQueries ){
+										/* Query Evidence Details for current/history */
+										_engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( evidenceDataQueries, function( evidenceDataObj ){
 											
-											var href = $(value).attr('href').replace( "kDynEvd", "DynEvd" );
-											
-											urlArray.push( "en_us/" + href );
+											if( typeof callback === 'function' ) callback( evidenceDataObj, type );
 											
 										});
+									});
+								});
+							});
+						});
+					});
+					
+				},
+				
+				_ajaxAndReturnIframeContentDiv: function( reqObj, callback ){
+					
+					var returnObj = {};
+					
+					var processObj = reqObj;
+					
+					var requestScope = Object.getOwnPropertyNames( reqObj )[0];
+					
+					if( requestScope === 'evidenceData' ) processObj = reqObj.evidenceData;
+					
+					$.each(processObj,function(scope,data){
+						
+						$.ajax({
+							url: data.url,
+							async: false,
+							success: function( data ){
+								var parsed = $.parseHTML( data );
+								$.each(parsed,function(keyParsed,valueParsed){
+									if( $(valueParsed).attr('id') === 'content' ){
+										returnObj[scope] = {
+											"content" : valueParsed
+										}
+									}
+								});
+							}
+						});
+						
+					});
+					
+					if( typeof callback === 'function' ) callback( returnObj );
+					else return returnObj;
+					
+				},
+				
+				_getSubQueries: function( inputObj, callback ){
+					
+					returnObj = {};
+					
+					$.each(inputObj,function(scope,contentObj){
+						
+						var returnScope = "";
+						
+						var objClassArray = $( contentObj.content ).find('table').attr('class').split(" ");
+						
+						$.each(objClassArray,function(key,objClass){
+							
+							if(objClass.indexOf("list-id-Evidence") > -1){
+								
+								var scopeid = objClass.split("_")[1].split("-")[0];
+								
+								if( scopeid === 'workspaceTypeList' ) returnScope = "evidenceItem";
+								if( scopeid === 'listEvdInstanceChanges' ) returnScope = "evidenceData";
+								
+							}
+							
+						});
+						
+						var queryElements = $( contentObj.content ).find('table tbody tr, table tbody script');
+						
+						$.each(queryElements,function(key, queryElement){
+							
+							if( $( queryElement ).hasClass('empty-row') && key === 0 ){
+								
+								return false;
+								
+							} else {
+								
+								if( $( queryElement ).is('script') ){
+									
+									var parsedScriptElements = $.parseHTML( $( queryElement )[0].innerHTML );
+									
+									if( returnScope === 'evidenceItem' ){
 										
-										$.each( urlArray, function( key, url ){
+										$.each( parsedScriptElements,function( key, parsedScriptElement ){
 											
-											var contentContainer = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( url );
+											if( $( parsedScriptElement ).hasClass('list-details-row') ){
+												
+												var processedElementUrl = "en_us/" + $( parsedScriptElement ).find('div').attr('url');
+												
+												returnObj[returnScope] = {
+													"url": processedElementUrl								
+												}
 											
-											var evidenceScope = $(contentContainer).find('form#mainForm').attr('action').split("_")[1];
-											
-											var evidenceWrapper = $( contentContainer ).find('form#mainForm div.in-page-nav-contentWrapper')[0];
-											
-											switch( evidenceScope ){
-												case "viewCh":
-													
-													/* Current Info */
-													
-													evidenceWrapper = $(evidenceWrapper).attr('data-scope','current');
-													
-													returnArray.push( evidenceWrapper[0] );
-													
-													break;
-												case "viewChHistory":
-													
-													var historyDataRow = $(evidenceWrapper).find('table tbody tr.list-details-row')[0];
-													
-													var historyUrl = "en_us/" + $( historyDataRow ).find('div').attr('url');
-													
-													var historyContainer = _engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( historyUrl );
-													
-													var historyWrapper = $( historyContainer ).find('form#mainForm div')[0];
-													
-													historyWrapper = $(historyWrapper).attr('data-scope','history');
-													
-													returnArray.push( historyWrapper[0] );
-													
-													break;
-												default:
-													break;							
 											}
 											
 										});
 										
-									});
+									}
 									
-								}
-							
-							});
-								
-						}
-						
-					}
-					
-					if(typeof callback === 'function') callback( returnArray, type );
-					else return returnArray;
-					
-				},
-				
-				_ajaxAndReturnIframeContentDiv: function( reqUrl ){
-	
-					var returnArray = [];
-					
-					$.ajax({
-						url: reqUrl,
-						async: false,
-						success: function( data ){
-							var parsed = $.parseHTML( data );
-							$.each(parsed,function(key,value){
-								if( $(value).attr('id') === 'content' ){
-									returnArray.push( value );
-								}
-							});
-						}
-					});
-					
-					return returnArray[0];
-					
-				},
-				
-				_getSubQueries: function( contentElement ){
-					
-					returnArray = [];
-
-					var queryElements = $( contentElement ).find('table tbody tr, table tbody script');
-					
-					$.each(queryElements,function(key, queryElement){
-						
-						if( $( queryElement ).hasClass('empty-row') && key === 0 ){
-							
-							return false;
-							
-						} else {
-							
-							if( $( queryElement ).is('script') ){
-								
-								var parsedScriptElements = $.parseHTML( $( queryElement )[0].innerText );
-								
-								$.each( parsedScriptElements, function( key, parsedScriptElement ){
-									
-									if( $( parsedScriptElement ).hasClass('list-details-row') ){
+									if( returnScope === "evidenceData" ){
 										
-										var parsedScriptElementUrl = "en_us/" + $( parsedScriptElement ).find('div').attr('url');
+										var currentUrl;
+										var pastObj;
+										var pastUrl;
+										var pastEnd = "";
 										
-										returnArray.push( parsedScriptElementUrl );
+										$.each( parsedScriptElements,function( key, parsedScriptElement ){
+											
+											if( !$( parsedScriptElement ).hasClass('list-details-row') ){
+												
+												var relevantDateItem = $( parsedScriptElement ).find('td')[4];
+												
+												var relevantDateEnd = $( relevantDateItem )[0].innerText.replace(/ /g,"").split("-")[1];
+												
+													/* Setup Current Evidence */
+												if(relevantDateEnd === ""){
+													
+													currentUrl = "en_us/" + $( parsedScriptElements[key+1] ).find('div').attr('url');
+													
+												}
+												
+												if(relevantDateEnd !== ""){
+													
+													if( pastEnd === "" ){
+														
+														pastEnd = relevantDateEnd;
+														pastObj = parsedScriptElements[key+1];
+														
+													} else {
+														
+														var pastDate = new Date( pastEnd ).getTime();
+														var testDate =  new Date( relevantDateEnd ).getTime();
+														
+														if( pastDate < testDate ){
+															
+															pastEnd = relevantDateEnd;
+															pastObj = parsedScriptElements[key+1];
+															
+														}
+														
+													}
+													
+												}
+												
+											}
+											
+										});
+										
+										pastUrl = "en_us/" + $( pastObj ).find('div').attr('url');
+										
+										returnObj[returnScope] = {
+											"current": {
+												url: currentUrl
+											},
+											"history": {
+												url: pastUrl
+											}
+										}
+										
 										
 									}
 									
-								});
+								}
 								
 							}
 							
-						}
+						});
 						
 					});
 					
-					return returnArray;
-				
+					if( typeof callback === 'function' ) callback( returnObj );
+					else return returnObj;
 				
 				},
-				_evidenceQueryUrlConstructor: function( type ){
-				
+				_evidenceQueryUrlConstructor: function( type, callback ){
+					
 					var root = "en_US/Evidence_workspaceTypeListPage.do?";
 					
 					var curamObject = _engine.storage._curamCreatedObject.get();
@@ -2512,6 +2548,8 @@ var _engine = {
 					
 					var evidenceType = _engine.advanced._vars.queryDefinitions;
 					
+					var objReturn = {};
+					
 					if( _engine.domTools.test.hcrTabType() === "Integrated Case" ){
 
 						var reqUrl = root + oc3tx + "&" + caseID + "&" + evidenceType[ type ];
@@ -2520,7 +2558,14 @@ var _engine = {
 							
 							_engine.debug.info(`Your generated request url is valid. This may be used to request results.`);
 							
-							return reqUrl;
+							objReturn = {
+								"init" : {
+									"url": reqUrl
+								}
+							};
+							
+							if( typeof callback === 'function' ) callback( objReturn );
+							else return objReturn;
 						
 						} else {
 							
@@ -2600,7 +2645,7 @@ var _engine = {
 		
 		/* [Tools] Chooses a specified result on the page
 		/********************************************************************/
-		
+	
 		selectSearchResult: function(){
 			
 			_engine.domTools.get.searches.advancedQuery(".action-set a:contains('Search')")[0].click();
