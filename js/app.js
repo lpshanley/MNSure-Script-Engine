@@ -1492,9 +1492,13 @@ var _engine = {
 						var dataObjectLength = Object.getOwnPropertyNames( dataObject ).length;
 						var isSingleObject = dataObjectLength === 1;
 						var isAvailable = function( number ){
+							var result;	
 							typeof dataObject[type][number][scope]['evidence_unavailable'] === 'undefined' ?
-								return true :
-								return false;
+								result = true :
+								result = false;
+							
+							return result;
+							
 						}
 						
 						var prefillString = "";
