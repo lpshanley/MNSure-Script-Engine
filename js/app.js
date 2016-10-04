@@ -1515,6 +1515,8 @@ var _engine = {
 									
 									result = dataObject[0][scope];
 									
+									console.log( result );
+									
 									if( result.apt_suite != "" ) prefillString += result.apt_suite + ", "; 
 									if( result.street_1 != "" ) prefillString += result.street_1 + ", "; 
 									if( result.street_2 != "" ) prefillString += result.street_2 + ", "; 
