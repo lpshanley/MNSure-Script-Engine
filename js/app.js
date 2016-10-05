@@ -1949,7 +1949,40 @@ var _engine = {
 					
 					} else {
 						
-						console.log("You must be on the correct screen!");
+						_engine.advanced.getView( "error/case note incorrect location.html" );
+
+						// Check every 100ms for info in local storage.
+						
+						var _c = 0;
+						
+						var buildFrame = setInterval(function(){
+							
+							if(_c <= _engine.advanced._vars.iterations){
+								
+								if( _engine.storage.html.get() != false ){
+									// Gather html for modal
+									var _html = _engine.storage.html.get();
+									
+									// Clear html storage
+									_engine.storage.html.clear();
+									
+									//Build modal
+									_engine.ui.modal.build( "Case Note Error - Incorrect Launch Screen", _html, "error" );
+									
+									clearInterval( buildFrame );
+									
+								}
+								
+								_c++;
+								
+							} else {
+								_engine.debug.error("- * Fail Reason: [_engine.caseWork.note.write( _note )]: Build frame html timed out.");	
+								_engine.storage.html.clear();
+								clearInterval( buildFrame );
+							}
+						}, _engine.advanced._vars.timeout);
+						
+						buildFrame;
 						
 					}
 				
