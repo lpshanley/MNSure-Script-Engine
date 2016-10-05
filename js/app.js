@@ -410,16 +410,43 @@ var _engine = {
 		/********************************************************************/
 		
 		test: {
-			hcrTabActiveIsIC: function(){
-				if(_engine.domTools.get.hcrTabActive().innerText.indexOf("Insurance Affordability") != -1){
-					if(_engine.domTools.get.hcrTabActive().innerText.indexOf("Insurance Affordability") == 0){
+			
+			var mainTabType = function( callback ){
+	
+				var activeTab = _engine.domTools.get.mainTabActive();
+				
+				var activeTabLabel = $( activeTab )[0].innerText.trim();
+				
+				if( typeof callback === 'function' ) callback( activeTabLabel );
+				else return activeTabLabel;
+				
+			},
+			
+			hcrTabActiveIsIC: function( callback ){
+				
+				var result = false;
+				
+				if( _engine.domTools.test.hcrTabType() === 'HCR Cases and Outcomes' ){
+				
+					if( _engine.domTools.test.hcrTabType() === 'Integrated Case' ){
+						
 						return true;
+						
 					} else {
-						return false;
+						
+						_engine.debug.warn('You are not on an integrated case.');
+						
 					}
+					
 				} else {
-					return false;
+					
+					_engine.debug.warn('Current HCR Tab can only be determined if on the HCR Cases and Outcomes screen.');
+					
 				}
+				
+				if( typeof callback === 'function' ) callback();
+				else return result;
+				
 			},
 			hcrTabType: function( _tab ){
 				
