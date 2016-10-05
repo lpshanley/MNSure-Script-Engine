@@ -434,7 +434,6 @@ var _engine = {
 					
 					if( hcrTabType === 'Integrated Case' ){
 						
-						if( typeof callback === 'function' ) callback();
 						result = true;
 						
 					} else {
@@ -449,7 +448,8 @@ var _engine = {
 					
 				}
 				
-				return result;
+				if( typeof callback === 'function' ) callback( result );				
+				else return result;
 				
 			},
 			hcrTabType: function( _tab ){
