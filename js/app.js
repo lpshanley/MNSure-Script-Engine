@@ -426,7 +426,7 @@ var _engine = {
 				
 				var result = false;
 				
-				if( _engine.domTools.test.hcrTabType() === 'HCR Cases and Outcomes' ){
+				if( _engine.domTools.test.mainTabType() === 'HCR Cases and Outcomes' ){
 				
 					if( _engine.domTools.test.hcrTabType() === 'Integrated Case' ){
 						
