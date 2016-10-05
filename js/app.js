@@ -2380,7 +2380,9 @@ var _engine = {
 				
 				parsedQuery: function(type, callback){
 
-					_engine.tools.customApi.evidence._evidenceApiRaw( type, function( evidenceObj, queryType ){
+					_engine.tools.customApi.evidence._evidenceApiRaw( type, function( evidenceInputObj, queryType ){
+						
+						var evidenceContainer = evidenceInputObj[Object.getOwnPropertyNames( evidenceInputObj )[0]];
 						
 						var masterObject = {};
 						
@@ -2388,52 +2390,56 @@ var _engine = {
 						
 						var parsedEvidence = {};
 						
-						$.each( evidenceObj, function( scope, contentObj ){
-							
-							var jsonString = "";
-							
-							var unassigned = 0;
-							
-							if( scope === 'current' ) parsedEvidence = {};
-							
-							if( typeof contentObj.content !== 'undefined' ){
-							
-								$.each( $( contentObj.content ).find('div table th.label'), function(k,v){
-									
-									var info = $( v )[0];
-									
-									var key = info.innerText.trim().toLowerCase().replace(/ |\//g,"_");
-									var value = $( info ).next()[0].innerText.trim();
-									
-									if( key !== "" || value !== "" ){
-										if( key === "" ){
-											key = unassigned;
+						$.each( evidenceContainer, function( item, evidenceObj ){
+						
+							$.each( evidenceObj, function( scope, contentObj ){
+								
+								var jsonString = "";
+								
+								var unassigned = 0;
+								
+								if( scope === 'current' ) parsedEvidence = {};
+								
+								if( typeof contentObj.content !== 'undefined' ){
+								
+									$.each( $( contentObj.content ).find('div table th.label'), function(k,v){
+										
+										var info = $( v )[0];
+										
+										var key = info.innerText.trim().toLowerCase().replace(/ |\//g,"_");
+										var value = $( info ).next()[0].innerText.trim();
+										
+										if( key !== "" || value !== "" ){
+											if( key === "" ){
+												key = unassigned;
+											}
+											
+											jsonString += '"' + key + '":"' + value + '",'
+											
 										}
 										
-										jsonString += '"' + key + '":"' + value + '",'
-										
-									}
+									});
+								
+								} else {
 									
-								});
-							
-							} else {
+									jsonString = '"evidence_unavailable":"undefined",'
+									
+								}
 								
-								jsonString = '"evidence_unavailable":"undefined",'
+								jsonString = jsonString.substring(0,jsonString.length-1);
 								
-							}
+								parsedEvidence[ scope ] = $.parseJSON( "{" + jsonString + "}" );
+								
+								if(scope === 'history'){
+									masterObject[count] = parsedEvidence;
+									count++;
+								}
+								
+							});
 							
-							jsonString = jsonString.substring(0,jsonString.length-1);
-							
-							parsedEvidence[ scope ] = $.parseJSON( "{" + jsonString + "}" );
-							
-							if(scope === 'history'){
-								masterObject[count] = parsedEvidence;
-								count++;
-							}
+							if(typeof callback === 'function') callback( masterObject, type );
 							
 						});
-						
-						if(typeof callback === 'function') callback( masterObject, type );
 						
 					});
 					
@@ -2442,17 +2448,17 @@ var _engine = {
 				_evidenceApiRaw: function( type, callback ){
 					
 					/* Grab Initial Url for data type */
-					_engine.tools.customApi.evidence._evidenceQueryUrlConstructor( type, function( initQueries ){
+					_engine.tools.customApi.evidence._evidenceQueryUrlConstructor( type, function( initUrl ){
 						/* Axaj Evidence Page */
-						_engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( initQueries, function( evidenceItemObj ){
+						_engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( initUrl, function( evidenceItemObj ){
 							/* Obtain Urls of evidence summarys in evidence page */
-							_engine.tools.customApi.evidence._getSubQueries( evidenceItemObj, function( evidenceItemQueries ){
+							_engine.tools.customApi.evidence._getSubQueries( evidenceItemObj, function( evidenceDataWrapperUrls ){
 								/* Query Evidence Summarys */
-								_engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( evidenceItemQueries, function( evidenceDataContainerObj ){
+								_engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( evidenceDataWrapperUrls, function( evidenceDataWrapperObj ){
 									/* Obtain Urls of current/past evidence details */
-									_engine.tools.customApi.evidence._getSubQueries( evidenceDataContainerObj, function( evidenceDataQueries ){
+									_engine.tools.customApi.evidence._getSubQueries( evidenceDataWrapperObj, function( evidenceDataUrls ){
 										/* Query Evidence Details for current/history */
-										_engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( evidenceDataQueries, function( evidenceDataObj ){
+										_engine.tools.customApi.evidence._ajaxAndReturnIframeContentDiv( evidenceDataUrls, function( evidenceDataObj ){
 											
 											if( typeof callback === 'function' ) callback( evidenceDataObj, type );
 											
@@ -2467,58 +2473,87 @@ var _engine = {
 				
 				_ajaxAndReturnIframeContentDiv: function( reqObj, callback ){
 					
-					var returnObj = {};
-					
-					var processObj = reqObj;
-					
-					var requestScope = Object.getOwnPropertyNames( reqObj )[0];
-					
-					if( requestScope === 'evidenceData' ) processObj = reqObj.evidenceData;
-					
-					$.each(processObj,function(scope,data){
+					var ajaxObj = function( inputObj ){
 						
-						if( typeof data.url !== 'undefined' ){
+						var ajaxReturn = {};
 						
-							$.ajax({
-								url: data.url,
-								async: false,
-								success: function( data ){
-									var parsed = $.parseHTML( data );
-									$.each(parsed,function(keyParsed,valueParsed){
-										if( $(valueParsed).attr('id') === 'content' ){
-											returnObj[scope] = {
-												"content" : valueParsed
-											}
-										}
-									});
-								}
-							});
-						
-						} else {
+						$.each(inputObj,function(scope,data){
 							
-							returnObj[scope] = {
-								"content" : undefined
+							if( typeof data.url !== 'undefined' ){
+							
+								$.ajax({
+									url: data.url,
+									async: false,
+									success: function( data ){
+										var parsed = $.parseHTML( data );
+										$.each(parsed,function(keyParsed,valueParsed){
+											if( $(valueParsed).attr('id') === 'content' ){
+												ajaxReturn[scope] = {
+													"content" : valueParsed
+												}
+											}
+										});
+									}
+								});
+							
+							} else {
+								
+								ajaxReturn[scope] = {
+									"content" : undefined
+								}
+								
 							}
 							
-						}
+						});
 						
-					});
+						return ajaxReturn;
+						
+					}
+					
+					var returnObj = {};
+					
+					var deepObj = false;
+					
+					var requestScope = Object.getOwnPropertyNames( reqObj )[0];
+				
+					var deepScope = ["evidenceData","evidenceItem"];
+					
+					if( deepScope.indexOf( requestScope ) > -1 ) deepObj = true;
+					
+					/* Deep Object */
+					if( deepObj ){
+						if( requestScope === 'evidenceItem' ){	
+						
+							returnObj[requestScope] = ajaxObj( reqObj[requestScope] );
+							
+						} else {
+							
+							returnObj[requestScope] = {};
+							
+							$.each(reqObj[requestScope],function(k,v){
+								
+								var result = ajaxObj( v );
+								
+								returnObj[requestScope][k] = result;
+								
+							});
+							
+						}
+					} 
+					/* Shallow Object */
+					else returnObj = ajaxObj( reqObj );
 					
 					if( typeof callback === 'function' ) callback( returnObj );
 					else return returnObj;
 					
 				},
 				
-				_getSubQueries: function( inputObj, callback ){
+				_getSubQueries: function( reqObj, callback ){
 					
-					returnObj = {};
-					
-					$.each(inputObj,function(scope,contentObj){
+					var processSubQueries = function( inputObj, deepObj ){
 						
-						var returnScope = "";
-						
-						var objClassArray = $( contentObj.content ).find('table').attr('class').split(" ");
-						
+						var objClassArray = $( inputObj[Object.getOwnPropertyNames( inputObj )[0]].content ).find('table').attr('class').split(" ");
+							
 						$.each(objClassArray,function(key,objClass){
 							
 							if(objClass.indexOf("list-id-Evidence") > -1){
@@ -2532,76 +2567,85 @@ var _engine = {
 							
 						});
 						
-						var queryElements = $( contentObj.content ).find('table tbody tr, table tbody script');
+						subQueryReturn = {};
+						subQueryReturn[returnScope] = {};
 						
-						$.each(queryElements,function(key, queryElement){
-							
-							if( $( queryElement ).hasClass('empty-row') && key === 0 ){
+						$.each(inputObj,function( scope, contentObj ){
+
+							var queryElements = $( contentObj.content ).find('table tbody tr, table tbody script');
+
+							$.each(queryElements,function(key, queryElement){
 								
-								return false;
-								
-							} else {
-								
-								if( $( queryElement ).is('script') ){
+								if( $( queryElement ).hasClass('empty-row') && key === 0 ){
 									
-									var parsedScriptElements = $.parseHTML( $( queryElement )[0].innerHTML );
+									return false;
 									
-									if( returnScope === 'evidenceItem' ){
-										
-										$.each( parsedScriptElements,function( key, parsedScriptElement ){
-											
-											if( $( parsedScriptElement ).hasClass('list-details-row') ){
-												
-												var processedElementUrl = "en_us/" + $( parsedScriptElement ).find('div').attr('url');
-												
-												returnObj[returnScope] = {
-													"url": processedElementUrl								
-												}
-											
-											}
-											
-										});
-										
-									}
+								} else {
 									
-									if( returnScope === "evidenceData" ){
+									if( $( queryElement ).is('script') ){
 										
-										var currentUrl;
-										var pastObj;
-										var pastUrl;
-										var pastEnd = "";
+										var parsedTable = $('<tbody>',{ html: $.parseHTML( $( queryElement )[0].innerHTML ) })[0];
 										
-										$.each( parsedScriptElements,function( key, parsedScriptElement ){
+										if( returnScope === 'evidenceItem' ){
 											
-											if( !$( parsedScriptElement ).hasClass('list-details-row') ){
+											var parsedRows = $( parsedTable ).find('.list-details-row');									
+											
+											var count = 0;
+											
+											$.each( parsedRows, function( key, parsedRow ){
 												
-												var relevantDateItem = $( parsedScriptElement ).find('td')[4];
+												var url = "en_us/" + $( parsedRow ).find('div').attr('url');
 												
-												var relevantDateEnd = $( relevantDateItem )[0].innerText.replace(/ /g,"").split("-")[1];
-												
-													/* Setup Current Evidence */
-												if(relevantDateEnd === ""){
-													
-													currentUrl = "en_us/" + $( parsedScriptElements[key+1] ).find('div').attr('url');
-													
+												subQueryReturn[returnScope][count] = {
+													"url": url								
 												}
 												
-												if(relevantDateEnd !== ""){
+												count++;
+												
+											});
+											
+										}
+										
+										if( returnScope === "evidenceData" ){
+											
+											var parsedRows = $( parsedTable ).find('tr');
+											
+											var currentUrl, pastObj, pastUrl;
+											var pastEnd = "";
+
+											$.each( parsedRows, function( key, row ){
+												
+												if( !$( row ).hasClass('list-details-row') ){
 													
-													if( pastEnd === "" ){
+													var relevantDateItem = $( row ).find('td')[4];
+													
+													var relevantDateEnd = $( relevantDateItem )[0].innerText.replace(/ /g,"").split("-")[1];
+													
+														// Setup Current Evidence
+													if(relevantDateEnd === ""){
 														
-														pastEnd = relevantDateEnd;
-														pastObj = parsedScriptElements[key+1];
+														currentUrl = "en_us/" + $( parsedRows[key+1] ).find('div').attr('url');
 														
-													} else {
+													}
+													
+													if(relevantDateEnd !== ""){
 														
-														var pastDate = new Date( pastEnd ).getTime();
-														var testDate =  new Date( relevantDateEnd ).getTime();
-														
-														if( pastDate < testDate ){
+														if( pastEnd === "" ){
 															
 															pastEnd = relevantDateEnd;
-															pastObj = parsedScriptElements[key+1];
+															pastObj = parsedRows[key+1];
+															
+														} else {
+															
+															var pastDate = new Date( pastEnd ).getTime();
+															var testDate =  new Date( relevantDateEnd ).getTime();
+															
+															if( pastDate < testDate ){
+																
+																pastEnd = relevantDateEnd;
+																pastObj = parsedRows[key+1];
+																
+															}
 															
 														}
 														
@@ -2609,32 +2653,50 @@ var _engine = {
 													
 												}
 												
+											});
+											
+											if( pastEnd === '' ) pastUrl = undefined;
+											else pastUrl = "en_us/" + $( pastObj ).find('div').attr('url');
+											
+											subQueryReturn[returnScope][scope] = {
+												"current": {
+													url: currentUrl
+												},
+												"history": {
+													url: pastUrl
+												}
 											}
 											
-										});
-										
-										if( pastEnd === '' ) pastUrl = undefined;
-										else pastUrl = "en_us/" + $( pastObj ).find('div').attr('url');
-										
-										returnObj[returnScope] = {
-											"current": {
-												url: currentUrl
-											},
-											"history": {
-												url: pastUrl
-											}
 										}
-										
 										
 									}
 									
 								}
 								
-							}
+								
+								
+							});
 							
 						});
 						
-					});
+						return subQueryReturn;
+						
+					}
+					
+					returnObj = {};
+					
+					var deepObj = false;
+					
+					var requestScope = Object.getOwnPropertyNames( reqObj )[0];
+					
+					var deepScope = ["evidenceData","evidenceItem"];
+					
+					if( deepScope.indexOf( requestScope ) > -1 ) deepObj = true;
+					
+					/* Deep Object */
+					if( deepObj ) returnObj = processSubQueries( reqObj[requestScope], deepObj );
+					/* Shallow Object */
+					else returnObj = processSubQueries( reqObj, deepObj );
 					
 					if( typeof callback === 'function' ) callback( returnObj );
 					else return returnObj;
