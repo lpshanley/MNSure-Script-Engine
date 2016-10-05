@@ -1491,6 +1491,8 @@ var _engine = {
 								result = true :
 								result = false;
 							
+							if( result === false ) prefillString += "n/a";
+							
 							return result;
 							
 						}
@@ -1518,10 +1520,6 @@ var _engine = {
 										if( result.state != "" ) prefillString += result.state + ", "; 
 										if( result.zip != "" ) prefillString += result.zip; 
 										
-									} else {
-										
-										prefillString = "n/a";
-										
 									}
 									
 								} else if (dataObject.length > 1) {
@@ -1542,10 +1540,6 @@ var _engine = {
 										
 										if( result[0] != "" ) prefillString += result[0];
 									
-									} else {
-										
-										prefillString = "n/a";
-										
 									}
 									
 								} else if (dataObject.length > 1) {
