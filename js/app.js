@@ -410,16 +410,47 @@ var _engine = {
 		/********************************************************************/
 		
 		test: {
-			hcrTabActiveIsIC: function(){
-				if(_engine.domTools.get.hcrTabActive().innerText.indexOf("Insurance Affordability") != -1){
-					if(_engine.domTools.get.hcrTabActive().innerText.indexOf("Insurance Affordability") == 0){
-						return true;
+			
+			mainTabType: function( callback ){
+	
+				var activeTab = _engine.domTools.get.mainTabActive();
+				
+				var activeTabLabel = $( activeTab )[0].innerText.trim();
+				
+				if( typeof callback === 'function' ) callback( activeTabLabel );
+				else return activeTabLabel;
+				
+			},
+			
+			hcrTabActiveIsIC: function( callback ){
+				
+				var result = false;
+				
+				var mainTabType = _engine.domTools.test.mainTabType();
+				
+				if( mainTabType === 'HCR Cases and Outcomes' ){
+					
+					var hcrTabType = _engine.domTools.test.hcrTabType();
+					
+					if( hcrTabType === 'Integrated Case' ){
+						
+						result = true;
+						
 					} else {
-						return false;
+						
+						_engine.debug.warn(`You are not on an integrated case. Current tab type is: ${ hcrTabType }.`);
+						
 					}
+					
 				} else {
-					return false;
+					
+					_engine.debug.warn(`Current HCR Tab can only be determined if on the HCR Cases and Outcomes screen. Current main tab is: ${ mainTabType }`);
+					
 				}
+				
+				if( typeof callback === 'function' ) callback( result );				
+				else return result;
+				
 			},
 			hcrTabType: function( _tab ){
 				
@@ -1836,81 +1867,127 @@ var _engine = {
 		note: {
 			write: function( _note ){
 				
-				// Define extra vars
-				var _noteLocation = null;
-				var _modalType = null;
-				
-				// Grab an array of elements that are defined in the menu as available case notes
-				var _noteArray = $('#script-launcher > ul > li:contains("Case Notes") ul li');
-				
-				// Create the container array to compare against
-				var _validNotes = [];
+				_engine.domTools.test.hcrTabActiveIsIC(function( result ){
+					
+					if( result ){
+					
+						// Define extra vars
+						var _noteLocation = null;
+						var _modalType = null;
+						
+						// Grab an array of elements that are defined in the menu as available case notes
+						var _noteArray = $('#script-launcher > ul > li:contains("Case Notes") ul li');
+						
+						// Create the container array to compare against
+						var _validNotes = [];
 
-				// Iterate over element array
-				$.each(_noteArray,function(k,v){
-					
-					// Grab the text only without the "..." from the case note elements and push to second array
-					_validNotes.push( $( v ).text().replace(/[.]/g,"").toLowerCase() );
-
-				});
-
-				// Check if the requested case note type is in the list of valid case notes
-				if( $.inArray( _note.toLowerCase(), _validNotes) > -1 ){
-					
-					// If its a valid request set the modal type to case notes
-					_modalType = "case notes";
-					
-					// Set the location to the dir that stores the html
-					_noteLocation = _modalType + "/" + _note.toLowerCase() + ".html";
-					
-				}
-
-				// If the request was invalid then error out the request as invalid
-				if( _noteLocation != null ){
-					
-					// Gathers HTML for view and stores to local storage
-					_engine.advanced.getView( _noteLocation );
-
-					// Check every 100ms for info in local storage.
-					
-					var _c = 0;
-					
-					var buildFrame = setInterval(function(){
-						if(_c <= _engine.advanced._vars.iterations){
+						// Iterate over element array
+						$.each(_noteArray,function(k,v){
 							
-							if( _engine.storage.html.get() != false ){
-								// Gather html for modal
-								var _html = _engine.storage.html.get();
+							// Grab the text only without the "..." from the case note elements and push to second array
+							_validNotes.push( $( v ).text().replace(/[.]/g,"").toLowerCase() );
+
+						});
+
+						// Check if the requested case note type is in the list of valid case notes
+						if( $.inArray( _note.toLowerCase(), _validNotes) > -1 ){
+							
+							// If its a valid request set the modal type to case notes
+							_modalType = "case notes";
+							
+							// Set the location to the dir that stores the html
+							_noteLocation = _modalType + "/" + _note.toLowerCase() + ".html";
+							
+						}
+
+						// If the request was invalid then error out the request as invalid
+						if( _noteLocation != null ){
+							
+							// Gathers HTML for view and stores to local storage
+							_engine.advanced.getView( _noteLocation );
+
+							// Check every 100ms for info in local storage.
+							
+							var _c = 0;
+							
+							var buildFrame = setInterval(function(){
+								if(_c <= _engine.advanced._vars.iterations){
+									
+									if( _engine.storage.html.get() != false ){
+										// Gather html for modal
+										var _html = _engine.storage.html.get();
+										
+										if( $('<div>', {'html': _engine.storage.html.get() }).find('div').hasClass('mns-error-modal') ){
+											_note = "Error";
+											_modalType = "error";
+										}
+										
+										// Clear html storage
+										_engine.storage.html.clear();
+										
+										//Build modal
+										_engine.ui.modal.build( _note, _html, _modalType );
+										
+										clearInterval( buildFrame );
+										
+									}
+									
+									_c++;
+									
+								} else {
+									_engine.debug.error("- * Fail Reason: [_engine.caseWork.note.write( _note )]: Build frame html timed out.");	
+									_engine.storage.html.clear();
+									clearInterval( buildFrame );
+								}
+							}, _engine.advanced._vars.timeout);
+							
+							buildFrame;
+
+						} else {
+							_engine.debug.error("- * Fail Reason: [_engine.caseWork.note.write( note )]: A valid note type must be specified to run this command.")
+						}
+					
+					} else {
+						
+						_engine.advanced.getView( "error/case note incorrect location.html" );
+
+						// Check every 100ms for info in local storage.
+						
+						var _c = 0;
+						
+						var buildFrame = setInterval(function(){
+							
+							if(_c <= _engine.advanced._vars.iterations){
 								
-								if( $('<div>', {'html': _engine.storage.html.get() }).find('div').hasClass('mns-error-modal') ){
-									_note = "Error";
-									_modalType = "error";
+								if( _engine.storage.html.get() != false ){
+									// Gather html for modal
+									var _html = _engine.storage.html.get();
+									
+									// Clear html storage
+									_engine.storage.html.clear();
+									
+									//Build modal
+									_engine.ui.modal.build( "Case Note Error - Incorrect Launch Screen", _html, "error" );
+									
+									clearInterval( buildFrame );
+									
 								}
 								
-								// Clear html storage
+								_c++;
+								
+							} else {
+								_engine.debug.error("- * Fail Reason: [_engine.caseWork.note.write( _note )]: Build frame html timed out.");	
 								_engine.storage.html.clear();
-								
-								//Build modal
-								_engine.ui.modal.build( _note, _html, _modalType );
-								
 								clearInterval( buildFrame );
-								
 							}
-							
-							_c++;
-							
-						} else {
-							_engine.debug.error("- * Fail Reason: [_engine.caseWork.note.write( _note )]: Build frame html timed out.");	
-							_engine.storage.html.clear();
-							clearInterval( buildFrame );
-						}
-					}, _engine.advanced._vars.timeout);
-					
-					buildFrame;
-
-				} else {
-					_engine.debug.error("- * Fail Reason: [_engine.caseWork.note.write( note )]: A valid note type must be specified to run this command.")
-				}
+						}, _engine.advanced._vars.timeout);
+						
+						buildFrame;
+						
+					}
+				
+				});
+				
 			},			
 			_completeNote: function(){
 				
