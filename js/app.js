@@ -411,7 +411,7 @@ var _engine = {
 		
 		test: {
 			
-			var mainTabType = function( callback ){
+			mainTabType: function( callback ){
 	
 				var activeTab = _engine.domTools.get.mainTabActive();
 				
