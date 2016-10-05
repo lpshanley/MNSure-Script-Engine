@@ -426,21 +426,25 @@ var _engine = {
 				
 				var result = false;
 				
-				if( _engine.domTools.test.mainTabType() === 'HCR Cases and Outcomes' ){
+				var mainTabType = _engine.domTools.test.mainTabType();
 				
-					if( _engine.domTools.test.hcrTabType() === 'Integrated Case' ){
+				if( mainTabType === 'HCR Cases and Outcomes' ){
+					
+					var hcrTabType = _engine.domTools.test.hcrTabType();
+					
+					if( hcrTabType === 'Integrated Case' ){
 						
 						return true;
 						
 					} else {
 						
-						_engine.debug.warn('You are not on an integrated case.');
+						_engine.debug.warn('You are not on an integrated case. Current tab type is: ${ hcrTabType }.');
 						
 					}
 					
 				} else {
 					
-					_engine.debug.warn('Current HCR Tab can only be determined if on the HCR Cases and Outcomes screen.');
+					_engine.debug.warn('Current HCR Tab can only be determined if on the HCR Cases and Outcomes screen. Current main tab is: ${ mainTabType }');
 					
 				}
 				
