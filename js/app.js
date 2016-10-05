@@ -3044,7 +3044,8 @@ var _engine = {
 			queryDefinitions: {
 				'address': 'evidenceType=DET0026039',
 				'income': 'evidenceType=DET0026030',
-				'service agency': 'evidenceType=DET0001029'
+				'service agency': 'evidenceType=DET0001029',
+				'financially responsible agency': 'evidenceType=DET0001282'
 			}
 		}
 	},
