@@ -1953,7 +1953,7 @@ var _engine = {
 						
 					}
 				
-				}
+				});
 				
 			},			
 			_completeNote: function(){
