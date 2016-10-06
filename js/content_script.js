@@ -32,8 +32,14 @@ $.ajax({
 var _styles = $('<link>', {href: 'https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/'+ _masterCommit +'/css/appStyles.css', rel: 'stylesheet', type: 'text/css', 'data-ScriptEngine': '' });
 $( 'head' ).append( _styles );
 
-var _jquery = $('<script>',{ 'src': 'https://code.jquery.com/jquery-1.12.4.min.js' });
+var _stylesUI = $('<link>', {href: 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css' });
+$( 'head' ).append( _stylesUI );
+
+var _jquery = $('<script>',{ 'src': 'https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js' });
 $( 'head' ).append( _jquery );
+
+var _jqueryUI = $('<script>',{ 'src': 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js' });
+$( 'head' ).append( _jqueryUI );
 
 var _app = $('<script>',{ 'src': 'https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/'+ _masterCommit +'/js/app.js', 'data-beta':_betaCommit, 'data-master':_masterCommit, 'data-chromeURL': chrome.extension.getURL(''), 'data-ScriptEngine': '', 'data-extensionID': chrome.runtime.id });
 $( 'head' ).append( _app );
