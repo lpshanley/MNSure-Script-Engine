@@ -2946,70 +2946,70 @@ var _engine = {
 			
 			timeout;
 			
-		}
-		
-	},
-	
-	loadAddons: {
-
-		run: function( addons ){
-			
-			$.each( addons, function(type, libraries){
-
-				
-				$.each( libraries,function( library, url ){
-					
-					switch( type ){
-
-						case "css":
-							
-							$.each($('head link[href]'),function(key,linkObj){
-		
-								if( $(this).attr('href').indexOf( library ) !== -1 ) $( this ).remove();
-								
-							});
-							
-							var lib = $('<link>',{ href : url, 'rel' : 'stylesheet', 'type' : 'text/css'});
-							$('link[data-scriptengine]').after( lib );
-							
-							break;
-						case "js":
-							
-							
-							$.each($('head script[src]'),function(key,linkObj){
-			
-								if( $(this).attr('src').indexOf( library ) !== -1 ) $( this ).remove();
-								
-							});
-							
-							var lib = $('<script>',{ src : url });
-							$('script[data-scriptengine]').after( lib );
-							
-							break;
-						default:
-							break;
-					}
-					
-				});
-			});
-			
 		},
-		libraries: {
-			
-			js: {
+		
+		loadAddons: {
+
+			run: function( addons ){
 				
-				"jqueryui": "https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"
+				$.each( addons, function(type, libraries){
+
+					
+					$.each( libraries,function( library, url ){
+						
+						switch( type ){
+
+							case "css":
+								
+								$.each($('head link[href]'),function(key,linkObj){
+			
+									if( $(this).attr('href').indexOf( library ) !== -1 ) $( this ).remove();
+									
+								});
+								
+								var lib = $('<link>',{ href : url, 'rel' : 'stylesheet', 'type' : 'text/css'});
+								$('link[data-scriptengine]').after( lib );
+								
+								break;
+							case "js":
+								
+								
+								$.each($('head script[src]'),function(key,linkObj){
+				
+									if( $(this).attr('src').indexOf( library ) !== -1 ) $( this ).remove();
+									
+								});
+								
+								var lib = $('<script>',{ src : url });
+								$('script[data-scriptengine]').after( lib );
+								
+								break;
+							default:
+								break;
+						}
+						
+					});
+				});
 				
 			},
-			
-			css: {
+			libraries: {
 				
-				"jqueryui": "https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/redmond/jquery-ui.css"
+				js: {
+					
+					"jqueryui": "https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"
+					
+				},
+				
+				css: {
+					
+					"jqueryui": "https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/redmond/jquery-ui.css"
+					
+				}
 				
 			}
-			
-		}
 
+		}
+	
 	},
 	
 	//************//
