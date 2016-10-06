@@ -2412,6 +2412,7 @@ var _engine = {
 										if( key !== "" || value !== "" ){
 											if( key === "" ){
 												key = unassigned;
+												unassigned++;												
 											}
 											
 											jsonString += '"' + key + '":"' + value + '",'
