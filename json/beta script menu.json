@@ -8,6 +8,9 @@
 			"Returned Mail...": {
 				"_events": "caseWork[writeNote(Returned Mail)]"
 			},
+			"Change Reported...": {
+				"_events": "caseWork[writeNote(Change Reported)]"
+			},
 			"Client Contact...": {
 				"_events": "caseWork[writeNote(Client Contact)]"
 			},
