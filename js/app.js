@@ -1685,6 +1685,9 @@ var _engine = {
 				_loading;
 			
 				setTimeout(function(){
+					
+					_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
+					
 					/* Loaded
 					/* Scripts Main Button
 					========================*/
@@ -1735,6 +1738,8 @@ var _engine = {
 				},2000);
 			
 			} else {
+				
+				_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
 				
 				//Build menu again if repo is updated
 				_engine.ui.scriptMenu.refresh();
@@ -3443,8 +3448,6 @@ var _engine = {
 			
 			_engine.storage.prefillCache.clear();
 			
-			_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
-			
 			_engine.debug.debug("Beta User Access Enabled. Logging Enabled.");
 			
 			_engine.ui.topNotification("Script Library: Beta");
@@ -3494,9 +3497,7 @@ var _engine = {
 			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/js/app.js" );
 			
 			_engine.storage.prefillCache.clear();
-			
-			_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
-			
+						
 			console.debug("_engine.debug: Release Access Enabled. Logging Disabled.");
 			
 			_engine.ui.topNotification("Script Library: Release");
