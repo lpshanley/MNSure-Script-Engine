@@ -3,7 +3,7 @@
   "name": "MNSure Script Engine",
 	"author": "Lucas Shanley",
   "description": "This is used to run scripts on the mnsure page.",
-  "version": "1.91",
+  "version": "2.0",
 	"icons": { 
 		"16": "icon16.png",
 		"32": "icon32.png",
