@@ -1095,6 +1095,8 @@ var _engine = {
 				
 				_engine.ui.modal._watch();
 				
+				$('.modal-content-wrapper').draggable({ handle: 'div.modal-titlebar' });
+				
 			},
 			destroy: function(){
 				
