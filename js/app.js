@@ -2950,6 +2950,68 @@ var _engine = {
 		
 	},
 	
+	loadAddons: {
+
+		run: function( addons ){
+			
+			$.each( addons, function(type, libraries){
+
+				
+				$.each( libraries,function( library, url ){
+					
+					switch( type ){
+
+						case "css":
+							
+							$.each($('head link[href]'),function(key,linkObj){
+		
+								if( $(this).attr('href').indexOf( library ) !== -1 ) $( this ).remove();
+								
+							});
+							
+							var lib = $('<link>',{ href : url, 'rel' : 'stylesheet', 'type' : 'text/css'});
+							$('link[data-scriptengine]').after( lib );
+							
+							break;
+						case "js":
+							
+							
+							$.each($('head script[src]'),function(key,linkObj){
+			
+								if( $(this).attr('src').indexOf( library ) !== -1 ) $( this ).remove();
+								
+							});
+							
+							var lib = $('<script>',{ src : url });
+							$('script[data-scriptengine]').after( lib );
+							
+							break;
+						default:
+							break;
+					}
+					
+				});
+			});
+			
+		},
+		libraries: {
+			
+			js: {
+				
+				"jqueryui": "https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"
+				
+			},
+			
+			css: {
+				
+				"jqueryui": "https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/redmond/jquery-ui.css"
+				
+			}
+			
+		}
+
+	}
+	
 	//************//
 	//* Advanced *//
 	//************//
@@ -3381,6 +3443,8 @@ var _engine = {
 			
 			_engine.storage.prefillCache.clear();
 			
+			_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
+			
 			_engine.debug.debug("Beta User Access Enabled. Logging Enabled.");
 			
 			_engine.ui.topNotification("Script Library: Beta");
@@ -3430,6 +3494,8 @@ var _engine = {
 			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/js/app.js" );
 			
 			_engine.storage.prefillCache.clear();
+			
+			_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
 			
 			console.debug("_engine.debug: Release Access Enabled. Logging Disabled.");
 			
