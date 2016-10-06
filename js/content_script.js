@@ -32,7 +32,7 @@ $.ajax({
 var _styles = $('<link>', {href: 'https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/'+ _masterCommit +'/css/appStyles.css', rel: 'stylesheet', type: 'text/css', 'data-ScriptEngine': '' });
 $( 'head' ).append( _styles );
 
-var _stylesUI = $('<link>', {href: 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css' });
+var _stylesUI = $('<link>', {href: 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css', rel: 'stylesheet', type: 'text/css' });
 $( 'head' ).append( _stylesUI );
 
 var _jquery = $('<script>',{ 'src': 'https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js' });
