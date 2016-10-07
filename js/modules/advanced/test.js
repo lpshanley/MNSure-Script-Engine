@@ -1,5 +1,5 @@
 { /* modules/advanced/test.js */
-this: 'that',
+work: 'that',
 
 test: function(){
 
