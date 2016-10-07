@@ -1,11 +1,11 @@
-var test = { /* modules/advanced/test.js */
-work: 'that',
+var test = {
+	
+	work: 'that',
 
-test: function(){
+	test: function(){
 
-	console.log('Working');
+		console.log('Working');
+
+	}
 
 }
-
-
-} /* End of module */
