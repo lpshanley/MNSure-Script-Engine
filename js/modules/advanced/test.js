@@ -1,4 +1,4 @@
-{ /* modules/advanced/test.js */
+var test = { /* modules/advanced/test.js */
 work: 'that',
 
 test: function(){
