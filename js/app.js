@@ -1652,7 +1652,9 @@ var _engine = {
 		
 		_startUp: function() {
 			
-			if( !_engine.storage.engineStatus.get() ){
+			if( String( window.localStorage.mnsEngine_Status.toLowerCase() ) === "false" ){
+				
+				/* Loading status indicator start */
 				
 				var _t = ["Script Library: Loading.","Script Library: Loading..","Script Library: Loading...","Script Library: Loading&nbsp...","Script Library: Loading&nbsp;&nbsp...","Script Library: Loading&nbsp;&nbsp;&nbsp;...","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;..","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.","Script Library: Loading"];
 
@@ -1680,61 +1682,70 @@ var _engine = {
 						counter = 0;
 					}
 
-				}, _engine.advanced._vars.timeout);
+				}, 100);
 
 				_loading;
 			
+				/* Loading status indicator end */
+				
 				setTimeout(function(){
 					
 					_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
+					
 					_engine.tools.loadModules( _engine.config.modules, _engine.tools.loadModules );
 					
-					/* Loaded
-					/* Scripts Main Button
-					========================*/
+					/* Modules loaded finish script startup process. */
 					
-					//********** Left Click **********//
-					// Opens a small settings menu
+					setTimeout(function(){
+						
+								/* Loaded
+						/* Scripts Main Button
+						========================*/
 
-					$('#script-launcher a').click(function(){
+						//********** Left Click **********//
+						// Opens a small settings menu
 
-						console.log('SETTINGS MENU - NON FUNCTIONAL');
+						$('#script-launcher a').click(function(){
 
-					});
+							console.log('SETTINGS MENU - NON FUNCTIONAL');
 
-					//********** Right Click **********//
-					// Performs Quick Load of Searches
+						});
 
-					$('#script-launcher a').contextmenu(function(e){
+						//********** Right Click **********//
+						// Performs Quick Load of Searches
+
+						$('#script-launcher a').contextmenu(function(e){
+
+								// Prevent context menu pop-up
+							e.preventDefault();
+
+								// Open Case Search
+							_engine.search._case();
+
+								// Open Person Search
+							_engine.search._person();
+
+						});
+
+
+						clearInterval( _loading );
+
+						if( _engine.beta.betaURL() ){
+
+							_engine.beta.enableBeta();
+
+						} else {
+
+							_engine.beta.enableRelease();
+
+						}
+
+						//Build out menu
+						_engine.ui.scriptMenu.refresh();
+
+						_engine.storage.engineStatus.set( true );
 						
-							// Prevent context menu pop-up
-						e.preventDefault();
-						
-							// Open Case Search
-						_engine.search._case();
-						
-							// Open Person Search
-						_engine.search._person();
-						
-					});
-					
-					
-					clearInterval( _loading );
-					
-					if( _engine.beta.betaURL() ){
-						
-						_engine.beta.enableBeta();
-						
-					} else {
-						
-						_engine.beta.enableRelease();
-						
-					}
-					
-					//Build out menu
-					_engine.ui.scriptMenu.refresh();
-					
-					_engine.storage.engineStatus.set( true );
+					},1000);
 				
 				},2000);
 			
@@ -2598,7 +2609,7 @@ var _engine = {
 										
 										if( returnScope === 'evidenceItem' ){
 											
-											var parsedRows = $( parsedTable ).find('.list-details-row');									
+											var parsedRows = $( parsedTable ).find('.list-details-row');
 											
 											var count = 0;
 											
