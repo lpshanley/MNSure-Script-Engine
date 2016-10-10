@@ -1,5 +1,5 @@
-defineModule( "test",{
+defineModule( "advanced/test",{
 	
-	'test': ''
+	'test': 'working'
 	
 });
