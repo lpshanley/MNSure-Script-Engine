@@ -1,4 +1,4 @@
-defineModule( "advanced/test",{
+_engine.tools.defineModule( "advanced/test",{
 	
 	'test': 'working'
 	
