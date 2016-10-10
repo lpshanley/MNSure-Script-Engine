@@ -1651,11 +1651,13 @@ var _engine = {
 		/********************************************************************/
 		
 		_startUp: function() {
-			
+	
+			/* Setup loading display */
+
 			if( String( window.localStorage.mnsEngine_Status.toLowerCase() ) === "false" ){
-				
-				/* Loading status indicator start */
-				
+
+				window.localStorage.mnsEngine_Status = 'true';
+
 				var _t = ["Script Library: Loading.","Script Library: Loading..","Script Library: Loading...","Script Library: Loading&nbsp...","Script Library: Loading&nbsp;&nbsp...","Script Library: Loading&nbsp;&nbsp;&nbsp;...","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;..","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.","Script Library: Loading"];
 
 				var _ele = document.getElementsByClassName('center-box')[0];
@@ -1669,15 +1671,15 @@ var _engine = {
 				_ele.appendChild( _span );
 
 				var _loadSpan = document.getElementById("mns-scripts-loading");
-					
+
 				var counter = 0;
-					
+
 				var _loading = setInterval(function(){
 
 					_loadSpan.innerHTML = _t[counter];
-					
+
 					++counter;
-					
+
 					if(counter == _t.length){
 						counter = 0;
 					}
@@ -1685,82 +1687,62 @@ var _engine = {
 				}, 100);
 
 				_loading;
-			
-				/* Loading status indicator end */
-				
-				setTimeout(function(){
-					_engine.tools.loadModules( _engine.config.modules, _engine.tools.loadModules );
-					
-					/* Modules loaded finish script startup process. */
-					
-					setTimeout(function(){
-						
-						_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
-								/* Loaded
-						/* Scripts Main Button
-						========================*/
 
-						//********** Left Click **********//
-						// Opens a small settings menu
+				/* Start by loading jQuery */
 
-						$('#script-launcher a').click(function(){
+				var _count = 0;
+				var jQueryTimeout = setInterval(function(){
+					if( _count <= 80 ){
+						if( typeof jQuery === 'function' ){
+							/* jQuery is now loaded */
 
-							console.log('SETTINGS MENU - NON FUNCTIONAL');
+							var commit = "";
 
-						});
+							var url = window.location.href;
+							var isBeta = url.split("?").length > 1  && url.split("?")[url.split("?").length-1].toLowerCase() === "beta";
 
-						//********** Right Click **********//
-						// Performs Quick Load of Searches
+							isBeta ?
+								commit = $('script[data-scriptengine]').attr('data-beta'):
+								commit = $('script[data-scriptengine]').attr('data-master');
 
-						$('#script-launcher a').contextmenu(function(e){
+							//_engine.tools.loadModules( _engine.config.modules, commit, _engine.tools.loadModules );
 
-								// Prevent context menu pop-up
-							e.preventDefault();
+							setTimeout(function(){
 
-								// Open Case Search
-							_engine.search._case();
+								/* Load Additional Libraries */
+								_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
 
-								// Open Person Search
-							_engine.search._person();
+								/* Scripts Shortcut handle
+								========================*/
 
-						});
+								//********** Right Click **********//
+								// Performs Quick Load of Searches
 
+								$('#script-launcher a').contextmenu(function(e){
+									e.preventDefault();
+									_engine.search._case();
+									_engine.search._person();
+								});
 
-						clearInterval( _loading );
+								clearInterval( _loading );
 
-						if( _engine.beta.betaURL() ){
+								isBeta ?
+									_engine.beta.enableBeta():
+									_engine.beta.enableRelease();
 
-							_engine.beta.enableBeta();
+								_engine.ui.scriptMenu.refresh();
 
-						} else {
+							},1000);
 
-							_engine.beta.enableRelease();
-
+							clearInterval( jQueryTimeout );
 						}
-
-						//Build out menu
-						_engine.ui.scriptMenu.refresh();
-
-						_engine.storage.engineStatus.set( true );
-						
-					},1000);
-				
-				},2000);
-			
-			} else {
-				
-				_engine.tools.loadModules( _engine.config.modules, _engine.tools.loadModules );
-				
-				setTimeout(function(){
-					
-					_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
-					//Build menu again if repo is updated
-					_engine.ui.scriptMenu.refresh();
-					
-				}, 1000);
-				
+					} else {
+						clearInterval( jQueryTimeout );
+					}
+					_count++;
+				},50);
+				jQueryTimeout;
 			}
-
 		},
 		
 		/* [Events] Converts click events into useable sets of functions
