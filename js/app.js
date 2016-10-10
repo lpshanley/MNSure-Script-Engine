@@ -1654,6 +1654,10 @@ var _engine = {
 			
 			if( String( window.localStorage.mnsEngine_Status.toLowerCase() ) === "false" ){
 				
+				window.localStorage.mnsEngine_Status = 'true';
+				
+				console.log( 'fresh run' );
+				
 				/* Loading status indicator start */
 				
 				var _t = ["Script Library: Loading.","Script Library: Loading..","Script Library: Loading...","Script Library: Loading&nbsp...","Script Library: Loading&nbsp;&nbsp...","Script Library: Loading&nbsp;&nbsp;&nbsp;...","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;..","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.","Script Library: Loading"];
@@ -1748,6 +1752,8 @@ var _engine = {
 				},2000);
 			
 			} else {
+				
+				console.log( 'refresh run' );
 				
 				_engine.tools.loadModules( _engine.config.modules, _engine.tools.loadModules );
 				
