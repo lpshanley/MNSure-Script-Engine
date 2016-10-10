@@ -3055,95 +3055,13 @@ var _engine = {
 	
 	advanced: {
 		
-		/* [Advanced] Returns the needed base URL for ajax requests 
-		/********************************************************************/
-		
 		/* Cannot Relocate */
 		baseUrl: function(){
-			
 			var _commit = _engine.advanced.currentCommit();
-			
 			var _url = "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/" + _commit + "/";
-			
 			return _url;
-			
-		},
-		
-		/* [Advanced] Returns the ID of the extension
-		/********************************************************************/
-		
-		extensionID: function(){
-			return $('script[data-scriptengine]').attr('data-extensionID');
-		},
-		
-		/* [Advanced] Returns the current Beta Repo Commit Sha
-		/********************************************************************/
-		
-		betaCommit: function(){
-			return $('script[data-scriptengine]').attr('data-beta');
-		},
-		
-		/* [Advanced] Returns the current Master Repo Commit Sha
-		/********************************************************************/
-		
-		masterCommit: function(){
-			return $('script[data-scriptengine]').attr('data-master');
-		},
-		
-		/* [Advanced] Returns the commit that the engine is currently using
-		/********************************************************************/
-		
-		currentCommit: function(){
-			if( _engine.storage.betaStatus.get() ){
-				return _engine.advanced.betaCommit();
-			} else {
-				return _engine.advanced.masterCommit();
-			}
-		},
-		
-		/* [Advanced] ajax request to grab html template for modals
-		/********************************************************************/
-		
-		getView: function( _f ){
-
-			var _html = null;
-			
-			var _c = _engine.advanced.currentCommit();
-			
-			chrome.runtime.sendMessage( _engine.advanced.extensionID(), { file: _f, commit: _c },
-				function( response ){
-					
-					if( response == null ){
-						
-						_engine.advanced.getView( "error/error.html" );
-						
-					} else {
-						
-						_engine.storage.html.set( response );
-						
-					}
-					
-				}
-			);
-			
-			return;
-			
-		},
-		
-		/* [Advanced] Universal veriables
-		/********************************************************************/
-		
-		_vars: {
-			timeout: 50,
-			iterations: 80,
-			iterationsLong: 200,
-			queryDefinitions: {
-				'address': 'evidenceType=DET0026039',
-				'income': 'evidenceType=DET0026030',
-				'service agency': 'evidenceType=DET0001029',
-				'financially responsible agency': 'evidenceType=DET0001282'
-			}
 		}
+		
 	},
 	
 	//*************//
