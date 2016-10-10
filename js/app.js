@@ -2816,7 +2816,7 @@ var _engine = {
 
 		},
 		
-		loadModules: function( inputObj, callback, relativePath ){
+		loadModules: function( inputObj, commit, callback, relativePath ){
 			
 			/* Setup relative path */
 			if( typeof relativePath === 'undefined' ) relativePath = "js/modules/";
