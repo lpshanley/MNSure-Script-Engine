@@ -1,9 +1,11 @@
-function(){
+var test = function(){
 	
-	this.test = {};
+	this.base = {};
 	
-	this.test.variable = "working";	
+	this.base.variable = "working";
 	
 	return this;
 	
 }
+
+return test();
