@@ -2828,7 +2828,7 @@ var _engine = {
 				commit = $('script[data-scriptengine]').attr('data-beta');
 			var baseUrl = `https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/${commit}/`;
 			
-			console.log( baseUrl );
+			console.log( relativePath );
 			
 			$.each(inputObj,function( folder, items ){
 				if( Array.isArray( items ) ){
