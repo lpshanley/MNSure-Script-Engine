@@ -2823,8 +2823,6 @@ var _engine = {
 			
 			var baseUrl = `https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/${commit}/`;
 			
-			console.log( relativePath );
-			
 			$.each(inputObj,function( folder, items ){
 				if( Array.isArray( items ) ){
 					$.each(items,function(key,module){
