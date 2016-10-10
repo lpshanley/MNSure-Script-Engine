@@ -2816,11 +2816,16 @@ var _engine = {
 
 		},
 		
-		loadModules: function( inputObj, commit, callback, relativePath ){
+		loadModules: function( inputObj, callback, relativePath ){
 			
 			/* Setup relative path */
 			if( typeof relativePath === 'undefined' ) relativePath = "js/modules/";
 			
+			/* Obtain baseUrl for requests */
+			var commit = "";
+			typeof window.localStorage.mnsEngine_betaStatus === 'undefined' || window.localStorage.mnsEngine_betaStatus === "false" ?
+				commit = $('script[data-scriptengine]').attr('data-master'):
+				commit = $('script[data-scriptengine]').attr('data-beta');
 			var baseUrl = `https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/${commit}/`;
 			
 			$.each(inputObj,function( folder, items ){
@@ -3416,8 +3421,15 @@ var _engine = {
 			//Enable Beta
 			_engine.storage.betaStatus.set( false );
 			
-			_engine.storage.prefillCache.clear();
+			var _masterCommit = _engine.advanced.masterCommit();
 			
+			//Change CSS Repo
+			$('link[data-scriptengine]').attr("href", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/css/appStyles.css");
+			//Change Script Repo
+			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/js/app.js" );
+			
+			_engine.storage.prefillCache.clear();
+						
 			console.debug("_engine.debug: Release Access Enabled. Logging Disabled.");
 			
 			_engine.ui.topNotification("Script Library: Release");
