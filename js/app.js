@@ -1654,6 +1654,8 @@ var _engine = {
 			
 			if( String( window.localStorage.mnsEngine_Status.toLowerCase() ) === "false" ){
 				
+				console.log("Fresh Start");
+				
 				/* Loading status indicator start */
 				
 				var _t = ["Script Library: Loading.","Script Library: Loading..","Script Library: Loading...","Script Library: Loading&nbsp...","Script Library: Loading&nbsp;&nbsp...","Script Library: Loading&nbsp;&nbsp;&nbsp;...","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;..","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.","Script Library: Loading"];
@@ -1690,14 +1692,16 @@ var _engine = {
 				
 				setTimeout(function(){
 					
-					_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
-					
+					console.log("Fresh Start - Loading Modules");
 					_engine.tools.loadModules( _engine.config.modules, _engine.tools.loadModules );
 					
 					/* Modules loaded finish script startup process. */
 					
 					setTimeout(function(){
 						
+						console.log("Fresh Start - Continuing Startup");
+						
+						_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
 								/* Loaded
 						/* Scripts Main Button
 						========================*/
@@ -1751,9 +1755,13 @@ var _engine = {
 			
 			} else {
 				
+				console.log("Continued Start");
+				
 				_engine.tools.loadModules( _engine.config.modules, _engine.tools.loadModules );
 				
 				setTimeout(function(){
+					console.log("Continued Start - next");
+					
 					_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
 					//Build menu again if repo is updated
 					_engine.ui.scriptMenu.refresh();
