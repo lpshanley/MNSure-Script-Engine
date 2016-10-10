@@ -2828,16 +2828,16 @@ var _engine = {
 				commit = $('script[data-scriptengine]').attr('data-beta');
 			var baseUrl = `https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/${commit}/`;
 			
+			console.log( baseUrl );
+			
 			$.each(inputObj,function( folder, items ){
-				
-				relativePath = relativePath + folder + "/";
-				
 				if( Array.isArray( items ) ){
 					$.each(items,function(key,module){
 						var url = `${ baseUrl }${relativePath}${module}.js`;
 						$.getScript( url );
 					});
 				} else {
+					relativePath += folder + "/";
 					callback( items, callback, relativePath );
 				}
 			});
