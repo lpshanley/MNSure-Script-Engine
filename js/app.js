@@ -2821,6 +2821,8 @@ var _engine = {
 			/* Setup relative path */
 			if( typeof relativePath === 'undefined' ) relativePath = "js/modules/";
 			
+			var baseUrl = `https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/${commit}/`;
+			
 			console.log( relativePath );
 			
 			$.each(inputObj,function( folder, items ){
