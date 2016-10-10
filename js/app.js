@@ -2823,12 +2823,20 @@ var _engine = {
 		
 		loadModules: function( inputObj, callback, relativePath ){
 			
+			/* Setup relative path */
 			if( typeof relativePath === 'undefined' ) relativePath = "js/modules/";
-
+			
+			/* Obtain baseUrl for requests */
+			var commit = "";
+			typeof window.localStorage.mnsEngine_betaStatus === 'undefined' || window.localStorage.mnsEngine_betaStatus === "false" ?
+				commit = $('script[data-scriptengine]').attr('data-master'):
+				commit = $('script[data-scriptengine]').attr('data-beta');
+			var baseUrl = `https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/${commit}/`;
+			
 			$.each(inputObj,function( folder, items ){
 				if( Array.isArray( items ) ){
 					$.each(items,function(key,module){
-						var url = `${_engine.advanced.baseUrl()}${relativePath}${module}.js`;
+						var url = `${ baseUrl }${relativePath}${module}.js`;
 						$.getScript( url );
 					});
 				} else {
