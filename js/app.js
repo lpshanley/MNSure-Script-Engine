@@ -3058,6 +3058,7 @@ var _engine = {
 		/* [Advanced] Returns the needed base URL for ajax requests 
 		/********************************************************************/
 		
+		/* Cannot Relocate */
 		baseUrl: function(){
 			
 			var _commit = _engine.advanced.currentCommit();
@@ -3066,13 +3067,6 @@ var _engine = {
 			
 			return _url;
 			
-		},
-		
-		/* [Advanced] Returns the entensions URL
-		/********************************************************************/
-		
-		extensionURL: function(){
-			return $('script[data-scriptengine]').attr('data-chromeurl');
 		},
 		
 		/* [Advanced] Returns the ID of the extension
@@ -3543,7 +3537,7 @@ var _engine = {
 			"advanced" : {
 		
 				'load' : [
-					'test'
+					'extensionUrl'
 				]
 
 			}
