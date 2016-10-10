@@ -1705,7 +1705,7 @@ var _engine = {
 								commit = $('script[data-scriptengine]').attr('data-beta'):
 								commit = $('script[data-scriptengine]').attr('data-master');
 
-							//_engine.tools.loadModules( _engine.config.modules, commit, _engine.tools.loadModules );
+							_engine.tools.loadModules( _engine.config.modules, commit, _engine.tools.loadModules );
 
 							setTimeout(function(){
 
