@@ -3537,7 +3537,7 @@ var _engine = {
 			"advanced" : {
 		
 				'load' : [
-					'extensionUrl'
+					'extensionURL'
 				]
 
 			}
