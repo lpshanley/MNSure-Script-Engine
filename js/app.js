@@ -2831,7 +2831,7 @@ var _engine = {
 			$.each(inputObj,function( folder, items ){
 				if( Array.isArray( items ) ){
 					$.each(items,function(key,module){
-						var url = `${ baseUrl }${relativePath}${module}.js`;
+						var url = `${ baseUrl }${relativePath}${folder}/${module}.js`;
 						$.getScript( url );
 					});
 				} else {
