@@ -1,1 +1,5 @@
-testFunction( "Working?" );
+defineModule( "test",{
+	
+	'test': ''
+	
+});
