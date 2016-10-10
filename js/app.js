@@ -1652,17 +1652,10 @@ var _engine = {
 		
 		_startUp: function() {
 	
-			var commit = "";
-
-			var url = window.location.href;
-			var isBeta = url.split("?").length > 1  && url.split("?")[url.split("?").length-1].toLowerCase() === "beta";
-
-			isBeta ?
-				commit = $('script[data-scriptengine]').attr('data-beta'):
-				commit = $('script[data-scriptengine]').attr('data-master');
+			/* Setup loading display */
 
 			if( String( window.localStorage.mnsEngine_Status.toLowerCase() ) === "false" ){
-				/* Set script engine to run */
+
 				window.localStorage.mnsEngine_Status = 'true';
 
 				var _t = ["Script Library: Loading.","Script Library: Loading..","Script Library: Loading...","Script Library: Loading&nbsp...","Script Library: Loading&nbsp;&nbsp...","Script Library: Loading&nbsp;&nbsp;&nbsp;...","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;..","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.","Script Library: Loading"];
@@ -1695,55 +1688,61 @@ var _engine = {
 
 				_loading;
 
-				/* Setup 2 second timout to ensure jQuery is loaded */
+				/* Start by loading jQuery */
 
-				setTimeout(function(){
+				var _count = 0;
+				var jQueryTimeout = setInterval(function(){
+					if( _count <= 80 ){
+						if( typeof jQuery === 'function' ){
+							/* jQuery is now loaded */
 
-					_engine.tools.loadModules( _engine.config.modules, commit, _engine.tools.loadModules );
+							var commit = "";
 
-					/* Setup 1 second timout to ensure modules are loaded */
+							var url = window.location.href;
+							var isBeta = url.split("?").length > 1  && url.split("?")[url.split("?").length-1].toLowerCase() === "beta";
 
-					setTimeout(function(){
+							isBeta ?
+								commit = $('script[data-scriptengine]').attr('data-beta'):
+								commit = $('script[data-scriptengine]').attr('data-master');
 
-						_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
+							//_engine.tools.loadModules( _engine.config.modules, commit, _engine.tools.loadModules );
 
-						/* Loaded
-						/* Scripts Main Button
-						========================*/
+							setTimeout(function(){
 
-						//********** Right Click **********//
-						// Performs Quick Load of Searches
+								/* Load Additional Libraries */
+								_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
 
-						$('#script-launcher a').contextmenu(function(e){
+								/* Scripts Shortcut handle
+								========================*/
 
-								// Prevent context menu pop-up
-							e.preventDefault();
+								//********** Right Click **********//
+								// Performs Quick Load of Searches
 
-								// Open Case Search
-							_engine.search._case();
+								$('#script-launcher a').contextmenu(function(e){
+									e.preventDefault();
+									_engine.search._case();
+									_engine.search._person();
+								});
 
-								// Open Person Search
-							_engine.search._person();
+								clearInterval( _loading );
 
-						});
+								isBeta ?
+									_engine.beta.enableBeta():
+									_engine.beta.enableRelease();
 
-						clearInterval( _loading );
+								_engine.ui.scriptMenu.refresh();
 
-						isBeta ?
-							_engine.beta.enableBeta():
-							_engine.beta.enableRelease();
+							},1000);
 
-						//Build out menu
-						_engine.ui.scriptMenu.refresh();
-
-						_engine.storage.engineStatus.set( true );
-
-					},1000);
-
-				},2000);
-
+							clearInterval( jQueryTimeout );
+						}
+					} else {
+						clearInterval( jQueryTimeout );
+					}
+					_count++;
+				},50);
+				jQueryTimeout;
 			}
-
 		},
 		
 		/* [Events] Converts click events into useable sets of functions
