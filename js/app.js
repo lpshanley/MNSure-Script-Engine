@@ -1751,11 +1751,14 @@ var _engine = {
 			
 			} else {
 				
-				_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
 				_engine.tools.loadModules( _engine.config.modules, _engine.tools.loadModules );
 				
-				//Build menu again if repo is updated
-				_engine.ui.scriptMenu.refresh();
+				setTimeout(function(){
+					_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
+					//Build menu again if repo is updated
+					_engine.ui.scriptMenu.refresh();
+					
+				}, 1000);
 				
 			}
 
