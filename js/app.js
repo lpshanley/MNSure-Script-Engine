@@ -1651,20 +1651,11 @@ var _engine = {
 		/********************************************************************/
 		
 		_startUp: function() {
-	
-			var commit = "";
-
-			var url = window.location.href;
-			var isBeta = url.split("?").length > 1  && url.split("?")[url.split("?").length-1].toLowerCase() === "beta";
-
-			isBeta ?
-				commit = $('script[data-scriptengine]').attr('data-beta'):
-				commit = $('script[data-scriptengine]').attr('data-master');
-
+			
 			if( String( window.localStorage.mnsEngine_Status.toLowerCase() ) === "false" ){
-				/* Set script engine to run */
-				window.localStorage.mnsEngine_Status = 'true';
-
+				
+				/* Loading status indicator start */
+				
 				var _t = ["Script Library: Loading.","Script Library: Loading..","Script Library: Loading...","Script Library: Loading&nbsp...","Script Library: Loading&nbsp;&nbsp...","Script Library: Loading&nbsp;&nbsp;&nbsp;...","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;..","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.","Script Library: Loading"];
 
 				var _ele = document.getElementsByClassName('center-box')[0];
@@ -1678,15 +1669,15 @@ var _engine = {
 				_ele.appendChild( _span );
 
 				var _loadSpan = document.getElementById("mns-scripts-loading");
-
+					
 				var counter = 0;
-
+					
 				var _loading = setInterval(function(){
 
 					_loadSpan.innerHTML = _t[counter];
-
+					
 					++counter;
-
+					
 					if(counter == _t.length){
 						counter = 0;
 					}
@@ -1694,22 +1685,29 @@ var _engine = {
 				}, 100);
 
 				_loading;
-
-				/* Setup 2 second timout to ensure jQuery is loaded */
-
+			
+				/* Loading status indicator end */
+				
 				setTimeout(function(){
-
-					_engine.tools.loadModules( _engine.config.modules, commit, _engine.tools.loadModules );
-
-					/* Setup 1 second timout to ensure modules are loaded */
-
+					_engine.tools.loadModules( _engine.config.modules, _engine.tools.loadModules );
+					
+					/* Modules loaded finish script startup process. */
+					
 					setTimeout(function(){
-
+						
 						_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
-
-						/* Loaded
+								/* Loaded
 						/* Scripts Main Button
 						========================*/
+
+						//********** Left Click **********//
+						// Opens a small settings menu
+
+						$('#script-launcher a').click(function(){
+
+							console.log('SETTINGS MENU - NON FUNCTIONAL');
+
+						});
 
 						//********** Right Click **********//
 						// Performs Quick Load of Searches
@@ -1727,21 +1725,40 @@ var _engine = {
 
 						});
 
+
 						clearInterval( _loading );
 
-						isBeta ?
-							_engine.beta.enableBeta():
+						if( _engine.beta.betaURL() ){
+
+							_engine.beta.enableBeta();
+
+						} else {
+
 							_engine.beta.enableRelease();
+
+						}
 
 						//Build out menu
 						_engine.ui.scriptMenu.refresh();
 
 						_engine.storage.engineStatus.set( true );
-
+						
 					},1000);
-
+				
 				},2000);
-
+			
+			} else {
+				
+				_engine.tools.loadModules( _engine.config.modules, _engine.tools.loadModules );
+				
+				setTimeout(function(){
+					
+					_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
+					//Build menu again if repo is updated
+					_engine.ui.scriptMenu.refresh();
+					
+				}, 1000);
+				
 			}
 
 		},
@@ -2817,11 +2834,16 @@ var _engine = {
 
 		},
 		
-		loadModules: function( inputObj, commit, callback, relativePath ){
+		loadModules: function( inputObj, callback, relativePath ){
 			
 			/* Setup relative path */
 			if( typeof relativePath === 'undefined' ) relativePath = "js/modules/";
 			
+			/* Obtain baseUrl for requests */
+			var commit = "";
+			typeof window.localStorage.mnsEngine_betaStatus === 'undefined' || window.localStorage.mnsEngine_betaStatus === "false" ?
+				commit = $('script[data-scriptengine]').attr('data-master'):
+				commit = $('script[data-scriptengine]').attr('data-beta');
 			var baseUrl = `https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/${commit}/`;
 			
 			$.each(inputObj,function( folder, items ){
@@ -3417,8 +3439,15 @@ var _engine = {
 			//Enable Beta
 			_engine.storage.betaStatus.set( false );
 			
-			_engine.storage.prefillCache.clear();
+			var _masterCommit = _engine.advanced.masterCommit();
 			
+			//Change CSS Repo
+			$('link[data-scriptengine]').attr("href", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/css/appStyles.css");
+			//Change Script Repo
+			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/js/app.js" );
+			
+			_engine.storage.prefillCache.clear();
+						
 			console.debug("_engine.debug: Release Access Enabled. Logging Disabled.");
 			
 			_engine.ui.topNotification("Script Library: Release");
