@@ -2806,11 +2806,13 @@ var _engine = {
 		defineModule: function( extendsEngine, extensionObj ){
 
 			var engineObj = _engine;
-
+			
 			$.each(extendsEngine.split("/"),function(key,value){
 				if( typeof engineObj[value] === 'undefined' ) engineObj[value] = {};
 				engineObj = engineObj[ value ];
 			});
+			
+			console.log( engineObj );
 
 			$.extend(true,engineObj,extensionObj);
 
