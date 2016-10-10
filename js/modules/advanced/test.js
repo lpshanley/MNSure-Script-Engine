@@ -1,4 +1,4 @@
-(function(){
+function(){
 	
 	this.test = {};
 	
@@ -6,4 +6,4 @@
 	
 	return this;
 	
-});
+}
