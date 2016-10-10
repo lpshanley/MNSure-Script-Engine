@@ -1,11 +1,7 @@
-var test = {
+(function(){
 	
-	work: 'that',
-
-	test: function(){
-
-		console.log('Working');
-
-	}
-
-}
+	this.test = {};
+	
+	this.test.variable = "working";	
+	
+});
