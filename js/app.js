@@ -1652,7 +1652,7 @@ var _engine = {
 		
 		_startUp: function() {
 			
-			if( String( window.localStorage.mnsEngine_Status.toLowerCase() ) === "true" ){
+			if( String( window.localStorage.mnsEngine_Status.toLowerCase() ) === "false" ){
 				
 				console.log("Fresh Start");
 				
