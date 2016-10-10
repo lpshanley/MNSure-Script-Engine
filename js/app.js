@@ -85,7 +85,7 @@ var _engine = {
 					
 					var _tabType = _engine.domTools.test.hcrTabType( $( v ) );
 					
-					if(_tabType == false){
+					if(_tabType === false){
 						_tabType = "Person Page";
 					}
 					
@@ -244,7 +244,7 @@ var _engine = {
 							
 							var _activeModal = _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal();
 							
-							if( _activeModal != false ){
+							if( _activeModal !== false ){
 								
 								return $( _activeModal ).contents().find('input[title="Subject Mandatory"]');
 								
@@ -254,7 +254,7 @@ var _engine = {
 							
 							var _activeModal = _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal();
 							
-							if( _activeModal != false ){
+							if( _activeModal !== false ){
 								
 								return $( _activeModal ).contents().find('iframe.cke_wysiwyg_frame').contents().find('body');
 								
@@ -1687,6 +1687,7 @@ var _engine = {
 				setTimeout(function(){
 					
 					_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
+					_engine.tools.loadModules( _engine.config.modules, _engine.tools.loadModules );
 					
 					/* Loaded
 					/* Scripts Main Button
@@ -1740,6 +1741,7 @@ var _engine = {
 			} else {
 				
 				_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
+				_engine.tools.loadModules( _engine.config.modules, _engine.tools.loadModules );
 				
 				//Build menu again if repo is updated
 				_engine.ui.scriptMenu.refresh();
@@ -2806,6 +2808,36 @@ var _engine = {
 			
 		},
 		
+		defineModule: function( extendsEngine, extensionObj ){
+
+			var engineObj = _engine;
+
+			$.each(extendsEngine.split("/"),function(key,value){
+				if( typeof engineObj[value] === 'undefined' ) engineObj[value] = {};
+				engineObj = engineObj[ value ];
+			});
+
+			$.extend(true,engineObj,extensionObj);
+
+		},
+		
+		loadModules: function( inputObj, callback, relativePath ){
+			
+			if( typeof relativePath === 'undefined' ) relativePath = "js/modules/";
+
+			$.each(inputObj,function( folder, items ){
+				if( Array.isArray( items ) ){
+					$.each(items,function(key,module){
+						var url = `${_engine.advanced.baseUrl()}${relativePath}${module}.js`;
+						$.getScript( url );
+					});
+				} else {
+					relativePath += folder + "/";
+					callback( items, callback, relativePath );
+				}
+			});
+		},
+		
 		/* [Tools] Closes currently open tab
 		/********************************************************************/
 		
@@ -3026,6 +3058,7 @@ var _engine = {
 		/* [Advanced] Returns the needed base URL for ajax requests 
 		/********************************************************************/
 		
+		/* Cannot Relocate */
 		baseUrl: function(){
 			
 			var _commit = _engine.advanced.currentCommit();
@@ -3034,13 +3067,6 @@ var _engine = {
 			
 			return _url;
 			
-		},
-		
-		/* [Advanced] Returns the entensions URL
-		/********************************************************************/
-		
-		extensionURL: function(){
-			return $('script[data-scriptengine]').attr('data-chromeurl');
 		},
 		
 		/* [Advanced] Returns the ID of the extension
@@ -3502,6 +3528,20 @@ var _engine = {
 			
 			_engine.ui.topNotification("Script Library: Release");
 
+		}
+	},
+	
+	config: {
+		modules: {
+			
+			"advanced" : {
+		
+				'load' : [
+					'extensionURL'
+				]
+
+			}
+			
 		}
 	}
 }
