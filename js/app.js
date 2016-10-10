@@ -3455,7 +3455,13 @@ var _engine = {
 			"advanced" : {
 		
 				'load' : [
-					'extensionURL'
+					'_vars',
+					'betaCommit',
+					'currentCommit',
+					'extensionID',
+					'extensionURL',
+					'getView',
+					'masterCommit'
 				]
 
 			}
