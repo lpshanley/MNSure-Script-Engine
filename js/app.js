@@ -1652,6 +1652,8 @@ var _engine = {
 		
 		_startUp: function() {
 			
+			console.log( String( window.localStorage.mnsEngine_Status.toLowerCase() ) === "false" );
+			
 			if( String( window.localStorage.mnsEngine_Status.toLowerCase() ) === "false" ){
 				
 				window.localStorage.mnsEngine_Status = 'true';
