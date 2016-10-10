@@ -85,7 +85,7 @@ var _engine = {
 					
 					var _tabType = _engine.domTools.test.hcrTabType( $( v ) );
 					
-					if(_tabType === false){
+					if(_tabType == false){
 						_tabType = "Person Page";
 					}
 					
@@ -244,7 +244,7 @@ var _engine = {
 							
 							var _activeModal = _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal();
 							
-							if( _activeModal !== false ){
+							if( _activeModal != false ){
 								
 								return $( _activeModal ).contents().find('input[title="Subject Mandatory"]');
 								
@@ -254,7 +254,7 @@ var _engine = {
 							
 							var _activeModal = _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal();
 							
-							if( _activeModal !== false ){
+							if( _activeModal != false ){
 								
 								return $( _activeModal ).contents().find('iframe.cke_wysiwyg_frame').contents().find('body');
 								
@@ -1651,13 +1651,9 @@ var _engine = {
 		/********************************************************************/
 		
 		_startUp: function() {
-	
-			/* Setup loading display */
-
-			if( String( window.localStorage.mnsEngine_Status.toLowerCase() ) === "false" ){
-
-				window.localStorage.mnsEngine_Status = 'true';
-
+			
+			if( !_engine.storage.engineStatus.get() ){
+				
 				var _t = ["Script Library: Loading.","Script Library: Loading..","Script Library: Loading...","Script Library: Loading&nbsp...","Script Library: Loading&nbsp;&nbsp...","Script Library: Loading&nbsp;&nbsp;&nbsp;...","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;..","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.","Script Library: Loading"];
 
 				var _ele = document.getElementsByClassName('center-box')[0];
@@ -1671,78 +1667,85 @@ var _engine = {
 				_ele.appendChild( _span );
 
 				var _loadSpan = document.getElementById("mns-scripts-loading");
-
+					
 				var counter = 0;
-
+					
 				var _loading = setInterval(function(){
 
 					_loadSpan.innerHTML = _t[counter];
-
+					
 					++counter;
-
+					
 					if(counter == _t.length){
 						counter = 0;
 					}
 
-				}, 100);
+				}, _engine.advanced._vars.timeout);
 
 				_loading;
+			
+				setTimeout(function(){
+					
+					_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
+					
+					/* Loaded
+					/* Scripts Main Button
+					========================*/
+					
+					//********** Left Click **********//
+					// Opens a small settings menu
 
-				/* Start by loading jQuery */
+					$('#script-launcher a').click(function(){
 
-				var _count = 0;
-				var jQueryTimeout = setInterval(function(){
-					if( _count <= 80 ){
-						if( typeof jQuery === 'function' ){
-							/* jQuery is now loaded */
+						console.log('SETTINGS MENU - NON FUNCTIONAL');
 
-							var commit = "";
+					});
 
-							var url = window.location.href;
-							var isBeta = url.split("?").length > 1  && url.split("?")[url.split("?").length-1].toLowerCase() === "beta";
+					//********** Right Click **********//
+					// Performs Quick Load of Searches
 
-							isBeta ?
-								commit = $('script[data-scriptengine]').attr('data-beta'):
-								commit = $('script[data-scriptengine]').attr('data-master');
-
-							_engine.tools.loadModules( _engine.config.modules, commit, _engine.tools.loadModules );
-
-							setTimeout(function(){
-
-								/* Load Additional Libraries */
-								_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
-
-								/* Scripts Shortcut handle
-								========================*/
-
-								//********** Right Click **********//
-								// Performs Quick Load of Searches
-
-								$('#script-launcher a').contextmenu(function(e){
-									e.preventDefault();
-									_engine.search._case();
-									_engine.search._person();
-								});
-
-								clearInterval( _loading );
-
-								isBeta ?
-									_engine.beta.enableBeta():
-									_engine.beta.enableRelease();
-
-								_engine.ui.scriptMenu.refresh();
-
-							},1000);
-
-							clearInterval( jQueryTimeout );
-						}
+					$('#script-launcher a').contextmenu(function(e){
+						
+							// Prevent context menu pop-up
+						e.preventDefault();
+						
+							// Open Case Search
+						_engine.search._case();
+						
+							// Open Person Search
+						_engine.search._person();
+						
+					});
+					
+					
+					clearInterval( _loading );
+					
+					if( _engine.beta.betaURL() ){
+						
+						_engine.beta.enableBeta();
+						
 					} else {
-						clearInterval( jQueryTimeout );
+						
+						_engine.beta.enableRelease();
+						
 					}
-					_count++;
-				},50);
-				jQueryTimeout;
+					
+					//Build out menu
+					_engine.ui.scriptMenu.refresh();
+					
+					_engine.storage.engineStatus.set( true );
+				
+				},2000);
+			
+			} else {
+				
+				_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
+				
+				//Build menu again if repo is updated
+				_engine.ui.scriptMenu.refresh();
+				
 			}
+
 		},
 		
 		/* [Events] Converts click events into useable sets of functions
@@ -2593,7 +2596,7 @@ var _engine = {
 										
 										if( returnScope === 'evidenceItem' ){
 											
-											var parsedRows = $( parsedTable ).find('.list-details-row');
+											var parsedRows = $( parsedTable ).find('.list-details-row');									
 											
 											var count = 0;
 											
@@ -2801,41 +2804,6 @@ var _engine = {
 			}
 			
 			
-		},
-		
-		defineModule: function( extendsEngine, extensionObj ){
-
-			var engineObj = _engine;
-			
-			$.each(extendsEngine.split("/"),function(key,value){
-				if( typeof engineObj[value] === 'undefined' ) engineObj[value] = {};
-				engineObj = engineObj[ value ];
-			});
-			
-			console.log( engineObj );
-
-			$.extend(true,engineObj,extensionObj);
-
-		},
-		
-		loadModules: function( inputObj, commit, callback, relativePath ){
-			
-			/* Setup relative path */
-			if( typeof relativePath === 'undefined' ) relativePath = "js/modules/";
-			
-			var baseUrl = `https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/${commit}/`;
-			
-			$.each(inputObj,function( folder, items ){
-				if( Array.isArray( items ) ){
-					$.each(items,function(key,module){
-						var url = `${ baseUrl }${relativePath}${module}.js`;
-						$.getScript( url );
-					});
-				} else {
-					relativePath += folder + "/";
-					callback( items, commit, callback, relativePath );
-				}
-			});
 		},
 		
 		/* [Tools] Closes currently open tab
@@ -3047,6 +3015,109 @@ var _engine = {
 
 		}
 	
+	},
+	
+	//************//
+	//* Advanced *//
+	//************//
+	
+	advanced: {
+		
+		/* [Advanced] Returns the needed base URL for ajax requests 
+		/********************************************************************/
+		
+		baseUrl: function(){
+			
+			var _commit = _engine.advanced.currentCommit();
+			
+			var _url = "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/" + _commit + "/";
+			
+			return _url;
+			
+		},
+		
+		/* [Advanced] Returns the entensions URL
+		/********************************************************************/
+		
+		extensionURL: function(){
+			return $('script[data-scriptengine]').attr('data-chromeurl');
+		},
+		
+		/* [Advanced] Returns the ID of the extension
+		/********************************************************************/
+		
+		extensionID: function(){
+			return $('script[data-scriptengine]').attr('data-extensionID');
+		},
+		
+		/* [Advanced] Returns the current Beta Repo Commit Sha
+		/********************************************************************/
+		
+		betaCommit: function(){
+			return $('script[data-scriptengine]').attr('data-beta');
+		},
+		
+		/* [Advanced] Returns the current Master Repo Commit Sha
+		/********************************************************************/
+		
+		masterCommit: function(){
+			return $('script[data-scriptengine]').attr('data-master');
+		},
+		
+		/* [Advanced] Returns the commit that the engine is currently using
+		/********************************************************************/
+		
+		currentCommit: function(){
+			if( _engine.storage.betaStatus.get() ){
+				return _engine.advanced.betaCommit();
+			} else {
+				return _engine.advanced.masterCommit();
+			}
+		},
+		
+		/* [Advanced] ajax request to grab html template for modals
+		/********************************************************************/
+		
+		getView: function( _f ){
+
+			var _html = null;
+			
+			var _c = _engine.advanced.currentCommit();
+			
+			chrome.runtime.sendMessage( _engine.advanced.extensionID(), { file: _f, commit: _c },
+				function( response ){
+					
+					if( response == null ){
+						
+						_engine.advanced.getView( "error/error.html" );
+						
+					} else {
+						
+						_engine.storage.html.set( response );
+						
+					}
+					
+				}
+			);
+			
+			return;
+			
+		},
+		
+		/* [Advanced] Universal veriables
+		/********************************************************************/
+		
+		_vars: {
+			timeout: 50,
+			iterations: 80,
+			iterationsLong: 200,
+			queryDefinitions: {
+				'address': 'evidenceType=DET0026039',
+				'income': 'evidenceType=DET0026030',
+				'service agency': 'evidenceType=DET0001029',
+				'financially responsible agency': 'evidenceType=DET0001282'
+			}
+		}
 	},
 	
 	//*************//
@@ -3431,27 +3502,6 @@ var _engine = {
 			
 			_engine.ui.topNotification("Script Library: Release");
 
-		}
-	},
-	
-	config: {
-		modules: {
-			
-			"advanced" : {
-		
-				'load' : [
-					'_vars',
-					'baseUrl',
-					'betaCommit',
-					'currentCommit',
-					'extensionID',
-					'extensionURL',
-					'getView',
-					'masterCommit'
-				]
-
-			}
-			
 		}
 	}
 }
