@@ -7,5 +7,3 @@ var test = function(){
 	return this;
 	
 }
-
-return test();
