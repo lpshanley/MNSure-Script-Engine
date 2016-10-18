@@ -935,11 +935,11 @@ var _engine = {
 				
 				var _url = _engine.advanced.baseUrl();
 				
-				if( _engine.beta.betaURL() ){
-					var filePath = "json/beta script menu.json";
-				} else {
-					var filePath = "json/release script menu.json";
-				}
+				var filePath = "json/";
+				
+				_engine.storage.config.get('commit.current') === 'master' ?
+					filePath += "script menu.json":
+					filePath += "dev script menu.json";
 				
 				$.ajax({
 					dataType: "json",
@@ -1724,8 +1724,6 @@ var _engine = {
 					_engine.storage.debugStatus.set( true );
 
 				_engine.storage.prefillCache.clear();
-
-				console.debug("_engine.debug: "+ version +" Access Enabled. Logging Disabled.");
 
 				_engine.ui.topNotification("Script Library: "+version);
 
@@ -3102,8 +3100,6 @@ var _engine = {
 					
 					$.each( reqArray, function(k,v){
 						
-						console.log(typeof config[v]);
-						
 						typeof config[v] === "undefined" ?
 							config = false :
 							config = config[v];
@@ -3418,21 +3414,7 @@ var _engine = {
 			}
 			
 		},
-		
-		/* [Beta] Enable default set of Release features 
-		/********************************************************************/
-		
-		enableRelease: function(){
-			//Enable Debugging
-			_engine.storage.debugStatus.set( false );
 
-			_engine.storage.prefillCache.clear();
-						
-			console.debug("_engine.debug: Release Access Enabled. Logging Disabled.");
-			
-			_engine.ui.topNotification("Script Library: Release");
-
-		}
 	}
 }
 
