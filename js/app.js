@@ -3095,17 +3095,17 @@ var _engine = {
 				
 				let config = _engine.storage._data.decode( window.localStorage.mnsEngine_Config );
 				
-				if(typeof reqString === 'string'){ 
+				if(typeof reqString === "string"){ 
 					
 					let reqArray = reqString.split('.');
 					
 					$.each( reqArray, function(k,v){
 						
-						if(typeof config[v] === 'undefined') return false;
+						console.log(typeof config[v]);
 						
-						console.log(typeof config[v] === 'undefined');
-						
-						config = config[v];
+						typeof test['rawr'] === "undefined" ) ?
+							return false :
+							config = config[v];
 						
 					});
 					
