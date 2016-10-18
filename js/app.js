@@ -2990,62 +2990,6 @@ var _engine = {
 	
 	},
 	
-	//************//
-	//* Advanced *//
-	//************//
-	
-	advanced: {
-		
-		/* [Advanced] Returns the needed base URL for ajax requests 
-		/********************************************************************/
-		
-		baseUrl: function(){
-			return _engine.storage.config.get('advanced.baseUrl');
-		},
-		
-		/* [Advanced] Returns the ID of the extension
-		/********************************************************************/
-		
-		extensionID: function(){
-			return _engine.storage.config.get('extension.id');
-		},
-		
-		getCommit: function( commit ){
-			if(typeof commit === 'undefined') commit = _engine.storage.config.get('commit.current');
-			
-			return _engine.storage.config.get('commit.'+commit);
-		},
-		
-		/* [Advanced] ajax request to grab html template for modals
-		/********************************************************************/
-		
-		getView: function( _f ){
-
-			var _html = null;
-			
-			var _c = _engine.storage.config.get('commit.current');
-			
-			chrome.runtime.sendMessage( _engine.advanced.extensionID(), { file: _f, commit: _c },
-				function( response ){
-					
-					if( response == null ){
-						
-						_engine.advanced.getView( "error/error.html" );
-						
-					} else {
-						
-						_engine.storage.html.set( response );
-						
-					}
-					
-				}
-			);
-			
-			return;
-			
-		}
-	},
-	
 	//*************//
 	//*  Storage  *//
 	//*************//
@@ -3290,6 +3234,9 @@ var _engine = {
 		
 		config: [
 			'advanced/_vars',
+			'advanced/baseUrl',
+			'advanced/getCommit',
+			'advanced/getView',
 			'debug/toggle',
 			'debug/debug',
 			'debug/error',
