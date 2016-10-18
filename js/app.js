@@ -3366,55 +3366,6 @@ var _engine = {
 				console.debug("_engine.debug: " + msg);
 			}
 		}
-	},
-	
-	//************//
-	//*   Beta   *//
-	//************//
-	
-	beta: {
-		
-		/* [Beta] Enable default set of Beta features 
-		/********************************************************************/
-		
-		enableBeta: function(){
-			//Enable Debugging
-			_engine.storage.debugStatus.set( true );
-			
-			_engine.storage.prefillCache.clear();
-			
-			_engine.debug.debug("Beta User Access Enabled. Logging Enabled.");
-			
-			_engine.ui.topNotification("Script Library: Beta");
-			
-		},
-		
-		/* [Beta] Return true/false based on if beta flag is in url
-		/********************************************************************/
-		
-		betaURL: function(){
-			var url = window.location.href;
-			
-			if( url.split("?").length > 1 ){
-				
-				if( url.split("?")[url.split("?").length-1].toLowerCase() == "beta" ){
-					
-					return true;
-					
-				} else {
-					
-					return false;
-					
-				}
-				
-			} else {
-				
-				return false;
-				
-			}
-			
-		},
-
 	}
 }
 
