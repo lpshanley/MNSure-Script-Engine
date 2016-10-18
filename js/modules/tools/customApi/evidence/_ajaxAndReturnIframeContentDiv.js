@@ -1,4 +1,4 @@
-_engine.module.define('tools/customApi/evidence/_ajaxAndReturnContentDiv',function( reqObj, callback ){
+_engine.module.define('tools/customApi/evidence/_ajaxAndReturnIframeContentDiv',function( reqObj, callback ){
 	
 	var ajaxObj = function( inputObj ){
 
