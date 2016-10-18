@@ -15,8 +15,8 @@ var _engine = {
 	//*   Search   *//
 	//**************//
 	
-	search: {
-		
+	search: { 
+		 
 		/* [Search] Opens a new person search
 		/********************************************************************/
 		
@@ -3129,6 +3129,14 @@ var _engine = {
 		/* [Storage] HTML
 		/********************************************************************/
 		
+		_data: {
+			encode: function( input ){
+				return encodeURIComponent( JSON.stringify( input ) );
+			},
+			decode: function( input ){
+				return decodeURIComponent( $.parseJSON( input ) );
+			}
+		},		
 		html: {
 			set: function( _html ){
 				window.localStorage.setItem( "mnsEngine_html", _html );
