@@ -1714,19 +1714,20 @@ var _engine = {
 					_engine.search._person();
 
 				});
-
-
+				
 				clearInterval( _loading );
+				
+				var version = _engine.storage.config.get('commit.current');
+				
+				version === 'master' ?
+					_engine.storage.debugStatus.set( false ):
+					_engine.storage.debugStatus.set( true );
 
-				if( _engine.beta.betaURL() ){
+				_engine.storage.prefillCache.clear();
 
-					_engine.beta.enableBeta();
+				console.debug("_engine.debug: "+ version +" Access Enabled. Logging Disabled.");
 
-				} else {
-
-					_engine.beta.enableRelease();
-
-				}
+				_engine.ui.topNotification("Script Library: "+version);
 
 				//Build out menu
 				_engine.ui.scriptMenu.refresh();
@@ -2232,7 +2233,7 @@ var _engine = {
 													
 													_engine.domTools.set.searches.fieldFill("Reference",_input);
 													
-													_engine.tools.selectSearchResult();											
+													_engine.tools.selectSearchResult();
 													
 													clearInterval( _openSearch );
 												}
@@ -2406,7 +2407,7 @@ var _engine = {
 										if( key !== "" || value !== "" ){
 											if( key === "" ){
 												key = unassigned;
-												unassigned++;												
+												unassigned++;
 											}
 											
 											jsonString += '"' + key + '":"' + value + '",'
@@ -3112,9 +3113,6 @@ var _engine = {
 				
 				return config;
 				
-			},
-			set: function( inputObj ){
-				var config = _engine.storage._data.decode( window.localStorage.mnsEngine_Config );
 			}
 		},
 		
