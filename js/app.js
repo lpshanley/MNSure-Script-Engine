@@ -933,7 +933,7 @@ var _engine = {
 				
 				var menu = null;
 				
-				var _url = _engine.advanced.baseUrl();
+				var _url = _engine.storage.config.get('advanced.baseUrl');
 				
 				var filePath = "json/";
 				
