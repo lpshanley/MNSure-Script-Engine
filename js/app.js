@@ -15,8 +15,8 @@ var _engine = {
 	//*   Search   *//
 	//**************//
 	
-	search: {
-		
+	search: { 
+		 
 		/* [Search] Opens a new person search
 		/********************************************************************/
 		
