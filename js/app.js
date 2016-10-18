@@ -3284,69 +3284,18 @@ var _engine = {
 	//*   Debug   *//
 	//*************//
 	
-	debug: {
-		
-		/* [Debug] Toggle debuging on/off
-		/********************************************************************/
-		
-		toggle: function(){
-			_engine.storage.debugStatus.set( !_engine.storage.debugStatus.get() );
-			console.debug("_engine.debug: Debugging status changed to - " + _engine.storage.debugStatus.get() );
-		},
-		
-		/* [Debug] Log message when debug is enabled
-		/********************************************************************/
-		
-		log: function( msg ){
-			if( _engine.storage.debugStatus.get() ){
-				console.log("_engine.debug: " + msg);
-			}
-		},
-		
-		/* [Debug] Info message when debug is enabled
-		/********************************************************************/
-		
-		info: function( msg ){
-			if( _engine.storage.debugStatus.get() ){
-				console.info("_engine.debug: " + msg); 
-			}
-		},
-		
-		/* [Debug] Warn message when debug is enabled
-		/********************************************************************/
-		
-		warn: function( msg ){
-			if( _engine.storage.debugStatus.get() ){
-				console.warn("_engine.debug: " + msg);
-			}
-		},
-		
-		/* [Debug] Error message when debug is enabled
-		/********************************************************************/
-		
-		error: function( msg ){
-			if( _engine.storage.debugStatus.get() ){
-				console.error("_engine.debug: " + msg);
-			}
-		},
-		
-		/* [Debug] Debug message when debug is enabled
-		/********************************************************************/
-		
-		debug: function( msg ){
-			if( _engine.storage.debugStatus.get() ){
-				console.debug("_engine.debug: " + msg);
-			}
-		}
-		
-	},
-	
 	module: {
 		
 		/* Defines the required modules to load */
 		
 		config: [
-			'advanced/_vars'
+			'advanced/_vars',
+			'debug/toggle',
+			'debug/debug',
+			'debug/error',
+			'debug/log',
+			'debug/info',
+			'debug/warn'
 		],
 		
 		/* Allows definition of functions in modular files */
