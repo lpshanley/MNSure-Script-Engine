@@ -3107,8 +3107,7 @@ var _engine = {
 							return false :
 							config = config[v];
 						
-					});
-					
+					});	
 				}
 				
 				return config;
