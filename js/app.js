@@ -3131,7 +3131,7 @@ var _engine = {
 					$.each( reqArray, function(k,v){
 					
 						if(typeof config[v] === 'undefined') return false;
-						config = config[v]:
+						config = config[v];
 					
 					});
 					
