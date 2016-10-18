@@ -1652,99 +1652,86 @@ var _engine = {
 		
 		_startUp: function() {
 			
-			if( !_engine.storage.engineStatus.get() ){
-				
-				var _t = ["Script Library: Loading.","Script Library: Loading..","Script Library: Loading...","Script Library: Loading&nbsp...","Script Library: Loading&nbsp;&nbsp...","Script Library: Loading&nbsp;&nbsp;&nbsp;...","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;..","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.","Script Library: Loading"];
+			var _t = ["Script Library: Loading.","Script Library: Loading..","Script Library: Loading...","Script Library: Loading&nbsp...","Script Library: Loading&nbsp;&nbsp...","Script Library: Loading&nbsp;&nbsp;&nbsp;...","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;..","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.","Script Library: Loading"];
 
-				var _ele = document.getElementsByClassName('center-box')[0];
+			var _ele = document.getElementsByClassName('center-box')[0];
 
-				_ele.innerHTML = "";
+			_ele.innerHTML = "";
 
-				var _span = document.createElement('span');
+			var _span = document.createElement('span');
 
-				_span.id = "mns-scripts-loading";
+			_span.id = "mns-scripts-loading";
 
-				_ele.appendChild( _span );
+			_ele.appendChild( _span );
 
-				var _loadSpan = document.getElementById("mns-scripts-loading");
-					
-				var counter = 0;
-					
-				var _loading = setInterval(function(){
+			var _loadSpan = document.getElementById("mns-scripts-loading");
 
-					_loadSpan.innerHTML = _t[counter];
-					
-					++counter;
-					
-					if(counter == _t.length){
-						counter = 0;
-					}
+			var counter = 0;
 
-				}, _engine.advanced._vars.timeout);
+			var _loading = setInterval(function(){
 
-				_loading;
-			
-				setTimeout(function(){
-					
-					_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
-					
-					/* Loaded
-					/* Scripts Main Button
-					========================*/
-					
-					//********** Left Click **********//
-					// Opens a small settings menu
+				_loadSpan.innerHTML = _t[counter];
 
-					$('#script-launcher a').click(function(){
+				++counter;
 
-						console.log('SETTINGS MENU - NON FUNCTIONAL');
+				if(counter == _t.length){
+					counter = 0;
+				}
 
-					});
+			}, _engine.advanced._vars.timeout);
 
-					//********** Right Click **********//
-					// Performs Quick Load of Searches
+			_loading;
 
-					$('#script-launcher a').contextmenu(function(e){
-						
-							// Prevent context menu pop-up
-						e.preventDefault();
-						
-							// Open Case Search
-						_engine.search._case();
-						
-							// Open Person Search
-						_engine.search._person();
-						
-					});
-					
-					
-					clearInterval( _loading );
-					
-					if( _engine.beta.betaURL() ){
-						
-						_engine.beta.enableBeta();
-						
-					} else {
-						
-						_engine.beta.enableRelease();
-						
-					}
-					
-					//Build out menu
-					_engine.ui.scriptMenu.refresh();
-					
-					_engine.storage.engineStatus.set( true );
-				
-				},2000);
-			
-			} else {
-				
+			setTimeout(function(){
+
 				_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
-				
-				//Build menu again if repo is updated
+
+				/* Loaded
+				/* Scripts Main Button
+				========================*/
+
+				//********** Left Click **********//
+				// Opens a small settings menu
+
+				$('#script-launcher a').click(function(){
+
+					console.log('SETTINGS MENU - NON FUNCTIONAL');
+
+				});
+
+				//********** Right Click **********//
+				// Performs Quick Load of Searches
+
+				$('#script-launcher a').contextmenu(function(e){
+
+						// Prevent context menu pop-up
+					e.preventDefault();
+
+						// Open Case Search
+					_engine.search._case();
+
+						// Open Person Search
+					_engine.search._person();
+
+				});
+
+
+				clearInterval( _loading );
+
+				if( _engine.beta.betaURL() ){
+
+					_engine.beta.enableBeta();
+
+				} else {
+
+					_engine.beta.enableRelease();
+
+				}
+
+				//Build out menu
 				_engine.ui.scriptMenu.refresh();
-				
-			}
+
+			},2000);
 
 		},
 		
@@ -3068,11 +3055,8 @@ var _engine = {
 		/********************************************************************/
 		
 		currentCommit: function(){
-			if( _engine.storage.betaStatus.get() ){
-				return _engine.advanced.betaCommit();
-			} else {
-				return _engine.advanced.masterCommit();
-			}
+			var config = _engine.storage.config.get();
+			return config.commit.current;
 		},
 		
 		/* [Advanced] ajax request to grab html template for modals
@@ -3186,48 +3170,6 @@ var _engine = {
 			},
 			clear: function(){
 				localStorage.removeItem( "mnsEngine_modalParams" );
-			}
-		},
-		
-		/* [Storage] Engine Status
-		/********************************************************************/
-		
-		engineStatus: {
-			set: function( _status ){
-				
-				window.localStorage.setItem( "mnsEngine_Status", _status );
-				
-			},
-			get: function(){
-					
-					return String( window.localStorage.mnsEngine_Status.toLowerCase() ) == "true";
-
-			},
-			clear: function(){
-				localStorage.removeItem( "mnsEngine_Status" );
-			}
-		},
-		
-		/* [Storage] Beta Status
-		/********************************************************************/
-		
-		betaStatus: {
-			set: function( _status ){
-				
-				window.localStorage.setItem( "mnsEngine_betaStatus", _status );
-				
-			},
-			get: function(){
-					
-				if( typeof window.localStorage.mnsEngine_betaStatus == 'undefined' ){
-					_engine.storage.betaStatus.set( false );
-				}
-				
-				return String( window.localStorage.mnsEngine_betaStatus.toLowerCase() ) == "true";
-
-			},
-			clear: function(){
-				localStorage.removeItem( "mnsEngine_betaStatus" );
 			}
 		},
 		
@@ -3454,8 +3396,6 @@ var _engine = {
 		enableBeta: function(){
 			//Enable Debugging
 			_engine.storage.debugStatus.set( true );
-			//Enable Beta
-			_engine.storage.betaStatus.set( true );
 			
 			var _betaCommit = _engine.advanced.betaCommit();
 			
@@ -3504,8 +3444,6 @@ var _engine = {
 		enableRelease: function(){
 			//Enable Debugging
 			_engine.storage.debugStatus.set( false );
-			//Enable Beta
-			_engine.storage.betaStatus.set( false );
 			
 			var _masterCommit = _engine.advanced.masterCommit();
 			
