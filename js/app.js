@@ -10,32 +10,6 @@
 // 
 
 var _engine = {
-
-	//**************//
-	//*   Search   *//
-	//**************//
-	
-	search: { 
-		 
-		/* [Search] Opens a new person search
-		/********************************************************************/
-		
-		_person: function(){
-			_engine.navigation.mainTabs.mainTabNavi('hcr',function(){
-				curam.ui.SectionShortcutsPanel.handleClickOnAnchorElement("Person_search1","");
-			});
-		},
-		
-		/* [Search] Opens a new case search
-		/********************************************************************/
-		
-		_case: function(){
-			_engine.navigation.mainTabs.mainTabNavi('hcr',function(){
-				curam.ui.SectionShortcutsPanel.handleClickOnAnchorElement("Case_search1",""); 
-			});
-		}
-		
-	},
 	
 	//***************//
 	//* DOM Toolbox *//
@@ -104,7 +78,6 @@ var _engine = {
 						_returnArray.push( v );
 						
 					}
-
 					
 				});
 				
@@ -3242,7 +3215,9 @@ var _engine = {
 			'debug/error',
 			'debug/log',
 			'debug/info',
-			'debug/warn'
+			'debug/warn',
+			'search/_case',
+			'search/_person'
 		],
 		
 		/* Allows definition of functions in modular files */
