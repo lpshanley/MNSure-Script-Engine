@@ -1,4 +1,4 @@
-_engine.module.define('tools/customApi/evidence/_evidenceQueryUrlConstructor',function(){
+_engine.module.define('tools/customApi/evidence/_evidenceQueryUrlConstructor',function( type, callback ){
 	
 	var root = "en_US/Evidence_workspaceTypeListPage.do?";
 
