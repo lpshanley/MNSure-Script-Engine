@@ -1690,8 +1690,6 @@ var _engine = {
 							_engine.search._person();
 
 						});
-
-						clearInterval( _loading );
 						
 						var version = _engine.storage.config.get('commit.current');
 						
