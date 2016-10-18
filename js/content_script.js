@@ -3,10 +3,26 @@
 /* Dependency Loading
 -------------------------------------------------*/
 
-window.localStorage.setItem( "mnsEngine_Status", false );
+var config = {
+	commit: {
+		current: 'master',
+		master: ''
+	},
+	extension: {
+		url: chrome.extension.getURL(''),
+		id: chrome.runtime.id
+	},
+	advanced: {
+		baseUrl: ''
+	}
+}
 
-var _betaCommit = null;
-var _masterCommit = null;
+let commitVersion = window.location.href.split("?");
+
+if( commitVersion.length > 1 ){
+	let version = commitVersion[1].trim();
+	config.commit.current = version;
+}
 
 $.ajax({
 	url: "https://api.github.com/repos/lpshanley/MNSure-Script-Engine/branches",
@@ -14,28 +30,31 @@ $.ajax({
 	dataType: 'json',
 	async: false,
 	success: function( data ){
-		
 		$.each(data,function(k,v){
-			
-			if(v.name == "master"){
-				_masterCommit = v.commit.sha.substring(0,7);
-			} else if(v.name == "beta"){
-				_betaCommit = v.commit.sha.substring(0,7);
+			if(v.name !== 'current'){
+				if(typeof config.commit[v.name] !== 'undefined') config.commit[v.name] = '';
+				config.commit[v.name] = v.commit.sha.substring(0,7);
 			}
-			
 		});
-		
 	}
 });
 
+if(typeof config.commit[config.commit.current] === 'undefined') config.commit.current = "master";
 
-var _styles = $('<link>', {href: 'https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/'+ _masterCommit +'/css/appStyles.css', rel: 'stylesheet', type: 'text/css', 'data-ScriptEngine': '' });
+/* Setup Preload Variables */
+config.advanced.baseUrl = "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/" + config.commit[config.commit.current] + "/";
+
+/* Store Commit info into local storage */
+window.localStorage.setItem( "mnsEngine_Config", encodeURIComponent(JSON.stringify(config)));
+
+/* Add Scripts and Build menu item to attach to MNS */
+var _styles = $('<link>', {href: 'https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/'+ config.commit[config.commit.current] +'/css/appStyles.css', rel: 'stylesheet', type: 'text/css', 'data-ScriptEngine': '' });
 $( 'head' ).append( _styles );
 
 var _jquery = $('<script>',{ 'src': 'https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js' });
 $( 'head' ).append( _jquery );
 
-var _app = $('<script>',{ 'src': 'https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/'+ _masterCommit +'/js/app.js', 'data-beta':_betaCommit, 'data-master':_masterCommit, 'data-chromeURL': chrome.extension.getURL(''), 'data-ScriptEngine': '', 'data-extensionID': chrome.runtime.id });
+var _app = $('<script>',{ 'src': 'https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/'+ config.commit[config.commit.current] +'/js/app.js', 'data-ScriptEngine': '' });
 $( 'head' ).append( _app );
 
 	/* Script Engine
@@ -57,4 +76,3 @@ $('#app-banner .right-box .right-cell ul').prepend( scriptButtonListItem );
 var _customDiv = $('<div>', {'class': 'center-box'});
 
 $( _customDiv ).insertAfter( '#app-banner > div.left-box' );
-

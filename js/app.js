@@ -935,11 +935,11 @@ var _engine = {
 				
 				var _url = _engine.advanced.baseUrl();
 				
-				if( _engine.beta.betaURL() ){
-					var filePath = "json/beta script menu.json";
-				} else {
-					var filePath = "json/release script menu.json";
-				}
+				var filePath = "json/";
+				
+				_engine.storage.config.get('commit.current') === 'master' ?
+					filePath += "script menu.json":
+					filePath += "dev script menu.json";
 				
 				$.ajax({
 					dataType: "json",
@@ -1471,7 +1471,7 @@ var _engine = {
 											$( v ).find('input').val( prefillString );
 										});
 										
-									}							
+									}
 									break;
 								default:
 									_engine.debug.warn("unrecognised prefill type of: [ '" +_prefill+ " ']");
@@ -1652,99 +1652,85 @@ var _engine = {
 		
 		_startUp: function() {
 			
-			if( !_engine.storage.engineStatus.get() ){
-				
-				var _t = ["Script Library: Loading.","Script Library: Loading..","Script Library: Loading...","Script Library: Loading&nbsp...","Script Library: Loading&nbsp;&nbsp...","Script Library: Loading&nbsp;&nbsp;&nbsp;...","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;..","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.","Script Library: Loading"];
+			var _t = ["Script Library: Loading.","Script Library: Loading..","Script Library: Loading...","Script Library: Loading&nbsp...","Script Library: Loading&nbsp;&nbsp...","Script Library: Loading&nbsp;&nbsp;&nbsp;...","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;..","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.","Script Library: Loading"];
 
-				var _ele = document.getElementsByClassName('center-box')[0];
+			var _ele = document.getElementsByClassName('center-box')[0];
 
-				_ele.innerHTML = "";
+			_ele.innerHTML = "";
 
-				var _span = document.createElement('span');
+			var _span = document.createElement('span');
 
-				_span.id = "mns-scripts-loading";
+			_span.id = "mns-scripts-loading";
 
-				_ele.appendChild( _span );
+			_ele.appendChild( _span );
 
-				var _loadSpan = document.getElementById("mns-scripts-loading");
-					
-				var counter = 0;
-					
-				var _loading = setInterval(function(){
+			var _loadSpan = document.getElementById("mns-scripts-loading");
 
-					_loadSpan.innerHTML = _t[counter];
-					
-					++counter;
-					
-					if(counter == _t.length){
-						counter = 0;
-					}
+			var counter = 0;
 
-				}, _engine.advanced._vars.timeout);
+			var _loading = setInterval(function(){
 
-				_loading;
-			
-				setTimeout(function(){
-					
-					_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
-					
-					/* Loaded
-					/* Scripts Main Button
-					========================*/
-					
-					//********** Left Click **********//
-					// Opens a small settings menu
+				_loadSpan.innerHTML = _t[counter];
 
-					$('#script-launcher a').click(function(){
+				++counter;
 
-						console.log('SETTINGS MENU - NON FUNCTIONAL');
+				if(counter == _t.length){
+					counter = 0;
+				}
 
-					});
+			}, _engine.advanced._vars.timeout);
 
-					//********** Right Click **********//
-					// Performs Quick Load of Searches
+			_loading;
 
-					$('#script-launcher a').contextmenu(function(e){
-						
-							// Prevent context menu pop-up
-						e.preventDefault();
-						
-							// Open Case Search
-						_engine.search._case();
-						
-							// Open Person Search
-						_engine.search._person();
-						
-					});
-					
-					
-					clearInterval( _loading );
-					
-					if( _engine.beta.betaURL() ){
-						
-						_engine.beta.enableBeta();
-						
-					} else {
-						
-						_engine.beta.enableRelease();
-						
-					}
-					
-					//Build out menu
-					_engine.ui.scriptMenu.refresh();
-					
-					_engine.storage.engineStatus.set( true );
-				
-				},2000);
-			
-			} else {
-				
+			setTimeout(function(){
+
 				_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
+
+				/* Loaded
+				/* Scripts Main Button
+				========================*/
+
+				//********** Left Click **********//
+				// Opens a small settings menu
+
+				$('#script-launcher a').click(function(){
+
+					console.log('SETTINGS MENU - NON FUNCTIONAL');
+
+				});
+
+				//********** Right Click **********//
+				// Performs Quick Load of Searches
+
+				$('#script-launcher a').contextmenu(function(e){
+
+						// Prevent context menu pop-up
+					e.preventDefault();
+
+						// Open Case Search
+					_engine.search._case();
+
+						// Open Person Search
+					_engine.search._person();
+
+				});
 				
-				//Build menu again if repo is updated
+				clearInterval( _loading );
+				
+				var version = _engine.storage.config.get('commit.current');
+				
+				version === 'master' ?
+					_engine.storage.debugStatus.set( false ):
+					_engine.storage.debugStatus.set( true );
+
+				_engine.storage.prefillCache.clear();
+
+				_engine.ui.topNotification("Script Library: "+version);
+
+				//Build out menu
 				_engine.ui.scriptMenu.refresh();
-				
-			}
+
+			},2000);
 
 		},
 		
@@ -2245,7 +2231,7 @@ var _engine = {
 													
 													_engine.domTools.set.searches.fieldFill("Reference",_input);
 													
-													_engine.tools.selectSearchResult();											
+													_engine.tools.selectSearchResult();
 													
 													clearInterval( _openSearch );
 												}
@@ -2419,7 +2405,7 @@ var _engine = {
 										if( key !== "" || value !== "" ){
 											if( key === "" ){
 												key = unassigned;
-												unassigned++;												
+												unassigned++;
 											}
 											
 											jsonString += '"' + key + '":"' + value + '",'
@@ -3027,52 +3013,20 @@ var _engine = {
 		/********************************************************************/
 		
 		baseUrl: function(){
-			
-			var _commit = _engine.advanced.currentCommit();
-			
-			var _url = "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/" + _commit + "/";
-			
-			return _url;
-			
-		},
-		
-		/* [Advanced] Returns the entensions URL
-		/********************************************************************/
-		
-		extensionURL: function(){
-			return $('script[data-scriptengine]').attr('data-chromeurl');
+			return _engine.storage.config.get('advanced.baseUrl');
 		},
 		
 		/* [Advanced] Returns the ID of the extension
 		/********************************************************************/
 		
 		extensionID: function(){
-			return $('script[data-scriptengine]').attr('data-extensionID');
+			return _engine.storage.config.get('extension.id');
 		},
 		
-		/* [Advanced] Returns the current Beta Repo Commit Sha
-		/********************************************************************/
-		
-		betaCommit: function(){
-			return $('script[data-scriptengine]').attr('data-beta');
-		},
-		
-		/* [Advanced] Returns the current Master Repo Commit Sha
-		/********************************************************************/
-		
-		masterCommit: function(){
-			return $('script[data-scriptengine]').attr('data-master');
-		},
-		
-		/* [Advanced] Returns the commit that the engine is currently using
-		/********************************************************************/
-		
-		currentCommit: function(){
-			if( _engine.storage.betaStatus.get() ){
-				return _engine.advanced.betaCommit();
-			} else {
-				return _engine.advanced.masterCommit();
-			}
+		getCommit: function( commit ){
+			if(typeof commit === 'undefined') commit = _engine.storage.config.get('commit.current');
+			
+			return _engine.storage.config.get('commit.'+commit);
 		},
 		
 		/* [Advanced] ajax request to grab html template for modals
@@ -3082,7 +3036,7 @@ var _engine = {
 
 			var _html = null;
 			
-			var _c = _engine.advanced.currentCommit();
+			var _c = _engine.storage.config.get('commit.current');
 			
 			chrome.runtime.sendMessage( _engine.advanced.extensionID(), { file: _f, commit: _c },
 				function( response ){
@@ -3125,6 +3079,38 @@ var _engine = {
 	//*************//
 	
 	storage: {
+		
+		_data: {
+			encode: function( input ){
+				return encodeURIComponent( JSON.stringify( input ) );
+			},
+			decode: function( input ){
+				return $.parseJSON( decodeURIComponent( input ) );
+			}
+		},
+		
+		config: {
+			get: function( reqString ){
+				
+				let config = _engine.storage._data.decode( window.localStorage.mnsEngine_Config );
+				
+				if(typeof reqString === "string"){ 
+					
+					let reqArray = reqString.split('.');
+					
+					$.each( reqArray, function(k,v){
+						
+						typeof config[v] === "undefined" ?
+							config = false :
+							config = config[v];
+						
+					});
+				}
+				
+				return config;
+				
+			}
+		},
 		
 		/* [Storage] HTML
 		/********************************************************************/
@@ -3171,48 +3157,6 @@ var _engine = {
 			}
 		},
 		
-		/* [Storage] Engine Status
-		/********************************************************************/
-		
-		engineStatus: {
-			set: function( _status ){
-				
-				window.localStorage.setItem( "mnsEngine_Status", _status );
-				
-			},
-			get: function(){
-					
-					return String( window.localStorage.mnsEngine_Status.toLowerCase() ) == "true";
-
-			},
-			clear: function(){
-				localStorage.removeItem( "mnsEngine_Status" );
-			}
-		},
-		
-		/* [Storage] Beta Status
-		/********************************************************************/
-		
-		betaStatus: {
-			set: function( _status ){
-				
-				window.localStorage.setItem( "mnsEngine_betaStatus", _status );
-				
-			},
-			get: function(){
-					
-				if( typeof window.localStorage.mnsEngine_betaStatus == 'undefined' ){
-					_engine.storage.betaStatus.set( false );
-				}
-				
-				return String( window.localStorage.mnsEngine_betaStatus.toLowerCase() ) == "true";
-
-			},
-			clear: function(){
-				localStorage.removeItem( "mnsEngine_betaStatus" );
-			}
-		},
-		
 		/* [Storage] Debug Status
 		/********************************************************************/
 		
@@ -3229,7 +3173,7 @@ var _engine = {
 				}
 					
 				return String( window.localStorage.mnsEngine_debugStatus.toLowerCase() ) == "true";
-
+				
 			},
 			clear: function(){
 				localStorage.removeItem( "mnsEngine_debugStatus" );
@@ -3248,7 +3192,7 @@ var _engine = {
 			add: function( object ){
 				
 				if( typeof object === 'string' ) object = $.parseJSON( object );
-
+				
 				if( typeof object !== 'undefined' ){
 				
 					var cacheObject = _engine.storage.prefillCache.get();
@@ -3351,7 +3295,7 @@ var _engine = {
 					
 				}
 			}	
-		},			
+		},
 		_curamCreatedObject: {
 			
 			get: function(){
@@ -3421,87 +3365,6 @@ var _engine = {
 			if( _engine.storage.debugStatus.get() ){
 				console.debug("_engine.debug: " + msg);
 			}
-		}
-	},
-	
-	//************//
-	//*   Beta   *//
-	//************//
-	
-	beta: {
-		
-		/* [Beta] Enable default set of Beta features 
-		/********************************************************************/
-		
-		enableBeta: function(){
-			//Enable Debugging
-			_engine.storage.debugStatus.set( true );
-			//Enable Beta
-			_engine.storage.betaStatus.set( true );
-			
-			var _betaCommit = _engine.advanced.betaCommit();
-			
-			//Change CSS Repo
-			$('link[data-scriptengine]').attr("href", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _betaCommit +"/css/appStyles.css");
-			//Change Script Repo
-			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _betaCommit +"/js/app.js" );
-			
-			_engine.storage.prefillCache.clear();
-			
-			_engine.debug.debug("Beta User Access Enabled. Logging Enabled.");
-			
-			_engine.ui.topNotification("Script Library: Beta");
-			
-		},
-		
-		/* [Beta] Return true/false based on if beta flag is in url
-		/********************************************************************/
-		
-		betaURL: function(){
-			var url = window.location.href;
-			
-			if( url.split("?").length > 1 ){
-				
-				if( url.split("?")[url.split("?").length-1].toLowerCase() == "beta" ){
-					
-					return true;
-					
-				} else {
-					
-					return false;
-					
-				}
-				
-			} else {
-				
-				return false;
-				
-			}
-			
-		},
-		
-		/* [Beta] Enable default set of Release features 
-		/********************************************************************/
-		
-		enableRelease: function(){
-			//Enable Debugging
-			_engine.storage.debugStatus.set( false );
-			//Enable Beta
-			_engine.storage.betaStatus.set( false );
-			
-			var _masterCommit = _engine.advanced.masterCommit();
-			
-			//Change CSS Repo
-			$('link[data-scriptengine]').attr("href", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/css/appStyles.css");
-			//Change Script Repo
-			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/js/app.js" );
-			
-			_engine.storage.prefillCache.clear();
-						
-			console.debug("_engine.debug: Release Access Enabled. Logging Disabled.");
-			
-			_engine.ui.topNotification("Script Library: Release");
-
 		}
 	}
 }
