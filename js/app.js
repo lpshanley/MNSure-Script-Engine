@@ -3103,7 +3103,7 @@ var _engine = {
 						
 						console.log(typeof config[v]);
 						
-						typeof test['rawr'] === "undefined" ) ?
+						typeof test['rawr'] === "undefined" ?
 							return false :
 							config = config[v];
 						
