@@ -1471,7 +1471,7 @@ var _engine = {
 											$( v ).find('input').val( prefillString );
 										});
 										
-									}							
+									}
 									break;
 								default:
 									_engine.debug.warn("unrecognised prefill type of: [ '" +_prefill+ " ']");
@@ -3014,42 +3014,14 @@ var _engine = {
 		/********************************************************************/
 		
 		baseUrl: function(){
-			
-			var _commit = _engine.storage.config.get('commit.current');
-			
-			var _url = "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/" + _commit + "/";
-			
-			return _url;
-			
-		},
-		
-		/* [Advanced] Returns the entensions URL
-		/********************************************************************/
-		
-		extensionURL: function(){
-			return $('script[data-scriptengine]').attr('data-chromeurl');
+			return _engine.storage.config.get('advanced.baseUrl');
 		},
 		
 		/* [Advanced] Returns the ID of the extension
 		/********************************************************************/
 		
 		extensionID: function(){
-			return $('script[data-scriptengine]').attr('data-extensionID');
-		},
-		
-		/* [Advanced] Returns the current Beta Repo Commit Sha
-		/********************************************************************/
-		
-		betaCommit: function(){
-			return $('script[data-scriptengine]').attr('data-beta');
-		},
-		
-		/* [Advanced] Returns the current Master Repo Commit Sha
-		/********************************************************************/
-		
-		masterCommit: function(){
-			console.warn('USING DEPRECATED COMMIT GRAB FUNCTION - UPDATE');
-			return _engine.storage.config.get('commit.current');
+			return _engine.storage.config.get('extension.id');
 		},
 		
 		getCommit: function( commit ){
@@ -3130,6 +3102,9 @@ var _engine = {
 					$.each( reqArray, function(k,v){
 						
 						if(typeof config[v] === 'undefined') return false;
+						
+						console.log(typeof config[v] === 'undefined');
+						
 						config = config[v];
 						
 					});
