@@ -3397,13 +3397,6 @@ var _engine = {
 			//Enable Debugging
 			_engine.storage.debugStatus.set( true );
 			
-			var _betaCommit = _engine.advanced.betaCommit();
-			
-			//Change CSS Repo
-			$('link[data-scriptengine]').attr("href", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _betaCommit +"/css/appStyles.css");
-			//Change Script Repo
-			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _betaCommit +"/js/app.js" );
-			
 			_engine.storage.prefillCache.clear();
 			
 			_engine.debug.debug("Beta User Access Enabled. Logging Enabled.");
@@ -3444,14 +3437,7 @@ var _engine = {
 		enableRelease: function(){
 			//Enable Debugging
 			_engine.storage.debugStatus.set( false );
-			
-			var _masterCommit = _engine.advanced.masterCommit();
-			
-			//Change CSS Repo
-			$('link[data-scriptengine]').attr("href", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/css/appStyles.css");
-			//Change Script Repo
-			$('script[data-scriptengine]').attr("src", "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/"+ _masterCommit +"/js/app.js" );
-			
+
 			_engine.storage.prefillCache.clear();
 						
 			console.debug("_engine.debug: Release Access Enabled. Logging Disabled.");
