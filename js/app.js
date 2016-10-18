@@ -3103,11 +3103,11 @@ var _engine = {
 						
 						console.log(typeof config[v]);
 						
-						typeof test['rawr'] === "undefined" ?
-							return false :
+						typeof config[v] === "undefined" ?
+							config = false :
 							config = config[v];
 						
-					});	
+					});
 				}
 				
 				return config;
