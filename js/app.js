@@ -3120,8 +3120,25 @@ var _engine = {
 		},
 		
 		config: {
-			get: function(){
-				return _engine.storage._data.decode( window.localStorage.mnsEngine_Config );
+			get: function( reqString ){
+				
+				let config = _engine.storage._data.decode( window.localStorage.mnsEngine_Config );
+				
+				if(typeof reqString === 'string'){ 
+					
+					let reqArray = reqString.split('.');
+					
+					$.each( reqArray, function(k,v){
+					
+						if(typeof config[v] === 'undefined') return false;
+						config = config[v]:
+					
+					});
+					
+				}
+				
+				return config;
+				
 			},
 			set: function( inputObj ){
 				var config = _engine.storage._data.decode( window.localStorage.mnsEngine_Config );
