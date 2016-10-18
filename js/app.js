@@ -1678,59 +1678,81 @@ var _engine = {
 					counter = 0;
 				}
 
-			}, _engine.advanced._vars.timeout);
+			}, 100);
 
 			_loading;
-
-			setTimeout(function(){
-
-				_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
-
-				/* Loaded
-				/* Scripts Main Button
-				========================*/
-
-				//********** Left Click **********//
-				// Opens a small settings menu
-
-				$('#script-launcher a').click(function(){
-
-					console.log('SETTINGS MENU - NON FUNCTIONAL');
-
-				});
-
-				//********** Right Click **********//
-				// Performs Quick Load of Searches
-
-				$('#script-launcher a').contextmenu(function(e){
-
-						// Prevent context menu pop-up
-					e.preventDefault();
-
-						// Open Case Search
-					_engine.search._case();
-
-						// Open Person Search
-					_engine.search._person();
-
-				});
+			
+			let count = 0;
+			
+			let jQloaded = setInterval(function(){
 				
-				clearInterval( _loading );
+				if( count < 50 ){
 				
-				var version = _engine.storage.config.get('commit.current');
-				
-				version === 'master' ?
-					_engine.storage.debugStatus.set( false ):
-					_engine.storage.debugStatus.set( true );
+					if( typeof $ === 'function' ){
 
-				_engine.storage.prefillCache.clear();
+						_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
 
-				_engine.ui.topNotification("Script Library: "+version);
+						/* Loaded
+						/* Scripts Main Button
+						========================*/
 
-				//Build out menu
-				_engine.ui.scriptMenu.refresh();
+						//********** Left Click **********//
+						// Opens a small settings menu
 
-			},2000);
+						$('#script-launcher a').click(function(){
+
+							console.log('SETTINGS MENU - NON FUNCTIONAL');
+
+						});
+
+						//********** Right Click **********//
+						// Performs Quick Load of Searches
+
+						$('#script-launcher a').contextmenu(function(e){
+
+								// Prevent context menu pop-up
+							e.preventDefault();
+
+								// Open Case Search
+							_engine.search._case();
+
+								// Open Person Search
+							_engine.search._person();
+
+						});
+
+						clearInterval( _loading );
+						
+						var version = _engine.storage.config.get('commit.current');
+						
+						version === 'master' ?
+							_engine.storage.debugStatus.set( false ):
+							_engine.storage.debugStatus.set( true );
+
+						_engine.storage.prefillCache.clear();
+
+						_engine.ui.topNotification("Script Library: "+version);
+
+						//Build out menu
+						_engine.ui.scriptMenu.refresh();
+						
+						/* Stop running on successful load */
+						clearInterval(jQloaded);
+						
+					}
+					
+					count++;
+					
+				} else {
+					
+					/* Stop running on timeout */
+					clearInterval(jQloaded);
+					
+				}
+					
+			},100);
+			
+			jQloaded;
 
 		},
 		
@@ -3366,6 +3388,7 @@ var _engine = {
 				console.debug("_engine.debug: " + msg);
 			}
 		}
+		
 	}
 }
 
