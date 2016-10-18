@@ -3015,7 +3015,7 @@ var _engine = {
 		
 		baseUrl: function(){
 			
-			var _commit = _engine.advanced.currentCommit();
+			var _commit = _engine.storage.config.get('commit.current');
 			
 			var _url = "https://cdn.rawgit.com/lpshanley/MNSure-Script-Engine/" + _commit + "/";
 			
@@ -3048,16 +3048,14 @@ var _engine = {
 		/********************************************************************/
 		
 		masterCommit: function(){
-			return $('script[data-scriptengine]').attr('data-master');
+			console.warn('USING DEPRECATED COMMIT GRAB FUNCTION - UPDATE');
+			return _engine.storage.config.get('commit.current');
 		},
 		
-		/* [Advanced] Returns the commit that the engine is currently using
-		/********************************************************************/
-		
-		currentCommit: function(){
-			var config = _engine.storage.config.get();
-			return config.commit.current;
-		},
+		getCommit: function( commit ){
+			if(typeof commit === 'undefined') commit = _engine.storage.config.get('commit.current');
+			return _engine.storage.config.get('commit.'+commit);
+		}
 		
 		/* [Advanced] ajax request to grab html template for modals
 		/********************************************************************/
@@ -3066,7 +3064,7 @@ var _engine = {
 
 			var _html = null;
 			
-			var _c = _engine.advanced.currentCommit();
+			var _c = _engine.storage.config.get('commit.current');
 			
 			chrome.runtime.sendMessage( _engine.advanced.extensionID(), { file: _f, commit: _c },
 				function( response ){
@@ -3206,7 +3204,7 @@ var _engine = {
 				}
 					
 				return String( window.localStorage.mnsEngine_debugStatus.toLowerCase() ) == "true";
-
+				
 			},
 			clear: function(){
 				localStorage.removeItem( "mnsEngine_debugStatus" );
@@ -3225,7 +3223,7 @@ var _engine = {
 			add: function( object ){
 				
 				if( typeof object === 'string' ) object = $.parseJSON( object );
-
+				
 				if( typeof object !== 'undefined' ){
 				
 					var cacheObject = _engine.storage.prefillCache.get();
@@ -3328,7 +3326,7 @@ var _engine = {
 					
 				}
 			}	
-		},			
+		},
 		_curamCreatedObject: {
 			
 			get: function(){
