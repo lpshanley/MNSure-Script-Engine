@@ -1,4 +1,4 @@
-_engine.module.define('tests/_vars',{
+_engine.module.define('test/_vars',{
 	
 	'foo':'bar'
 	

@@ -1659,53 +1659,50 @@ var _engine = {
 				if( count < 50 ){
 				
 					if( typeof $ === 'function' ){
+						
+						/* Runs the callback after all modules have been requested */
+						_engine.module.loadRequired(function(){
+							
+							_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
+							
+							/* Loaded
+							/* Scripts Main Button
+							========================*/
+							
+							//********** Right Click **********//
+							// Performs Quick Load of Searches
 
-						_engine.tools.loadAddons.run( _engine.tools.loadAddons.libraries );
+							$('#script-launcher a').contextmenu(function(e){
 
-						/* Loaded
-						/* Scripts Main Button
-						========================*/
+									// Prevent context menu pop-up
+								e.preventDefault();
 
-						//********** Left Click **********//
-						// Opens a small settings menu
+									// Open Case Search
+								_engine.search._case();
 
-						$('#script-launcher a').click(function(){
+									// Open Person Search
+								_engine.search._person();
 
-							console.log('SETTINGS MENU - NON FUNCTIONAL');
+							});
 
+							var version = _engine.storage.config.get('commit.current');
+
+							version === 'master' ?
+								_engine.storage.debugStatus.set( false ):
+								_engine.storage.debugStatus.set( true );
+								
+							_engine.storage.prefillCache.clear();
+							
+							_engine.ui.topNotification("Script Library: "+version);
+							
+							//Build out menu
+							_engine.ui.scriptMenu.refresh();
+							
+							/* Stop running on successful load */
+							
+							clearInterval(jQloaded);
+							
 						});
-
-						//********** Right Click **********//
-						// Performs Quick Load of Searches
-
-						$('#script-launcher a').contextmenu(function(e){
-
-								// Prevent context menu pop-up
-							e.preventDefault();
-
-								// Open Case Search
-							_engine.search._case();
-
-								// Open Person Search
-							_engine.search._person();
-
-						});
-						
-						var version = _engine.storage.config.get('commit.current');
-						
-						version === 'master' ?
-							_engine.storage.debugStatus.set( false ):
-							_engine.storage.debugStatus.set( true );
-
-						_engine.storage.prefillCache.clear();
-
-						_engine.ui.topNotification("Script Library: "+version);
-
-						//Build out menu
-						_engine.ui.scriptMenu.refresh();
-						
-						/* Stop running on successful load */
-						clearInterval(jQloaded);
 						
 					}
 					
@@ -3357,6 +3354,73 @@ var _engine = {
 			}
 		}
 		
+	},
+	
+	module: {
+		
+		/* Defines the required modules to load */
+		
+		config: [
+			'advanced/_vars'
+		],
+		
+		/* Allows definition of functions in modular files */
+		
+		define: function( dir, module ){
+
+			dir = dir.split('/');
+			let last = (dir.length - 1);
+
+			let obj = _engine;
+
+			$.each(dir,function(key,value){
+
+				if(typeof obj[value] === 'undefined') obj[value] = {};
+
+				key === last?
+					obj[value] = module:
+					obj = obj[value];
+
+			});
+
+		},
+		
+		/* Loads a specified script file */
+		
+		require: function( module ){
+
+			if( module.indexOf('.') > -1 ) module = module.split('.')[0];
+			if( module.charAt(0) === '/' ) module = module.substring(1,module.length);
+			if( module.charAt(module.length-1) === '/' ) module = module.substring(0, test.length - 1 );
+
+			let baseUrl = _engine.storage.config.get('advanced.baseUrl');
+
+			let moduleRoot = "js/modules/"
+
+			let req = baseUrl + moduleRoot + module + ".js";
+
+			$.getScript( req );
+
+		},
+		
+		/* Performs loading of all modules declared in the config */
+		
+		loadRequired( callback ){
+
+			let config = _engine.module.config;
+			let last = config.length - 1;
+
+			$.each(config, function(key, module){
+
+				_engine.module.require( module );
+
+				if( key === last && typeof callback === 'function'){
+					callback();
+				}
+
+			});
+
+		}
 	}
 }
 
