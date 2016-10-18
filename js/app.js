@@ -3126,9 +3126,6 @@ var _engine = {
 	
 	storage: {
 		
-		/* [Storage] HTML
-		/********************************************************************/
-		
 		_data: {
 			encode: function( input ){
 				return encodeURIComponent( JSON.stringify( input ) );
@@ -3136,7 +3133,20 @@ var _engine = {
 			decode: function( input ){
 				return $.parseJSON( decodeURIComponent( input ) );
 			}
-		},		
+		},
+		
+		config: {
+			get: function(){
+				return _engine.storage._data.decode( window.localStorage.mnsEngine_Config );
+			},
+			set: function( inputObj ){
+				var config = _engine.storage._data.decode( window.localStorage.mnsEngine_Config );
+			}
+		}
+		
+		/* [Storage] HTML
+		/********************************************************************/
+		
 		html: {
 			set: function( _html ){
 				window.localStorage.setItem( "mnsEngine_html", _html );
