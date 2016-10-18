@@ -1652,36 +1652,6 @@ var _engine = {
 		
 		_startUp: function() {
 			
-			var _t = ["Script Library: Loading.","Script Library: Loading..","Script Library: Loading...","Script Library: Loading&nbsp...","Script Library: Loading&nbsp;&nbsp...","Script Library: Loading&nbsp;&nbsp;&nbsp;...","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;..","Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.","Script Library: Loading"];
-
-			var _ele = document.getElementsByClassName('center-box')[0];
-
-			_ele.innerHTML = "";
-
-			var _span = document.createElement('span');
-
-			_span.id = "mns-scripts-loading";
-
-			_ele.appendChild( _span );
-
-			var _loadSpan = document.getElementById("mns-scripts-loading");
-
-			var counter = 0;
-
-			var _loading = setInterval(function(){
-
-				_loadSpan.innerHTML = _t[counter];
-
-				++counter;
-
-				if(counter == _t.length){
-					counter = 0;
-				}
-
-			}, 100);
-
-			_loading;
-			
 			let count = 0;
 			
 			let jQloaded = setInterval(function(){
