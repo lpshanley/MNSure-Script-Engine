@@ -3134,7 +3134,7 @@ var _engine = {
 				return encodeURIComponent( JSON.stringify( input ) );
 			},
 			decode: function( input ){
-				return decodeURIComponent( $.parseJSON( input ) );
+				return $.parseJSON( decodeURIComponent( input ) );
 			}
 		},		
 		html: {
