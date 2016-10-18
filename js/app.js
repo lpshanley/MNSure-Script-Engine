@@ -3142,7 +3142,7 @@ var _engine = {
 			set: function( inputObj ){
 				var config = _engine.storage._data.decode( window.localStorage.mnsEngine_Config );
 			}
-		}
+		},
 		
 		/* [Storage] HTML
 		/********************************************************************/
