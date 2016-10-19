@@ -2039,8 +2039,6 @@ var _engine = {
 					
 					let remaining = _engine.storage.config.get('advanced.modules.unloaded');
 					
-					console.log(`${remaining} modules left.`);
-					
 				}
 			})
 			
@@ -2090,37 +2088,42 @@ var _engine = {
 				
 				_engine.module._defineUnloaded( moduleArray.length );
 				
-				let last = moduleArray.length - 1;
-
 				$.each(moduleArray, function(key, module){
-
+					
 					_engine.module.require( module );
-
-					if( key === last && typeof callback === 'function'){
-						let counter = 0;
-						var loadModules = setInterval(function(){
-							
-							console.log(counter);
-							
-							if( counter < 50 ){
-								
-								var unloaded = _engine.storage.config.get('advanced.modules.unloaded');
-								
-								if (unloaded === 0){
-									
-									console.log('starting?');
-									callback();
-									clearInterval(loadModules);
-									
-								}
-							} else {
-								clearInterval( loadModules );
-							}
-							counter++;
-						},100);
-						loadModules;
-					}
+					
 				});
+				
+				if( typeof callback === 'function'){
+
+					var counter = 0;
+
+					var loadModules = setInterval(function(){
+						if( counter < 50 ){
+
+							console.log(counter);
+
+							var unloaded = _engine.storage.config.get('advanced.modules.unloaded');
+							
+							console.log(`Unloaded: ${ unloaded }`);
+							
+							if (unloaded === 0){
+
+								console.log('starting?');
+								callback();
+								clearInterval(loadModules);
+
+							}
+
+							counter++;
+
+						} else {
+							clearInterval( loadModules );
+						}
+					},100);
+					loadModules;
+				}
+				
 			}
 		},
 		
