@@ -1200,7 +1200,7 @@ var _engine = {
 							default:
 								_engine.debug.error("- * Fail Reason: Error found in event handler. Could not translate '_c': "+_c);
 								break;
-						}						
+						}
 						break;
 						
 					case "caseWork":
@@ -1994,52 +1994,6 @@ var _engine = {
 	
 	module: {
 		
-		/* Defines the required modules to load */
-		
-		config: [
-			'advanced/_vars',
-			'advanced/baseUrl',
-			'advanced/getCommit',
-			'advanced/getView',
-			'debug/toggle',
-			'debug/debug',
-			'debug/error',
-			'debug/log',
-			'debug/info',
-			'debug/warn',
-			'domTools/get/icFrame/contactTab/caseNoteModal/_activeModal',
-			'domTools/get/icFrame/contactTab/caseNoteModal/_body',
-			'domTools/get/icFrame/contactTab/caseNoteModal/_subject',
-			'domTools/get/icFrame/icTabActive',
-			'domTools/get/icFrame/icTabActiveFrame',
-			'domTools/get/icFrame/icTabActiveSubMenu',
-			'domTools/get/icFrame/icTabList',
-			'domTools/get/searches/advancedQuery',
-			'domTools/get/searches/inputQuery',
-			'domTools/get/searches/searchResultsQuery',
-			'domTools/get/hcrTabActive',
-			'domTools/get/hcrTabFrame',
-			'domTools/get/hcrTabList',
-			'domTools/get/hcrTabListTypeQuery',
-			'domTools/get/mainTabActive',
-			'domTools/get/mainTabList',
-			'domTools/set/icFrame/contactTab/caseNoteModal/body/addLine',
-			'domTools/set/icFrame/contactTab/caseNoteModal/subject',
-			'domTools/set/searches/fieldFill',
-			'search/_case',
-			'search/_person',
-			'tools/customApi/evidence/_ajaxAndReturnIframeContentDiv',
-			'tools/customApi/evidence/_evidenceApiRaw',
-			'tools/customApi/evidence/_evidenceQueryUrlConstructor',
-			'tools/customApi/evidence/_getSubQueries',
-			'tools/customApi/evidence/parsedQuery',
-			'tools/customApi/evidence/queryAndCache',
-			'tools/loadAddons/config',
-			'tools/loadAddons/run',
-			'tools/closeTabHCR',
-			'tools/selectSearchResult'
-		],
-		
 		/* Allows definition of functions in modular files */
 		
 		define: function( dir, module ){
@@ -2074,7 +2028,7 @@ var _engine = {
 				url: req,
 				success: function(){
 					
-					console.log('Loaded');
+					console.log( `Loading ${module}` );
 					
 				}
 			})
