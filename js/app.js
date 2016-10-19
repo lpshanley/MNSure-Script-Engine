@@ -21,196 +21,7 @@ var _engine = {
 		/********************************************************************/
 		
 		test: {
-			
-			mainTabType: function( callback ){
-	
-				var activeTab = _engine.domTools.get.mainTabActive();
-				
-				var activeTabLabel = $( activeTab )[0].innerText.trim();
-				
-				if( typeof callback === 'function' ) callback( activeTabLabel );
-				else return activeTabLabel;
-				
-			},
-			
-			hcrTabActiveIsIC: function( callback ){
-				
-				var result = false;
-				
-				var mainTabType = _engine.domTools.test.mainTabType();
-				
-				if( mainTabType === 'HCR Cases and Outcomes' ){
-					
-					var hcrTabType = _engine.domTools.test.hcrTabType();
-					
-					if( hcrTabType === 'Integrated Case' ){
-						
-						result = true;
-						
-					} else {
-						
-						_engine.debug.warn(`You are not on an integrated case. Current tab type is: ${ hcrTabType }.`);
-						
-					}
-					
-				} else {
-					
-					_engine.debug.warn(`Current HCR Tab can only be determined if on the HCR Cases and Outcomes screen. Current main tab is: ${ mainTabType }`);
-					
-				}
-				
-				if( typeof callback === 'function' ) callback( result );				
-				else return result;
-				
-			},
-			hcrTabType: function( _tab ){
-				
-				if( _engine.domTools.get.hcrTabList().length > 0 ){
-				
-					typeof _tab == 'undefined' ? 
-						_tab = _engine.domTools.get.hcrTabActive() : 
-						typeof _tab[0] != 'undefined' ?
-							_tab = _tab[0] :
-							_tab = _tab;
-					
-					if ( _tab.innerText.match(/\d+/g) == null ){
-						// Titles without numbers
-							
-							//Titles Containg Search
-						if ( _tab.innerText.indexOf("Search") != -1 ){
-							
-								// Case Search
-							if ( _tab.innerText.indexOf("Case") != -1 ){
-								return "Case Search";
-								// Person Search
-							} else if( _tab.innerText.indexOf("Person") != -1 ){
-								return "Person Search";
-							} else if( _tab.innerText.indexOf("Employer") != -1 ){
-								return "Employer Search";
-							} else if( _tab.innerText.indexOf("All Participants") != -1 ){
-								return "All Participants Search";
-							} else if( _tab.innerText.indexOf("Application") != -1 ){
-								return "Application Search";
-							} else if( _tab.innerText.indexOf("Investigation") != -1 ){
-								return "Investigation Search";
-							} else if( _tab.innerText.indexOf("Incident") != -1 ){
-								return "Incident Search";
-							} else if( _tab.innerText.indexOf("Educational Institute") != -1 ){
-								return "Educational Institute Search";
-							} else if( _tab.innerText.indexOf("External Party") != -1 ){
-								return "External Party Search";
-							} else if( _tab.innerText.indexOf("Utility") != -1 ){
-								return "Utility Search";
-							} else if( _tab.innerText.indexOf("External Party Office") != -1 ){
-								return "External Party Office Search";
-							}
-						
-						} else if( _tab.innerText.indexOf("My Applications") != -1 ){
-							return "My Applications";
-						} else if( _tab.innerText.indexOf("My Items of Interest") != -1 ){
-							return "My Items of Interest";
-						} else if( _tab.innerText.indexOf("My Cases") != -1 ){
-							return "My Cases";
-						} else if( _tab.innerText.indexOf("My Recently Approved Cases") != -1 ){
-							return "My Recently Approved Cases";
-						} else if( _tab.innerText.indexOf("Cases Recently Assigned to Me") != -1 ){
-							return "Cases Recently Assigned to Me";
-						}	else if( _tab.innerText.indexOf("Recently Viewed Cases") != -1 ){
-							return "Recently Viewed Cases";
-						}	else if( _tab.innerText.indexOf("My Service Plans") != -1 ){
-							return "My Service Plans";
-							
-							
-							//Person Page
-							
-						} else {
-							
-							_tabFrame = $( _engine.domTools.get.hcrTabFrame( _tab ) ).find('iframe.detailsPanelFrame');
-							
-							if( _tabFrame.length == 0 ){
-								
-								_returnTab = _engine.domTools.get.hcrTabActive();
-								_tab.click();
-								_returnTab.click();
-
-								return "Person Page";
-
-								
-							} else if( _tabFrame.length > 0 ){ 
-								
-								if( $( _tabFrame ).attr('src').split("/")[1].split(".")[0].replace("TabDetailsPage", "").toLowerCase() == "person_home" ){
-							
-									return "Person Page";
-									
-								}
-								
-								//UNDEFINED
-							} else {
-								
-								_engine.debug.info("- * UNDEFINED ( w/o numbers )");
-							
-								return "UNDEFINED";
-								
-							}
-							
-						} 
-						
-					} else {
-						// Titles with numbers
-						
-							// Titles containing "Insurance Affordability"
-						if( _tab.innerText.indexOf("Insurance Affordability") != -1 ){
-								// Integrated Case Screen
-							if( _tab.innerText.indexOf("Insurance Affordability") == 0 ){
-								return  "Integrated Case";
-								// Evidence Screen
-							} else if( _tab.innerText.indexOf("Insurance Affordability") > 0 ) {
-								return  "Evidence|" + _tab.innerText.split("-")[0].trim() ;
-							}
-						} else if ( $.inArray( _tab.innerText.replace(/[0-9]/g,"").trim().toLowerCase(), ["medical assistance", "minnesotacare", "unassisted qualified health plan", "insurance assistance"] ) != -1 ) {
-							
-							return "PDC|" + _tab.innerText.replace(/[0-9]/g,"").trim();
-							
-						} else {
-							
-							_engine.debug.info("- * UNDEFINED ( w/numbers )");
-							return "UNDEFINED";
-							
-						}
-						
-					}
-					
-				} else {
-					
-					_engine.debug.warn("- * There are no open tabs that are available to test.");
-					
-					return "UNDEFINED";
-					
-				}
-					
-			},
 			icFrame: {
-				contactTab: {
-					caseNoteModal:{
-						body: {
-							isEmpty: function(){
-								
-								var _modalBody = _engine.domTools.get.icFrame.contactTab.caseNoteModal._body();
-								
-								if( _modalBody != false ){
-									if( $( _modalBody ).text() == ""){
-										return true;
-									} else {
-										return false;
-									}
-								} else {
-									_engine.debug.warn("- * Fail Reason: [ _engine.domTools.test.icFrame.contactTab.caseNoteModal.body.isEmpty() ]: Case note body object is returning undefined. Not loaded.")
-									return undefined;
-								}
-							}
-						}
-					}
-				},
 				onTab: function( _t ){
 					var current_tab = _engine.domTools.get.icFrame.icTabActive().text().replace("Close Tab", "").trim().toLowerCase();
 					if( _t.toLowerCase() == current_tab ){
@@ -2254,36 +2065,77 @@ var _engine = {
 		
 		require: function( module ){
 
-			if( module.indexOf('.') > -1 ) module = module.split('.')[0];
-			if( module.charAt(0) === '/' ) module = module.substring(1,module.length);
-			if( module.charAt(module.length-1) === '/' ) module = module.substring(0, test.length - 1 );
-
 			let baseUrl = _engine.storage.config.get('advanced.baseUrl');
 
-			let moduleRoot = "js/modules/"
-
-			let req = baseUrl + moduleRoot + module + ".js";
-
+			let req = baseUrl + module;
+			
+			$.ajax({
+				dataType: 'script',
+				url: req,
+				success: function(){
+					
+					console.log('Loaded');
+					
+				}
+			})
+			
 			$.getScript( req );
 
 		},
 		
 		/* Performs loading of all modules declared in the config */
 		
-		loadRequired( callback ){
+		loadRequired( callback, dirArray, moduleArray ){
 
-			let config = _engine.module.config;
-			let last = config.length - 1;
+			let api = 'https://api.github.com/repos/lpshanley/MNSure-Script-Engine/contents/';
 
-			$.each(config, function(key, module){
+			let refParam = "?ref=" + _engine.storage.config.get('commit.current');
 
-				_engine.module.require( module );
+			let pathArray = [];
 
-				if( key === last && typeof callback === 'function'){
-					callback();
-				}
+			if(typeof dirArray === 'undefined') dirArray = ['js/modules/'];
+			if(typeof moduleArray === 'undefined') moduleArray = [];
+
+			$.each( dirArray, function(key, value){
+
+				let req = api + value;
+
+				if(req.charAt( req.length-1 ) === '/') req = req.substring(0,req.length-1); 
+
+				req += refParam;
+
+				$.ajax({
+					async: false,
+					dataType: 'json',
+					url: req,
+					success: function(data){
+						$.each(data,function(key,value){
+
+							if( value.type === 'file' ) moduleArray.push( value.path );
+							if( value.type === 'dir' ) pathArray.push( value.path );
+
+						});
+					}
+				});
 
 			});
+
+			if( pathArray.length > 0 ) _engine.module.loadRequired( callback, pathArray, moduleArray  );
+			else { 
+
+				let last = moduleArray.length - 1;
+
+				$.each(moduleArray, function(key, module){
+
+					_engine.module.require( module );
+
+					if( key === last && typeof callback === 'function'){
+						callback();
+					}
+
+				});
+
+			}
 
 		}
 	}
