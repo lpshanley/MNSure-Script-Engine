@@ -2146,8 +2146,9 @@ _engine.temp.jQloaded = setInterval(function(){
 			_engine.events._startUp();
 			clearInterval(_engine.temp.jQloaded);
 			delete _engine.temp;
+		} else {
+			_engine.temp.count++;
 		}
-		_engine.temp.count++;
 	} else {
 		clearInterval(_engine.temp.jQloaded);
 	}
