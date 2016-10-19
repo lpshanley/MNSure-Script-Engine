@@ -1789,6 +1789,15 @@ var _engine = {
 				
 				return config;
 				
+			},
+			set: function( obj ){
+				
+				let config = _engine.storage.config.get();
+
+				$.extend(true,config,obj);
+
+				window.localStorage.mnsEngine_Config = _engine.storage._data.encode( config );
+				
 			}
 		},
 		
@@ -2028,7 +2037,11 @@ var _engine = {
 				url: req,
 				success: function(){
 					
-					console.log( `Loading ${module}` );
+					_engine.module._markLoaded();
+					
+					let remaining = _engine.storage.config.get('advanced.modules.unloaded');
+					
+					console.log(`${remaining} modules left.`);
 					
 				}
 			})
@@ -2076,7 +2089,9 @@ var _engine = {
 
 			if( pathArray.length > 0 ) _engine.module.loadRequired( callback, pathArray, moduleArray  );
 			else { 
-
+				
+				_engine.module._defineUnloaded( moduleArray.length );
+				
 				let last = moduleArray.length - 1;
 
 				$.each(moduleArray, function(key, module){
@@ -2091,6 +2106,25 @@ var _engine = {
 
 			}
 
+		},
+		
+		/* Set Counter to test that all scripts have loaded */
+		
+		_defineUnloaded: function( remainder ){
+			_engine.storage.config.set({
+				advanced: {
+					modules: {
+						unloaded: remainder
+					}
+				}
+			});
+		},
+		
+		/* Reduce counter as scripts load */
+		
+		_markLoaded: function(){
+			let unloaded = _engine.storage.config.get('advanced.modules.unloaded') - 1;
+			_engine.module._defineUnloaded( unloaded );
 		}
 	}
 }
