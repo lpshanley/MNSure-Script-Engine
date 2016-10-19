@@ -1075,9 +1075,6 @@ var _engine = {
 		/********************************************************************/
 		
 		_startUp: function() {
-			
-			delete _engine.temp;
-			
 			/* Runs the callback after all modules have been requested */
 			_engine.module.loadRequired(function(){
 
@@ -2148,6 +2145,7 @@ _engine.temp.jQloaded = setInterval(function(){
 		if( typeof $ === 'function' ){
 			_engine.events._startUp();
 			clearInterval(_engine.temp.jQloaded);
+			delete _engine.temp;
 		}
 		_engine.temp.count++;
 	} else {
