@@ -1075,6 +1075,31 @@ var _engine = {
 		/********************************************************************/
 		
 		_startUp: function() {
+			
+			var loadArray = [
+				'Script Library: Loading',
+				'Script Library: Loading.',
+				'Script Library: Loading..',
+				'Script Library: Loading...',
+				'Script Library: Loading&nbsp;...',
+				'Script Library: Loading&nbsp;&nbsp;...',
+				'Script Library: Loading&nbsp;&nbsp;&nbsp;..',
+				'Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;.'
+			];
+
+			var onRun = 0;
+			var last = loadArray.length - 1;
+
+			var loading = setInterval(function(){
+
+				$('.center-box span').html( loadArray[onRun] );
+
+				onRun === last ?
+					onRun = 0:
+					onRun++;
+
+			},100);
+			
 			/* Runs the callback after all modules have been requested */
 			_engine.module.loadRequired(function(){
 
@@ -1109,7 +1134,9 @@ var _engine = {
 					_engine.storage.debugStatus.set( true );
 
 				_engine.storage.prefillCache.clear();
-
+				
+				clearInterval( loading );
+				
 				_engine.ui.topNotification("Script Library: "+version);
 
 				//Build out menu
@@ -2088,7 +2115,9 @@ var _engine = {
 							clearInterval( loadModules );
 						}
 					},25);
+					
 					loadModules;
+					
 				}
 			}
 		},
