@@ -2099,22 +2099,24 @@ var _engine = {
 					if( key === last && typeof callback === 'function'){
 						let counter = 0;
 						var loadModules = setInterval(function(){
+							
+							console.log(counter);
+							
 							if( counter < 50 ){
 								
-								console.log(counter);
 								var unloaded = _engine.storage.config.get('advanced.modules.unloaded');
+								
 								if (unloaded === 0){
 									
 									console.log('starting?');
-									
 									callback();
 									clearInterval(loadModules);
+									
 								}
-								counter++;
 							} else {
 								clearInterval( loadModules );
 							}
-							callback();
+							counter++;
 						},100);
 						loadModules;
 					}
