@@ -2077,7 +2077,7 @@ var _engine = {
 				if( typeof callback === 'function'){
 					var counter = 0;
 					var loadModules = setInterval(function(){
-						if( counter < 50 ){
+						if( counter < 400 ){
 							var unloaded = _engine.storage.config.get('advanced.modules.unloaded');
 							if (unloaded === 0){
 								callback();
@@ -2087,7 +2087,7 @@ var _engine = {
 						} else {
 							clearInterval( loadModules );
 						}
-					},100);
+					},25);
 					loadModules;
 				}
 			}
@@ -2120,7 +2120,7 @@ var _engine = {
 _engine.temp = {};
 _engine.temp.count = 0;
 _engine.temp.jQloaded = setInterval(function(){
-	if( _engine.temp.count < 50 ){
+	if( _engine.temp.count < 200 ){
 		if( typeof $ === 'function' ){
 			_engine.events._startUp();
 			clearInterval(_engine.temp.jQloaded);
@@ -2131,5 +2131,5 @@ _engine.temp.jQloaded = setInterval(function(){
 	} else {
 		clearInterval(_engine.temp.jQloaded);
 	}
-});
+},25);
 _engine.temp.jQloaded;
