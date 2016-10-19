@@ -2084,7 +2084,10 @@ var _engine = {
 			});
 
 			if( pathArray.length > 0 ) _engine.module.loadRequired( callback, pathArray, moduleArray  );
-			else {
+			else if ( pathArray.length === 0 ){
+				
+				console.log( moduleArray );
+				console.log( pathArray );
 				
 				console.log('TEST');
 				
