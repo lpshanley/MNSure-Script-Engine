@@ -2102,7 +2102,7 @@ var _engine = {
 						if( counter < 50 ){
 
 							console.log(counter);
-
+							/*
 							var unloaded = _engine.storage.config.get('advanced.modules.unloaded');
 							
 							console.log(`Unloaded: ${ unloaded }`);
@@ -2114,7 +2114,8 @@ var _engine = {
 								clearInterval(loadModules);
 
 							}
-
+							*/
+							
 							counter++;
 
 						} else {
