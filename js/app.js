@@ -2099,7 +2099,7 @@ var _engine = {
 					if( key === last && typeof callback === 'function'){
 						let counter = 0;
 						var loadModules = setInterval(function(){
-							if( counter < 1000 ){
+							if( counter < 50 ){
 								if (_engine.storage.config.get('advanced.modules.unloaded') === 0){
 									callback();
 									clearInterval(loadModules);
@@ -2109,7 +2109,7 @@ var _engine = {
 								clearInterval( loadModules );
 							}
 							callback();
-						},10);
+						},100);
 						loadModules;
 					}
 				});
