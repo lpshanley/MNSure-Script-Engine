@@ -1086,45 +1086,43 @@ var _engine = {
 						
 						/* Runs the callback after all modules have been requested */
 						_engine.module.loadRequired(function(){
-							setTimeout(function(){
-								_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
+								
+							_engine.debug.info('All modules have loaded.');
 
-								/* Loaded
-								/* Scripts Main Button
-								========================*/
+							_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
 
-								//********** Right Click **********//
-								// Performs Quick Load of Searches
+							/* Loaded
+							/* Scripts Main Button
+							========================*/
 
-								$('#script-launcher a').contextmenu(function(e){
+							//********** Right Click **********//
+							// Performs Quick Load of Searches
 
-										// Prevent context menu pop-up
-									e.preventDefault();
+							$('#script-launcher a').contextmenu(function(e){
 
-										// Open Case Search
-									_engine.search._case();
+									// Prevent context menu pop-up
+								e.preventDefault();
 
-										// Open Person Search
-									_engine.search._person();
+									// Open Case Search
+								_engine.search._case();
 
-								});
+									// Open Person Search
+								_engine.search._person();
 
-								var version = _engine.storage.config.get('commit.current');
+							});
 
-								version === 'master' ?
-									_engine.storage.debugStatus.set( false ):
-									_engine.storage.debugStatus.set( true );
+							var version = _engine.storage.config.get('commit.current');
 
-								_engine.storage.prefillCache.clear();
+							version === 'master' ?
+								_engine.storage.debugStatus.set( false ):
+								_engine.storage.debugStatus.set( true );
 
-								_engine.ui.topNotification("Script Library: "+version);
+							_engine.storage.prefillCache.clear();
 
-								//Build out menu
-								_engine.ui.scriptMenu.refresh();
+							_engine.ui.topNotification("Script Library: "+version);
 
-								/* Stop running on successful load */
-							
-							},1000);
+							//Build out menu
+							_engine.ui.scriptMenu.refresh();
 								
 							clearInterval(jQloaded);
 							
@@ -2099,13 +2097,23 @@ var _engine = {
 					_engine.module.require( module );
 
 					if( key === last && typeof callback === 'function'){
-						callback();
+						let counter = 0;
+						var loadModules = setInterval(function(){
+							if( counter < 1000 ){
+								if (_engine.storage.config.get('advanced.modules.unloaded') === 0){
+									callback();
+									clearInterval(loadModules);
+								}
+								counter++;
+							} else {
+								clearInterval( loadModules );
+							}
+							callback();
+						},10);
+						loadModules;
 					}
-
 				});
-
 			}
-
 		},
 		
 		/* Set Counter to test that all scripts have loaded */
