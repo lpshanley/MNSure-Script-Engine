@@ -2010,6 +2010,8 @@ var _engine = {
 
 			let req = baseUrl + module;
 			
+			console.log(`Loading: ${ module }`);
+			
 			$.ajax({
 				dataType: 'script',
 				url: req,
