@@ -2022,9 +2022,7 @@ var _engine = {
 					let remaining = _engine.storage.config.get('advanced.modules.unloaded');
 					
 				}
-			})
-			
-			$.getScript( req );
+			});
 
 		},
 		
