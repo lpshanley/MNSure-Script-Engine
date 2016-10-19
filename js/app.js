@@ -1128,14 +1128,17 @@ var _engine = {
 			
 			$.each(eventLog,function(k,v){
 				
-				var _f = v.substring( 0, v.lastIndexOf("[") )
+				var _f = v.substring( 0, v.lastIndexOf("[") );
+				
+				var _c, _sc;
+				
 				if( v.indexOf("(") == -1 ){
-					var _c = v.substring( v.lastIndexOf("[")+1,v.lastIndexOf("]") );
-					var _sc = null;
+					_c = v.substring( v.lastIndexOf("[")+1,v.lastIndexOf("]") );
+					_sc = null;
 				} else
 				{
-					var _c = v.substring( v.lastIndexOf("[")+1,v.lastIndexOf("(") );
-					var _sc = v.substring( v.lastIndexOf("(")+1,v.lastIndexOf(")") );
+					_c = v.substring( v.lastIndexOf("[")+1,v.lastIndexOf("(") );
+					_sc = v.substring( v.lastIndexOf("(")+1,v.lastIndexOf(")") );
 				}
 
 					/* Function Tree */
@@ -1969,9 +1972,12 @@ var _engine = {
 			
 	},
 	
-	//*************//
-	//*   Debug   *//
-	//*************//
+	//**************//
+	//*   Module   *//
+	//**************//
+	//
+	// This functionality cannot be moved into a module
+	//
 	
 	module: {
 		
@@ -2029,37 +2035,37 @@ var _engine = {
 			let refParam = "?ref=" + _engine.storage.config.get('commit.current');
 
 			let pathArray = [];
-
+			
 			if(typeof dirArray === 'undefined') dirArray = ['js/modules/'];
 			if(typeof moduleArray === 'undefined') moduleArray = [];
-
+			
 			$.each( dirArray, function(key, value){
-
+				
 				let req = api + value;
-
+					
 				if(req.charAt( req.length-1 ) === '/') req = req.substring(0,req.length-1); 
-
+					
 				req += refParam;
-
+					
 				$.ajax({
 					async: false,
 					dataType: 'json',
 					url: req,
 					success: function(data){
 						$.each(data,function(key,value){
-
+							
 							if( value.type === 'file' ) moduleArray.push( value.path );
 							if( value.type === 'dir' ) pathArray.push( value.path );
-
+							
 						});
 					}
 				});
-
+				
 			});
-
+				
 			if( pathArray.length > 0 ) _engine.module.loadRequired( callback, pathArray, moduleArray  );
 			else if ( pathArray.length === 0 ){
-
+				
 				_engine.module._defineUnloaded( moduleArray.length );
 				
 				$.each(moduleArray, function(key, module){
@@ -2069,37 +2075,22 @@ var _engine = {
 				});
 				
 				if( typeof callback === 'function'){
-
 					var counter = 0;
-
 					var loadModules = setInterval(function(){
 						if( counter < 50 ){
-
-							console.log(counter);
-							
 							var unloaded = _engine.storage.config.get('advanced.modules.unloaded');
-							
 							if (unloaded === 0){
-
-								console.log('starting?');
 								callback();
 								clearInterval(loadModules);
-
 							}
-							
-							
 							counter++;
-
 						} else {
 							clearInterval( loadModules );
 						}
 					},100);
 					loadModules;
 				}
-			
 			}
-			
-			
 		},
 		
 		/* Set Counter to test that all scripts have loaded */
