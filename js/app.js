@@ -2135,12 +2135,6 @@ var _engine = {
 			
 		},
 		
-		_completeLoading: function( callback, moduleArray ){
-			
-			
-			
-		}
-		
 		/* Set Counter to test that all scripts have loaded */
 		
 		_defineUnloaded: function( remainder ){
