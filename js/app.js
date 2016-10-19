@@ -1075,7 +1075,9 @@ var _engine = {
 		/********************************************************************/
 		
 		_startUp: function() {
-						
+			
+			delete _engine.temp;
+			
 			/* Runs the callback after all modules have been requested */
 			_engine.module.loadRequired(function(){
 
