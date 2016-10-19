@@ -2061,13 +2061,7 @@ var _engine = {
 
 			if( pathArray.length > 0 ) _engine.module.loadRequired( callback, pathArray, moduleArray  );
 			else if ( pathArray.length === 0 ){
-				
-				console.log( moduleArray );
-				console.log( pathArray );
-				
-				console.log('TEST');
-				
-				/*
+
 				_engine.module._defineUnloaded( moduleArray.length );
 				
 				$.each(moduleArray, function(key, module){
@@ -2087,8 +2081,6 @@ var _engine = {
 							
 							var unloaded = _engine.storage.config.get('advanced.modules.unloaded');
 							
-							console.log(`Unloaded: ${ unloaded }`);
-							
 							if (unloaded === 0){
 
 								console.log('starting?');
@@ -2106,8 +2098,6 @@ var _engine = {
 					},100);
 					loadModules;
 				}
-			
-			*/
 			
 			}
 			
