@@ -17,93 +17,6 @@ var _engine = {
 	
 	domTools: {
 		
-		/* [DOM Toolbox] Used to change DOM elements, usualy various inputs.
-		/********************************************************************/
-		
-		set:{
-			icFrame: {
-				contactTab: {
-					caseNoteModal:{
-						subject: function( _s ){
-							
-							_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.subject() ] Started | Input: " + _s);
-							
-							if(typeof _engine.domTools.get.icFrame.contactTab.caseNoteModal._subject() != 'undefined'){
-								
-								_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.subject() ] Located modal subject");
-								
-								_engine.domTools.get.icFrame.contactTab.caseNoteModal._subject().val( _s );
-								
-							} else {
-								_engine.debug.warn("- * Fail Reason: [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.subject() ]: Could not add line. Subject returning 'undefined'.")
-							}
-							
-							_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.subject() ] Complete");
-							
-						},
-						body: {
-							addLine: function( _s ){
-								
-								_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Started | Input: " + _s);
-								
-								var _modalBody = _engine.domTools.get.icFrame.contactTab.caseNoteModal._body();
-								
-								if(typeof $( _modalBody ) != 'undefined'){
-									
-									_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Located modal body");
-
-									//Wrap input in div tags
-									var line = $('<div>',{'html':_s});
-									
-									//Check if body is empty
-									
-									if(_engine.domTools.test.icFrame.contactTab.caseNoteModal.body.isEmpty()){
-										
-										_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Body empty. Writing Line.");
-										
-										//If empty, set first line
-										
-										$( _modalBody ).html( line );
-										
-									} else {
-										
-										_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Body not empty. Writing Line.");
-										
-										//If not empty, add to body
-										$( _modalBody ).append( line );
-
-									}
-									
-								} else {
-									_engine.debug.warn("- * Fail Reason: [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ]: Could not add line. Body returning 'undefined'.")
-								}
-								
-								_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Complete");
-								
-							}
-						}
-					}
-				}
-			},
-			
-			searches: {
-				
-				fieldFill: function( _field, _value ){
-					
-					var _f = _engine.domTools.get.searches.inputQuery( _field );
-					
-					if( _f != false ){
-						
-						$( _f ).val( _value );
-						
-					}
-					
-				}
-				
-			}
-			
-		},
-		
 		/* [DOM Toolbox] Performs logic operations and comparisons on DOM
 		/********************************************************************/
 		
@@ -635,7 +548,9 @@ var _engine = {
 				
 				var filePath = "json/";
 				
-				_engine.storage.config.get('commit.current') === 'master' ?
+				var version = _engine.storage.config.get('commit.current');
+				
+				version === 'master' || version === 'beta' ?
 					filePath += "script menu.json":
 					filePath += "dev script menu.json";
 				
@@ -2297,6 +2212,9 @@ var _engine = {
 			'domTools/get/hcrTabListTypeQuery',
 			'domTools/get/mainTabActive',
 			'domTools/get/mainTabList',
+			'domTools/set/icFrame/contactTab/caseNoteModal/body/addLine',
+			'domTools/set/icFrame/contactTab/caseNoteModal/subject',
+			'domTools/set/searches/fieldFill',
 			'search/_case',
 			'search/_person',
 			'tools/customApi/evidence/_ajaxAndReturnIframeContentDiv',
