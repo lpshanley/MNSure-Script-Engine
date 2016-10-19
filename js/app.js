@@ -2084,8 +2084,11 @@ var _engine = {
 			});
 
 			if( pathArray.length > 0 ) _engine.module.loadRequired( callback, pathArray, moduleArray  );
-			else { 
+			else {
 				
+				console.log('TEST');
+				
+				/*
 				_engine.module._defineUnloaded( moduleArray.length );
 				
 				$.each(moduleArray, function(key, module){
@@ -2102,7 +2105,7 @@ var _engine = {
 						if( counter < 50 ){
 
 							console.log(counter);
-							/*
+							
 							var unloaded = _engine.storage.config.get('advanced.modules.unloaded');
 							
 							console.log(`Unloaded: ${ unloaded }`);
@@ -2114,7 +2117,7 @@ var _engine = {
 								clearInterval(loadModules);
 
 							}
-							*/
+							
 							
 							counter++;
 
@@ -2124,9 +2127,19 @@ var _engine = {
 					},100);
 					loadModules;
 				}
-				
+			
+			*/
+			
 			}
+			
+			
 		},
+		
+		_completeLoading: function( callback, moduleArray ){
+			
+			
+			
+		}
 		
 		/* Set Counter to test that all scripts have loaded */
 		
