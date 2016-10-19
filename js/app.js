@@ -2037,8 +2037,6 @@ var _engine = {
 
 			let req = baseUrl + module;
 			
-			console.log(`Loading: ${ module.replace('js/modules/',"") }`);
-			
 			$.ajax({
 				dataType: 'script',
 				url: req,
@@ -2141,6 +2139,7 @@ var _engine = {
 			_engine.module._defineUnloaded( unloaded );
 		}
 	}
+	
 }
 
 /* [Program Start] Runs the startup function 
