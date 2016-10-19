@@ -2100,7 +2100,13 @@ var _engine = {
 						let counter = 0;
 						var loadModules = setInterval(function(){
 							if( counter < 50 ){
-								if (_engine.storage.config.get('advanced.modules.unloaded') === 0){
+								
+								console.log(counter);
+								var unloaded = _engine.storage.config.get('advanced.modules.unloaded');
+								if (unloaded === 0){
+									
+									console.log('starting?');
+									
 									callback();
 									clearInterval(loadModules);
 								}
