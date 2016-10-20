@@ -801,9 +801,17 @@ var _engine = {
 				
 				clearInterval( loading );
 				
-				var test = $.getJSON( 'https://api.github.com/rate_limit?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1' );
-				
-				console.log( test );
+				if( version !== 'master' && version !== 'beta' ){
+					
+					$.ajax({
+						url: 'https://api.github.com/rate_limit?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1',
+						dataType: 'json',
+						success: function( data ){
+							console.log( data );
+						}
+					});
+					
+				}
 				
 				_engine.ui.topNotification(`Script Library: ${version}`);
 
