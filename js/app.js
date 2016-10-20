@@ -807,7 +807,7 @@ var _engine = {
 						url: 'https://api.github.com/rate_limit?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1',
 						dataType: 'json',
 						success: function( data ){
-							console.log( data );
+							version += " | Req Remaining: " + data.resources.core.remaining;
 						}
 					});
 					
