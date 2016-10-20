@@ -806,8 +806,9 @@ var _engine = {
 					$.ajax({
 						url: 'https://api.github.com/rate_limit?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1',
 						dataType: 'json',
+						async: false,
 						success: function( data ){
-							version += " | Req Remaining: " + data.resources.core.remaining;
+							version += " | " + data.resources.core.remaining;
 						}
 					});
 					
