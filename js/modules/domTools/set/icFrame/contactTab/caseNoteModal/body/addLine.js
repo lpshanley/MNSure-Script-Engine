@@ -1,3 +1,4 @@
+/* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('domTools/set/icFrame/contactTab/caseNoteModal/body/addLine',function( _s ){
 	
 	_engine.debug.info("- * [ _engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine() ] Started | Input: " + _s);

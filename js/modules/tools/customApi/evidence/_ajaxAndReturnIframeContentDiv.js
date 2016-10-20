@@ -1,3 +1,4 @@
+/* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('tools/customApi/evidence/_ajaxAndReturnIframeContentDiv',function( reqObj, callback ){
 	
 	var ajaxObj = function( inputObj ){

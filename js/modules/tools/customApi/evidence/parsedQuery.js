@@ -1,3 +1,4 @@
+/* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('tools/customApi/evidence/parsedQuery',function(type, callback){
 	
 	_engine.tools.customApi.evidence._evidenceApiRaw( type, function( evidenceInputObj, queryType ){

@@ -21,16 +21,6 @@ var _engine = {
 		/********************************************************************/
 		
 		test: {
-			icFrame: {
-				onTab: function( _t ){
-					var current_tab = _engine.domTools.get.icFrame.icTabActive().text().replace("Close Tab", "").trim().toLowerCase();
-					if( _t.toLowerCase() == current_tab ){
-						return true;
-					} else {
-						return false;
-					}
-				}
-			},
 			searches: {
 				windowLoaded: function(){
 					
@@ -1762,6 +1752,8 @@ var _engine = {
 	
 	storage: {
 		
+		/* Config Storage Model and _data cannot be relocated */
+		
 		_data: {
 			encode: function( input ){
 				return encodeURIComponent( JSON.stringify( input ) );
@@ -1803,9 +1795,6 @@ var _engine = {
 			}
 		},
 		
-		/* [Storage] HTML
-		/********************************************************************/
-		
 		html: {
 			set: function( _html ){
 				window.localStorage.setItem( "mnsEngine_html", _html );
@@ -1821,9 +1810,6 @@ var _engine = {
 				localStorage.removeItem( "mnsEngine_html" );
 			}
 		},
-		
-		/* [Storage] Modal Parameters
-		/********************************************************************/
 		
 		modalParams: {
 			set: function( _params ){
@@ -1848,9 +1834,6 @@ var _engine = {
 			}
 		},
 		
-		/* [Storage] Debug Status
-		/********************************************************************/
-		
 		debugStatus: {
 			set: function( _status ){
 				
@@ -1870,9 +1853,6 @@ var _engine = {
 				localStorage.removeItem( "mnsEngine_debugStatus" );
 			}
 		},
-		
-		/* [Storage] Prefill Caching
-		/********************************************************************/
 		
 		prefillCache: {
 			init: function(){
@@ -1987,6 +1967,7 @@ var _engine = {
 				}
 			}	
 		},
+		
 		_curamCreatedObject: {
 			
 			get: function(){
@@ -1996,7 +1977,7 @@ var _engine = {
 			}
 			
 		}
-			
+		
 	},
 	
 	//**************//
@@ -2160,4 +2141,4 @@ _engine.temp.jQloaded = setInterval(function(){
 		clearInterval(_engine.temp.jQloaded);
 	}
 },25);
-_engine.temp.jQloaded;
+_engine.temp.jQloaded;;

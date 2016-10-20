@@ -1,3 +1,4 @@
+/* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('tools/customApi/evidence/_evidenceQueryUrlConstructor',function( type, callback ){
 	
 	var root = "en_US/Evidence_workspaceTypeListPage.do?";

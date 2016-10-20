@@ -1,3 +1,4 @@
+/* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('domTools/test/hcrTabType',function( _tab ){
 	
 	if( _engine.domTools.get.hcrTabList().length > 0 ){

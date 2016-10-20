@@ -1,3 +1,4 @@
+/* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('domTools/test/icFrame/contactTab/caseNoteModal/body/isEmpty',function(){
 	
 	var _modalBody = _engine.domTools.get.icFrame.contactTab.caseNoteModal._body();

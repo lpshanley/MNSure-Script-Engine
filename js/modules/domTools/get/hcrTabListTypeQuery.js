@@ -1,3 +1,4 @@
+/* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('domTools/get/hcrTabListTypeQuery',function( _queryType ){
 	
 	_engine.debug.info("Starting tab list query");
@@ -10,7 +11,7 @@ _engine.module.define('domTools/get/hcrTabListTypeQuery',function( _queryType ){
 
 		var _tabType = _engine.domTools.test.hcrTabType( $( v ) );
 
-		if(_tabType == false){
+		if(_tabType === false){
 			_tabType = "Person Page";
 		}
 

@@ -1,3 +1,4 @@
+/* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('tools/selectSearchResult',function(){
 	
 	_engine.domTools.get.searches.advancedQuery(".action-set a:contains('Search')")[0].click();

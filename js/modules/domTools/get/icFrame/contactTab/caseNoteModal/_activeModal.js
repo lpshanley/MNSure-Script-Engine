@@ -1,3 +1,4 @@
+/* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('domTools/get/icFrame/contactTab/caseNoteModal/_activeModal',function(){
 	
 	var _modalFrame = $('iframe[title="Modal Frame - New Note"].curam-active-modal');
