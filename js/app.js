@@ -801,7 +801,11 @@ var _engine = {
 				
 				clearInterval( loading );
 				
-				_engine.ui.topNotification("Script Library: "+version);
+				var test = $.getJSON( 'https://api.github.com/rate_limit?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1' );
+				
+				console.log( test );
+				
+				_engine.ui.topNotification(`Script Library: ${version}`);
 
 				//Build out menu
 				_engine.ui.scriptMenu.refresh();
