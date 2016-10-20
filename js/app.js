@@ -1597,7 +1597,7 @@ var _engine = {
 
 			let api = 'https://api.github.com/repos/lpshanley/MNSure-Script-Engine/contents/';
 
-			let refParam = "?ref=" + _engine.storage.config.get('commit.current');
+			let refParam = "?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1&ref=" + _engine.storage.config.get('commit.current');
 
 			let pathArray = [];
 			
