@@ -25,7 +25,7 @@ if( commitVersion.length > 1 ){
 }
 
 $.ajax({
-	url: "https://api.github.com/repos/lpshanley/MNSure-Script-Engine/branches",
+	url: "https://api.github.com/repos/lpshanley/MNSure-Script-Engine/branches?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1",
 	type: 'get',
 	dataType: 'json',
 	async: false,
