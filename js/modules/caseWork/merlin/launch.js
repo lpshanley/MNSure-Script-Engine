@@ -18,7 +18,7 @@ _engine.module.define('caseWork/merlin/launch',function( input ){
 			var backDrop = _engine.ui.dom.createElement({ 
 				type: 'div', 
 				id: uniqueID, 
-				classes:'modal-overlay'
+				classes:'merlin-backdrop'
 			});
 
 		/* Modal Wrapper Element
