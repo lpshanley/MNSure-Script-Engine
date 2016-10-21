@@ -9,7 +9,7 @@ _engine.module.define('caseWork/global/onCaseScreen',function( callback ){
 
 		} else {
 
-			_engine.advanced.getView( "error/case note incorrect location.html" );
+			_engine.advanced.getView( "error/incorrect launch location.html" );
 
 			// Check every 100ms for info in local storage.
 
@@ -36,7 +36,7 @@ _engine.module.define('caseWork/global/onCaseScreen',function( callback ){
 					_c++;
 
 				} else {
-					_engine.debug.error("- * Fail Reason: [_engine.caseWork.note.write( _note )]: Build frame html timed out.");	
+					_engine.debug.error("- * Fail Reason: [_engine.caseWork.note.write( _note )]: Build frame html timed out.");
 					_engine.storage.html.clear();
 					clearInterval( buildFrame );
 				}
