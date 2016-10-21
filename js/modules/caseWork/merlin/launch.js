@@ -1,120 +1,124 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('caseWork/merlin/launch',function( input ){
 
-	let config = {
-		title: ''
-	};
+	_engine.caseWork.global.onCaseScreen(function(){
 
-	$.each(input,function(k,v){
-		config[k] = input[k];
-	});
+		let config = {
+			title: ''
+		};
 
-	let uniqueID = _engine.advanced.generateId();
-
-	/* Shaded Backdrop
-	***************************************************/
-		var backDrop = _engine.ui.dom.createElement({ 
-			type: 'div', 
-			id: uniqueID, 
-			styles:'height: 100vh;width: 100vw;background-color: rgba(0,0,0,.25);z-index: 900;position: absolute;top: 0;left: 0;'
+		$.each(input,function(k,v){
+			config[k] = input[k];
 		});
 
-	/* Modal Wrapper Element
-	***************************************************/
-		var wrapperDiv = _engine.ui.dom.createElement({ 
-			type: 'div', 
-			id:'merlinModal-'+uniqueID, 
-			classes: 'dijitDialog', 
-			styles:'height: 50vh;width: 60vw;background-color: #fff;position: absolute;z-index: 1000;top: 25vh;left: 20vw;box-shadow: 0 1px 2px rgba(0,0,0,.15);'
-		});
+		let uniqueID = _engine.advanced.generateId();
 
-	/* Title Bar Elements
-	***************************************************/
-		var titleBar = _engine.ui.dom.createElement({ 
-			type: 'div', 
-			id:'merlinTitleBar-'+uniqueID, 
-			styles:'height: 21px;width: 100%;', 
-			classes:'dijitDialogTitleBar'
-		});
+		/* Shaded Backdrop
+		***************************************************/
+			var backDrop = _engine.ui.dom.createElement({ 
+				type: 'div', 
+				id: uniqueID, 
+				styles:'height: 100vh;width: 100vw;background-color: rgba(0,0,0,.25);z-index: 900;position: absolute;top: 0;left: 0;'
+			});
 
-		var titleBarText = _engine.ui.dom.createElement({ 
-			content: config.title, 
-			type: 'span', 
-			classes:'dijitDialogTitle'
-		});
+		/* Modal Wrapper Element
+		***************************************************/
+			var wrapperDiv = _engine.ui.dom.createElement({ 
+				type: 'div', 
+				id:'merlinModal-'+uniqueID, 
+				classes: 'dijitDialog', 
+				styles:'height: 50vh;width: 60vw;background-color: #fff;position: absolute;z-index: 1000;top: 25vh;left: 20vw;box-shadow: 0 1px 2px rgba(0,0,0,.15);'
+			});
 
-		var titleBarCloseButton = _engine.ui.dom.createElement({ 
-			id:"titleBarCloseButton", 
-			type: 'span', 
-			classes:'dijitDialogCloseIcon'
-		});
+		/* Title Bar Elements
+		***************************************************/
+			var titleBar = _engine.ui.dom.createElement({ 
+				type: 'div', 
+				id:'merlinTitleBar-'+uniqueID, 
+				styles:'height: 21px;width: 100%;', 
+				classes:'dijitDialogTitleBar'
+			});
 
-	/* Left Content Wrapper
-	***************************************************/
-		var leftContent = _engine.ui.dom.createElement({ 
-			type: 'div', 
-			styles:'width: 30%;height: calc(100% - 21px);float:left;'
-		});
+			var titleBarText = _engine.ui.dom.createElement({ 
+				content: config.title, 
+				type: 'span', 
+				classes:'dijitDialogTitle'
+			});
 
-		var leftContentContainer = _engine.ui.dom.createElement({ 
-			type: 'div', 
-			id:'merlinTaskBinder'
-		});
+			var titleBarCloseButton = _engine.ui.dom.createElement({ 
+				id:"titleBarCloseButton", 
+				type: 'span', 
+				classes:'dijitDialogCloseIcon'
+			});
 
-	/* Modal Body Wrapper
-	***************************************************/
-		var bodyContent = _engine.ui.dom.createElement({ 
-			type: 'div', 
-			styles:'width: 70%;height: calc(100% - 21px);float:right;background-color:#f1f1f1;border-left: 1px solid rgba(0,0,0,.2);box-sizing: border-box;'
-		});
+		/* Left Content Wrapper
+		***************************************************/
+			var leftContent = _engine.ui.dom.createElement({ 
+				type: 'div', 
+				styles:'width: 30%;height: calc(100% - 21px);float:left;'
+			});
 
-		var bodyContentContainer = _engine.ui.dom.createElement({ 
-			type: 'div', 
-			id:'merlinTaskBoard', 
-			styles:'margin: 1% 3%;width: 100%;height: 100%;'
-		});
+			var leftContentContainer = _engine.ui.dom.createElement({ 
+				type: 'div', 
+				id:'merlinTaskBinder'
+			});
 
-	/* Apply Backdrop To Screen
-	***************************************************/
-		$('body').append( backDrop );
+		/* Modal Body Wrapper
+		***************************************************/
+			var bodyContent = _engine.ui.dom.createElement({ 
+				type: 'div', 
+				styles:'width: 70%;height: calc(100% - 21px);float:right;background-color:#f1f1f1;border-left: 1px solid rgba(0,0,0,.2);box-sizing: border-box;'
+			});
 
-	/* Build Title Bar
-	***************************************************/
-		$( titleBar ).append( titleBarText );
-		$( titleBar ).append( titleBarCloseButton );
+			var bodyContentContainer = _engine.ui.dom.createElement({ 
+				type: 'div', 
+				id:'merlinTaskBoard', 
+				styles:'margin: 1% 3%;width: 100%;height: 100%;'
+			});
 
-	/* Build Left Content
-	***************************************************/
-		$( leftContent ).append( leftContentContainer );
+		/* Apply Backdrop To Screen
+		***************************************************/
+			$('body').append( backDrop );
 
-	/* Build Body Content
-	***************************************************/
-		$( bodyContent ).append( bodyContentContainer );
+		/* Build Title Bar
+		***************************************************/
+			$( titleBar ).append( titleBarText );
+			$( titleBar ).append( titleBarCloseButton );
 
-	/* Add Cores To Modal
-	***************************************************/
-		$( wrapperDiv ).append( titleBar );
+		/* Build Left Content
+		***************************************************/
+			$( leftContent ).append( leftContentContainer );
 
-		$( wrapperDiv ).append( leftContent );
+		/* Build Body Content
+		***************************************************/
+			$( bodyContent ).append( bodyContentContainer );
 
-		$( wrapperDiv ).append( bodyContent );
+		/* Add Cores To Modal
+		***************************************************/
+			$( wrapperDiv ).append( titleBar );
 
-	/* Launch Modal
-	***************************************************/
-		$( curam.util.getTopmostWindow().document.body ).append( wrapperDiv );
+			$( wrapperDiv ).append( leftContent );
 
-	/* Enable Modal Resizing and Dragging
-	***************************************************/
-		$('[data-merlin-id="merlinModal-'+uniqueID+'"]').draggable({ handle: '[data-merlin-id="merlinTitleBar-'+uniqueID+'"]' });
-		$('[data-merlin-id="merlinModal-'+uniqueID+'"]').resizable();
+			$( wrapperDiv ).append( bodyContent );
 
-	/* Setup Modal Actions 
-	***************************************************/
-		// Closeout Modal
-		_engine.caseWork.merlin.setupAction({
-			item: '[data-merlin-id="titleBarCloseButton"]',
-			trigger: 'click',
-			action: function(){_engine.caseWork.merlin.destroy( uniqueID )}
+		/* Launch Modal
+		***************************************************/
+			$( curam.util.getTopmostWindow().document.body ).append( wrapperDiv );
+
+		/* Enable Modal Resizing and Dragging
+		***************************************************/
+			$('[data-merlin-id="merlinModal-'+uniqueID+'"]').draggable({ handle: '[data-merlin-id="merlinTitleBar-'+uniqueID+'"]' });
+			$('[data-merlin-id="merlinModal-'+uniqueID+'"]').resizable();
+
+		/* Setup Modal Actions 
+		***************************************************/
+			// Closeout Modal
+			_engine.caseWork.merlin.setupAction({
+				item: '[data-merlin-id="titleBarCloseButton"]',
+				trigger: 'click',
+				action: function(){_engine.caseWork.merlin.destroy( uniqueID )}
+			});
+		
 		});
 
 });

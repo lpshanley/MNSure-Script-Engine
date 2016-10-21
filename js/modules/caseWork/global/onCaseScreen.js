@@ -5,7 +5,7 @@ _engine.module.define('caseWork/global/onCaseScreen',function( callback ){
 
 		if( result ){
 
-			console.log( 'On IC Screen' );
+			if(typeof callback === 'function') callback();
 
 		} else {
 
