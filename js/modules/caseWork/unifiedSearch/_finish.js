@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('caseWork/unifiedSeach/_finish',function(){
+_engine.module.define('caseWork/unifiedSearch/_finish',function(){
 
 	//Start param gather counter
 	_c1 = 0;
@@ -12,7 +12,7 @@ _engine.module.define('caseWork/unifiedSeach/_finish',function(){
 
 			_engine.debug.info("- * Attempting to gather params [ attempt: "+ _c1 +" ]");
 
-			if( _engine.storage.modalParams.get() != false ){
+			if( _engine.storage.modalParams.get() !== false ){
 
 				//Perform actions on the stored params
 
@@ -29,14 +29,14 @@ _engine.module.define('caseWork/unifiedSeach/_finish',function(){
 
 							// Case Number
 
-							var _tabToClose = _engine.domTools.get.hcrTabListTypeQuery("Case Search");
+							let _tabToClose = _engine.domTools.get.hcrTabListTypeQuery("Case Search");
 							_engine.tools.closeTabHCR( _tabToClose );
 
 							_engine.search._case();
 
 							_c2 = 0;
 
-							var _openSearch = setInterval(function(){
+							let _openSearch = setInterval(function(){
 								_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
 								if(_c2 <= _engine.advanced._vars.iterations){
 									if( _engine.domTools.test.searches.windowLoaded() ){
@@ -57,14 +57,14 @@ _engine.module.define('caseWork/unifiedSeach/_finish',function(){
 						} else if ( _input.length == 9 || _input.length == 10 ){
 							// SSN or MNS ID
 
-							var _tabToClose = _engine.domTools.get.hcrTabListTypeQuery("Person Search");
+							let _tabToClose = _engine.domTools.get.hcrTabListTypeQuery("Person Search");
 							_engine.tools.closeTabHCR( _tabToClose );
 
 							_engine.search._person();
 
 							_c2 = 0;
 
-							var _openSearch = setInterval(function(){
+							let _openSearch = setInterval(function(){
 								_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
 								if(_c2 <= _engine.advanced._vars.iterations){
 									if( _engine.domTools.test.searches.windowLoaded() ){
@@ -122,7 +122,7 @@ _engine.module.define('caseWork/unifiedSeach/_finish',function(){
 
 							_c2 = 0;
 
-							var _openSearch = setInterval(function(){
+							let _openSearch = setInterval(function(){
 								_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
 								if(_c2 <= _engine.advanced._vars.iterations){
 									if( _engine.domTools.test.searches.windowLoaded() ){
