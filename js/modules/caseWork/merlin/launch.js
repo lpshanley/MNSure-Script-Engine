@@ -18,7 +18,7 @@ _engine.module.define('caseWork/merlin/launch',function( input ){
 			var backDrop = _engine.ui.dom.createElement({ 
 				type: 'div', 
 				id: uniqueID, 
-				styles:'height: 100vh;width: 100vw;background-color: rgba(0,0,0,.25);z-index: 900;position: absolute;top: 0;left: 0;'
+				classes:'modal-overlay'
 			});
 
 		/* Modal Wrapper Element
@@ -26,8 +26,7 @@ _engine.module.define('caseWork/merlin/launch',function( input ){
 			var wrapperDiv = _engine.ui.dom.createElement({ 
 				type: 'div', 
 				id:'merlinModal-'+uniqueID, 
-				classes: 'dijitDialog', 
-				styles:'height: 50vh;width: 60vw;background-color: #fff;position: absolute;z-index: 1000;top: 25vh;left: 20vw;box-shadow: 0 1px 2px rgba(0,0,0,.15);'
+				classes: 'dijitDialog merlin-wrapper'
 			});
 
 		/* Title Bar Elements
@@ -54,8 +53,8 @@ _engine.module.define('caseWork/merlin/launch',function( input ){
 		/* Left Content Wrapper
 		***************************************************/
 			var leftContent = _engine.ui.dom.createElement({ 
-				type: 'div', 
-				styles:'width: 30%;height: calc(100% - 21px);float:left;'
+				type: 'div',
+				classes:'merlin-leftContent',
 			});
 
 			var leftContentContainer = _engine.ui.dom.createElement({ 
@@ -67,13 +66,13 @@ _engine.module.define('caseWork/merlin/launch',function( input ){
 		***************************************************/
 			var bodyContent = _engine.ui.dom.createElement({ 
 				type: 'div', 
-				styles:'width: 70%;height: calc(100% - 21px);float:right;background-color:#f1f1f1;border-left: 1px solid rgba(0,0,0,.2);box-sizing: border-box;'
+				classes:'merlin-bodyContent',
 			});
 
 			var bodyContentContainer = _engine.ui.dom.createElement({ 
 				type: 'div', 
 				id:'merlinTaskBoard', 
-				styles:'margin: 1% 3%;width: 100%;height: 100%;'
+				classes:'merlin-bodyContentContainer',
 			});
 
 		/* Apply Backdrop To Screen
