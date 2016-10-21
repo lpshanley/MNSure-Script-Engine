@@ -274,31 +274,7 @@ var _engine = {
 
 /* [Program Start] Runs the startup function 
 /********************************************************************/
-_engine.temp = {count:0,load:{vars:{},run:{}}};
-
-_engine.temp.load.vars = {
-	onRun:0,
-	loadArray: [
-		'Script Library: Loading',
-		'Script Library: Loading.',
-		'Script Library: Loading..',
-		'Script Library: Loading...',
-		'Script Library: Loading&nbsp;...',
-		'Script Library: Loading&nbsp;&nbsp;...',
-		'Script Library: Loading&nbsp;&nbsp;&nbsp;...',
-		'Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;...',
-		'Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...',
-		'Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..',
-		'Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.',
-	]
-};
-
-_engine.temp.load.run = setInterval(function(){
-	document.querySelector('.center-box span').innerHTML = _engine.temp.load.vars.loadArray[_engine.temp.load.vars.onRun];
-	_engine.temp.load.vars.onRun === _engine.temp.load.vars.loadArray.length - 1 ?
-		_engine.temp.load.vars.onRun = 0:
-		_engine.temp.load.vars.onRun++;
-},100);
+_engine.temp = {count:0};
 
 _engine.temp.jQloaded = setInterval(function(){
 
@@ -306,7 +282,6 @@ _engine.temp.jQloaded = setInterval(function(){
 		if( typeof $ === 'function' ){
 			_engine.events._startUp();
 			clearInterval(_engine.temp.jQloaded);
-			clearInterval(_engine.temp.load.run);
 			delete _engine.temp;
 		} else {
 			_engine.temp.count++;
@@ -316,5 +291,4 @@ _engine.temp.jQloaded = setInterval(function(){
 	}
 },25);
 
-_engine.temp.load.run;
 _engine.temp.jQloaded;
