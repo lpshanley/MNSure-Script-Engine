@@ -129,6 +129,20 @@ var _engine = {
 			}
 		},
 		
+		fallbackCache: {
+			get: function(){
+				
+				return _engine.storage._data.decode( window.localStorage.mnsEngine_fallbackCache );
+				
+			},
+			
+			addModule: function( modulePath ){
+				
+				
+				
+			}
+		}
+		
 	},
 	
 	//**************//
