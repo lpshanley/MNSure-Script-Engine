@@ -312,7 +312,7 @@ div.center-box > span {
 	height: 50vh;
 	width: 60vw;
 	background-color: #fff;
-	position: absolute;
+	position: absolute !important;
 	z-index: 1000;
 	top: 25vh;
 	left: 20vw;
