@@ -21,31 +21,6 @@ var _engine = {
 		/********************************************************************/
 		
 		_startUp: function() {
-			
-			var loadArray = [
-				'Script Library: Loading',
-				'Script Library: Loading.',
-				'Script Library: Loading..',
-				'Script Library: Loading...',
-				'Script Library: Loading&nbsp;...',
-				'Script Library: Loading&nbsp;&nbsp;...',
-				'Script Library: Loading&nbsp;&nbsp;&nbsp;..',
-				'Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;.'
-			];
-
-			var onRun = 0;
-			var last = loadArray.length - 1;
-
-			var loading = setInterval(function(){
-
-				$('.center-box span').html( loadArray[onRun] );
-
-				onRun === last ?
-					onRun = 0:
-					onRun++;
-
-			},100);
-			
 			/* Runs the callback after all modules have been requested */
 			_engine.module.loadRequired(function(){
 
@@ -80,8 +55,6 @@ var _engine = {
 					_engine.storage.debugStatus.set( true );
 
 				_engine.storage.prefillCache.clear();
-				
-				clearInterval( loading );
 				
 				if( version !== 'master' && version !== 'beta' ){
 					
@@ -301,14 +274,39 @@ var _engine = {
 
 /* [Program Start] Runs the startup function 
 /********************************************************************/
+_engine.temp = {count:0,load:{vars:{},run:{}}};
 
-_engine.temp = {};
-_engine.temp.count = 0;
+_engine.temp.load.vars = {
+	onRun:0,
+	loadArray: [
+		'Script Library: Loading',
+		'Script Library: Loading.',
+		'Script Library: Loading..',
+		'Script Library: Loading...',
+		'Script Library: Loading&nbsp;...',
+		'Script Library: Loading&nbsp;&nbsp;...',
+		'Script Library: Loading&nbsp;&nbsp;&nbsp;...',
+		'Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;...',
+		'Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...',
+		'Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..',
+		'Script Library: Loading&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.',
+	]
+};
+
+_engine.temp.load.run = setInterval(function(){
+	document.querySelector('.center-box span').innerHTML = _engine.temp.load.vars.loadArray[_engine.temp.load.vars.onRun];
+	_engine.temp.load.vars.onRun === _engine.temp.load.vars.loadArray.length - 1 ?
+		_engine.temp.load.vars.onRun = 0:
+		_engine.temp.load.vars.onRun++;
+},100);
+
 _engine.temp.jQloaded = setInterval(function(){
+
 	if( _engine.temp.count < 200 ){
 		if( typeof $ === 'function' ){
 			_engine.events._startUp();
 			clearInterval(_engine.temp.jQloaded);
+			clearInterval(_engine.temp.load.run);
 			delete _engine.temp;
 		} else {
 			_engine.temp.count++;
@@ -317,4 +315,6 @@ _engine.temp.jQloaded = setInterval(function(){
 		clearInterval(_engine.temp.jQloaded);
 	}
 },25);
+
+_engine.temp.load.run;
 _engine.temp.jQloaded;
