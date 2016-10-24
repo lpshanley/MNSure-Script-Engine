@@ -91,15 +91,20 @@ _engine.module.define('caseWork/caseData/maintainNocache',function(){
 			if(cacheEmpty) getData();
 			else {
 				
-				
+				if( _engine.storage.nocache.data.caseData.caseID !== curamObj.tabContent.parameters.caseID){
+					_engine.storage.nocache.delete('caseData');
+					getData();
+				}
 				
 			}
 				
 		} else {
 			
-			console.log('Not an IC');
-			
-			//If not an IC and not relevant to cache -> purge caseCache
+			if(!cacheEmpty){
+				if( curamObj.tabID === 'PersonHome' ){
+					
+				}
+			}
 			
 		}
 
