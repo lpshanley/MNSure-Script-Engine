@@ -137,8 +137,11 @@ var _engine = {
 			},
 			
 			addModule: function( modulePath ){
+				let commit = _engine.storage.config.get('commit.current');
 				
-				
+				if( commit === 'master' || commit === 'beta' ){
+					
+				}
 				
 			}
 		}
@@ -292,7 +295,7 @@ _engine.temp = {count:0};
 
 _engine.temp.jQloaded = setInterval(function(){
 
-	if( _engine.temp.count < 200 ){
+	if( _engine.temp.count < 400 ){
 		if( typeof $ === 'function' ){
 			_engine.events._startUp();
 			clearInterval(_engine.temp.jQloaded);
