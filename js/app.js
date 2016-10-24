@@ -3290,6 +3290,12 @@ var _engine = {
 			
 			get: function(){
 				
+				var storage;
+				
+				typeof window.localStorage.__default_curam_selected_tab === 'undefined' ?
+					storage = window.localStorage.default_curam_selected_tab:
+					storage = window.localStorage.__default_curam_selected_tab;
+				
 				return $.parseJSON( $.parseJSON( window.localStorage.__default_curam_selected_tab ) );
 				
 			}
