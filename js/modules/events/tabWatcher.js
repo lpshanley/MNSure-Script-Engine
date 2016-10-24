@@ -3,7 +3,15 @@ _engine.module.define('events/tabWatcher',function( tab ){
 
 	let tabScope = $( tab ).attr('widgetid').split('-')[0];
 	
-	console.log( tabScope );
+	switch( tabScope ){
+		case "HCRCASEAPPWorkspaceSection":
+			
+			console.log( 'HCR SubTab' );
+			
+			break;
+		default:
+			break;
+	}
 	
 });
 
