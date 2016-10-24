@@ -102,42 +102,44 @@ _engine.module.define('caseWork/caseData/maintainNocache',function(){
 			}
 				
 		} else {
-			
-			if(!cacheEmpty){
 				
-				switch(curamObj.tabID){
-					case 'PersonHome':
-						
+			switch(curamObj.tabID){
+				case 'PersonHome':
+
+					if(!cacheEmpty){
+
 						var participants = _engine.storage.nocache.query('caseData.participants');
-						
+
 						var roleIDs = [];
-						
+
 						$.each( participants,function(k, participant){
-							
+
 							roleIDs.push( participant.url.params.concernRoleID );
-							
+
 						});
-						
+
 						if( roleIDs.indexOf( curamObj.tabContent.parameters.concernRoleID ) === -1 ){
 							_engine.debug.info('Tab is not in scope of current nocache. Clearing nocache.');
 							_engine.storage.nocache.delete('caseData');
 						}
-						
-						break;
-					case 'EvidenceType':
-						
+
+					}
+
+					break;
+				case 'EvidenceType':
+					if(!cacheEmpty){
 						if( curamObj.tabContent.parameters.caseID !== _engine.storage.nocache.query('caseData.caseID') ){
 							_engine.debug.info('Tab is not in scope of current nocache. Clearing nocache.');
 							_engine.storage.nocache.delete('caseData');
 							getData( curamObj.tabContent.parameters.caseID );
-							
 						}
-						
-						break;
-					default:
-						break;
-				}
-				
+					}
+					else {
+						getData( curamObj.tabContent.parameters.caseID );
+					}
+					break;
+				default:
+					break;
 			}
 			
 		}
