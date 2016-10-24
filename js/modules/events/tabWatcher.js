@@ -9,6 +9,19 @@ _engine.module.define('events/tabWatcher',function( tab ){
 			_engine.caseWork.caseData.maintainNocache();
 			
 			break;
+		case 'app':
+			
+			switch($(tab)[0].innerText.trim() ){
+				case 'HCR Cases and Outcomes':
+					
+					_engine.caseWork.caseData.maintainNocache();
+					
+					break;
+				default:
+					break;
+			}
+			
+			break;
 		default:
 			break;
 	}
