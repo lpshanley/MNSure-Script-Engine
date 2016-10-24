@@ -25,7 +25,7 @@ _engine.module.define('domTools/test/hcrTabActiveIsIC',function( callback ){
 
 	}
 
-	if( typeof callback === 'function' ) callback( result );				
+	if( typeof callback === 'function' ) callback( result );
 	else return result;
 	
 });
