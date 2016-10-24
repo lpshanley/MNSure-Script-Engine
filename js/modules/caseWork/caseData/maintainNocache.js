@@ -1,15 +1,17 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('caseWork/caseData/maintainNocache',function(){
-
+	
 	_engine.domTools.test.hcrTabActiveIsIC(function( result ){
-
+		
+		let cacheEmpty = typeof _engine.storage.nocache.data.caseData === 'undefined';
+		
+		let curamObj = _engine.storage._curamCreatedObject.get();
+		
 		if(result){
-
-			let obj = _engine.storage._curamCreatedObject.get();
 
 			let href = 'en_US/DefaultIC_listCaseMemberPage.do';
 
-			var processResponse = function( data ){
+			var updateNocache = function( data ){
 				let parsedData = $.parseHTML( data );
 
 				let caseData = {
@@ -60,26 +62,39 @@ _engine.module.define('caseWork/caseData/maintainNocache',function(){
 					}
 
 				});
-
+				
 				_engine.storage.nocache.data.caseData = caseData;
 				
-				_engine.debug.info('Nocache Refreshed (caseData): ', _engine.storage.nocache.data);
-
+				_engine.storage.nocache.data.caseData.caseID = curamObj.tabContent.parameters.caseID;
+				
+				_engine.debug.info('Nocache Refreshed');
+				
 			}
-
-			$.ajax({
-				url: href,
-				data: {
-					o3ctx: obj.tabContent.parameters.o3ctx,
-					caseID: obj.tabContent.parameters.caseID,
-					o3nocache: curam.util.getCacheBusterParameter().split('=')[1]
-				},
-				async: true,
-				success: function(data){	
-					processResponse( data );
-				}
-			});
-
+			
+			var getData = function(){
+			
+				$.ajax({
+					url: href,
+					data: {
+						o3ctx: curamObj.tabContent.parameters.o3ctx,
+						caseID: curamObj.tabContent.parameters.caseID,
+						o3nocache: curam.util.getCacheBusterParameter().split('=')[1]
+					},
+					async: true,
+					success: function(data){	
+						updateNocache( data );
+					}
+				});
+				
+			}
+			
+			if(cacheEmpty) getData();
+			else {
+				
+				
+				
+			}
+				
 		} else {
 			
 			console.log('Not an IC');
