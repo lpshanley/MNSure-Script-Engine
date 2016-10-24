@@ -7,88 +7,91 @@ _engine.module.define('caseWork/caseData/maintainNocache',function(){
 		
 		let curamObj = _engine.storage._curamCreatedObject.get();
 		
-		if(result){
+		var updateNocache = function( data ){
+			let parsedData = $.parseHTML( data );
 
-			let href = 'en_US/DefaultIC_listCaseMemberPage.do';
+			let caseData = {
+				participants:{}
+			}
 
-			var updateNocache = function( data ){
-				let parsedData = $.parseHTML( data );
+			$.each( parsedData, function(k,v){
+				if( typeof $(v).attr('id') !== 'undefined' && $(v).attr('id') === 'content' ){
 
-				let caseData = {
-					participants:{}
-				}
+					let parsedPageData = $.parseHTML( $( v ).find( '.list tbody script' )[0].innerHTML );
 
-				$.each( parsedData, function(k,v){
-					if( typeof $(v).attr('id') !== 'undefined' && $(v).attr('id') === 'content' ){
+					let count = 0;
 
-						let parsedPageData = $.parseHTML( $( v ).find( '.list tbody script' )[0].innerHTML );
+					$.each( parsedPageData, function(k,v){
 
-						let count = 0;
+						if( !$(v).hasClass('list-details-row') ){
+							var rowData = $(v).find('td');
 
-						$.each( parsedPageData, function(k,v){
+							let urlParams = {};
 
-							if( !$(v).hasClass('list-details-row') ){
-								var rowData = $(v).find('td');
+							$.each($(rowData[1]).find('a')[0].search.replace('?','').split('&'),function(k,v){
 
-								let urlParams = {};
+								v = v.split('=');
 
-								$.each($(rowData[1]).find('a')[0].search.replace('?','').split('&'),function(k,v){
+								urlParams[v[0]] = v[1];
 
-									v = v.split('=');
+							});
 
-									urlParams[v[0]] = v[1];
-
-								});
-
-								caseData.participants[count] = {
-									name: rowData[1].innerText.trim(),
-									role: rowData[2].innerText.trim(),
-									startDate: rowData[3].innerText.trim(),
-									endDate: rowData[4].innerText.trim(),
-									endReason: rowData[5].innerText.trim(),
-									_status: rowData[6].innerText.trim(),
-									url:{
-										path: $(rowData[1]).find('a')[0].pathname,
-										params: urlParams
-									}
+							caseData.participants[count] = {
+								name: rowData[1].innerText.trim(),
+								role: rowData[2].innerText.trim(),
+								startDate: rowData[3].innerText.trim(),
+								endDate: rowData[4].innerText.trim(),
+								endReason: rowData[5].innerText.trim(),
+								_status: rowData[6].innerText.trim(),
+								url:{
+									path: $(rowData[1]).find('a')[0].pathname,
+									params: urlParams
 								}
-
-								count++;
-
 							}
 
-						});
+							count++;
 
-					}
+						}
 
-				});
-				
-				_engine.storage.nocache.data.caseData = caseData;
-				
-				_engine.storage.nocache.data.caseData.caseID = curamObj.tabContent.parameters.caseID;
-				
-				_engine.debug.info('Nocache Refreshed');
-				
-			}
+					});
+
+				}
+
+			});
+
+			_engine.storage.nocache.data.caseData = caseData;
+
+			_engine.storage.nocache.data.caseData.caseID = curamObj.tabContent.parameters.caseID;
+
+			_engine.debug.info('Nocache Refreshed');
+
+		}
+		
+		var getData = function( caseId ){
 			
-			var getData = function(){
+			if(typeof caseId === 'undefined') caseId = curamObj.tabContent.parameters.caseID;
 			
-				$.ajax({
-					url: href,
-					data: {
-						o3ctx: curamObj.tabContent.parameters.o3ctx,
-						caseID: curamObj.tabContent.parameters.caseID,
-						o3nocache: curam.util.getCacheBusterParameter().split('=')[1]
-					},
-					async: true,
-					success: function(data){	
-						updateNocache( data );
-					}
-				});
-				
-			}
+			let href = 'en_US/DefaultIC_listCaseMemberPage.do';
+			
+			$.ajax({
+				url: href,
+				data: {
+					o3ctx: curamObj.tabContent.parameters.o3ctx,
+					caseID: caseId,
+					o3nocache: curam.util.getCacheBusterParameter().split('=')[1]
+				},
+				async: true,
+				success: function(data){
+					updateNocache( data );
+				}
+			});
+
+		}
+		
+		if(result){
 			
 			if(cacheEmpty) getData();
+			
 			else {
 				
 				if( _engine.storage.nocache.data.caseData.caseID !== curamObj.tabContent.parameters.caseID){
@@ -101,9 +104,40 @@ _engine.module.define('caseWork/caseData/maintainNocache',function(){
 		} else {
 			
 			if(!cacheEmpty){
-				if( curamObj.tabID === 'PersonHome' ){
-					
+				
+				switch(curamObj.tabID){
+					case 'PersonHome':
+						
+						var participants = _engine.storage.nocache.query('caseData.participants');
+						
+						var roleIDs = [];
+						
+						$.each( participants,function(k, participant){
+							
+							roleIDs.push( participant.url.params.concernRoleID );
+							
+						});
+						
+						if( roleIDs.indexOf( curamObj.tabContent.parameters.concernRoleID ) === -1 ){
+							_engine.debug.info('Tab is not in scope of current nocache. Clearing nocache.');
+							_engine.storage.nocache.delete('caseData');
+						}
+						
+						break;
+					case 'EvidenceType':
+						
+						if( curamObj.tabContent.parameters.caseID !== _engine.storage.nocache.query('caseData.caseID') ){
+							_engine.debug.info('Tab is not in scope of current nocache. Clearing nocache.');
+							_engine.storage.nocache.delete('caseData');
+							getData( curamObj.tabContent.parameters.caseID );
+							
+						}
+						
+						break;
+					default:
+						break;
 				}
+				
 			}
 			
 		}
