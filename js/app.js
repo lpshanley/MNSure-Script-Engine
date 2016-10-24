@@ -74,7 +74,7 @@ var _engine = {
 				//Build out menu
 				_engine.ui.scriptMenu.refresh();
 				
-				$('.scripts-link').removeAttr('style');
+				$('.scripts-link, .center-box').removeAttr('style');
 				
 			});
 			
