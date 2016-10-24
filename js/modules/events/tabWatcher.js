@@ -6,7 +6,7 @@ _engine.module.define('events/tabWatcher',function( tab ){
 	switch( tabScope ){
 		case "HCRCASEAPPWorkspaceSection":
 			
-			console.log( 'HCR SubTab' );
+			_engine.caseWork.caseData.maintainNocache();
 			
 			break;
 		default:
