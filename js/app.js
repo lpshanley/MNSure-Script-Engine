@@ -74,6 +74,10 @@ var _engine = {
 				//Build out menu
 				_engine.ui.scriptMenu.refresh();
 				
+				$(document).on('click','.dijitTab',function(){
+					_engine.events.tabWatcher( this );
+				});
+				
 				$('.scripts-link, .center-box').removeAttr('style');
 				
 			});
