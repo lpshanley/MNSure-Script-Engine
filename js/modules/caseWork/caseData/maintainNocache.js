@@ -63,7 +63,7 @@ _engine.module.define('caseWork/caseData/maintainNocache',function(){
 
 				_engine.storage.nocache.data.caseData = caseData;
 				
-				_engine.debug.info('Nocache Refreshed: ', _engine.storage.nocache.data);
+				_engine.debug.info('Nocache Refreshed (caseData): ', _engine.storage.nocache.data);
 
 			}
 
