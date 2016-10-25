@@ -7,7 +7,7 @@ _engine.module.define('caseWork/caseData/maintainNocache',function(){
 		
 		let curamObj = _engine.storage._curamCreatedObject.get();
 		
-		var updateNocache = function( data ){
+		var updateCaseData = function( data ){
 			let parsedData = $.parseHTML( data );
 
 			let caseData = {
@@ -63,7 +63,7 @@ _engine.module.define('caseWork/caseData/maintainNocache',function(){
 
 			_engine.storage.nocache.data.caseData.caseID = curamObj.tabContent.parameters.caseID;
 
-			_engine.debug.info('Nocache Refreshed');
+			_engine.debug.info('Nocache: Case Data Refreshed');
 
 		}
 		
@@ -71,10 +71,8 @@ _engine.module.define('caseWork/caseData/maintainNocache',function(){
 			
 			if(typeof caseId === 'undefined') caseId = curamObj.tabContent.parameters.caseID;
 			
-			let href = 'en_US/DefaultIC_listCaseMemberPage.do';
-			
 			$.ajax({
-				url: href,
+				url: 'en_US/DefaultIC_listCaseMemberPage.do',
 				data: {
 					o3ctx: curamObj.tabContent.parameters.o3ctx,
 					caseID: caseId,
@@ -82,9 +80,30 @@ _engine.module.define('caseWork/caseData/maintainNocache',function(){
 				},
 				async: true,
 				success: function(data){
-					updateNocache( data );
+					updateCaseData( data );
 				}
 			});
+			
+			if( Object.getOwnPropertyNames( _engine.advanced._vars.queryDefinitions ).length === 0 ){
+				$.ajax({
+					url:'en_US/HCRDefaultIC_dashboardPage.do',
+					data: {
+						o3ctx: curamObj.tabContent.parameters.o3ctx,
+						caseID: curamObj.tabContent.parameters.caseID
+					}
+				}).success(function( data ){
+					$.each($.parseHTML( data ),function(k,v){
+						if(typeof $(v).attr('id') !== 'undefined' && $(v).attr('id') === 'content'){
+							$.each($(v).find('div#dashboardData li'),function(k,v){
+								_engine.advanced._vars.queryDefinitions[$(v).attr('name').toLowerCase()] = 'evidenceType=' + $(v).attr('evidencetype');
+							});
+						}
+					});
+					_engine.debug.info('Nocache: Updated query definitions.');
+				});
+				
+			}
+			
 
 		}
 		
@@ -119,7 +138,7 @@ _engine.module.define('caseWork/caseData/maintainNocache',function(){
 						});
 
 						if( roleIDs.indexOf( curamObj.tabContent.parameters.concernRoleID ) === -1 ){
-							_engine.debug.info('Tab is not in scope of current nocache. Clearing nocache.');
+							_engine.debug.info('Nocache: Tab is not in scope of current nocache. Clearing nocache.');
 							_engine.storage.nocache.delete('caseData');
 						}
 
@@ -129,7 +148,7 @@ _engine.module.define('caseWork/caseData/maintainNocache',function(){
 				case 'EvidenceType':
 					if(!cacheEmpty){
 						if( curamObj.tabContent.parameters.caseID !== _engine.storage.nocache.query('caseData.caseID') ){
-							_engine.debug.info('Tab is not in scope of current nocache. Clearing nocache.');
+							_engine.debug.info('Nocache: Tab is not in scope of current nocache. Clearing nocache.');
 							_engine.storage.nocache.delete('caseData');
 							getData( curamObj.tabContent.parameters.caseID );
 						}
