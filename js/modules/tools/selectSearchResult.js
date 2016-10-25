@@ -27,10 +27,12 @@ _engine.module.define('tools/selectSearchResult',function(){
 
 						if( typeof singleResult === 'object' ){
 							
+							singleResult.click();
+							
 							_tabToClose = _engine.domTools.get.hcrTabListTypeQuery( screenType );
-
+							
 							_engine.tools.closeTabHCR( _tabToClose );
-
+							
 							clearInterval( _loadWindow );
 
 						} else {

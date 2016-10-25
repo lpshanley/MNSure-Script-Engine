@@ -22,6 +22,11 @@ _engine.module.define('events/tabWatcher',function( tab ){
 			}
 			
 			break;
+		case 'HCRIntegratedCase':
+			
+			_engine.caseWork.caseData.maintainNocache();
+			
+			break;
 		default:
 			break;
 	}
