@@ -23,7 +23,7 @@ var _engine = {
 		_startUp: function() {
 			/* Runs the callback after all modules have been requested */
 			_engine.module.loadRequired(function(){
-
+				
 				_engine.debug.info('All modules have loaded.');
 
 				_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
@@ -34,7 +34,7 @@ var _engine = {
 
 				//********** Right Click **********//
 				// Performs Quick Load of Searches
-
+				/*
 				$('#script-launcher a').contextmenu(function(e){
 
 						// Prevent context menu pop-up
@@ -79,7 +79,7 @@ var _engine = {
 				});
 				
 				$('.scripts-link, .center-box').removeAttr('style');
-				
+				*/
 			});
 			
 		},
