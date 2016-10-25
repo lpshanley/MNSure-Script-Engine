@@ -8,9 +8,12 @@ _engine.module.define('tools/customApi/evidence/queryAndCache',function(type, ca
 		evidenceObject[type] = results;
 
 		_engine.storage.prefillCache.add( evidenceObject );
+		
+		if( typeof _engine.storage.nocache.data.caseData.prefill === 'undefined' ) _engine.storage.nocache.data.caseData.prefill = {};
+		
+		_engine.storage.nocache.data.caseData.prefill[type] = results;
 
-		if(typeof callback === 'function') callback( results );
-		else return results;
+		if( typeof callback === 'function') callback( results );
 
 	});
 	
