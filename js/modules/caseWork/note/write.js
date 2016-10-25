@@ -46,6 +46,6 @@ _engine.module.define('caseWork/note/write',function( _note ){
 			_engine.debug.error("- * Fail Reason: [_engine.caseWork.note.write( note )]: A valid note type must be specified to run this command.")
 		}
 	
-	});
+	}, true);
 
 });
