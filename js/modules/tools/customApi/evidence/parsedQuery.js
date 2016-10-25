@@ -4,10 +4,12 @@ _engine.module.define('tools/customApi/evidence/parsedQuery',function(type, call
 	_engine.tools.customApi.evidence._evidenceApiRaw( type, function( evidenceInputObj, queryType ){
 
 		var evidenceContainer = evidenceInputObj[Object.getOwnPropertyNames( evidenceInputObj )[0]];
-
+		
+		let totalItems = Object.getOwnPropertyNames( evidenceContainer ).length;
+		
 		var masterObject = {};
 
-		count = 0;
+		let count = 0;
 
 		var parsedEvidence = {};
 
@@ -58,8 +60,8 @@ _engine.module.define('tools/customApi/evidence/parsedQuery',function(type, call
 				}
 
 			});
-
-			if(typeof callback === 'function') callback( masterObject, type );
+			
+			if( totalItems === count && typeof callback === 'function') callback( masterObject, type );
 
 		});
 

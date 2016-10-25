@@ -184,7 +184,6 @@ var _engine = {
 		/* Loads a specified script file */
 		
 		require: function( module ){
-
 			let baseUrl = _engine.storage.config.get('advanced.baseUrl');
 			
 			let req = baseUrl + module;
@@ -200,7 +199,6 @@ var _engine = {
 					
 				}
 			});
-
 		},
 		
 		/* Performs loading of all modules declared in the config */
