@@ -16,121 +16,111 @@ _engine.module.define('ui/modal/_prefillFromDataQuery',function( type, callback 
 
 	if( scope !== 'history' ){
 		if( scope !== 'current' ){
-
 			_engine.debug.warn(`Invalid use of prefill scope: ${ scope }. Using current instead.`);
-
 			scope = 'current';
-
 		}
 	}
 
-	var builtQueries = Object.getOwnPropertyNames( _engine.advanced._vars.queryDefinitions );
+	var returnConstructor = function( dataObject ){
 
-	if( builtQueries.indexOf( type ) !== -1 ){
+		let prefillString;
 
-		var returnConstructor = function( dataObject ){
-			
-			let prefillString;
-			
-			var dataObjectLength = Object.getOwnPropertyNames( dataObject ).length;
-			var isSingleObject = dataObjectLength === 1;
-			var isAvailable = function( number ){
-				var result;
-				typeof dataObject[number][scope].evidence_unavailable === 'undefined' ?
-					result = true :
-					result = false;
+		var dataObjectLength = Object.getOwnPropertyNames( dataObject ).length;
+		var isSingleObject = dataObjectLength === 1;
+		var isAvailable = function( number ){
+			var result;
+			typeof dataObject[number][scope].evidence_unavailable === 'undefined' ?
+				result = true :
+				result = false;
 
-				if( result === false ) prefillString += "n/a";
+			if( result === false ) prefillString += "n/a";
 
-				return result;
-
-			}
-
-			switch( type ){
-				case 'income':
-
-						_engine.debug.warn('income prefill is in need of definition');
-
-					break;
-				case 'address':
-
-					if( isSingleObject ){
-
-						if( isAvailable('0') ){
-
-							result = dataObject[0][scope];
-
-							if( result.apt_suite !== "" ) prefillString += result.apt_suite + ", "; 
-							if( result.street_1 !== "" ) prefillString += result.street_1 + ", "; 
-							if( result.street_2 !== "" ) prefillString += result.street_2 + ", "; 
-							if( result.city !== "" ) prefillString += result.city + ", "; 
-							if( result.state !== "" ) prefillString += result.state + ", "; 
-							if( result.zip !== "" ) prefillString += result.zip; 
-
-						}
-
-					} else if (dataObject.length > 1) {
-
-						_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
-
-					}
-
-					break;
-
-				case 'service agency':
-
-					if( isSingleObject ){
-
-						if( isAvailable('0') ){
-
-							result = dataObject[0][scope];
-
-							if( result[0] !== "" ) prefillString += result[0];
-
-						}
-
-					} else if (dataObject.length > 1) {
-
-						_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
-
-					}
-
-					break;
-
-				default:
-					break;
-			}
-
-			if(typeof callback === 'function') callback( prefillString );
+			return result;
 
 		}
 
-		_engine.storage.prefillCache.checkPrefillCache( type, function( evidenceFromCacheObj ){
+		switch( type ){
+			case 'income':
 
-			if( typeof evidenceFromCacheObj === 'undefined' ){
+					_engine.debug.warn('income prefill is in need of definition');
 
-				_engine.debug.info(`Obtaining result set from via data query for request type: ${ type }`);
+				break;
+			case 'addresses':
 
-				_engine.tools.customApi.evidence.queryAndCache( type, function(results){
+				if( isSingleObject ){
 
-					returnConstructor( results );
+					if( isAvailable('0') ){
 
-				});
+						result = dataObject[0][scope];
 
-			} else {
+						if( result.apt_suite !== "" ) prefillString += result.apt_suite + ", "; 
+						if( result.street_1 !== "" ) prefillString += result.street_1 + ", "; 
+						if( result.street_2 !== "" ) prefillString += result.street_2 + ", "; 
+						if( result.city !== "" ) prefillString += result.city + ", "; 
+						if( result.state !== "" ) prefillString += result.state + ", "; 
+						if( result.zip !== "" ) prefillString += result.zip; 
 
-				_engine.debug.info(`Obtaining result set from internal cache for request type: ${ type }`);
+					}
 
-				returnConstructor( evidenceFromCacheObj );
+				} else if (dataObject.length > 1) {
 
-			}
+					_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
 
-		});
+				}
 
-	} else {
+				break;
 
-		_engine.debug.error(`No query return strategy exists for request type of: ${ type }. Correct type or build new strategy.`);
+			case 'service agency':
+
+				if( isSingleObject ){
+
+					if( isAvailable('0') ){
+
+						result = dataObject[0][scope];
+
+						if( result[0] !== "" ) prefillString += result[0];
+
+					}
+
+				} else if (dataObject.length > 1) {
+
+					_engine.debug.info("NEED LOGIC FOR MULTIPLE ADDRESSES");
+
+				}
+
+				break;
+
+			default:
+				
+				_engine.debug.info("The requested autofill type has no definitions.");
+				
+				break;
+		}
+
+		if(typeof callback === 'function') callback( prefillString );
 
 	}
+
+	_engine.storage.prefillCache.checkPrefillCache( type, function( evidenceFromCacheObj ){
+
+		if( typeof evidenceFromCacheObj === 'undefined' ){
+
+			_engine.debug.info(`Obtaining result set from via data query for request type: ${ type }`);
+
+			_engine.tools.customApi.evidence.queryAndCache( type, function(results){
+
+				returnConstructor( results );
+
+			});
+
+		} else {
+
+			_engine.debug.info(`Obtaining result set from internal cache for request type: ${ type }`);
+
+			returnConstructor( evidenceFromCacheObj );
+
+		}
+
+	});
 
 });
