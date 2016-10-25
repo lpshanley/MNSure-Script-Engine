@@ -187,8 +187,6 @@ var _engine = {
 
 			let baseUrl = _engine.storage.config.get('advanced.baseUrl');
 			
-			console.info(`Loading ${ module }`);
-			
 			let req = baseUrl + module;
 			
 			$.ajax({
