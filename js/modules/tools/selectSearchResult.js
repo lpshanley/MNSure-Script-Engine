@@ -26,9 +26,7 @@ _engine.module.define('tools/selectSearchResult',function(){
 						var singleResult = _results.find('td:nth-child(2) a')[0];
 
 						if( typeof singleResult === 'object' ){
-
-							singleResult.click();
-
+							
 							_tabToClose = _engine.domTools.get.hcrTabListTypeQuery( screenType );
 
 							_engine.tools.closeTabHCR( _tabToClose );

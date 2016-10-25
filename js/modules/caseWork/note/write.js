@@ -1,7 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('caseWork/note/write',function( _note ){
-	
-	console.log('test');
 
 	_engine.caseWork.global.onCaseScreen(function(){
 
