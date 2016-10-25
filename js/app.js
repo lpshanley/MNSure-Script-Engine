@@ -34,7 +34,7 @@ var _engine = {
 
 				//********** Right Click **********//
 				// Performs Quick Load of Searches
-				/*
+				
 				$('#script-launcher a').contextmenu(function(e){
 
 						// Prevent context menu pop-up
@@ -79,7 +79,7 @@ var _engine = {
 				});
 				
 				$('.scripts-link, .center-box').removeAttr('style');
-				*/
+				
 			});
 			
 		},
@@ -186,7 +186,9 @@ var _engine = {
 		require: function( module ){
 
 			let baseUrl = _engine.storage.config.get('advanced.baseUrl');
-
+			
+			console.info(`Loading ${ module }`);
+			
 			let req = baseUrl + module;
 			
 			$.ajax({
