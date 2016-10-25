@@ -3,22 +3,9 @@ _engine.module.define('storage/prefillCache/remove',function( type ){
 
 	if( typeof type === 'string' ){
 
-		var cacheObject = _engine.storage.prefillCache.get();
-		var item = cacheObject[ type ];
+		delete _engine.storage.nocache.data.caseData.prefill[ type ];
 
-		if( typeof item !== 'undefined' ){
-
-			delete cacheObject[ type ];
-
-			_engine.storage.prefillCache._updateCacheInfo( cacheObject );
-
-			return true;
-
-		} else {
-
-			return false;
-
-		}
+		return true;
 
 	} else {
 

@@ -4,10 +4,10 @@ _engine.module.define('storage/prefillCache/add',function( object ){
 	if( typeof object === 'string' ) object = $.parseJSON( object );
 
 	if( typeof object !== 'undefined' ){
+		
+		if( typeof _engine.storage.nocache.data.caseData.prefill === 'undefined' ) _engine.storage.nocache.data.caseData.prefill = {};
 
-		var cacheObject = _engine.storage.prefillCache.get();
-
-		var cacheProps = Object.getOwnPropertyNames( cacheObject );
+		var cacheProps = Object.getOwnPropertyNames( _engine.storage.nocache.data.caseData.prefill );
 
 		var objectProps = Object.getOwnPropertyNames( object );
 
@@ -15,11 +15,9 @@ _engine.module.define('storage/prefillCache/add',function( object ){
 
 			if( cacheProps.indexOf( v ) !== -1 ) _engine.storage.prefillCache.remove( v );
 
-			cacheObject[v] = object[v];
+			_engine.storage.nocache.data.caseData.prefill[v] = object[v];
 
 		});
-
-		_engine.storage.prefillCache._updateCacheInfo( cacheObject );
 
 	} else {
 

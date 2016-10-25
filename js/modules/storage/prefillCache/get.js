@@ -1,18 +1,20 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('storage/prefillCache/get',function( type ){
 
-	if(typeof window.localStorage.mnsEngine_prefillCache === 'undefined'){
-
-		_engine.storage.prefillCache.init();
-
+	let cacheObject = _engine.storage.nocache.query('caseData.prefill'), response;
+	
+	if( cacheObject !== false ){
+		if( typeof type === 'string' ){
+			response = cacheObject[type];
+		}
+		else {
+			response = cacheObject;
+		}
+	}
+	else {
+		response = false;
 	}
 	
-	var cacheObject = $.parseJSON( decodeURIComponent( window.localStorage.mnsEngine_prefillCache ) );
-
-	if( typeof type === 'string' ){
-		return cacheObject[type];
-	} else {
-		return cacheObject;
-	}
-
+	return response;
+	
 });
