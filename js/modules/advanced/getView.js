@@ -1,22 +1,27 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('advanced/getView',function( _f ){
+_engine.module.define('advanced/getView',function( file, callback ){
 	
-	var _html = null;
-
-	var _c = _engine.storage.config.get('commit.current');
-
-	var extId = _engine.storage.config.get('extension.id');
-
-	chrome.runtime.sendMessage( extId, { file: _f, commit: _c },
-		function( response ){
-			if( response == null ){
-				_engine.advanced.getView( "error/error.html" );
-			} else {
-				_engine.storage.html.set( response );
+	var href = _engine.advanced.baseUrl() + 'views/' + file;
+	
+	if( typeof _engine.storage.nocache.data.templates === 'undefined' ) _engine.storage.nocache.data.templates = {};
+	
+		/* If undefined, get and cache template */
+	if( typeof _engine.storage.nocache.data.templates[file] === 'undefined' ){
+		_engine.debug.info('Template not cached. Retreiving and caching template.');
+		$.ajax({
+			url: href,
+			success: function( data ){
+				_engine.storage.nocache.data.templates[file] = data;
+				if( typeof callback === 'function' ) callback( data );
+			},
+			error: function( data ){
+				_engine.advanced.getView('error/error.html',callback);
 			}
-		}
-	);
-	
-	return;
+		});
+	}
+	else {
+		_engine.debug.info('Template found. Returning stored template.');
+		callback( _engine.storage.nocache.data.templates[file] );
+	}
 
 });

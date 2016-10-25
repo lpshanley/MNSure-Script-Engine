@@ -1,6 +1,6 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('caseWork/note/_completeNote',function(){
-				
+	
 	_engine.navigation.icTabs.icTabNavi("contact",function( contactFrame ){
 
 		$( contactFrame ).find('a[title="New"]')[0].click();
