@@ -1,6 +1,8 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('caseWork/global/onCaseScreen',function( callback, showModal ){
-
+	
+	if( typeof showModal === 'undefined' ) showModal = false;
+	
 	_engine.domTools.test.hcrTabActiveIsIC(function( result ){
 	
 		if( result ){
@@ -8,8 +10,6 @@ _engine.module.define('caseWork/global/onCaseScreen',function( callback, showMod
 			if(typeof callback === 'function') callback();
 			
 		} else {
-			
-			if( typeof showModal === 'undefined' ) showModal = false;
 			
 			if( showModal ){
 			
