@@ -2,6 +2,7 @@
 _engine.module.define('caseWork/note/write',function( _note ){
 	
 	console.log('test');
+	
 	/*
 	_engine.caseWork.global.onCaseScreen(function(){
 
