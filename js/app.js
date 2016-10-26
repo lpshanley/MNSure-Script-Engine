@@ -82,7 +82,7 @@ var _engine = {
 				
 				_engine.ui.displayExpiry();
 				
-				_engine.advanced.setupTimoutAlert();
+				_engine.advanced.setupTimeoutAlert();
 				
 			});
 			
