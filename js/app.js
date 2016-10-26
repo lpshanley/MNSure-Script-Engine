@@ -165,15 +165,27 @@ var _engine = {
 				
 				let fallbackCache = _engine.storage.fallbackCache.get();
 				
-				if(typeof status === 'boolean') {
+				let response;
+				
+				if( ['master','beta'].indexOf( currentCommit ) > -1 ){
+				
+					if(typeof status === 'boolean') {
+
+						fallbackCache[currentCommit].current = status;
+
+						window.localStorage.mnsEngine_fallbackCache = _engine.storage._data.encode( fallbackCache );
+
+					}
 					
-					fallbackCache[currentCommit].current = status;
+					response = fallbackCache[currentCommit].current;
 					
-					window.localStorage.mnsEngine_fallbackCache = _engine.storage._data.encode( fallbackCache );
+				} else {
+					
+					response = false;
 					
 				}
 				
-				return fallbackCache[currentCommit].current;
+				return response;
 				
 			}
 			
