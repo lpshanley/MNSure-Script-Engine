@@ -136,20 +136,46 @@ var _engine = {
 		},
 		
 		fallbackCache: {
+			
 			get: function(){
 				
 				return _engine.storage._data.decode( window.localStorage.mnsEngine_fallbackCache );
 				
 			},
 			
-			addModule: function( modulePath ){
-				let commit = _engine.storage.config.get('commit.current');
+			addModule: function( module ){
 				
-				if( commit === 'master' || commit === 'beta' ){
+				if( typeof module !== 'undefined' ){
+
+					let currentCommit = _engine.storage.config.get('commit.current');
+
+					let fallbackCache = _engine.storage.fallbackCache.get();
+
+					fallbackCache[currentCommit].modules.push( module );
+
+					window.localStorage.mnsEngine_fallbackCache = _engine.storage._data.encode( fallbackCache );
+
+				}
+				
+			},
+			
+			fallbackStatus: function( status ){
+				
+				let currentCommit = _engine.storage.config.get('commit.current');
+				
+				let fallbackCache = _engine.storage.fallbackCache.get();
+				
+				if(typeof status === 'boolean') {
+					
+					fallbackCache[currentCommit].current = status;
+					
+					window.localStorage.mnsEngine_fallbackCache = _engine.storage._data.encode( fallbackCache );
 					
 				}
 				
+				return fallbackCache[currentCommit].current;
 			}
+			
 		}
 		
 	},

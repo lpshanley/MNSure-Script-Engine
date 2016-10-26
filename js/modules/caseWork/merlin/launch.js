@@ -1,6 +1,19 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('caseWork/merlin/launch',function( input ){
 
+	/*
+		_engine.caseWork.merlin.launch({
+			title: 'Merlin - Task X of X'
+		});
+
+		IFRAME CARD
+
+			width: 94%;
+			height: 96%;
+			box-shadow: 1px 1px 2px rgba(0,0,0,.5);
+			border: 1px solid rgba(0,0,0,.1);
+	*/
+	
 	_engine.caseWork.global.onCaseScreen(function(){
 
 		let config = {
