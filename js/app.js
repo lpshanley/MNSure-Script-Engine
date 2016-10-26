@@ -243,7 +243,7 @@ var _engine = {
 				
 				console.info('Fallback Cache is current. Using cache to load file list.');
 				
-				let moduleArray = _engine.storage.fallbackCache.get()[_engine.storage.config.get('commit.current')].modules;
+				moduleArray = _engine.storage.fallbackCache.get()[_engine.storage.config.get('commit.current')].modules;
 				
 			} else {
 				
