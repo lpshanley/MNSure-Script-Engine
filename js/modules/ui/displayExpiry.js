@@ -11,6 +11,6 @@ _engine.module.define('ui/displayExpiry',function(){
 		
 	}
 	
-	$('.mns-expiryBlock').text( 'Session Expires: ' + expiry );
+	$('.mns-expiryBlock').text( 'Session Expiration - ' + expiry );
 
 });
