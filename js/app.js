@@ -320,8 +320,13 @@ var _engine = {
 		
 		_markLoaded: function(){
 			let unloaded = _engine.storage.config.get('advanced.modules.unloaded') - 1;
+			
+			if( unloaded === 0 ){
+				_engine.storage.fallbackCache.fallbackStatus( true );
+			}
+			
 			_engine.module._defineUnloaded( unloaded );
-			if( unloaded === 0 ) _engine.storage.fallbackCache.fallbackStatus( true );
+			
 		}
 		
 	}
