@@ -217,7 +217,9 @@ var _engine = {
 			let req = baseUrl + module;
 			
 			if(!_engine.storage.fallbackCache.fallbackStatus()){
-				_engine.storage.fallbackCache.addModule( module );
+				if(_engine.storage.fallbackCache.get()[_engine.storage.config.get('commit.current')].modules.indexOf( module ) === -1 ){
+					_engine.storage.fallbackCache.addModule( module );
+				}
 			}
 			
 			$.ajax({
