@@ -222,11 +222,9 @@ var _engine = {
 				success: function(){
 					
 					_engine.module._markLoaded();
-					
-					if(!_engine.storage.fallbackCache.fallbackStatus()){
-						if(_engine.storage.fallbackCache.get()[_engine.storage.config.get('commit.current')].modules.indexOf( module ) === -1 ){
-							_engine.storage.fallbackCache.addModule( module );
-						}
+
+					if(_engine.storage.fallbackCache.get()[_engine.storage.config.get('commit.current')].modules.indexOf( module ) === -1 ){
+						_engine.storage.fallbackCache.addModule( module );
 					}
 					
 					let remaining = _engine.storage.config.get('advanced.modules.unloaded');
