@@ -243,7 +243,9 @@ var _engine = {
 				
 			} else {
 				
-				console.info('Fallback Cache is out of date. Updating fallback cache.');
+				if(typeof moduleArray === 'undefined'){
+					console.info('Fallback Cache is out of date. Updating fallback cache.');
+				}
 				
 			}
 			
