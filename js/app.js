@@ -1704,6 +1704,8 @@ var _engine = {
 						//Build out menu
 						_engine.ui.scriptMenu.refresh();
 						
+						$('.scripts-link, .center-box').removeAttr('style');
+						
 						/* Stop running on successful load */
 						clearInterval(jQloaded);
 						
