@@ -237,9 +237,13 @@ var _engine = {
 		
 		loadRequired( callback, dirArray, moduleArray ){
 			
+			let pathArray = [];
+			
 			if(_engine.storage.fallbackCache.fallbackStatus()){
 				
 				console.info('Fallback Cache is current. Using cache to load file list.');
+				
+				let moduleArray = _engine.storage.fallbackCache.get()[_engine.storage.config.get('commit.current')].modules;
 				
 			} else {
 				
@@ -247,43 +251,42 @@ var _engine = {
 					console.info('Fallback Cache is out of date. Updating fallback cache.');
 				}
 				
+				let api = 'https://api.github.com/repos/lpshanley/MNSure-Script-Engine/contents/';
+			
+				let refParam = "?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1&ref=" + _engine.storage.config.get('commit.current');
+
+				if(typeof dirArray === 'undefined') dirArray = ['js/modules/'];
+				if(typeof moduleArray === 'undefined') moduleArray = [];
+
+				$.each( dirArray, function(key, value){
+
+					let req = api + value;
+
+					if(req.charAt( req.length-1 ) === '/') req = req.substring(0,req.length-1); 
+
+					req += refParam;
+
+					$.ajax({
+						async: false,
+						dataType: 'json',
+						url: req,
+						success: function(data){
+							$.each(data,function(key,value){
+
+								if( value.type === 'file' ) moduleArray.push( value.path );
+								if( value.type === 'dir' ) pathArray.push( value.path );
+
+							});
+						}
+					});
+
+				});
+
+				if( pathArray.length > 0 ) _engine.module.loadRequired( callback, pathArray, moduleArray  );
+				
 			}
 			
-			let api = 'https://api.github.com/repos/lpshanley/MNSure-Script-Engine/contents/';
-			
-			let refParam = "?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1&ref=" + _engine.storage.config.get('commit.current');
-			
-			let pathArray = [];
-			
-			if(typeof dirArray === 'undefined') dirArray = ['js/modules/'];
-			if(typeof moduleArray === 'undefined') moduleArray = [];
-			
-			$.each( dirArray, function(key, value){
-				
-				let req = api + value;
-					
-				if(req.charAt( req.length-1 ) === '/') req = req.substring(0,req.length-1); 
-					
-				req += refParam;
-					
-				$.ajax({
-					async: false,
-					dataType: 'json',
-					url: req,
-					success: function(data){
-						$.each(data,function(key,value){
-							
-							if( value.type === 'file' ) moduleArray.push( value.path );
-							if( value.type === 'dir' ) pathArray.push( value.path );
-							
-						});
-					}
-				});
-				
-			});
-				
-			if( pathArray.length > 0 ) _engine.module.loadRequired( callback, pathArray, moduleArray  );
-			else if ( pathArray.length === 0 ){
+			if( pathArray.length === 0 ){
 				
 				_engine.module._defineUnloaded( moduleArray.length );
 				
