@@ -174,6 +174,7 @@ var _engine = {
 				}
 				
 				return fallbackCache[currentCommit].current;
+				
 			}
 			
 		}
@@ -210,9 +211,14 @@ var _engine = {
 		/* Loads a specified script file */
 		
 		require: function( module ){
+			
 			let baseUrl = _engine.storage.config.get('advanced.baseUrl');
 			
 			let req = baseUrl + module;
+			
+			if(!_engine.storage.fallbackCache.fallbackStatus()){
+				_engine.storage.fallbackCache.addModule( module );
+			}
 			
 			$.ajax({
 				dataType: 'script',
