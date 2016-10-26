@@ -167,7 +167,7 @@ var _engine = {
 				
 				let response;
 				
-				if( ['master','beta'].indexOf( currentCommit ) > -1 ){
+				if( _engine.storage.fallbackCache.cacheable() ){
 				
 					if(typeof status === 'boolean') {
 
@@ -186,6 +186,14 @@ var _engine = {
 				}
 				
 				return response;
+				
+			},
+			
+			cacheable: function(){
+
+				let currentCommit = _engine.storage.config.get('commit.current');
+				
+				return ( ['master','beta'].indexOf( currentCommit ) > -1 );
 				
 			}
 			
@@ -234,9 +242,11 @@ var _engine = {
 				success: function(){
 					
 					_engine.module._markLoaded();
-
-					if(_engine.storage.fallbackCache.get()[_engine.storage.config.get('commit.current')].modules.indexOf( module ) === -1 ){
-						_engine.storage.fallbackCache.addModule( module );
+					
+					if( _engine.storage.fallbackCache.cacheable() ){
+						if(_engine.storage.fallbackCache.get()[_engine.storage.config.get('commit.current')].modules.indexOf( module ) === -1 ){
+							_engine.storage.fallbackCache.addModule( module );
+						}
 					}
 					
 					let remaining = _engine.storage.config.get('advanced.modules.unloaded');
