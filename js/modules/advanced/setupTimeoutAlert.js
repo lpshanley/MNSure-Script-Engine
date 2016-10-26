@@ -11,6 +11,6 @@ _engine.module.define('advanced/setupTimeoutAlert',function(){
 			window.location.reload();
 			
 		}
-	}, _engine.advanced._sessionRemaining() - tripTimer);
+	}, 1770000);//_engine.advanced._sessionRemaining() - tripTimer);
 	
 });
