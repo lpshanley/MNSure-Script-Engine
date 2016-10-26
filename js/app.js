@@ -270,7 +270,12 @@ var _engine = {
 			} else {
 				
 				if(typeof moduleArray === 'undefined'){
-					console.info('Fallback Cache is out of date. Updating fallback cache.');
+					if( _engine.storage.fallbackCache.cacheable() ){
+						console.info('Fallback Cache is out of date. Updating fallback cache.');
+					}
+					else {
+						console.info('Script verion is not cacheable. Requesting module list from github.');
+					}
 				}
 				
 				let api = 'https://api.github.com/repos/lpshanley/MNSure-Script-Engine/contents/';
