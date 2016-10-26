@@ -216,18 +216,18 @@ var _engine = {
 			
 			let req = baseUrl + module;
 			
-			if(!_engine.storage.fallbackCache.fallbackStatus()){
-				if(_engine.storage.fallbackCache.get()[_engine.storage.config.get('commit.current')].modules.indexOf( module ) === -1 ){
-					_engine.storage.fallbackCache.addModule( module );
-				}
-			}
-			
 			$.ajax({
 				dataType: 'script',
 				url: req,
 				success: function(){
 					
 					_engine.module._markLoaded();
+					
+					if(!_engine.storage.fallbackCache.fallbackStatus()){
+						if(_engine.storage.fallbackCache.get()[_engine.storage.config.get('commit.current')].modules.indexOf( module ) === -1 ){
+							_engine.storage.fallbackCache.addModule( module );
+						}
+					}
 					
 					let remaining = _engine.storage.config.get('advanced.modules.unloaded');
 					
@@ -321,6 +321,7 @@ var _engine = {
 		_markLoaded: function(){
 			let unloaded = _engine.storage.config.get('advanced.modules.unloaded') - 1;
 			_engine.module._defineUnloaded( unloaded );
+			if( unloaded === 0 ) _engine.storage.fallbackCache.fallbackStatus( true );
 		}
 		
 	}
