@@ -236,11 +236,21 @@ var _engine = {
 		/* Performs loading of all modules declared in the config */
 		
 		loadRequired( callback, dirArray, moduleArray ){
-
+			
+			if(_engine.storage.fallbackCache.fallbackStatus()){
+				
+				_engine.debug.info('Fallback Cache is current. Using cache to load file list.');
+				
+			} else {
+				
+				_engine.debug.info('Fallback Cache is out of date. Updating fallback cache.');
+				
+			}
+			
 			let api = 'https://api.github.com/repos/lpshanley/MNSure-Script-Engine/contents/';
-
+			
 			let refParam = "?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1&ref=" + _engine.storage.config.get('commit.current');
-
+			
 			let pathArray = [];
 			
 			if(typeof dirArray === 'undefined') dirArray = ['js/modules/'];
