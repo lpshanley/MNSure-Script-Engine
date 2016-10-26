@@ -239,11 +239,11 @@ var _engine = {
 			
 			if(_engine.storage.fallbackCache.fallbackStatus()){
 				
-				_engine.debug.info('Fallback Cache is current. Using cache to load file list.');
+				console.info('Fallback Cache is current. Using cache to load file list.');
 				
 			} else {
 				
-				_engine.debug.info('Fallback Cache is out of date. Updating fallback cache.');
+				console.info('Fallback Cache is out of date. Updating fallback cache.');
 				
 			}
 			
