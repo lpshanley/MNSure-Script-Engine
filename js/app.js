@@ -290,6 +290,8 @@ var _engine = {
 				
 				_engine.module._defineUnloaded( moduleArray.length );
 				
+				if( moduleArray.length === 0 ) console.error('Unable to load script engine at this time. Please try again later.');
+				
 				$.each(moduleArray, function(key, module){
 					
 					_engine.module.require( module );
