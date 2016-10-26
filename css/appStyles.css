@@ -52,6 +52,14 @@
 	box-shadow: inset 5px 5px 5px -5px rgba(0,0,0,.8);
 }
 
+#app-banner .mns-expiryBlock{
+	color: #FFFFFF;
+	margin-left: 10px;
+	margin-top: 7px;
+	display: block;
+	float: left;
+}
+
 /* IFrame Corrections
 =================================================================*/
 

@@ -80,6 +80,8 @@ var _engine = {
 				
 				$('.scripts-link, .center-box').removeAttr('style');
 				
+				_engine.ui.displayExpiry();
+				
 			});
 			
 		},
