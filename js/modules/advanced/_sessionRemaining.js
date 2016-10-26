@@ -12,5 +12,5 @@ _engine.module.define('advanced/_sessionRemaining',function(){
 	let remaining = expiry[0] - now;
 	
 	return remaining;
-
+	
 });

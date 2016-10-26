@@ -82,6 +82,8 @@ var _engine = {
 				
 				_engine.ui.displayExpiry();
 				
+				_engine.advanced.setupTimoutAlert();
+				
 			});
 			
 		},
