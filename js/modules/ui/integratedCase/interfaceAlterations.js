@@ -5,7 +5,12 @@ _engine.module.define('ui/integratedCase/interfaceAlteration',function( target, 
 		
 		if( result ){
 			
-			_engine.ui.integratedCase.reorderTab('eligibility','elections');
+				/* Fires on page load AFTER the content is ready */
+			curam.tab.getSelectedTab().onLoadDeferred.then(function(){
+				
+				_engine.ui.integratedCase.reorderTab('eligibility','elections');
+				
+			});
 			
 		}
 		
