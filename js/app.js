@@ -10,6 +10,7 @@
 // 
 
 var _engine = {
+<<<<<<< HEAD
 
 	//**************//
 	//*   Search   *//
@@ -1634,10 +1635,13 @@ var _engine = {
 			
 		}
 	},
+=======
+>>>>>>> beta
 	
 	//**************//
 	//*   Events   *//
 	//**************//
+<<<<<<< HEAD
 	//
 	// - Dev Notes -
 	//
@@ -2930,102 +2934,83 @@ var _engine = {
 			timeout;
 			
 		},
+=======
+	
+	events: {
+>>>>>>> beta
 		
-		loadAddons: {
-
-			run: function( addons ){
+		/* Cannot move _startUp into a module
+		/********************************************************************/
+		
+		_startUp: function() {
+			/* Runs the callback after all modules have been requested */
+			_engine.module.loadRequired(function(){
 				
-				$.each( addons, function(type, libraries){
+				_engine.debug.info('All modules have loaded.');
 
-					
-					$.each( libraries,function( library, url ){
-						
-						switch( type ){
+				_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
 
-							case "css":
-								
-								$.each($('head link[href]'),function(key,linkObj){
-			
-									if( $(this).attr('href').indexOf( library ) !== -1 ) $( this ).remove();
-									
-								});
-								
-								var lib = $('<link>',{ href : url, 'rel' : 'stylesheet', 'type' : 'text/css'});
-								$('link[data-scriptengine]').after( lib );
-								
-								break;
-							case "js":
-								
-								
-								$.each($('head script[src]'),function(key,linkObj){
+				/* Loaded
+				/* Scripts Main Button
+				========================*/
+
+				//********** Right Click **********//
+				// Performs Quick Load of Searches
 				
-									if( $(this).attr('src').indexOf( library ) !== -1 ) $( this ).remove();
-									
-								});
-								
-								var lib = $('<script>',{ src : url });
-								$('script[data-scriptengine]').after( lib );
-								
-								break;
-							default:
-								break;
-						}
-						
-					});
+				$('#script-launcher a').contextmenu(function(e){
+
+						// Prevent context menu pop-up
+					e.preventDefault();
+
+						// Open Case Search
+					_engine.search._case();
+
+						// Open Person Search
+					_engine.search._person();
+
 				});
+
+				var version = _engine.storage.config.get('commit.current');
+
+				version === 'master' ?
+					_engine.storage.debugStatus.set( false ):
+					_engine.storage.debugStatus.set( true );
+
+				_engine.storage.prefillCache.clear();
 				
-			},
-			libraries: {
-				
-				js: {
+				if( version !== 'master' && version !== 'beta' ){
 					
-					"jqueryui": "https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"
-					
-				},
-				
-				css: {
-					
-					"jqueryui": "https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/redmond/jquery-ui.css"
+					$.ajax({
+						url: 'https://api.github.com/rate_limit?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1',
+						dataType: 'json',
+						async: false,
+						success: function( data ){
+							version += " | " + data.resources.core.remaining;
+						}
+					});
 					
 				}
 				
-			}
+				_engine.ui.topNotification(`Script Library: ${version}`);
 
-		}
-	
-	},
-	
-	//************//
-	//* Advanced *//
-	//************//
-	
-	advanced: {
-		
-		/* [Advanced] Returns the needed base URL for ajax requests 
-		/********************************************************************/
-		
-		baseUrl: function(){
-			return _engine.storage.config.get('advanced.baseUrl');
-		},
-		
-		/* [Advanced] Returns the ID of the extension
-		/********************************************************************/
-		
-		extensionID: function(){
-			return _engine.storage.config.get('extension.id');
-		},
-		
-		getCommit: function( commit ){
-			if(typeof commit === 'undefined') commit = _engine.storage.config.get('commit.current');
+				//Build out menu
+				_engine.ui.scriptMenu.refresh();
+				
+				$(document).on('click','.dijitTab',function(){
+					_engine.events.tabWatcher( this );
+				});
+				
+				$('.scripts-link, .center-box').removeAttr('style');
+				
+				_engine.ui.displayExpiry();
+				
+				_engine.advanced.setupTimeoutAlert();
+				
+			});
 			
-			return _engine.storage.config.get('commit.'+commit);
 		},
-		
-		/* [Advanced] ajax request to grab html template for modals
-		/********************************************************************/
-		
-		getView: function( _f ){
 
+<<<<<<< HEAD
 			var _html = null;
 			
 			var _c = _engine.storage.config.get('commit.current');
@@ -3064,6 +3049,8 @@ var _engine = {
 				'financially responsible agency': 'evidenceType=DET0001282'
 			}
 		}
+=======
+>>>>>>> beta
 	},
 	
 	//*************//
@@ -3071,6 +3058,8 @@ var _engine = {
 	//*************//
 	
 	storage: {
+		
+		/* Config Storage Model and _data cannot be relocated */
 		
 		_data: {
 			encode: function( input ){
@@ -3101,191 +3090,225 @@ var _engine = {
 				
 				return config;
 				
-			}
-		},
-		
-		/* [Storage] HTML
-		/********************************************************************/
-		
-		html: {
-			set: function( _html ){
-				window.localStorage.setItem( "mnsEngine_html", _html );
 			},
-			get: function(){
-				if(typeof window.localStorage.mnsEngine_html != 'undefined'){
-					return $.parseHTML( window.localStorage.mnsEngine_html );
-				} else {
-					return false;
-				}
-			},
-			clear: function(){
-				localStorage.removeItem( "mnsEngine_html" );
-			}
-		},
-		
-		/* [Storage] Modal Parameters
-		/********************************************************************/
-		
-		modalParams: {
-			set: function( _params ){
+			set: function( obj ){
 				
-				var encodedParams = encodeURIComponent( _params );
-				
-				window.localStorage.setItem( "mnsEngine_modalParams", encodedParams );
-				
-			},
-			get: function(){
-				if(typeof window.localStorage.mnsEngine_modalParams != 'undefined'){
-					
-					var decodedParams = decodeURIComponent( window.localStorage.mnsEngine_modalParams );
-					
-					return $.parseJSON( decodedParams );
-				} else {
-					return false;
-				}
-			},
-			clear: function(){
-				localStorage.removeItem( "mnsEngine_modalParams" );
-			}
-		},
-		
-		/* [Storage] Debug Status
-		/********************************************************************/
-		
-		debugStatus: {
-			set: function( _status ){
-				
-				window.localStorage.setItem( "mnsEngine_debugStatus", _status );
-				
-			},
-			get: function(){
-				
-				if( typeof window.localStorage.mnsEngine_debugStatus == 'undefined' ){
-					_engine.storage.mnsEngine_debugStatus.set( false );
-				}
-					
-				return String( window.localStorage.mnsEngine_debugStatus.toLowerCase() ) == "true";
-				
-			},
-			clear: function(){
-				localStorage.removeItem( "mnsEngine_debugStatus" );
-			}
-		},
-		
-		/* [Storage] Prefill Caching
-		/********************************************************************/
-		
-		prefillCache: {
-			init: function(){
-				
-				window.localStorage.setItem( "mnsEngine_prefillCache", '{}' );
-				
-			},
-			add: function( object ){
-				
-				if( typeof object === 'string' ) object = $.parseJSON( object );
-				
-				if( typeof object !== 'undefined' ){
-				
-					var cacheObject = _engine.storage.prefillCache.get();
-					
-					var cacheProps = Object.getOwnPropertyNames( cacheObject );
-					
-					var objectProps = Object.getOwnPropertyNames( object );
-					
-					$.each(objectProps, function(k,v){
+				let config = _engine.storage.config.get();
 
-						if( cacheProps.indexOf( v ) !== -1 ) _engine.storage.prefillCache.remove( v );
-						
-						cacheObject[v] = object[v];
-						
-					});
-					
-					_engine.storage.prefillCache._updateCacheInfo( cacheObject );
+				$.extend(true,config,obj);
 
-				} else {
-					
-					return false;
-					
+				window.localStorage.mnsEngine_Config = _engine.storage._data.encode( config );
+				
+			}
+		},
+		
+		fallbackCache: {
+			
+			get: function(){
+				
+				return _engine.storage._data.decode( window.localStorage.mnsEngine_fallbackCache );
+				
+			},
+			
+			addModule: function( module ){
+				
+				if( typeof module !== 'undefined' ){
+
+					let currentCommit = _engine.storage.config.get('commit.current');
+
+					let fallbackCache = _engine.storage.fallbackCache.get();
+
+					fallbackCache[currentCommit].modules.push( module );
+
+					window.localStorage.mnsEngine_fallbackCache = _engine.storage._data.encode( fallbackCache );
+
 				}
 				
 			},
-			remove: function( type ){
+			
+			fallbackStatus: function( status ){
 				
-				if( typeof type === 'string' ){
-					
-					var cacheObject = _engine.storage.prefillCache.get();
-					var item = cacheObject[ type ];
-					
-					if( typeof item !== 'undefined' ){
-						
-						delete cacheObject[ type ];
-						
-						_engine.storage.prefillCache._updateCacheInfo( cacheObject );
-						
-						return true;
-						
-					} else {
-						
-						return false;
-						
+				let currentCommit = _engine.storage.config.get('commit.current');
+				
+				let fallbackCache = _engine.storage.fallbackCache.get();
+				
+				let response;
+				
+				if( _engine.storage.fallbackCache.cacheable() ){
+				
+					if(typeof status === 'boolean') {
+
+						fallbackCache[currentCommit].current = status;
+
+						window.localStorage.mnsEngine_fallbackCache = _engine.storage._data.encode( fallbackCache );
+
 					}
 					
+					response = fallbackCache[currentCommit].current;
+					
 				} else {
 					
-					return false;
+					response = false;
 					
 				}
+				
+				return response;
 				
 			},
-			get: function( type ){
-				
-				if(typeof window.localStorage.mnsEngine_prefillCache === 'undefined'){
-					
-					_engine.storage.prefillCache.init();
-					
-				}
-				
-				var cacheObject = $.parseJSON( decodeURIComponent( window.localStorage.mnsEngine_prefillCache ) );
-				
-				if( typeof type === 'string' ){
-					return cacheObject[type];
-				} else {
-					return cacheObject;
-				}
-				
-			},
-			_updateCacheInfo: function( object ){
-				
-				if( typeof object === 'object' ) object = JSON.stringify( object );
-				
-				var encodedObject = encodeURIComponent( object );
-				
-				window.localStorage.setItem( "mnsEngine_prefillCache", encodedObject );
+			
+			cacheable: function(){
 
-			},
-			clear: function(){
+				let currentCommit = _engine.storage.config.get('commit.current');
 				
-				localStorage.removeItem( "mnsEngine_prefillCache" );
+				return ( ['master','beta'].indexOf( currentCommit ) > -1 );
 				
-			},
-			checkPrefillCache: function( type, callback ){
-				
-				var cacheObject = _engine.storage.prefillCache.get();
-				
-				var cacheProps = Object.getOwnPropertyNames( cacheObject );
-				
-				if( cacheProps.indexOf( type ) !== -1 ){
+			}
+			
+		}
+		
+	},
+	
+	//**************//
+	//*   Module   *//
+	//**************//
+	
+	module: {
+		
+		/* Allows definition of functions in modular files */
+		
+		define: function( dir, module ){
+
+			dir = dir.split('/');
+			let last = (dir.length - 1);
+
+			let obj = _engine;
+
+			$.each(dir,function(key,value){
+
+				if(typeof obj[value] === 'undefined') obj[value] = {};
+
+				key === last?
+					obj[value] = module:
+					obj = obj[value];
+
+			});
+
+		},
+		
+		/* Loads a specified script file */
+		
+		require: function( module ){
+			
+			let baseUrl = _engine.storage.config.get('advanced.baseUrl');
+			
+			let req = baseUrl + module;
+			
+			$.ajax({
+				dataType: 'script',
+				url: req,
+				success: function(){
 					
-					if( typeof callback === 'function' ){ callback( cacheObject[ type ] ); }
-					else return true;
-				
-				} else {
+					_engine.module._markLoaded();
 					
-					if( typeof callback === 'function' ){ callback( undefined ); }
-					else return false;
+					if( _engine.storage.fallbackCache.cacheable() ){
+						if(_engine.storage.fallbackCache.get()[_engine.storage.config.get('commit.current')].modules.indexOf( module ) === -1 ){
+							_engine.storage.fallbackCache.addModule( module );
+						}
+					}
+					
+					let remaining = _engine.storage.config.get('advanced.modules.unloaded');
 					
 				}
+			});
+		},
+		
+		/* Performs loading of all modules declared in the config */
+		
+		loadRequired( callback, dirArray, moduleArray ){
+			
+			let pathArray = [];
+			
+			if(_engine.storage.fallbackCache.fallbackStatus()){
+				
+				console.info('Fallback Cache is current. Using cache to load file list.');
+				
+				moduleArray = _engine.storage.fallbackCache.get()[_engine.storage.config.get('commit.current')].modules;
+				
+			} else {
+				
+				if(typeof moduleArray === 'undefined'){
+					if( _engine.storage.fallbackCache.cacheable() ){
+						console.info('Fallback Cache is out of date. Updating fallback cache.');
+					}
+					else {
+						console.info('Script verion is not cacheable. Requesting module list from github.');
+					}
+				}
+				
+				let api = 'https://api.github.com/repos/lpshanley/MNSure-Script-Engine/contents/';
+			
+				let refParam = "?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1&ref=" + _engine.storage.config.get('commit.current');
+
+				if(typeof dirArray === 'undefined') dirArray = ['js/modules/'];
+				if(typeof moduleArray === 'undefined') moduleArray = [];
+
+				$.each( dirArray, function(key, value){
+
+					let req = api + value;
+
+					if(req.charAt( req.length-1 ) === '/') req = req.substring(0,req.length-1); 
+
+					req += refParam;
+
+					$.ajax({
+						async: false,
+						dataType: 'json',
+						url: req,
+						success: function(data){
+							$.each(data,function(key,value){
+
+								if( value.type === 'file' ) moduleArray.push( value.path );
+								if( value.type === 'dir' ) pathArray.push( value.path );
+
+							});
+						}
+					});
+
+				});
+
+				if( pathArray.length > 0 ) _engine.module.loadRequired( callback, pathArray, moduleArray  );
+				
+			}
+			
+			if( pathArray.length === 0 ){
+				
+				_engine.module._defineUnloaded( moduleArray.length );
+				
+				$.each(moduleArray, function(key, module){
+					
+					_engine.module.require( module );
+					
+				});
+				
+				if( typeof callback === 'function'){
+					var counter = 0;
+					var loadModules = setInterval(function(){
+						if( counter < 400 ){
+							var unloaded = _engine.storage.config.get('advanced.modules.unloaded');
+							if (unloaded === 0){
+								callback();
+								clearInterval(loadModules);
+							}
+							counter++;
+						} else {
+							clearInterval( loadModules );
+						}
+					},25);
+					
+					loadModules;
+					
+				}
+<<<<<<< HEAD
 			}	
 		},
 		_curamCreatedObject: {
@@ -3338,31 +3361,61 @@ var _engine = {
 		warn: function( msg ){
 			if( _engine.storage.debugStatus.get() ){
 				console.warn("_engine.debug: " + msg);
+=======
+>>>>>>> beta
 			}
 		},
 		
-		/* [Debug] Error message when debug is enabled
-		/********************************************************************/
+		/* Set Counter to test that all scripts have loaded */
 		
-		error: function( msg ){
-			if( _engine.storage.debugStatus.get() ){
-				console.error("_engine.debug: " + msg);
-			}
+		_defineUnloaded: function( remainder ){
+			_engine.storage.config.set({
+				advanced: {
+					modules: {
+						unloaded: remainder
+					}
+				}
+			});
 		},
 		
-		/* [Debug] Debug message when debug is enabled
-		/********************************************************************/
+		/* Reduce counter as scripts load */
 		
-		debug: function( msg ){
-			if( _engine.storage.debugStatus.get() ){
-				console.debug("_engine.debug: " + msg);
+		_markLoaded: function(){
+			let unloaded = _engine.storage.config.get('advanced.modules.unloaded') - 1;
+			
+			if( unloaded === 0 ){
+				_engine.storage.fallbackCache.fallbackStatus( true );
 			}
+			
+			_engine.module._defineUnloaded( unloaded );
+			
 		}
 		
 	}
-}
+	
+} 
 
 /* [Program Start] Runs the startup function 
 /********************************************************************/
+_engine.temp = {count:0};
 
+_engine.temp.jQloaded = setInterval(function(){
+
+	if( _engine.temp.count < 400 ){
+		if( typeof $ === 'function' ){
+			_engine.events._startUp();
+			clearInterval(_engine.temp.jQloaded);
+			delete _engine.temp;
+		} else {
+			_engine.temp.count++;
+		}
+	} else {
+		clearInterval(_engine.temp.jQloaded);
+	}
+},25);
+
+<<<<<<< HEAD
 _engine.events._startUp();
+=======
+_engine.temp.jQloaded;
+>>>>>>> beta
