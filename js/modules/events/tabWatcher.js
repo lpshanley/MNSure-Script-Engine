@@ -7,6 +7,7 @@ _engine.module.define('events/tabWatcher',function( tab ){
 		case "HCRCASEAPPWorkspaceSection":
 			
 			_engine.caseWork.caseData.maintainNocache();
+			_engine.ui.integratedCase.interfaceAlteration();
 			
 			break;
 		case 'app':
@@ -25,8 +26,6 @@ _engine.module.define('events/tabWatcher',function( tab ){
 		case 'HCRIntegratedCase':
 			
 			_engine.caseWork.caseData.maintainNocache();
-			
-			_engine.ui.integratedCase.interfaceAlteration();
 			
 			break;
 		default:
