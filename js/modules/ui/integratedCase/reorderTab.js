@@ -1,4 +1,5 @@
-_engine.module.define('ui/integratedCase/reorderTab',function( target, insertAfter ){
+/* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
+_engine.module.define('ui/integratedCase/reorderTab',function( target, insertAfter, callback ){
 	
 	_engine.domTools.test.hcrTabActiveIsIC(function(result){ 
 		if(result){
@@ -20,6 +21,8 @@ _engine.module.define('ui/integratedCase/reorderTab',function( target, insertAft
 				if( typeof target === 'object' && typeof insertAfter === 'object' ){
 
 					$( target ).insertAfter( $( insertAfter ) );
+					
+					if( typeof callback === 'function' ) callback();
 
 				}
 

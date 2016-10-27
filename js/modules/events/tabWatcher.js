@@ -26,6 +26,8 @@ _engine.module.define('events/tabWatcher',function( tab ){
 			
 			_engine.caseWork.caseData.maintainNocache();
 			
+			_engine.ui.integratedCase.interfaceAlteration();
+			
 			break;
 		default:
 			break;
