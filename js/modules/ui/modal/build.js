@@ -21,7 +21,7 @@ _engine.module.define('ui/modal/build',function( title, layout, type ){
 	$('div.modal-titlebar').append( dialogTitle );
 
 		//Close X on title bar
-	var closeButton = $('<span>',{'class':'dijitDialogCloseIcon', 'onClick':'_engine.events.handleClickEvent("ui[modalButton(close)]")'});
+	var closeButton = $('<span>',{'class':'dijitDialogCloseIcon', 'onClick':'_engine.events.handleClickEvent("ui.modal._button(close)")'});
 	$('div.modal-titlebar').append( closeButton );
 
 		//Wapper for the layout from the view template
@@ -42,7 +42,7 @@ _engine.module.define('ui/modal/build',function( title, layout, type ){
 	var _type = type;
 
 		//Modal footer - Button Anchor
-	var mnsModalFooterSubmitButton = $('<a>', {'onClick':'_engine.events.handleClickEvent("ui[modalButton('+_type+')]")', 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+ _submit +'</span></span></span>'});
+	var mnsModalFooterSubmitButton = $('<a>', {'onClick':'_engine.events.handleClickEvent("ui.modal._button('+_type+')")', 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+ _submit +'</span></span></span>'});
 
 		//Modal footer - Filler Span
 	var mnsModalFooterFiller = $('<span>', {'class':'filler'});
@@ -51,7 +51,7 @@ _engine.module.define('ui/modal/build',function( title, layout, type ){
 	var _cancel = "Cancel"
 
 		//Modal footer - Button Anchor
-	var mnsModalFooterCancelButton = $('<a>', {'onClick':'_engine.events.handleClickEvent("ui[modalButton(close)]")', 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+ _cancel +'</span></span></span>'});
+	var mnsModalFooterCancelButton = $('<a>', {'onClick':'_engine.events.handleClickEvent("ui.modal._button(close)")', 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+ _cancel +'</span></span></span>'});
 
 		//Add footer to modal
 	$( 'div.modal-content-wrapper' ).append( mnsModalFooter );
