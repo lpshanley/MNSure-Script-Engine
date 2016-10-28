@@ -303,6 +303,14 @@ div.center-box > span {
 	left: 6px;
 }
 
+@media only screen and (max-width: 1250px) {
+	div.center-box {
+		
+		color: red;
+		
+	}
+}
+
 /* Merlin Styles
 ===================================================================*/
 

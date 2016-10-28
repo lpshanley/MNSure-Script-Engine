@@ -69,9 +69,9 @@ var _engine = {
 					
 				}
 				
-				_engine.ui.topNotification(`Script Library: ${version}`);
-				
 				_enigne.ui.dom.prepUI(function(){
+					
+					_engine.ui.topNotification(`Script Library: ${version}`);
 						
 						//Build out menu
 					_engine.ui.scriptMenu.refresh();

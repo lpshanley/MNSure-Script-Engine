@@ -7,9 +7,7 @@ _engine.module.define('ui/dom/prepUI',function( callback ){
 	$('.left-box .title-container').width( newWidth );
 	
 		/* Resize right titlebar */
-	
-	$('.left-box .title-container').width( 'inherit' );
-	
+	$('.right-box .left-cell').width( 'inherit' );
 	
 	if(typeof callback === 'function') callback();
 
