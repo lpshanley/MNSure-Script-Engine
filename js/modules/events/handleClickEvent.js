@@ -1,6 +1,8 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('events/handleClickEvent',function( req ){
 	
+	console.log( this );
+	
 	req = _engine.tools.stringToQuery( req );
 	
 	let last = req.length - 1;
