@@ -75,7 +75,7 @@ _engine.module.define('ui/topNotification',{
 				
 				}
 
-			},2500);
+			},10000);
 		
 			_engine.advanced._vars.topTickerStatus = true;
 			
