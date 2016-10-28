@@ -1,27 +1,27 @@
 {
 	"Unified Search": {
-		"_events": "caseWork.unifiedSearch.start()"
+		"_events": "caseWork/unifiedSearch/start()"
 	},
 	"Case Notes": {
 		"_events": "",
 		"_submenu": {
 			"Returned Mail...": {
-				"_events": "caseWork.writeNote(Returned Mail)"
+				"_events": "caseWork/writeNote(Returned Mail)"
 			},
 			"Change Reported...": {
-				"_events": "caseWork.writeNote(Change Reported)"
+				"_events": "caseWork/writeNote(Change Reported)"
 			},
 			"Client Contact...": {
-				"_events": "caseWork.writeNote(Client Contact)"
+				"_events": "caseWork/writeNote(Client Contact)"
 			},
 			"Add Member...": {
-				"_events": "caseWork.writeNote(Add Member)"
+				"_events": "caseWork/writeNote(Add Member)"
 			},
 			"Income...": {
-				"_events": "caseWork.writeNote(Income)"
+				"_events": "caseWork/writeNote(Income)"
 			},
 			"ATS...": {
-				"_events": "caseWork.writeNote(ATS)"
+				"_events": "caseWork/writeNote(ATS)"
 			}
 		}
 	},
@@ -29,7 +29,7 @@
 		"_events": "",
 		"_submenu": {
 			"ATS Mileage Rate...": {
-				"_events": "tools.getInfo(ATS Mileage)"
+				"_events": "tools/getInfo(ATS Mileage)"
 			}
 		}
 	},
@@ -37,7 +37,7 @@
 		"_events":"",
 		"_submenu": {
 			"Launch...":{
-				"_events": "caseWork.merlin(launch)"
+				"_events": "caseWork/merlin/launch()"
 			}
 		}
 	}
