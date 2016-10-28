@@ -7,8 +7,14 @@ _engine.module.define('ui/scriptMenu/refresh',function(){
 	
 	
 	$('#script-launcher, #script-launcher li').on('click',function( event ){
+		
 		event.stopPropagation();
-		_engine.events.handleClickEvent( this );
+		
+		var req =  $( $(this).children('[data-click]')[0]).attr('data-click'); 
+		
+		if( typeof req !== 'undefined' && req !== '' ) _engine.events.handleClickEvent( req );
+		 
+		//_engine.events.handleClickEvent( this );
 	});
 
 });
