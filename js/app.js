@@ -69,7 +69,7 @@ var _engine = {
 					
 				}
 				
-				_enigne.ui.dom.prepUI(function(){
+				_engine.ui.dom.prepUI(function(){
 					
 					_engine.ui.topNotification(`Script Library: ${version}`);
 						
