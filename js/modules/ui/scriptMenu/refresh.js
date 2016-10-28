@@ -14,7 +14,6 @@ _engine.module.define('ui/scriptMenu/refresh',function(){
 		
 		if( typeof req !== 'undefined' && req !== '' ) _engine.events.handleClickEvent( req );
 		 
-		//_engine.events.handleClickEvent( this );
 	});
 
 });

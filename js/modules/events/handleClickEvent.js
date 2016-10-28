@@ -1,12 +1,6 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('events/handleClickEvent',function( trigger ){
+_engine.module.define('events/handleClickEvent',function( req ){
 	
-	
-	
-	//let req = $(trigger)[0]
-	
-	//console.log( req );
-	/*
 	req = _engine.tools.stringToQuery( req );
 	
 	let last = req.length - 1;
@@ -36,5 +30,5 @@ _engine.module.define('events/handleClickEvent',function( trigger ){
 		}
 	
 	});
-	*/
+	
 });
