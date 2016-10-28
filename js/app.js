@@ -70,19 +70,23 @@ var _engine = {
 				}
 				
 				_engine.ui.topNotification(`Script Library: ${version}`);
-
-				//Build out menu
-				_engine.ui.scriptMenu.refresh();
 				
-				$(document).on('click','.dijitTab',function(){
-					_engine.events.tabWatcher( this );
+				_enigne.ui.dom.prepUI(function(){
+						
+						//Build out menu
+					_engine.ui.scriptMenu.refresh();
+						
+					$(document).on('click','.dijitTab',function(){
+						_engine.events.tabWatcher( this );
+					});
+						
+					$('.scripts-link, .center-box').removeAttr('style');
+						
+					_engine.ui.displayExpiry();
+						
+					_engine.advanced.setupTimeoutAlert();
+					
 				});
-				
-				$('.scripts-link, .center-box').removeAttr('style');
-				
-				_engine.ui.displayExpiry();
-				
-				_engine.advanced.setupTimeoutAlert();
 				
 			});
 			
