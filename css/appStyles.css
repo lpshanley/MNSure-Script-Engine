@@ -311,6 +311,15 @@ div.center-box > span {
 	}
 }
 
+@media only screen and (max-width: 1100px) {
+	
+	span.mns-expiryBlock {
+		
+		display: none !important;
+		
+	}
+}
+
 /* Merlin Styles
 ===================================================================*/
 
