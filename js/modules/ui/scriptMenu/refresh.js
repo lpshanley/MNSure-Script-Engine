@@ -7,9 +7,8 @@ _engine.module.define('ui/scriptMenu/refresh',function(){
 	
 	
 	$('#script-launcher, #script-launcher li').on('click',function( event ){
-
+		event.stopPropagation();
 		_engine.events.handleClickEvent( this );
-
 	});
 
 });
