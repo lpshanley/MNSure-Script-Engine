@@ -58,7 +58,7 @@ var _engine = {
 				
 				_engine.ui.topNotification.add(`Script Library: ${version}`);
 				
-				_engine.ui.topNotification.add( 'Session Expiry: ' + _engine.advanced._sessionExpiry() );
+				_engine.ui.topNotification.add( 'Session Expiry - ' + _engine.advanced._sessionExpiry() );
 				
 				if( version !== 'master' && version !== 'beta' ){
 					
