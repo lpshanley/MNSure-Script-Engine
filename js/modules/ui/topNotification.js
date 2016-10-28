@@ -32,7 +32,7 @@ _engine.module.define('ui/topNotification',{
 
 				if( $('.center-box span').length === 0 ){
 
-					var _span = $('<span>',{'html': notif , 'style':'display:none;' });
+					var _span = $('<span>',{'html': _engine.advanced._vars.topNotificationTicker[0] , 'style':'display:none;' });
 					$('div.center-box').html( _span );
 
 					$('.center-box span').fadeIn();
