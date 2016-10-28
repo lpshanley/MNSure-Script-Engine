@@ -1,6 +1,6 @@
 {
 	"Unified Search": {
-		"_events": "caseWork.unifiedSearch()"
+		"_events": "caseWork.unifiedSearch.start()"
 	},
 	"Case Notes": {
 		"_events": "",
