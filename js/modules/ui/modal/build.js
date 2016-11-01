@@ -1,11 +1,14 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('ui/modal/build',function( title, layout, type, params, callback ){
-	
+
 		//Add modal class to body
 	$('body').addClass('modal');
 
 		//Greyed out layout background
-	var overlay = $('<div>',{'class':'modal-overlay'});
+	var overlay = $('<div>',{
+		'class' : 'modal-overlay'
+	});
+	
 	$('body').append( overlay );
 
 		//Modal Wrapper Div

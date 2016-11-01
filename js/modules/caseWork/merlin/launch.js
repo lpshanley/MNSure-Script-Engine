@@ -131,6 +131,6 @@ _engine.module.define('caseWork/merlin/launch',function( input ){
 				action: function(){_engine.caseWork.merlin.destroy( uniqueID )}
 			});
 		
-		});
+		}, true );
 
 });
