@@ -1,7 +1,7 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('ui/modal/build',function( modalReq, callback ){
 	
-	if( typeof _engine.storage.nocache.data.modalParams === 'undefined' ) _engine.storage.nocache.data.modalParams = {};
+	if( typeof _engine.storage.nocache.data.modal === 'undefined' ) _engine.storage.nocache.data.modal = {};
 	
 	let mnsModalFooterButtonContainer, config;
 	
