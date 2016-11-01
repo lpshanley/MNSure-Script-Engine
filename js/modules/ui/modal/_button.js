@@ -1,6 +1,8 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('ui/modal/_button',function( _type ){
-
+	
+	console.log( _type );
+	
 	_engine.debug.info( "- * [ _engine.ui.modal._button() ] function started with type: " + _type );
 
 	switch( _type.toLowerCase() ){
@@ -55,5 +57,5 @@ _engine.module.define('ui/modal/_button',function( _type ){
 			break;
 
 	}
-
+	
 });
