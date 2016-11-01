@@ -30,9 +30,6 @@ _engine.module.define('ui/modal/build',function( modalReq, callback ){
 		
 		$( mnsModalFooterButtonContainer ).append( mnsModalButton );
 		
-		console.log(`Key: ${key + 1}`);
-		console.log(`Len: ${config.buttons.length}`);
-		
 		if( ( key + 1 ) !== config.buttons.length && config.buttons.length > 1){
 			//Modal footer - Filler Span
 			let mnsModalButtonFiller = $('<span>', {'class':'filler'});
