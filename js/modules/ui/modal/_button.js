@@ -2,6 +2,7 @@
 _engine.module.define('ui/modal/_button',function( _type ){
 	
 	console.log( _engine.storage.nocache.data.modal );
+	console.log( _type );
 	
 	_engine.debug.info( "- * [ _engine.ui.modal._button() ] function started with type: " + _type );
 
