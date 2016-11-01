@@ -2,50 +2,43 @@
 _engine.module.define('caseWork/note/write',function( _note ){
 
 	_engine.caseWork.global.onCaseScreen(function(){
-
+		
 		// Define extra vars
-		var _noteLocation = null;
-		var _modalType = null;
-
-		// Grab an array of elements that are defined in the menu as available case notes
-		var _noteArray = $('#script-launcher > ul > li:contains("Case Notes") ul li');
-
-		// Create the container array to compare against
-		var _validNotes = [];
-
+		let _noteLocation = null, _validNotes = [];
+		
 		// Iterate over element array
-		$.each(_noteArray,function(k,v){
-
-			// Grab the text only without the "..." from the case note elements and push to second array
-			_validNotes.push( $( v ).text().replace(/[.]/g,"").toLowerCase() );
-
+		$.each( $('#script-launcher > ul > li:contains("Case Notes") ul li') ,function(k,v){ 
+			_validNotes.push( $( v ).text().replace(/[.]/g,"").toLowerCase() ); 
 		});
-
+		
 		// Check if the requested case note type is in the list of valid case notes
 		if( $.inArray( _note.toLowerCase(), _validNotes) > -1 ){
-
-			// If its a valid request set the modal type to case notes
-			_modalType = "case notes";
-
 			// Set the location to the dir that stores the html
-			_noteLocation = _modalType + "/" + _note.toLowerCase() + ".html";
-
+			_noteLocation = "case notes/" + _note.toLowerCase() + ".html";
 		}
 
 		// If the request was invalid then error out the request as invalid
-		if( _noteLocation != null ){
+		if( _noteLocation !== null ){
 			
-			// Gathers HTML for view and stores to local storage
+			// Grabs the HTML and returns it as template variable
 			_engine.advanced.getView( _noteLocation, function( template ){
-				
-				_engine.ui.modal.build( _note, template, _modalType );
-				
+				// Builds and renders an HTML modal
+				_engine.ui.modal.build({
+					title: _note,
+					html: template,
+					buttons: [
+						'submit',
+						'close'
+					]
+				},function(){
+					// Stores the role of the modal in nocache until its destroyed
+					_engine.storage.nocache.data.modal.role = 'case note';
+				});
 			});
-
+		// Logs an error is the note cannot be found or displayed
 		} else {
 			_engine.debug.error("- * Fail Reason: [_engine.caseWork.note.write( note )]: A valid note type must be specified to run this command.")
 		}
-	
 	}, true);
 	
 });
