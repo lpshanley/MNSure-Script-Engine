@@ -37,16 +37,22 @@ _engine.module.define('ui/modal/build',function( modalReq, callback ){
 		}
 		
 	} //End of addButton function
-	
+		
+	let template = function( msg ){
+		return '<div class="mns-modal-template"><span class="mns-input-group"><span class="mns-input-label mns-input-infotext">'+msg+'</span></span></div>';
+	}
+		
 		//Modal defaults
 	config = {
-		html: '<div class="mns-modal-template"><span class="mns-input-group"><span class="mns-input-label mns-input-infotext">No defined html template was passed.</span></span></div>',
+		html: null,
+		text: 'No defined html template was passed.',
 		title: 'DEFAULT MODAL TITLE',
 		buttons: ['Close']
 	}
 	
 		//Lay the config over the defaults
 	$.each(modalReq,function(k,v){ config[k] = modalReq[k]; });
+	if( config.html === null ) config.html = template( config.text );
 	
 	/* Place the overlay onto the window
 	=====================================================*/
