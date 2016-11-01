@@ -1,17 +1,15 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('ui/dom/createElement',function( input ){
 
-	let config = {
-		type: '',
-		styles: '',
-		classes: '',
-		id: '',
-		content: ''
-	};
-
+	let config = {};
+			config.type = '';
+			config.styles = '';
+			config.classes = '';
+			config.id = '';
+			config.content = '';
+	
 	$.each(input,function(k,v){
 		config[k] = input[k];
-
 	});
 
 	if( config.type === '' ) return false;

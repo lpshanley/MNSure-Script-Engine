@@ -1,7 +1,7 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('ui/modal/build',function( title, layout, type ){
-
-	//Add modal class to body
+_engine.module.define('ui/modal/build',function( title, layout, type, params, callback ){
+	
+		//Add modal class to body
 	$('body').addClass('modal');
 
 		//Greyed out layout background
@@ -17,7 +17,7 @@ _engine.module.define('ui/modal/build',function( title, layout, type ){
 	$('div.modal-content-wrapper').append( titlebar );
 
 		//Title text in title bar
-	var dialogTitle = $('<span>',{'class':'dijitDialogTitle','text':title});
+	var dialogTitle = $('<span>',{'class':'dijitDialogTitle','text':props.title});
 	$('div.modal-titlebar').append( dialogTitle );
 
 		//Close X on title bar
@@ -36,7 +36,9 @@ _engine.module.define('ui/modal/build',function( title, layout, type ){
 
 		//Modal footer - Button Container
 	var mnsModalFooterButtonContainer = $('<div>', {'class':'action-set center'});
-
+	
+	
+	
 		//Button Text
 	var _submit = "Submit"
 	var _type = type;
@@ -49,7 +51,9 @@ _engine.module.define('ui/modal/build',function( title, layout, type ){
 
 		//Button Text
 	var _cancel = "Cancel"
-
+	
+	
+	
 		//Modal footer - Button Anchor
 	var mnsModalFooterCancelButton = $('<a>', {'onClick':'_engine.events.handleClickEvent("ui.modal._button(close)")', 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+ _cancel +'</span></span></span>'});
 
@@ -74,4 +78,6 @@ _engine.module.define('ui/modal/build',function( title, layout, type ){
 
 	$('.modal-content-wrapper').draggable({ handle: 'div.modal-titlebar' });
 
+	if(typeof callback === 'function') callback();
+	
 });
