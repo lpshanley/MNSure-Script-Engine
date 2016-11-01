@@ -1,6 +1,8 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('ui/modal/build',function( modalReq, callback ){
 	
+	if( typeof _engine.storage.nocache.data.modalParams === 'undefined' ) _engine.storage.nocache.data.modalParams = {};
+	
 	let mnsModalFooterButtonContainer, config;
 	
 		// Button Creator for the modal creator
@@ -48,42 +50,6 @@ _engine.module.define('ui/modal/build',function( modalReq, callback ){
 	
 		//Lay the config over the defaults
 	$.each(modalReq,function(k,v){ config[k] = modalReq[k]; });
-	
-	/*
-	
-		//Button Text
-	var _submit = "Submit"
-	var _type = type;
-
-		//Modal footer - Button Anchor
-	var mnsModalFooterSubmitButton = $('<a>', {'onClick':'_engine.events.handleClickEvent("ui.modal._button('+_type+')")', 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+ _submit +'</span></span></span>'});
-
-		//Modal footer - Filler Span
-	var mnsModalFooterFiller = $('<span>', {'class':'filler'});
-
-		//Button Text
-	var _cancel = "Cancel"
-	
-		//Modal footer - Button Anchor
-	var mnsModalFooterCancelButton = $('<a>', {'onClick':'_engine.events.handleClickEvent("ui.modal._button(close)")', 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+ _cancel +'</span></span></span>'});
-
-		//Add footer to modal
-	$( 'div.modal-content-wrapper' ).append( mnsModalFooter );
-
-		//Add button container
-	$( '#mns-modal-actions' ).append( mnsModalFooterButtonContainer );
-	
-	
-		//Add submit button
-	$( '#mns-modal-actions div.action-set' ).append( mnsModalFooterSubmitButton );
-
-		//Add filler
-	$( '#mns-modal-actions div.action-set' ).append( mnsModalFooterFiller );
-
-		//Add cancel button
-	$( '#mns-modal-actions div.action-set' ).append( mnsModalFooterCancelButton );
-
-	*/
 	
 	/* Place the overlay onto the window
 	=====================================================*/
