@@ -380,3 +380,21 @@ div.center-box > span {
 	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
 }
 
+
+/*  Autocomplete Syntax
+==================================================*/
+ul.ui-autocomplete {
+	display: block;
+	z-index: 1000;
+}
+
+.ui-helper-hidden-accessible {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}

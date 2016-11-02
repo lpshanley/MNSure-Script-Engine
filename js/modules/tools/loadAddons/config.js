@@ -4,6 +4,6 @@ _engine.module.define('tools/loadAddons/config',{
 		"jqueryui": "https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"
 	},
 	css: {
-		"jqueryui": "https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/base/jquery-ui.css"
+		"jqueryui": "https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/redmond/jquery-ui.css"
 	}
 });
