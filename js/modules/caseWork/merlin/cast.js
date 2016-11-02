@@ -2,9 +2,6 @@
 _engine.module.define('caseWork/merlin/cast',function( input ){
 
 	/*
-		_engine.caseWork.merlin.launch({
-			title: 'Merlin - Task X of X'
-		});
 
 		IFRAME CARD
 
@@ -17,7 +14,8 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 	_engine.caseWork.global.onCaseScreen(function(){
 
 		let config = {
-			title: ''
+			title: '',
+			tasks: {}
 		};
 
 		$.each(input,function(k,v){
