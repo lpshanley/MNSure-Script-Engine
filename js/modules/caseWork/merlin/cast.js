@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('caseWork/merlin/launch',function( input ){
+_engine.module.define('caseWork/merlin/cast',function( input ){
 
 	/*
 		_engine.caseWork.merlin.launch({
