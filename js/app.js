@@ -56,6 +56,10 @@ var _engine = {
 
 				_engine.storage.prefillCache.clear();
 				
+				_engine.ui.topNotification.add(`Script Library: ${version}`);
+				
+				_engine.ui.topNotification.add( 'Session Expiry - ' + _engine.advanced._sessionExpiry() );
+				
 				if( version !== 'master' && version !== 'beta' ){
 					
 					$.ajax({
@@ -63,26 +67,28 @@ var _engine = {
 						dataType: 'json',
 						async: false,
 						success: function( data ){
-							version += " | " + data.resources.core.remaining;
+							_engine.ui.topNotification.add(`Calls Remaining: ${data.resources.core.remaining}`);
 						}
 					});
 					
 				}
 				
-				_engine.ui.topNotification(`Script Library: ${version}`);
-
-				//Build out menu
-				_engine.ui.scriptMenu.refresh();
-				
-				$(document).on('click','.dijitTab',function(){
-					_engine.events.tabWatcher( this );
+				_engine.ui.dom.prepUI(function(){
+					
+					_engine.ui.topNotification.run();
+					
+						//Build out menu
+					_engine.ui.scriptMenu.refresh();
+						
+					$(document).on('click','.dijitTab',function(){
+						_engine.events.tabWatcher( this );
+					});
+						
+					$('.scripts-link, .center-box').removeAttr('style');
+						
+					_engine.advanced.setupTimeoutAlert();
+					
 				});
-				
-				$('.scripts-link, .center-box').removeAttr('style');
-				
-				_engine.ui.displayExpiry();
-				
-				_engine.advanced.setupTimeoutAlert();
 				
 			});
 			
