@@ -394,7 +394,7 @@ ul.ui-autocomplete {
 
 ul.ui-autocomplete li.ui-menu-item a {
 	padding: 1px !important;
-	font: 99% arial,helvetica,clean,sans-serif !important;
+	font: 13px Tahoma, sans-serif !important;
 }
 
 ul.ui-autocomplete li.ui-menu-item a:hover {
