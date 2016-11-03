@@ -14,9 +14,9 @@ _engine.module.define('ui/modal/_watch',function(){
 				if( $('.mns-modal-template').hasClass('submit-form') ){
 					//Are you in a textarea trying to submit?
 					if( !$( document.activeElement ).is('textarea') ){
-
+						
 						$('#mns-modal-actions a[data-role="submit"]').click();
-
+						
 					}
 				}
 				break;
