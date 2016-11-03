@@ -9,7 +9,7 @@ _engine.module.define('caseWork/unifiedSearch/start',function(){
 				title:"Unified Search Query",
 				html: template,
 				buttons: [
-					{label:'Search', onclick:"_engine.events.handleClickEvent('ui.modal._button(submit)')"},
+					{label:'Search', onclick:"_engine.events.handleClickEvent('ui.modal._button(submit)')", role: 'submit'},
 					'close'
 				]
 			},function(){

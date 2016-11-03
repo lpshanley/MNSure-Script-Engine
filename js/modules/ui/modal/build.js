@@ -8,17 +8,19 @@ _engine.module.define('ui/modal/build',function( modalReq, callback ){
 		// Button Creator for the modal creator
 	let addButton = function( key, req ){
 		
-		let props = { label:'error', onclick:'return false;', filler:true};
+		let props = { label:'error', onclick:'return false;', role:'', filler:true};
 		
 		if(typeof req === 'string'){
 			switch( req.toLowerCase() ){
 				case 'submit':
 					props.label = 'Submit';
 					props.onclick = "_engine.events.handleClickEvent('ui.modal._button(submit)')";
+					props.role = 'submit';
 					break;
 				case 'close':
 					props.label = 'Close';
 					props.onclick = "_engine.events.handleClickEvent('ui.modal._button(close)')";
+					props.role = 'exit';
 					break;
 				default:
 					break;
@@ -26,7 +28,7 @@ _engine.module.define('ui/modal/build',function( modalReq, callback ){
 		}
 		else if( typeof req === 'object' ) {	$.each(req,function(k,v){ props[k] = req[k] });	}
 		
-		let mnsModalButton = $('<a>', {'onClick':props.onclick, 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+props.label+'</span></span></span>'});
+		let mnsModalButton = $('<a>', {'onClick':props.onclick, 'data-role':props.role, 'html':'<span class="left-corner"><span class="right-corner"><span class="middle">'+props.label+'</span></span></span>'});
 		
 		$( mnsModalFooterButtonContainer ).append( mnsModalButton );
 		
