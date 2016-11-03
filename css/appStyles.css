@@ -384,8 +384,14 @@ div.center-box > span {
 /*  Autocomplete Syntax
 ==================================================*/
 ul.ui-autocomplete {
-	display: block;
 	z-index: 1000;
+	font-family: arial,helvetica,clean,sans-serif !important;
+	font-size: 13px;
+	
+}
+
+ul.ui-autocomplete li.ui-menu-item a:hover {
+	border-radius: 0;
 }
 
 .ui-helper-hidden-accessible {
