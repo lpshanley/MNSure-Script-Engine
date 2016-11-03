@@ -1,7 +1,7 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('ui/modal/_watch',function(){
 
-	$('.mns-modal-template span.mns-input-group:has("input") input').focus();
+	$('.mns-modal-template span.mns-input-group:has("input") input[type="text"]')[0].focus();
 
 	$('.mns-modal-template').keypress(function(e){ 
 
@@ -13,7 +13,7 @@ _engine.module.define('ui/modal/_watch',function(){
 					//Are you in a textarea trying to submit?
 					if( !$( document.activeElement ).is('textarea') ){
 
-						$('#mns-modal-actions a:contains("Submit")').click();
+						$('#mns-modal-actions a[data-role="submit"]').click();
 
 					}
 				}
