@@ -39,6 +39,7 @@ _engine.module.define('ui/modal/_setupAutoComplete',function(){
 								
 								$( input ).autocomplete({
 									minLength: 0,
+									delay: 0,
 									source: autoCompleteSource
 								});
 								
