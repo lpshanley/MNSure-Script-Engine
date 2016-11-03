@@ -385,10 +385,16 @@ div.center-box > span {
 ==================================================*/
 ul.ui-autocomplete {
 	z-index: 1000;
-	font-family: arial,helvetica,clean,sans-serif !important;
-	font-size: 13px;
-	border-radius: 0;
 	padding: 0;
+}
+
+.ui-corner-all {
+	border-radius: 0 !important;
+}
+
+ul.ui-autocomplete li.ui-menu-item a {
+	padding: 1px !important;
+	font: 13px Tahoma, sans-serif !important;
 }
 
 ul.ui-autocomplete li.ui-menu-item a:hover {
