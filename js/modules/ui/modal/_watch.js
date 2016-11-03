@@ -26,24 +26,26 @@ _engine.module.define('ui/modal/_watch',function(){
 
 	//Process onLoad Prefill
 	_engine.ui.modal._processPrefill();
-
+	_engine.ui.modal._setupAutoComplete();
+	
 	if( _engine.ui.modal._clustersActive() ){
 
 		var _subject = $( '.modal-content-container span.mns-input-group span:contains("SUBJECT")' );
 
 		if( _subject.length == 1 ){
-
+			
 			var _select = $( _subject ).parent().find('select');
-
+				
 			$( _select ).on('change',function(){
-
+				
 				_selectVal = $( _subject ).parent().find('select').val();
-
+				
 				_engine.ui.modal._changeActiveCluster( _selectVal );
-
+				
 				//Process dynamic Prefill on subject change
 				_engine.ui.modal._processPrefill();
-
+				_engine.ui.modal._setupAutoComplete();
+				
 			});
 
 		}

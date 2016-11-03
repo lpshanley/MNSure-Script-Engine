@@ -36,8 +36,8 @@
 	"Merlin": {
 		"_events":"",
 		"_submenu": {
-			"Launch...":{
-				"_events": "caseWork/merlin/launch()"
+			"Client Contact...":{
+				"_events": "caseWork/merlin/_start(client contact)"
 			}
 		}
 	}
