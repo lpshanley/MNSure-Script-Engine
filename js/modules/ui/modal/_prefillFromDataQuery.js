@@ -44,11 +44,24 @@ _engine.module.define('ui/modal/_prefillFromDataQuery',function( type, callback 
 							nameField = '0';
 							
 					$.each(dataObject,function(key,value){
-							
 							// If current is an invalid field set scope to history
+						
 						if( typeof value[useScope][nameField] === 'undefined' ){ useScope = 'history'; }
 						
-						if( value[useScope][nameField].toLowerCase().indexOf( matchedName ) > -1 ){ useObject = value; }
+						if( typeof value[useScope][nameField] !== 'undefined' ){ 
+							
+							if( value[useScope][nameField].toLowerCase().indexOf( matchedName ) > -1 ){ 
+								
+								if( value[useScope].to.trim() !== "" ){
+									console.log('Current');
+									console.log( value );
+								}
+								
+								useObject = value;
+								
+							}
+							
+						}
 						
 					});
 				}
