@@ -25,7 +25,11 @@ _engine.module.define('ui/modal/_prefillFromDataQuery',function( type, callback 
 
 	var returnConstructor = function( dataObject ){
 		
-		let useObject, prefillString = '';
+		let useObject = {
+					current: {},
+					history: {}
+				}, 
+				prefillString = '';
 		
 		if( Object.getOwnPropertyNames( dataObject ).length === 1 ){
 			/* Use the only piece of evidence available */
@@ -33,8 +37,6 @@ _engine.module.define('ui/modal/_prefillFromDataQuery',function( type, callback 
 		}
 		else if (  Object.getOwnPropertyNames( dataObject ).length > 1  ){
 			/* Determine what evidence to use */
-			
-			
 			
 			$.each(_engine.storage.nocache.query('caseData.participants'),function(key,participant){
 				if( participant.role === 'Primary Client' ){
@@ -51,6 +53,8 @@ _engine.module.define('ui/modal/_prefillFromDataQuery',function( type, callback 
 						if( typeof value[useScope][nameField] !== 'undefined' ){ 
 							
 							if( value[useScope][nameField].toLowerCase().indexOf( matchedName ) > -1 ){
+								
+								console.log( value );
 								
 								useObject = value;
 								
