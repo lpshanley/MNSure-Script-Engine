@@ -1,8 +1,6 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('tools/customApi/evidence/_getSubQueries',function( reqObj, callback ){
 	
-	console.log( _engine.storage.nocache )
-	
 	var processSubQueries = function( inputObj, deepObj ){
 
 		let objClassArray = $( inputObj[Object.getOwnPropertyNames( inputObj )[0]].content ).find('table').attr('class').split(" ");
