@@ -54,22 +54,19 @@ _engine.module.define('ui/modal/_prefillFromDataQuery',function( type, callback 
 							
 							if( value[useScope][nameField].toLowerCase().indexOf( matchedName ) > -1 ){
 								
-								if(typeof useObject[useScope].to === 'undefined'){
-									if(typeof useObject[useScope].type !== 'undefined'){
+								if(typeof value[useScope].to !== 'undefined'){
+									
+									if(typeof value[useScope].type !== 'undefined'){
+										
 										useObject[useScope][value[useScope].type] = value[useScope];
+										
 									}
 									else {
+										
 										useObject[useScope] = value[useScope];
+										
 									}
-									console.log('undefined',useObject,useScope );
-								} else {
-									/*
-									let currentDate = new Date( useObject[useScope].to ).getTime(),
-											testDate = new Date( value[useScope].to ).getTime();
-									console.log( 'currentDate', useObject[useScope].to );
-									console.log( 'testDate', value[useScope].to );
-									console.log( currentDate < testDate, useScope, value[useScope].type );
-									*/
+									
 								}
 								
 							}
@@ -78,7 +75,7 @@ _engine.module.define('ui/modal/_prefillFromDataQuery',function( type, callback 
 						
 					});
 					
-					console.log( 'useObject', useObject );
+					console.log('Using: ', useObject);
 					
 				}
 			});
@@ -108,7 +105,8 @@ _engine.module.define('ui/modal/_prefillFromDataQuery',function( type, callback 
 				
 				if( isAvailable() ){
 					
-					let result = useObject[scope];
+					let result = useObject[scope].Residential;
+					if( typeof result !== 'undefined' ){
 					
 					if( result.apt_suite !== "" ) prefillString += result.apt_suite + ", ";
 					if( result.street_1 !== "" ) prefillString += result.street_1 + ", ";
@@ -116,6 +114,11 @@ _engine.module.define('ui/modal/_prefillFromDataQuery',function( type, callback 
 					if( result.city !== "" ) prefillString += result.city + ", "; 
 					if( result.state !== "" ) prefillString += result.state + ", "; 
 					if( result.zip !== "" ) prefillString += result.zip; 
+						
+					}
+					else {
+						prefillString += "n/a";
+					}
 					
 				}
 				
