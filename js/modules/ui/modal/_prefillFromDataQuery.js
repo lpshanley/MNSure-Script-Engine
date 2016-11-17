@@ -48,21 +48,38 @@ _engine.module.define('ui/modal/_prefillFromDataQuery',function( type, callback 
 					
 					$.each(dataObject,function(key,value){
 							// If current is an invalid field set scope to history
-						if( typeof value[useScope][nameField] === 'undefined' ){ useScope = 'history'; }
+						if( typeof value[useScope].evidence_unavailable !== 'undefined' ){ useScope = 'history'; }
 						
-						if( typeof value[useScope][nameField] !== 'undefined' ){ 
+						if( typeof value[useScope].evidence_unavailable === 'undefined' ){
 							
 							if( value[useScope][nameField].toLowerCase().indexOf( matchedName ) > -1 ){
 								
-								console.log( value );
-								
-								useObject = value;
+								if(typeof useObject[useScope].to === 'undefined'){
+									if(typeof useObject[useScope].type !== 'undefined'){
+										useObject[useScope][value[useScope].type] = value[useScope];
+									}
+									else {
+										useObject[useScope] = value[useScope];
+									}
+									console.log('undefined',useObject,useScope );
+								} else {
+									/*
+									let currentDate = new Date( useObject[useScope].to ).getTime(),
+											testDate = new Date( value[useScope].to ).getTime();
+									console.log( 'currentDate', useObject[useScope].to );
+									console.log( 'testDate', value[useScope].to );
+									console.log( currentDate < testDate, useScope, value[useScope].type );
+									*/
+								}
 								
 							}
 							
 						}
 						
 					});
+					
+					console.log( 'useObject', useObject );
+					
 				}
 			});
 		}
