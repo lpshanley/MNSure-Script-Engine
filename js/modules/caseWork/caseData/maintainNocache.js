@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('caseWork/caseData/maintainNocache',function(){
+_engine.module.define('caseWork/caseData/maintainNocache',function( callback ){
 	
 	_engine.domTools.test.hcrTabActiveIsIC(function( result ){
 		
@@ -64,7 +64,9 @@ _engine.module.define('caseWork/caseData/maintainNocache',function(){
 			_engine.storage.nocache.data.caseData.caseID = curamObj.tabContent.parameters.caseID;
 
 			_engine.debug.info('Nocache: Case Data Refreshed');
-
+			
+			if(typeof callback === 'function') callback( _engine.storage.nocache.query('caseData') );
+			
 		}
 		
 		var getData = function( caseId ){
