@@ -12,7 +12,7 @@
 var _engine = {
 	
 	//**************//
-	//*     Events    *//
+	//*   Events   *//
 	//**************//
 	
 	events: {
@@ -319,7 +319,7 @@ var _engine = {
 
 				});
 
-				if( pathArray.length > 0 ) _engine.module.loadRequired( callback, pathArray, moduleArray  );
+				if( pathArray.length > 0 ) _engine.module.loadRequired( callback, pathArray, moduleArray );
 				
 			}
 			
