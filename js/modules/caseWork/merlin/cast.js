@@ -13,7 +13,11 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 	
 	_engine.caseWork.global.onCaseScreen(function(){
 		
-		if( typeof _engine.storage.nocache.data.merlin === 'undefined' ) _engine.storage.nocache.data.merlin = {};
+		let uniqueID = _engine.advanced.generateId();
+		
+		_engine.storage.nocache.modal.uniqueID = {
+			complete: false
+		}
 		
 		let config = {
 			title: '',
@@ -22,16 +26,6 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 		
 		$.each(input,function(k,v){ config[k] = input[k]; });
 		
-		let uniqueID = _engine.advanced.generateId();
-		
-		/* Shaded Backdrop
-		***************************************************/
-			var backDrop = _engine.ui.dom.createElement({ 
-				type: 'div', 
-				id: uniqueID, 
-				classes:'merlin-backdrop'
-			});
-
 		/* Modal Wrapper Element
 		***************************************************/
 			var wrapperDiv = _engine.ui.dom.createElement({ 
@@ -87,9 +81,6 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 				classes:'merlin-bodyContentContainer',
 			});
 			
-		/* Apply Backdrop To Screen
-		***************************************************/
-			$('body').append( backDrop );
 			
 		/* Build Title Bar
 		***************************************************/
@@ -114,6 +105,9 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 			
 		/* Launch Modal
 		***************************************************/
+			
+			_engine.ui.dom.dimLights( true );
+			
 			$( curam.util.getTopmostWindow().document.body ).append( wrapperDiv );
 
 		/* Enable Modal Resizing and Dragging
