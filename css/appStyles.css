@@ -221,7 +221,8 @@
   float: right;
   background-color: #f1f1f1;
   border-left: 1px solid rgba(0, 0, 0, 0.2);
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  overflow: scroll; }
 .custom-modal.merlin .modal-right .task-attach {
   margin: 0.5rem;
   position: absolute;
