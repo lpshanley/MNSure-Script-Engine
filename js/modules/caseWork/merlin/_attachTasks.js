@@ -1,8 +1,6 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('caseWork/merlin/_attachTasks',function( id, input ){
 	
-	console.log( $("[data-id='"+id+"']") );
-	
 	_engine.advanced.getView('merlin/card-template.html',function( template ){ 
 		
 		_engine.storage.nocache.data.modal[id].tasklist = {};
@@ -27,12 +25,11 @@ _engine.module.define('caseWork/merlin/_attachTasks',function( id, input ){
 			$( card ).find('.card-title').text( _engine.storage.nocache.data.modal[id].tasklist[taskID].title );
 			
 			console.log( $( card ) );
+			console.log( $("[data-id='"+id+"'] [data-role='task-list']") );
 			
-			$('[data-id="'+id+'"] [data-role="task-list"]').append( $( card ) );
+			$("[data-id='"+id+"'] [data-role='task-list']").append( $( card ) );
 			
 		});
-		
-		console.log( _engine.storage.nocache.data.modal[id] );
 		
 	});
 	

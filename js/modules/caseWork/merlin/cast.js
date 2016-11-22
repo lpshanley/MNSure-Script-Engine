@@ -10,7 +10,7 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 			let uniqueID = _engine.advanced.generateId();
 			
 			_engine.storage.nocache.data.modal[uniqueID] = {
-				complete: false
+				loaded: false
 			}
 			
 			let config = {
@@ -45,7 +45,7 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 				});
 				
 				_engine.storage.nocache.data.modal[uniqueID] = {
-					complete: true
+					loaded: true
 				}
 				
 		});
