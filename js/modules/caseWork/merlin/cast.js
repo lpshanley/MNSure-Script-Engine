@@ -24,6 +24,8 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 			
 			$( modal ).find( '.dijitDialogTitle' ).text( config.title );
 			
+			_engine.caseWork.merlin._attachTasks( uniqueID, config.tasks );
+			
 			_engine.ui.dom.dimLights( true );
 			
 			$( curam.util.getTopmostWindow().document.body ).append(modal);
