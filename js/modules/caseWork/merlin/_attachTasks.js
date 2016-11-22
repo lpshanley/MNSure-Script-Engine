@@ -7,9 +7,25 @@ _engine.module.define('caseWork/merlin/_attachTasks',function( id, input ){
 		
 		$.each(input,function(task,config){
 			
-			console.log( task, config);
+			let taskID = _engine.advanced.generateId()
+			
+			_engine.storage.nocache.data.modal[id].tasklist[taskID] = {
+				title: 'TITLE',
+				complete: false,
+				action: null
+			};
+			
+			$.each(config,function(k,v){ _engine.storage.nocache.data.modal[id].tasklist[taskID][k] = v });
+			
+			let card = $.parseHTML( template );
+			
+			$(card).find('.card-title').text( _engine.storage.nocache.data.modal[id].tasklist[taskID].title );
+			
+			$('[data-id="'+id+'"] [data-role="task-list"]').append( card );
 			
 		});
+		
+		console.log( _engine.storage.nocache.data.modal[id] );
 		
 	});
 	
