@@ -1,3 +1,5 @@
+$contentHeight: calc(100% - 21px)
+
 .custom-modal.merlin
 	height: 50vh
 	width: 60vw
@@ -11,17 +13,16 @@
 	.dijitDialogTitleBar
 		height: 21px
 		width: 100%
-		
-	.modal-content
-		height: calc(100% - 21px)
-	
-		.modal-left
-			width: 30%
-			float: left
 			
-		.modal-right
-			width: 70%
-			float: right
-			background-color: #f1f1f1
-			border-left: 1px solid rgba(0,0,0,.2)
-			box-sizing: border-box
+	.modal-left
+		height: $contentHeight
+		width: 30%
+		float: left
+
+	.modal-right
+		height: $contentHeight
+		width: 70%
+		float: right
+		background-color: #f1f1f1
+		border-left: 1px solid rgba(0,0,0,.2)
+		box-sizing: border-box

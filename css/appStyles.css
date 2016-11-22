@@ -189,12 +189,12 @@
 .custom-modal.merlin .dijitDialogTitleBar {
   height: 21px;
   width: 100%; }
-.custom-modal.merlin .modal-content {
-  height: calc(100% - 21px); }
-.custom-modal.merlin .modal-content .modal-left {
+.custom-modal.merlin .modal-left {
+  height: calc(100% - 21px);
   width: 30%;
   float: left; }
-.custom-modal.merlin .modal-content .modal-right {
+.custom-modal.merlin .modal-right {
+  height: calc(100% - 21px);
   width: 70%;
   float: right;
   background-color: #f1f1f1;

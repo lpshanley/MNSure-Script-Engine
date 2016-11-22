@@ -32,7 +32,7 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 			***************************************************/
 				$('[data-id="'+uniqueID+'"]').draggable({ handle: $('[data-id="'+uniqueID+'"] .dijitDialogTitleBar')[0] });
 				$('[data-id="'+uniqueID+'"]').resizable();
-
+				
 			/* Setup Modal Actions 
 			***************************************************/
 				// Closeout Modal
@@ -41,7 +41,11 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 					trigger: 'click',
 					action: function(){ _engine.caseWork.merlin.destroy( uniqueID ) }
 				});
-			
+				
+				_engine.storage.nocache.data.modal[uniqueID] = {
+					complete: true
+				}
+				
 		});
 	
 	}, true );
