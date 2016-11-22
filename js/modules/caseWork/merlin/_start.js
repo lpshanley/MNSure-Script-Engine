@@ -12,7 +12,7 @@ _engine.module.define('caseWork/merlin/_start',function( input ){
 					tasks: [
 						{
 							title: 'Case Note',
-							action: 'writeNote(client contact)'
+							action: 'writeNote/client contact'
 						}
 					]
 				}
