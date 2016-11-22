@@ -193,6 +193,8 @@
   height: calc(100% - 56px);
   width: 30%;
   float: left; }
+.custom-modal.merlin .modal-left .task-list {
+  margin: 0.5rem; }
 .custom-modal.merlin .modal-right {
   height: calc(100% - 56px);
   width: 70%;
@@ -200,6 +202,8 @@
   background-color: #f1f1f1;
   border-left: 1px solid rgba(0, 0, 0, 0.2);
   box-sizing: border-box; }
+.custom-modal.merlin .modal-right .task-attach {
+  margin: 0.5rem; }
 
 @media screen and (max-width: 1150px) {
   div.center-box {
