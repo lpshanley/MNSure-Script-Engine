@@ -24,9 +24,6 @@ _engine.module.define('caseWork/merlin/_attachTasks',function( id, input ){
 			$( card ).attr( 'data-task', taskID );
 			$( card ).find('.card-title').text( _engine.storage.nocache.data.modal[id].tasklist[taskID].title );
 			
-			console.log( $( card ) );
-			console.log( $("[data-id='"+id+"'] [data-role='task-list']") );
-			
 			$("[data-id='"+id+"'] [data-role='task-list']").append( $( card ) );
 			
 		});

@@ -9,12 +9,12 @@ _engine.module.define('caseWork/merlin/_start',function( input ){
 			case 'client contact':
 				config = {
 					title: 'Client Contact',
-					tasks: {
-						note: {
+					tasks: [
+						{
 							title: 'Case Note',
-							action: 'case note'
+							action: 'writeNote(client contact)'
 						}
-					}
+					]
 				}
 				break;
 			default:
