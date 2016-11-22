@@ -22,7 +22,7 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 			
 			$( modal ).attr( 'data-id', uniqueID );
 			
-			console.log( $( modal ).find( '.dijitDialogTitle' ) )
+			$( modal ).find( '.dijitDialogTitle' ).text( config.title );
 			
 			_engine.ui.dom.dimLights( true );
 			
