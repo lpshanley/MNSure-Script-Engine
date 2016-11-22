@@ -195,7 +195,7 @@
   float: left;
   background-color: #f1f1f1;
   position: relative;
-  overflow: scroll; }
+  overflow: auto; }
 .custom-modal.merlin .modal-left .task-list {
   position: absolute;
   top: 0;
@@ -221,7 +221,7 @@
   background-color: #f1f1f1;
   border-left: 1px solid rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
-  overflow: scroll; }
+  overflow: auto; }
 .custom-modal.merlin .modal-right .task-attach {
   position: absolute;
   top: 0;
