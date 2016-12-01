@@ -16,7 +16,7 @@ _engine.module.define('tools/customApi/evidence/_evidenceQueryUrlConstructor',fu
 	if( _engine.domTools.test.hcrTabType() === "Integrated Case" ){
 
 		var reqUrl = root + oc3tx + "&" + caseID + "&" + evidenceType[ type ];
-
+		
 		if( typeof evidenceType[ type ] !== 'undefined' ){
 
 			_engine.debug.info(`Your generated request url is valid. This may be used to request results.`);

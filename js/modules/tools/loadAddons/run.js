@@ -14,7 +14,7 @@ _engine.module.define('tools/loadAddons/run',function( addons ){
 						if( $(this).attr('href').indexOf( library ) !== -1 ) $( this ).remove();
 					});
 					lib = $('<link>',{ href : url, 'rel' : 'stylesheet', 'type' : 'text/css'});
-					$('link[data-scriptengine]').after( lib );
+					$('link[data-scriptengine]').before( lib );
 					
 					break;
 					
@@ -24,7 +24,7 @@ _engine.module.define('tools/loadAddons/run',function( addons ){
 						if( $(this).attr('src').indexOf( library ) !== -1 ) $( this ).remove();
 					});
 					lib = $('<script>',{ src : url });
-					$('script[data-scriptengine]').after( lib );
+					$('script[data-scriptengine]').before( lib );
 					
 					break;
 				default:

@@ -14,9 +14,16 @@ _engine.module.define('caseWork/global/onCaseScreen',function( callback, showMod
 			if( showModal ){
 			
 				_engine.advanced.getView( "error/incorrect launch location.html",function(template){
-
-					_engine.ui.modal.build( "Case Note Error - Incorrect Launch Screen", template, "error" );
-
+					_engine.ui.modal.build({
+						title: "Case Note Error - Incorrect Launch Screen",
+						html: template,
+						buttons: [
+							'close'
+						]
+					},function(){
+						// Stores the role of the modal in nocache until its destroyed
+						_engine.storage.nocache.data.modal.role = 'error';
+					});
 				});
 				
 			}

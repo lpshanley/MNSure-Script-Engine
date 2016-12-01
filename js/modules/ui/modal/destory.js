@@ -8,5 +8,7 @@ _engine.module.define('ui/modal/destroy',function(){
 	$('body').removeClass('modal');
 
 	_engine.storage.prefillCache.clear();
+	
+	_engine.storage.nocache.data.modal = {};
 
 });

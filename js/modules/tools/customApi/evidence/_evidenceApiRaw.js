@@ -1,6 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('tools/customApi/evidence/_evidenceApiRaw',function( type, callback ){
-
 		/* Grab Initial Url for data type */
 	_engine.tools.customApi.evidence._evidenceQueryUrlConstructor( type, function( initUrl ){
 		/* Axaj Evidence Page */

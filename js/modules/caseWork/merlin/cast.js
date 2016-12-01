@@ -1,10 +1,7 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('caseWork/merlin/launch',function( input ){
+_engine.module.define('caseWork/merlin/cast',function( input ){
 
 	/*
-		_engine.caseWork.merlin.launch({
-			title: 'Merlin - Task X of X'
-		});
 
 		IFRAME CARD
 
@@ -15,17 +12,18 @@ _engine.module.define('caseWork/merlin/launch',function( input ){
 	*/
 	
 	_engine.caseWork.global.onCaseScreen(function(){
-
+		
+		if( typeof _engine.storage.nocache.data.merlin === 'undefined' ) _engine.storage.nocache.data.merlin = {};
+		
 		let config = {
-			title: ''
+			title: '',
+			tasks: {}
 		};
-
-		$.each(input,function(k,v){
-			config[k] = input[k];
-		});
-
+		
+		$.each(input,function(k,v){ config[k] = input[k]; });
+		
 		let uniqueID = _engine.advanced.generateId();
-
+		
 		/* Shaded Backdrop
 		***************************************************/
 			var backDrop = _engine.ui.dom.createElement({ 
@@ -72,7 +70,8 @@ _engine.module.define('caseWork/merlin/launch',function( input ){
 
 			var leftContentContainer = _engine.ui.dom.createElement({ 
 				type: 'div', 
-				id:'merlinTaskBinder'
+				id:'merlinTaskBinder',
+				classes: 'merlin-taskBinderContainer'
 			});
 
 		/* Modal Body Wrapper
@@ -81,38 +80,38 @@ _engine.module.define('caseWork/merlin/launch',function( input ){
 				type: 'div', 
 				classes:'merlin-bodyContent',
 			});
-
+			
 			var bodyContentContainer = _engine.ui.dom.createElement({ 
 				type: 'div', 
 				id:'merlinTaskBoard', 
 				classes:'merlin-bodyContentContainer',
 			});
-
+			
 		/* Apply Backdrop To Screen
 		***************************************************/
 			$('body').append( backDrop );
-
+			
 		/* Build Title Bar
 		***************************************************/
 			$( titleBar ).append( titleBarText );
 			$( titleBar ).append( titleBarCloseButton );
-
+			
 		/* Build Left Content
 		***************************************************/
 			$( leftContent ).append( leftContentContainer );
-
+			
 		/* Build Body Content
 		***************************************************/
 			$( bodyContent ).append( bodyContentContainer );
-
+			
 		/* Add Cores To Modal
 		***************************************************/
 			$( wrapperDiv ).append( titleBar );
-
+			
 			$( wrapperDiv ).append( leftContent );
-
+			
 			$( wrapperDiv ).append( bodyContent );
-
+			
 		/* Launch Modal
 		***************************************************/
 			$( curam.util.getTopmostWindow().document.body ).append( wrapperDiv );
@@ -131,6 +130,6 @@ _engine.module.define('caseWork/merlin/launch',function( input ){
 				action: function(){_engine.caseWork.merlin.destroy( uniqueID )}
 			});
 		
-		});
+		}, true );
 
 });
