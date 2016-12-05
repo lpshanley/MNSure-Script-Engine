@@ -6,13 +6,13 @@ _engine.module.define('events/domMonitor',function(){
 	let mainTabs = dijit.registry.byId("app-sections-container-dc");
 
 	dojo.aspect.after(mainTabs, "selectChild", function() {
-		console.log("Main Tab Changed");        
+		_engine.events.tabEventHandler( this.tablist._selectedTab );        
 	});
 	
-	var HRCTabs = dijit.registry.byId("HCRCASEAPPWorkspaceSection-stc");
+	let HRCTabs = dijit.registry.byId("HCRCASEAPPWorkspaceSection-stc");
 
 	dojo.aspect.after(HRCTabs, "selectChild", function() {
-		console.log("HCR Tab Changed");        
+		_engine.events.tabEventHandler( this.tablist._selectedTab );          
 	});
 	
 });

@@ -81,10 +81,6 @@ var _engine = {
 					_engine.ui.scriptMenu.refresh();
 					
 					_engine.events.domMonitor();
-					
-					$(document).on('click','.dijitTab',function(){
-						_engine.events.tabWatcher( this );
-					});
 						
 					$('.scripts-link, .center-box').removeAttr('style');
 						
