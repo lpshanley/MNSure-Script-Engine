@@ -18,6 +18,7 @@ _engine.module.define('events/tabEventHandler',function( tab ){
 				case 'HCR Cases and Outcomes':
 					
 					_engine.caseWork.caseData.maintainNocache();
+					_engine.ui.integratedCase.interfaceAlteration();
 					
 					break;
 				default:
