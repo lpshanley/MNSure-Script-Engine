@@ -1,6 +1,6 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('caseWork/merlin/setupAction',function( input ){
-
+	
 	let config = {
 		item: '',
 		trigger: 'click',
@@ -8,9 +8,7 @@ _engine.module.define('caseWork/merlin/setupAction',function( input ){
 		callback: ''
 	};
 
-	$.each(input,function(k,v){
-		config[k] = input[k];
-	});
+	$.each(input,function(k,v){	config[k] = input[k]; });
 
 	if(config.item === '') return false;
 
