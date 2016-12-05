@@ -79,7 +79,9 @@ var _engine = {
 					
 						//Build out menu
 					_engine.ui.scriptMenu.refresh();
-						
+					
+					_engine.events.domMonitor();
+					
 					$(document).on('click','.dijitTab',function(){
 						_engine.events.tabWatcher( this );
 					});
