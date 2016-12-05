@@ -3,8 +3,6 @@ _engine.module.define('events/tabEventHandler',function( tab ){
 
 	let tabScope = $( tab ).attr('widgetid').split('-')[0];
 	
-	console.log( tabScope );
-	
 	switch( tabScope ){
 		case "HCRCASEAPPWorkspaceSection":
 			
