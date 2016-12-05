@@ -5,8 +5,6 @@ _engine.module.define('events/tabEventHandler',function( tab ){
 	
 	console.log( tabScope );
 	
-	/*
-	
 	switch( tabScope ){
 		case "HCRCASEAPPWorkspaceSection":
 			
@@ -35,7 +33,5 @@ _engine.module.define('events/tabEventHandler',function( tab ){
 		default:
 			break;
 	}
-	
-	*/
 	
 });
