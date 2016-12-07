@@ -24,8 +24,12 @@ _engine.module.define('events/_persistSession',function( loading ){
 			
 			let tabs = window.sessionStorage.mnsEngine_persistTabs.split('|');
 			
-			_engine.domTools.get.hcrTabList()[tabs[0]].click();
-			_engine.domTools.get.mainTabList()[tabs[1]].click();
+			console.log( tabs );
+			
+			
+			
+			_engine.domTools.get.mainTabList()[tabs[0]].click();
+			_engine.domTools.get.hcrTabList()[tabs[1]].click();
 			
 			delete window.sessionStorage.mnsEngine_persistTabs;
 			
