@@ -86,6 +86,8 @@ var _engine = {
 						
 					_engine.advanced.setupTimeoutAlert();
 					
+					_engine.events._persistSession();
+					
 				});
 				
 			});

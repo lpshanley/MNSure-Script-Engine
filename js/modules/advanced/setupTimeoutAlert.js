@@ -8,7 +8,7 @@ _engine.module.define('advanced/setupTimeoutAlert',function(){
 	setTimeout(function(){
 		_engine.ui.modal.build({
 			buttons:[
-				{label:'Refresh',onclick:"window.location.reload();"},
+				{label:'Refresh',onclick:"_engine.events._persistSession();"},
 				'close'
 			],
 			title:'Session about to expire...',
