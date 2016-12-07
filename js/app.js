@@ -86,7 +86,7 @@ var _engine = {
 						
 					_engine.advanced.setupTimeoutAlert();
 					
-					_engine.events._persistSession();
+					_engine.events._persistSession(true);
 					
 				});
 				

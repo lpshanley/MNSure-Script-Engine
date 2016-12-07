@@ -26,8 +26,6 @@ _engine.module.define('events/_persistSession',function( loading ){
 			
 			console.log( tabs );
 			
-			
-			
 			_engine.domTools.get.mainTabList()[tabs[0]].click();
 			_engine.domTools.get.hcrTabList()[tabs[1]].click();
 			
