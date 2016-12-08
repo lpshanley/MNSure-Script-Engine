@@ -20,7 +20,7 @@ _engine.module.define('events/_persistSession',function( loading ){
 		
 	} else {
 		
-		if( typeof window.sessionStorage.mnsEngine_persistTabs ){
+		if( typeof window.sessionStorage.mnsEngine_persistTabs !== 'undefined' ){
 			
 			let tabs = window.sessionStorage.mnsEngine_persistTabs.split('|');
 			
