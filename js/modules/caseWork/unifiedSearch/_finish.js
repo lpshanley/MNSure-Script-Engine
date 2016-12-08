@@ -23,7 +23,7 @@ _engine.module.define('caseWork/unifiedSearch/_finish',function(){
 						//Remove Special Characters and Trim
 					var _input = v.value.trim().replace(/[^\w\s]| +(?= )/g,'');
 
-					if( $.isNumeric( _input.replace(/[^0-9]/g,'') ){
+					if( $.isNumeric( _input.replace(/[^0-9]/g,'') ) ){
 						
 						_input = _input.replace(/[^0-9]/g,'');
 						
