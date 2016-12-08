@@ -21,11 +21,13 @@ _engine.module.define('caseWork/unifiedSearch/_finish',function(){
 				$.each( _engine.storage.modalParams.get(),function(k,v){
 
 						//Remove Special Characters and Trim
-					var _input = v.value.replace(/[^\w\s]/gi, '').replace(/ +(?= )/g,'').trim();
+					var _input = v.value.trim().replace(/[^\w\s]| +(?= )/g,'');
 
-					if( $.isNumeric( _input ) ){
-
-						if( _input.length == 8 ){
+					if( $.isNumeric( _input.replace(/[^0-9]/g),'') ){
+						
+						_input = _input.replace(/[^0-9]/g,'');
+						
+						if( _input.length === 8 ){
 
 							// Case Number
 
@@ -54,7 +56,7 @@ _engine.module.define('caseWork/unifiedSearch/_finish',function(){
 							}, _engine.advanced._vars.timeout);
 							_openSearch;
 
-						} else if ( _input.length == 9 || _input.length == 10 ){
+						} else if ( _input.length === 9 || _input.length === 10 ){
 							// SSN or MNS ID
 
 							let _tabToClose = _engine.domTools.get.hcrTabListTypeQuery("Person Search");
@@ -83,8 +85,9 @@ _engine.module.define('caseWork/unifiedSearch/_finish',function(){
 							_openSearch;
 
 						} else {
-							// Unknown
-
+							
+							//Not a valid input -> Error msg needed here.
+							
 						}
 
 					} else {
@@ -92,7 +95,7 @@ _engine.module.define('caseWork/unifiedSearch/_finish',function(){
 
 						_engine.search._person();
 
-						var _name = _input.split(" ");
+						var _name = _input.replace(/\|/g,' ').replace(' ','|').split('|');
 
 						if( _name.length > 1 ){
 
