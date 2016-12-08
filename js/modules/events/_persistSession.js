@@ -14,9 +14,9 @@ _engine.module.define('events/_persistSession',function( loading ){
 			
 			window.sessionStorage.mnsEngine_persistTabs = mainTab + "|" + subTab;
 			
-			window.location.reload();
-			
 		}
+		
+		window.location.reload();
 		
 	} else {
 		
