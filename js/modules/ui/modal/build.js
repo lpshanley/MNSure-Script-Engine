@@ -88,62 +88,7 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 	//Add modal class to body
 	$('body').addClass('modal');
 
-	/* Build the modal
-	=====================================================*/
-
-	/* Modal Wrapper
-	--------------------------*/
-	let contentWrapper = $('<div>', {
-		'class': 'modal-content-wrapper dijitDialog'
-	});
-
-	$('body').append(contentWrapper);
-
-	/* Titlebar
-	--------------------------*/
-	let titlebar = $('<div>', {
-		'class': 'dijitDialogTitleBar modal-titlebar'
-	});
-
-	let dialogTitle = $('<span>', {
-		'class': 'dijitDialogTitle',
-		'text': config.title
-	});
-
-	let closeButton = $('<span>', {
-		'class': 'dijitDialogCloseIcon',
-		'onClick': "_engine.events.handleClickEvent('ui.modal._button(close)')"
-	});
-
-	$(titlebar).append(dialogTitle);
-	$(titlebar).append(closeButton);
-
-	$(contentWrapper).append(titlebar);
-
-	/* Content Wrapper
-	--------------------------*/
-	let modalContentContainer = $('<div>', {
-		'class': 'modal-content-container',
-		'html': config.html
-	});
-
-	$(contentWrapper).append(modalContentContainer);
-
-	/* Modal Footer
-	--------------------------*/
-	let mnsModalFooter = $('<div>', {
-		'data-actions': 'mns-modal-actions',
-		'class': 'actions-panel'
-	});
-
-	//Modal footer - Button Container
-	mnsModalFooterButtonContainer = $('<div>', {
-		'class': 'action-set center'
-	});
-
-	$(mnsModalFooter).append(mnsModalFooterButtonContainer);
-
-	$(contentWrapper).append(mnsModalFooter);
+	//GET TEMPLATE HERE
 	
 	$.each(config.buttons, function(k, v) {
 		//addButton(k, v);
