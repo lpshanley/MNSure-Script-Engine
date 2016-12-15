@@ -17,12 +17,10 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 				switch (req.toLowerCase()) {
 					case 'submit':
 						props.label = 'Submit';
-						props.onclick = "";
 						props.role = 'submit';
 						break;
 					case 'close':
 						props.label = 'Close';
-						props.onclick = "";
 						props.role = 'exit';
 						break;
 					default:
@@ -30,7 +28,7 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 				}
 			} else if (typeof req === 'object') {
 				$.each(req, function(k, v) {
-					props[k] = req[k]
+						props[k] = req[k]
 				});
 			}
 

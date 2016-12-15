@@ -7,6 +7,10 @@ _engine.module.define('ui/modal/_watch',function( modalTarget ){
 		$(modal).find('span.mns-input-group:has("input") input[type="text"]')[0].focus();
 	}
 	
+	$(modal).find('.action-set').on('click',function( e ){
+		console.log( this, $(this) );
+	});
+	
 	/*
 	
 	$('[data-id='+modalTarget+'] .mns-modal-template').keypress(function(e){ 
