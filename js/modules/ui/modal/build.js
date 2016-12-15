@@ -1,10 +1,10 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('ui/modal/build', function(modalReq, callback) {
 
-	let mnsModalFooterButtonContainer, config;
+	let mnsModalFooterButtonContainer, config, template;
 
 	// Button Creator for the modal creator
-	let addButton = function(key, req) {
+	let addButton = function(key, req, template) {
 
 			let props = {
 				label: 'error',
@@ -40,23 +40,23 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 				'html': '<span class="left-corner"><span class="right-corner"><span class="middle">' + props.label + '</span></span></span>'
 			});
 
-			$(mnsModalFooterButtonContainer).append(mnsModalButton);
+			$( $(template).find('.action-set') ).append(mnsModalButton);
 
 			if ((key + 1) !== config.buttons.length && config.buttons.length > 1) {
 				//Modal footer - Filler Span
 				let mnsModalButtonFiller = $('<span>', {
 					'class': 'filler'
 				});
-				$(mnsModalFooterButtonContainer).append(mnsModalButtonFiller);
+				$( $(template).find('.action-set') ).append(mnsModalButtonFiller);
 			}
-
+			
 		} //End of addButton function
 	
 	// Create uniqueId to identify modal
 	let uniqueId = _engine.advanced.generateId();
 	
 	// Default template if only a text string is specified
-	let template = function( msg ) {
+	let textTemplate = function( msg ) {
 		return '<div class="mns-modal-template"><span class="mns-input-group"><span class="mns-input-label mns-input-infotext">' + msg + '</span></span></div>';
 	}
 
@@ -73,7 +73,7 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 	$.each(modalReq, function(k, v) {
 		config[k] = modalReq[k];
 	});
-	if (config.html === null) config.html = template(config.text);
+	if (config.html === null) config.html = textTemplate(config.text);
 	
 	// Create data object in nocache for modal
 	_engine.storage.nocache.data.modal[uniqueId] = {
@@ -81,37 +81,43 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 		role: config.role,
 		data: {}
 	};
-	
-	/* Place the overlay onto the window
-	=====================================================*/
 
-	//Add modal class to body
-	$('body').addClass('modal');
-
-	//GET TEMPLATE HERE
-	
-	$.each(config.buttons, function(k, v) {
-		//addButton(k, v);
-	});
-
-	/* Dim out background if not already done
-	=====================================================*/
-
-	_engine.ui.dom.dimLights(true);
-
-	/* Setup any post display actions/watchers
-	=====================================================*/
-
-	_engine.ui.modal._setupClusters();
-	_engine.ui.modal._watch();
-
-	$('.modal-content-wrapper').draggable({
-		handle: 'div.modal-titlebar'
-	});
-	
-	// Create data object in nocache for modal
-	_engine.storage.nocache.data.modal[uniqueId].loaded = true;
-	
-	if (typeof callback === 'function') callback();
+	// Get default template for modal from views
+	_engine.advanced.getView('modal/default.html',function(template){ 
+		
+		template = $.parseHTML( template )[0];
+		
+		$( template ).attr('data-id',uniqueId);
+		
+		$( template ).find( '.dijitDialogTitle' ).text( config.title );
+		
+		$( template ).find('.modal-content-container').html( config.html );
+		
+		$.each(config.buttons, function(k, v) {
+			addButton(k, v, template);
+		});
+		
+		console.log( template );
+		
+		_engine.ui.dom.dimLights(true);
+		
+		$( curam.util.getTopmostWindow().document.body ).append( template );
+		
+		/* Setup any post display actions/watchers
+		=====================================================*/
+		
+		//_engine.ui.modal._setupClusters();
+		//_engine.ui.modal._watch();
+		
+		$('[data-id='+uniqueId+']').draggable({
+			handle: 'div.modal-titlebar'
+		});
+		
+		// Create data object in nocache for modal
+		//_engine.storage.nocache.data.modal[uniqueId].loaded = true;
+		
+		//if (typeof callback === 'function') callback(); 
+		
+	},true);
 
 });
