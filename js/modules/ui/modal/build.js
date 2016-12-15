@@ -106,7 +106,7 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 		
 		//_engine.ui.modal._setupClusters();
 		
-		//_engine.ui.modal._watch();
+		_engine.ui.modal._watch( uniqueId );
 		
 		$('[data-id='+uniqueId+']').draggable({
 			handle: 'div.modal-titlebar'

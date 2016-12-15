@@ -1,6 +1,11 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('ui/modal/_watch',function( modalTarget ){
 	
+	let modal = $('[data-id='+modalTarget+']');
+	
+	console.log( modal );
+	
+	/*
 	if( $('[data-id='+modalTarget+'] span.mns-input-group:has("input") input[type="text"]').length > 0 ){
 		$('[data-id='+modalTarget+'] span.mns-input-group:has("input") input[type="text"]')[0].focus();
 	}
@@ -53,5 +58,7 @@ _engine.module.define('ui/modal/_watch',function( modalTarget ){
 		}
 
 	}
+	
+	*/
 
 });
