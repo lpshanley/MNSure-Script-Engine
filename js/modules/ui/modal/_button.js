@@ -1,6 +1,12 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('ui/modal/_button',function( _type ){
-
+	
+	console.log( this );
+	
+	console.log( _type );
+	
+	/*
+	
 	let role;
 	
 	if( typeof _engine.storage.nocache.data.modal.role !== 'undefined' ) role = _engine.storage.nocache.data.modal.role;
@@ -41,5 +47,7 @@ _engine.module.define('ui/modal/_button',function( _type ){
 			break;
 
 	}
+	
+	*/
 	
 });

@@ -97,8 +97,6 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 			addButton(k, v, template);
 		});
 		
-		console.log( template );
-		
 		_engine.ui.dom.dimLights(true);
 		
 		$( curam.util.getTopmostWindow().document.body ).append( template );
@@ -107,6 +105,7 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 		=====================================================*/
 		
 		//_engine.ui.modal._setupClusters();
+		
 		//_engine.ui.modal._watch();
 		
 		$('[data-id='+uniqueId+']').draggable({
