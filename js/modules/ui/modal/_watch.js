@@ -8,7 +8,7 @@ _engine.module.define('ui/modal/_watch',function( modalTarget ){
 	}
 	
 	$(modal).find('.action-set').on('click', 'a',function( e ){
-		_engine.ui.modal._button( $(this), modalTarget );
+		_engine.ui.modal._button( $(this) );
 	});
 	
 	/*
