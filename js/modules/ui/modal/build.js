@@ -144,9 +144,9 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 	$(mnsModalFooter).append(mnsModalFooterButtonContainer);
 
 	$(contentWrapper).append(mnsModalFooter);
-
+	
 	$.each(config.buttons, function(k, v) {
-		addButton(k, v);
+		//addButton(k, v);
 	});
 
 	/* Dim out background if not already done
