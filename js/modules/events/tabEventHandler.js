@@ -3,11 +3,19 @@ _engine.module.define('events/tabEventHandler',function( tab ){
 
 	let tabScope = $( tab ).attr('widgetid').split('-')[0];
 	
+	let contentId = dijit.registry.byNode( tab )._curamPageId;
+	
+	console.log( $('#'+contentId+' iframe') );
+	
 	switch( tabScope ){
 		case "HCRCASEAPPWorkspaceSection":
 			
+			
+			
 			_engine.caseWork.caseData.maintainNocache();
 			_engine.ui.integratedCase.interfaceAlteration();
+			
+			console.log('HCR')
 			
 			break;
 		case 'app':
