@@ -2,14 +2,13 @@
 _engine.module.define('ui/modal/_watch',function( modalTarget ){
 	
 	let modal = $('[data-id='+modalTarget+']');
-	
-	console.log( modal );
+
+	if( $(modal).find('span.mns-input-group:has("input") input[type="text"]').length > 0 ){
+		$(modal).find('span.mns-input-group:has("input") input[type="text"]')[0].focus();
+	}
 	
 	/*
-	if( $('[data-id='+modalTarget+'] span.mns-input-group:has("input") input[type="text"]').length > 0 ){
-		$('[data-id='+modalTarget+'] span.mns-input-group:has("input") input[type="text"]')[0].focus();
-	}
-
+	
 	$('[data-id='+modalTarget+'] .mns-modal-template').keypress(function(e){ 
 
 		switch( e.keyCode ){

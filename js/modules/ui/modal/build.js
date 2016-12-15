@@ -17,12 +17,12 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 				switch (req.toLowerCase()) {
 					case 'submit':
 						props.label = 'Submit';
-						props.onclick = "_engine.events.handleClickEvent('ui.modal._button(submit)')";
+						props.onclick = "";
 						props.role = 'submit';
 						break;
 					case 'close':
 						props.label = 'Close';
-						props.onclick = "_engine.events.handleClickEvent('ui.modal._button(close)')";
+						props.onclick = "";
 						props.role = 'exit';
 						break;
 					default:
