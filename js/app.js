@@ -84,9 +84,11 @@ var _engine = {
 						
 					$('.scripts-link, .center-box').removeAttr('style');
 						
-					_engine.advanced.setupTimeoutAlert();
+					/* Commented out to remove timeout alert
+					//_engine.advanced.setupTimeoutAlert();
 					
 					_engine.events._persistSession(true);
+					*/
 					
 				});
 				
