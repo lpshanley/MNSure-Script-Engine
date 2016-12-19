@@ -1,9 +1,8 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('ui/modal/_button',function( button, modalId ){
 	
-	console.log( $('[data-id='+modalId+']'), button );
-	
-	/*
+	let modal = $('[data-id='+modalId+']');
+	let action = $( button );
 	
 	let role;
 	
@@ -45,7 +44,5 @@ _engine.module.define('ui/modal/_button',function( button, modalId ){
 			break;
 
 	}
-	
-	*/
 	
 });
