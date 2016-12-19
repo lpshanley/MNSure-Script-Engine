@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('events/tabWatcher',function( tab ){
+_engine.module.define('events/tabEventHandler',function( tab ){
 
 	let tabScope = $( tab ).attr('widgetid').split('-')[0];
 	
@@ -16,6 +16,7 @@ _engine.module.define('events/tabWatcher',function( tab ){
 				case 'HCR Cases and Outcomes':
 					
 					_engine.caseWork.caseData.maintainNocache();
+					_engine.ui.integratedCase.interfaceAlteration();
 					
 					break;
 				default:
@@ -33,4 +34,3 @@ _engine.module.define('events/tabWatcher',function( tab ){
 	}
 	
 });
-
