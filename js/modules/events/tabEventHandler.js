@@ -2,19 +2,32 @@
 _engine.module.define('events/tabEventHandler',function( tab ){
 	
 	if( typeof $( tab ).attr('widgetid') !== "undefined" ){
-	
+		
 		let tabScope = $( tab ).attr('widgetid').split('-')[0];
-
-		let contentId = dijit.registry.byNode( tab )._curamPageId;
-
-		console.log( $('#'+contentId+' iframe') );
-
+		
 		switch( tabScope ){
 			case "HCRCASEAPPWorkspaceSection":
-
-				_engine.caseWork.caseData.maintainNocache();
-				_engine.ui.integratedCase.interfaceAlteration();
-
+				
+				let contentSelector = "#"+dijit.registry.byNode( tab )._curamPageId;
+				let tabParams = dijit.registry.byNode( $( contentSelector )[0] );
+				
+				switch( tabParams.tabDescriptor.tabID ){
+					case 'PersonHome':
+						
+						_engine.caseWork.caseData.maintainNocache();
+						
+						break;
+					case 'HCRIntegratedCase':
+						
+						_engine.caseWork.caseData.maintainNocache();
+						_engine.ui.integratedCase.interfaceAlteration();
+						
+						break;
+					default:
+						_engine.debug.info(`[tabEventHandler] Undefined tabID: ${tabParams.tabDescriptor.tabID}` );
+						
+				}
+				
 				break;
 			case 'app':
 
