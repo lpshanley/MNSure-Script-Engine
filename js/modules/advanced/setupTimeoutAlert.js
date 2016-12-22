@@ -1,10 +1,10 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('advanced/setupTimeoutAlert',function(){
-
+	
 	var tripTimer = 180000;
 
 	_engine.debug.info('Session timeout notification set.');
-
+	
 	setTimeout(function(){
 		_engine.ui.modal.build({
 			buttons:[
@@ -17,5 +17,6 @@ _engine.module.define('advanced/setupTimeoutAlert',function(){
 			_engine.storage.nocache.data.modal.role = 'timeout alert';
 		});
 	}, _engine.advanced._sessionRemaining() - tripTimer);
+	
 	
 });

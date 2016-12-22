@@ -83,7 +83,7 @@ var _engine = {
 					_engine.events.domMonitor();
 						
 					$('.scripts-link, .center-box').removeAttr('style');
-						
+					
 					/* Commented out to remove timeout alert
 					//_engine.advanced.setupTimeoutAlert();
 					

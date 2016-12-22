@@ -6,13 +6,15 @@ _engine.module.define('events/domMonitor',function(){
 	let mainTabs = dijit.registry.byId("app-sections-container-dc");
 
 	dojo.aspect.after(mainTabs, "selectChild", function() {
-		_engine.events.tabEventHandler( this.tablist._selectedTab );        
+		_engine.events.tabEventHandler( this.tablist._selectedTab );
+		console.log( this );
 	});
 	
 	let HRCTabs = dijit.registry.byId("HCRCASEAPPWorkspaceSection-stc");
 
 	dojo.aspect.after(HRCTabs, "selectChild", function() {
-		_engine.events.tabEventHandler( this.tablist._selectedTab );          
+		_engine.events.tabEventHandler( this.tablist._selectedTab );
+		console.log( this );
 	});
 	
 });
