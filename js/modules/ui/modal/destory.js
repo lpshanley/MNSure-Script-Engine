@@ -12,7 +12,7 @@ _engine.module.define('ui/modal/destroy',function( modalId ){
 	
 	// If all modals have been destroyed then this lightens the screen
 	if( Object.getOwnPropertyNames( _engine.storage.nocache.data.modal ).length === 0 ){
-		$('body').removeClass('modal');
+		_engine.ui.dom.dimLights( false );
 	}
 	
 	//Clear the prefill cache of stored data ( this will become a subgroup of active modal object )

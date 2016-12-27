@@ -1,7 +1,7 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('ui/modal/build', function(modalReq, callback) {
 
-	let mnsModalFooterButtonContainer, config, template;
+	let mnsModalFooterButtonContainer, config, template, returnProps;
 
 	// Button Creator for the modal creator
 	let addButton = function(key, req, template) {
@@ -110,10 +110,14 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 			handle: 'div.modal-titlebar'
 		});
 		
+		returnProps = {
+			id: uniqueId
+		}
+		
 		// Create data object in nocache for modal
 		_engine.storage.nocache.data.modal[uniqueId].loaded = true;
 		
-		if (typeof callback === 'function') callback(); 
+		if (typeof callback === 'function') callback( returnProps ); 
 		
 	},true);
 

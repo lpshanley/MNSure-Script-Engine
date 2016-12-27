@@ -20,9 +20,11 @@ _engine.module.define('caseWork/global/onCaseScreen',function( callback, showMod
 						buttons: [
 							'close'
 						]
-					},function(){
+					},function( props ){
+						
 						// Stores the role of the modal in nocache until its destroyed
-						_engine.storage.nocache.data.modal.role = 'error';
+						_engine.storage.nocache.data.modal[props.id].role = 'error';
+						
 					});
 				});
 				
