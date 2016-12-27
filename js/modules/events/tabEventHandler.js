@@ -16,6 +16,7 @@ _engine.module.define('events/tabEventHandler',function( tab ){
 					case 'PersonHome':
 						
 						_engine.caseWork.caseData.maintainNocache( tabPage );
+						_engine.ui.dom.interfaceAlteration( tabPage );
 						
 						break;
 					case 'HCRIntegratedCase':
