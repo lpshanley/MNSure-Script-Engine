@@ -48,7 +48,7 @@ _engine.module.define('ui/modal/_watch',function( modalTarget ){
 				
 				let _selectVal = $( _subject ).parent().find('select').val();
 				
-				_engine.ui.modal._changeActiveCluster( _selectVal );
+				_engine.ui.modal._changeActiveCluster( modalTarget, _selectVal );
 				
 				//Process dynamic Prefill on subject change
 				_engine.ui.modal._processPrefill( modalTarget );

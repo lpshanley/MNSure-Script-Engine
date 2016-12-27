@@ -75,8 +75,6 @@ _engine.module.define('ui/modal/_prefillFromDataQuery',function( type, callback 
 						
 					});
 					
-					console.log('Using: ', useObject);
-					
 				}
 			});
 		}

@@ -6,8 +6,6 @@ _engine.module.define('ui/modal/_button',function( button, modalId ){
 	
 	let modalParams = _engine.storage.nocache.data.modal[modalId];
 	
-	console.log(action);
-	
 	switch( action ){
 		case "submit":
 			switch( modalParams.role ){
