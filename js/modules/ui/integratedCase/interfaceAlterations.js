@@ -1,7 +1,7 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('ui/integratedCase/interfaceAlteration',function(){
 	
-	let tabParams = curam.tab.getSelectedTab();
+	let git  = curam.tab.getSelectedTab();
 	
 	let subnavTabs;
 	
@@ -13,7 +13,6 @@ _engine.module.define('ui/integratedCase/interfaceAlteration',function(){
 			
 			if( $(subnavTabs).length > 0 ){
 				
-				console.log( 'Loaded!' );
 				_engine.ui.integratedCase.reorderTab('eligibility','elections');
 				
 				clearTimeout( timeoutForLoad );
