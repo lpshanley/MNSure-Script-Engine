@@ -9,29 +9,28 @@ _engine.module.define('events/tabEventHandler',function( tab ){
 			case "HCRCASEAPPWorkspaceSection":
 				
 				let tabParams = dijit.registry.byNode( tab );
-				let tabType = tabParams.params.page.params.tabDescriptor.tabID;
+				let tabPage = tabParams.params.page;
+				let tabType = tabPage.params.tabDescriptor.tabID;
 				
-				console.log(tabType);
+				console.log(tabPage);
 				
 				switch( tabType ){
 					case 'PersonHome':
 						
-						_engine.caseWork.caseData.maintainNocache();
+						//_engine.caseWork.caseData.maintainNocache();
 						
 						break;
 					case 'HCRIntegratedCase':
 						
-						_engine.caseWork.caseData.maintainNocache();
-						_engine.ui.integratedCase.interfaceAlteration();
+						//_engine.caseWork.caseData.maintainNocache();
+						//_engine.ui.integratedCase.interfaceAlteration();
 						
 						break;
 					default:
 						_engine.debug.info(`[tabEventHandler] Undefined tabID: ${ tabType }` );
 						
 				}
-				
-				
-				
+
 				break;
 			case 'app':
 					
