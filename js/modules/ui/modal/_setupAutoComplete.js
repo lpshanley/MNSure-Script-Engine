@@ -1,8 +1,12 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('ui/modal/_setupAutoComplete',function(){
+_engine.module.define('ui/modal/_setupAutoComplete',function( modalId ){
 	
-	let _fields = $('.mns-modal-template > .mns-input-group');
+	let _fields = $('[data-id="'+modalId+'"] .mns-modal-template > .mns-input-group');
 		//Push additional clusters if clustering is active
+	
+	console.log( _fields );
+	
+	/*
 	if( _engine.ui.modal._clustersActive() ){
 		
 		let _clusterFields = $('.mns-modal-template > .mns-input-cluster.input-cluster-active > .mns-input-group');
@@ -10,7 +14,7 @@ _engine.module.define('ui/modal/_setupAutoComplete',function(){
 		$.each(_clusterFields,function(k,v){ _fields.push(v); });
 	
 	}
-
+	
 	$.each( _fields, function(k,v){
 		
 		if( $( v ).find('input').length !== 0 ){
@@ -56,5 +60,5 @@ _engine.module.define('ui/modal/_setupAutoComplete',function(){
 			}
 		}
 	});
-
+	*/
 });

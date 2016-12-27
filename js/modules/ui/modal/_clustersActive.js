@@ -1,7 +1,7 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('ui/modal/_clustersActive',function( modalTarget ){
 
-	let _modal = $('div.mns-modal-template');
+	let _modal = $('[data-id="'+modalTarget+'"] div.mns-modal-template');
 
 	if( _modal.length == 1 ){
 

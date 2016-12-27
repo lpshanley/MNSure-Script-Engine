@@ -11,8 +11,6 @@ _engine.module.define('ui/modal/_watch',function( modalTarget ){
 		_engine.ui.modal._button( $(this), modalTarget );
 	});
 	
-	/*
-	
 	$('[data-id='+modalTarget+'] .mns-modal-template').keypress(function(e){ 
 
 		switch( e.keyCode ){
@@ -33,10 +31,13 @@ _engine.module.define('ui/modal/_watch',function( modalTarget ){
 		}
 
 	});
-
+	
 	//Process onLoad Prefill
-	_engine.ui.modal._processPrefill( modalTarget );
+	//_engine.ui.modal._processPrefill( modalTarget );
+	
 	_engine.ui.modal._setupAutoComplete( modalTarget );
+	
+	/*
 	
 	if( _engine.ui.modal._clustersActive( modalTarget ) ){
 
