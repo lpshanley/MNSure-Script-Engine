@@ -1,7 +1,7 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('ui/integratedCase/interfaceAlteration',function(){
 	
-	let git  = curam.tab.getSelectedTab();
+	let tabParams = curam.tab.getSelectedTab();
 	
 	let subnavTabs;
 	
