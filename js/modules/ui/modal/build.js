@@ -87,6 +87,8 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 		
 		$( template ).attr('data-id',uniqueId);
 		
+		$( template ).find( '.dijitDialogCloseIcon' ).attr( 'onclick', "_engine.ui.modal._button('[data-id='"+uniqueId+"'] .dijitDialogCloseIcon','"+uniqueId+"');" );
+		
 		$( template ).find( '.dijitDialogTitle' ).text( config.title );
 		
 		$( template ).find('.modal-content-container').html( config.html );
