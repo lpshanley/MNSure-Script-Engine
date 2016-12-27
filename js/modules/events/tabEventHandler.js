@@ -5,15 +5,15 @@ _engine.module.define('events/tabEventHandler',function( tab ){
 		
 		let tabScope = $( tab ).attr('widgetid').split('-')[0];
 		
-		console.log( tabScope );
-		
 		switch( tabScope ){
 			case "HCRCASEAPPWorkspaceSection":
 				
-				let contentSelector = "#"+dijit.registry.byNode( tab )._curamPageId;
-				let tabParams = dijit.registry.byNode( $( contentSelector )[0] );
+				let tabParams = dijit.registry.byNode( tab );
+				let tabType = tabParams.params.page.params.tabDescriptor.tabID;
 				
-				switch( tabParams.tabDescriptor.tabID ){
+				console.log(tabType);
+				
+				switch( tabType ){
 					case 'PersonHome':
 						
 						_engine.caseWork.caseData.maintainNocache();
@@ -26,9 +26,11 @@ _engine.module.define('events/tabEventHandler',function( tab ){
 						
 						break;
 					default:
-						_engine.debug.info(`[tabEventHandler] Undefined tabID: ${tabParams.tabDescriptor.tabID}` );
+						_engine.debug.info(`[tabEventHandler] Undefined tabID: ${ tabType }` );
 						
 				}
+				
+				
 				
 				break;
 			case 'app':
