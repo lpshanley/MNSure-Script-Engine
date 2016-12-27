@@ -21,7 +21,7 @@ _engine.module.define('events/tabEventHandler',function( tab ){
 					case 'HCRIntegratedCase':
 						
 						_engine.caseWork.caseData.maintainNocache( tabPage );
-						_engine.ui.integratedCase.interfaceAlteration( tabPage );
+						_engine.ui.dom.interfaceAlteration( tabPage );
 						
 						break;
 					default:
@@ -38,7 +38,7 @@ _engine.module.define('events/tabEventHandler',function( tab ){
 						if(typeof curam.tab.getSelectedTab() !== 'undefined' ){
 							
 							_engine.caseWork.caseData.maintainNocache(  );
-							_engine.ui.integratedCase.interfaceAlteration(  );
+							_engine.ui.dom.interfaceAlteration(  );
 							
 						}
 							
