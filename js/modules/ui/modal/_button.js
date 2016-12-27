@@ -2,15 +2,15 @@
 _engine.module.define('ui/modal/_button',function( button, modalId ){
 	
 	let modal = $('[data-id='+modalId+']');
-	let action = $( button );
-	
-	let role;
-	
+	let action = $( button )[0].dataset.role;
+
 	if( typeof _engine.storage.nocache.data.modal.role !== 'undefined' ) role = _engine.storage.nocache.data.modal.role;
 	
-	_engine.debug.info( "- * [ _engine.ui.modal._button() ] function started with type: " + _type );
-
-	switch( _type.toLowerCase() ){
+	console.log(action);
+	
+	//_engine.debug.info( "- * [ _engine.ui.modal._button() ] function started with type: " + _type );
+	
+	switch( action ){
 		case "submit":
 			switch( role ){
 				case 'query':

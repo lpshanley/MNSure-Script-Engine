@@ -21,7 +21,7 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 						break;
 					case 'close':
 						props.label = 'Close';
-						props.role = 'exit';
+						props.role = 'close';
 						break;
 					default:
 						break;
