@@ -7,8 +7,6 @@ _engine.module.define('ui/dom/interfaceAlteration',function( pageObj ){
 		tabParams = curam.tab.getSelectedTab():
 		tabParams = pageObj;
 	
-	console.log( tabParams );
-	
 	let subnavTabs;
 	
 	let count = 0;
@@ -21,7 +19,8 @@ _engine.module.define('ui/dom/interfaceAlteration',function( pageObj ){
 				
 				switch( tabParams.params.tabDescriptor.tabID ){
 					case 'PersonHome':
-						_engine.ui.dom.reorderTab('eligibility','time limits');
+						// Commented out on purpose - Errors exist in source preventing proper alterations
+						//_engine.ui.dom.reorderTab('eligibility','time limits');
 						break;
 					case 'HCRIntegratedCase':
 						_engine.ui.dom.reorderTab('eligibility','elections');
