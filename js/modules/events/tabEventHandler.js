@@ -5,6 +5,8 @@ _engine.module.define('events/tabEventHandler',function( tab ){
 		
 		let tabScope = $( tab ).attr('widgetid').split('-')[0];
 		
+		console.log( tabScope );
+		
 		switch( tabScope ){
 			case "HCRCASEAPPWorkspaceSection":
 				
@@ -30,13 +32,17 @@ _engine.module.define('events/tabEventHandler',function( tab ){
 				
 				break;
 			case 'app':
-
+					
 				switch($(tab)[0].innerText.trim() ){
 					case 'HCR Cases and Outcomes':
-
-						_engine.caseWork.caseData.maintainNocache();
-						_engine.ui.integratedCase.interfaceAlteration();
-
+						
+						if(typeof curam.tab.getSelectedTab() !== 'undefined' ){
+							
+							_engine.caseWork.caseData.maintainNocache();
+							_engine.ui.integratedCase.interfaceAlteration();
+							
+						}
+							
 						break;
 					default:
 						break;

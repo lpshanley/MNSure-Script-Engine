@@ -1,6 +1,6 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('caseWork/caseData/maintainNocache',function( callback ){
-
+	
 	let cacheEmpty = typeof _engine.storage.nocache.data.caseData === 'undefined';
 	
 	let tabParams = curam.tab.getSelectedTab();
