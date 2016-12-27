@@ -4,7 +4,7 @@ _engine.module.define('events/tabEventHandler',function( tab ){
 	if( typeof $( tab ).attr('widgetid') !== "undefined" ){
 		
 		let tabScope = $( tab ).attr('widgetid').split('-')[0];
-		
+
 		switch( tabScope ){
 			case "HCRCASEAPPWorkspaceSection":
 				
@@ -12,18 +12,16 @@ _engine.module.define('events/tabEventHandler',function( tab ){
 				let tabPage = tabParams.params.page;
 				let tabType = tabPage.params.tabDescriptor.tabID;
 				
-				console.log(tabPage);
-				
 				switch( tabType ){
 					case 'PersonHome':
 						
-						//_engine.caseWork.caseData.maintainNocache();
+						_engine.caseWork.caseData.maintainNocache( tabPage );
 						
 						break;
 					case 'HCRIntegratedCase':
 						
-						//_engine.caseWork.caseData.maintainNocache();
-						//_engine.ui.integratedCase.interfaceAlteration();
+						_engine.caseWork.caseData.maintainNocache( tabPage );
+						_engine.ui.integratedCase.interfaceAlteration( tabPage );
 						
 						break;
 					default:
@@ -39,8 +37,8 @@ _engine.module.define('events/tabEventHandler',function( tab ){
 						
 						if(typeof curam.tab.getSelectedTab() !== 'undefined' ){
 							
-							_engine.caseWork.caseData.maintainNocache();
-							_engine.ui.integratedCase.interfaceAlteration();
+							_engine.caseWork.caseData.maintainNocache(  );
+							_engine.ui.integratedCase.interfaceAlteration(  );
 							
 						}
 							
@@ -52,7 +50,7 @@ _engine.module.define('events/tabEventHandler',function( tab ){
 				break;
 			case 'HCRIntegratedCase':
 
-				_engine.caseWork.caseData.maintainNocache();
+				_engine.caseWork.caseData.maintainNocache(  );
 
 				break;
 			default:

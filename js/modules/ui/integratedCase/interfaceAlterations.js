@@ -1,7 +1,11 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('ui/integratedCase/interfaceAlteration',function(){
+_engine.module.define('ui/integratedCase/interfaceAlteration',function( pageObj ){
 	
-	let tabParams = curam.tab.getSelectedTab();
+	let tabParams;
+	
+	typeof pageObj === 'undefined' ?
+		tabParams = curam.tab.getSelectedTab():
+		tabParams = pageObj;
 	
 	let subnavTabs;
 	
