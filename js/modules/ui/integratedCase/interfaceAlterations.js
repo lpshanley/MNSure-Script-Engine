@@ -3,22 +3,31 @@ _engine.module.define('ui/integratedCase/interfaceAlteration',function(){
 	
 	let tabParams = curam.tab.getSelectedTab();
 	
-	console.log( tabParams );
+	let subnavTabs;
 	
-	switch( tabParams.tabDescriptor.tabID ){
-		case 'HCRIntegratedCase':
+	let count = 0;
+	let timeoutForLoad = setInterval(function(){
+		if( count < _engine.advanced._vars.iterations ){
 			
-			tabParams.onLoadDeferred.then(function(){ 
+			subnavTabs = $( '#'+tabParams.id + ' .nav-panel .nav-area-wrapper .navigation-bar-tabs .dijitTabListWrapper' );
 			
+			if( $(subnavTabs).length > 0 ){
+				
+				console.log( 'Loaded!' );
 				_engine.ui.integratedCase.reorderTab('eligibility','elections');
+				
+				clearTimeout( timeoutForLoad );
+				
+			}
 			
-			});
+			count++;
 			
-			break;
-		default:
-			_engine.debug.info(`[interfaceAlterations] No alterations set for tab type: ${ tabParams.tabDescriptor.tabID }`);
-			break;
-		
-	}
+		}
+		else{
+			clearTimeout( timeoutForLoad );
+		}
+	}, _engine.advanced._vars.timeout);
+	
+	timeoutForLoad;
 	
 });
