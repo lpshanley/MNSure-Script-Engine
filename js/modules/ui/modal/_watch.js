@@ -35,9 +35,7 @@ _engine.module.define('ui/modal/_watch',function( modalTarget ){
 	//Process onLoad Prefill
 	_engine.ui.modal._processPrefill( modalTarget );
 	_engine.ui.modal._setupAutoComplete( modalTarget );
-	
-	/*
-	
+
 	if( _engine.ui.modal._clustersActive( modalTarget ) ){
 
 		var _subject = $( '[data-id='+modalTarget+'] .modal-content-container span.mns-input-group span:contains("SUBJECT")' );
@@ -61,7 +59,5 @@ _engine.module.define('ui/modal/_watch',function( modalTarget ){
 		}
 
 	}
-	
-	*/
 
 });
