@@ -33,8 +33,7 @@ _engine.module.define('ui/modal/_watch',function( modalTarget ){
 	});
 	
 	//Process onLoad Prefill
-	//_engine.ui.modal._processPrefill( modalTarget );
-	
+	_engine.ui.modal._processPrefill( modalTarget );
 	_engine.ui.modal._setupAutoComplete( modalTarget );
 	
 	/*

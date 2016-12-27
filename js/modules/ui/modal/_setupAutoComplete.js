@@ -4,12 +4,9 @@ _engine.module.define('ui/modal/_setupAutoComplete',function( modalId ){
 	let _fields = $('[data-id="'+modalId+'"] .mns-modal-template > .mns-input-group');
 		//Push additional clusters if clustering is active
 	
-	console.log( _fields );
-	
-	/*
-	if( _engine.ui.modal._clustersActive() ){
+	if( _engine.ui.modal._clustersActive( modalId ) ){
 		
-		let _clusterFields = $('.mns-modal-template > .mns-input-cluster.input-cluster-active > .mns-input-group');
+		let _clusterFields = $('[data-id="'+modalId+'"] .mns-modal-template > .mns-input-cluster.input-cluster-active > .mns-input-group');
 		
 		$.each(_clusterFields,function(k,v){ _fields.push(v); });
 	
@@ -26,6 +23,8 @@ _engine.module.define('ui/modal/_setupAutoComplete',function( modalId ){
 				//Process prefill on field(s)
 				
 				let _autoComplete = $( input ).attr('data-autoComplete').toLowerCase();
+				
+				console.log(_autoComplete);
 				
 				let _autoCompleteType = _autoComplete.split("|")[0];
 				let _autoCompleteValue = _autoComplete.split("|")[1];
@@ -54,11 +53,11 @@ _engine.module.define('ui/modal/_setupAutoComplete',function( modalId ){
 						}
 						break;
 					default:
-						_engine.debug.warn("unrecognised prefill type of: [ '" +_prefill+ " ']");
+						_engine.debug.warn("unrecognised prefill type of: [ '" +_autoCompleteType+ " ']");
 						break;
 				}
 			}
 		}
 	});
-	*/
+
 });
