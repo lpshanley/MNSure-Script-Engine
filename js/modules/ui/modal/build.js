@@ -111,9 +111,9 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 		});
 		
 		// Create data object in nocache for modal
-		//_engine.storage.nocache.data.modal[uniqueId].loaded = true;
+		_engine.storage.nocache.data.modal[uniqueId].loaded = true;
 		
-		//if (typeof callback === 'function') callback(); 
+		if (typeof callback === 'function') callback(); 
 		
 	},true);
 
