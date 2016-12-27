@@ -2,20 +2,16 @@
 _engine.module.define('ui/modal/_setupClusters',function( modalTarget ){
 
 	if( _engine.ui.modal._clustersActive( modalTarget ) ){
-		
-		console.log("working");
-		
-		/*
+
 		var _subject = $( '[data-id='+modalTarget+'] .modal-content-container span.mns-input-group span:contains("SUBJECT")' );
 		
 		if( _subject.length == 1 ){
 			
-			_selectVal = $( _subject ).parent().find('select').val();
+			let _selectVal = $( _subject ).parent().find('select').val();
 			
-			_engine.ui.modal._changeActiveCluster( _selectVal );
+			_engine.ui.modal._changeActiveCluster( modalTarget, _selectVal );
 			
 		}
-		*/
 		
 	}
 
