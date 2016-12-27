@@ -19,7 +19,16 @@ _engine.module.define('ui/dom/interfaceAlteration',function( pageObj ){
 			
 			if( $(subnavTabs).length > 0 ){
 				
-				_engine.ui.dom.reorderTab('eligibility','elections');
+				switch( tabParams.params.tabDescriptor.tabID ){
+					case 'PersonHome':
+						_engine.ui.dom.reorderTab('eligibility','time limits');
+						break;
+					case 'HCRIntegratedCase':
+						_engine.ui.dom.reorderTab('eligibility','elections');
+						break;
+					default:
+						break;
+				}
 				
 				clearTimeout( timeoutForLoad );
 				
