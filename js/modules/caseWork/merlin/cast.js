@@ -10,7 +10,8 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 			let uniqueID = _engine.advanced.generateId();
 			
 			_engine.storage.nocache.data.modal[uniqueID] = {
-				loaded: false
+				loaded: false,
+				tasks: 0
 			}
 			
 			let config = {
@@ -48,9 +49,8 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 					action: function(){ _engine.caseWork.merlin.destroy( uniqueID ) }
 				});
 				
-				_engine.storage.nocache.data.modal[uniqueID] = {
-					loaded: true
-				}
+				_engine.storage.nocache.data.modal[uniqueID].loaded = true;
+				_engine.storage.nocache.data.modal[uniqueID].role = 'wizard';
 				
 		});
 	

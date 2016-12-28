@@ -26,6 +26,8 @@ _engine.module.define('caseWork/merlin/_attachTasks',function( id, input ){
 			
 			$("[data-id='"+id+"'] [data-role='task-list']").append( $( card ) );
 			
+			_engine.storage.nocache.data.modal[id].tasks;
+			
 		});
 		
 	});

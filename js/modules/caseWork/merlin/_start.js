@@ -13,6 +13,10 @@ _engine.module.define('caseWork/merlin/_start',function( input ){
 						{
 							title: 'Case Note',
 							action: 'writeNote/client contact'
+						},
+						{
+							title: 'Another Task',
+							action: 'someaction'
 						}
 					]
 				}
