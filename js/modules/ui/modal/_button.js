@@ -11,7 +11,7 @@ _engine.module.define('ui/modal/_button',function( button, modalId ){
 			switch( modalParams.role ){
 				case 'query':
 					if( _engine.ui.modal._validateModal( modalId ) ){
-						_engine.ui.modal._storeParams();
+						_engine.ui.modal._storeParams( modalId );
 						_engine.caseWork.unifiedSearch._finish();
 						_engine.ui.modal.destroy( modalId );
 					} else {
@@ -20,7 +20,7 @@ _engine.module.define('ui/modal/_button',function( button, modalId ){
 					break;
 				case 'case note':
 					if( _engine.ui.modal._validateModal( modalId ) ){
-						_engine.ui.modal._storeParams();
+						_engine.ui.modal._storeParams( modalId );
 						_engine.caseWork.note._completeNote();
 						_engine.ui.modal.destroy( modalId );
 					} else {

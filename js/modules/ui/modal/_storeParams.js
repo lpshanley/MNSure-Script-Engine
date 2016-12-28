@@ -1,12 +1,14 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('ui/modal/_storeParams',function(){
+_engine.module.define('ui/modal/_storeParams',function( modalId ){
 
-	var _fields = $('.mns-modal-template > .mns-input-group');
-
+	var _fields = $('[data-id='+modalId+'] .mns-modal-template > .mns-input-group');
+	
+	let _clusterFields;
+	
 		//Push additional clusters if clustering is active
 	if( _engine.ui.modal._clustersActive() ){
 
-		_clusterFields = $('.mns-modal-template > .mns-input-cluster.input-cluster-active > .mns-input-group');
+		_clusterFields = $('[data-id='+modalId+'] .mns-modal-template > .mns-input-cluster.input-cluster-active > .mns-input-group');
 
 		$.each(_clusterFields,function(k,v){
 
@@ -16,7 +18,7 @@ _engine.module.define('ui/modal/_storeParams',function(){
 
 	}
 
-	var _fieldCount = $('.mns-modal-template > .mns-input-group').length;
+	var _fieldCount = $('[data-id='+modalId+'] .mns-modal-template > .mns-input-group').length;
 
 	var _allParams = "";
 
@@ -93,7 +95,7 @@ _engine.module.define('ui/modal/_storeParams',function(){
 
 	//Place objects into an array
 	_engine.storage.modalParams.set( _allParams );
-
+	
 	return;
 
 });
