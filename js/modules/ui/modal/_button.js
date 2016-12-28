@@ -10,7 +10,7 @@ _engine.module.define('ui/modal/_button',function( button, modalId ){
 		case "submit":
 			switch( modalParams.role ){
 				case 'query':
-					if( _engine.ui.modal._validateModal() ){
+					if( _engine.ui.modal._validateModal( modalId ) ){
 						_engine.ui.modal._storeParams();
 						_engine.caseWork.unifiedSearch._finish();
 						_engine.ui.modal.destroy( modalId );
@@ -19,7 +19,7 @@ _engine.module.define('ui/modal/_button',function( button, modalId ){
 					}
 					break;
 				case 'case note':
-					if( _engine.ui.modal._validateModal() ){
+					if( _engine.ui.modal._validateModal( modalId ) ){
 						_engine.ui.modal._storeParams();
 						_engine.caseWork.note._completeNote();
 						_engine.ui.modal.destroy( modalId );
