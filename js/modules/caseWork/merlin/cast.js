@@ -27,7 +27,7 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 			
 			_engine.ui.dom.dimLights( true );
 			
-			$( curam.util.getTopmostWindow().document.body ).append(modal);
+			$( '.modal-overlay' ).append(modal);
 			
 			_engine.caseWork.merlin._attachTasks( uniqueID, config.tasks );
 			
@@ -36,7 +36,7 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 				$('[data-id="'+uniqueID+'"]').draggable({ 
 					handle: $('[data-id="'+uniqueID+'"] .dijitDialogTitleBar')[0], 
 					stack: '.dijitDialog',
-					containment: 'window'
+					containment: '.modal-overlay'
 				});
 				$('[data-id="'+uniqueID+'"]').resizable();
 				

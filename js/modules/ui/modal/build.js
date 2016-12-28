@@ -99,7 +99,8 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 		
 		_engine.ui.dom.dimLights(true);
 		
-		$( curam.util.getTopmostWindow().document.body ).append( template );
+		//$( curam.util.getTopmostWindow().document.body ).append( template );
+		$( '.modal-overlay' ).append( template );
 		
 		/* Setup any post display actions/watchers
 		=====================================================*/
@@ -111,7 +112,7 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 		$('[data-id='+uniqueId+']').draggable({
 			handle: 'div.modal-titlebar',
 			stack: '.dijitDialog',
-			containment: 'window'
+			containment: '.modal-overlay'
 		});
 		
 		returnProps = {
