@@ -110,7 +110,8 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 		
 		$('[data-id='+uniqueId+']').draggable({
 			handle: 'div.modal-titlebar',
-			stack: '.dijitDialog'
+			stack: '.dijitDialog',
+			containment: 'window'
 		});
 		
 		returnProps = {

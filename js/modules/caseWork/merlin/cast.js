@@ -34,7 +34,8 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 			***************************************************/
 				$('[data-id="'+uniqueID+'"]').draggable({ 
 					handle: $('[data-id="'+uniqueID+'"] .dijitDialogTitleBar')[0], 
-					stack: '.dijitDialog'
+					stack: '.dijitDialog',
+					containment: 'window'
 				});
 				$('[data-id="'+uniqueID+'"]').resizable();
 				
