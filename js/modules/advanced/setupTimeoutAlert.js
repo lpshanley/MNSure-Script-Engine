@@ -13,8 +13,8 @@ _engine.module.define('advanced/setupTimeoutAlert',function(){
 			],
 			title:'Session about to expire...',
 			text: 'You are about to be timed out!  Would you like to attempt to refresh your session?'
-		},function(){
-			_engine.storage.nocache.data.modal.role = 'timeout alert';
+		},function( props ){
+			_engine.storage.nocache.data.modal[props.id].role = 'timeout alert';
 		});
 	}, _engine.advanced._sessionRemaining() - tripTimer);
 	
