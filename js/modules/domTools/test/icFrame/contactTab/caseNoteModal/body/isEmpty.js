@@ -6,10 +6,7 @@ _engine.module.define('domTools/test/icFrame/contactTab/caseNoteModal/body/isEmp
 			err = false;
 
 	if( _modalBody && $( _modalBody ).text() === "" ) returnVal = true;
-	else {
-		err = "Case note body object is returning undefined. Not loaded.";
-		returnVal = undefined;
-	}
+	else err = "Case note body object is returning undefined. Not loaded.";
 	
 	if( err ) _engine.debug.warn( `[ caseNoteModal.body.isEmpty() ]  ${ err }` );
 	

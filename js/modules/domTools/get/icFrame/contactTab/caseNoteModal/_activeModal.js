@@ -1,10 +1,8 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('domTools/get/icFrame/contactTab/caseNoteModal/_activeModal',function( logErr ){
+_engine.module.define('domTools/get/icFrame/contactTab/caseNoteModal/_activeModal',function(){
 	
 	let returnVal = false,
-			errMsg = null;
-	
-	if( typeof logErr !== 'boolean' ) logErr = true;
+			errMsg = false;
 	
 	var _modalFrame = $('iframe[title="Modal Frame - New Note"].curam-active-modal');
 
@@ -24,6 +22,8 @@ _engine.module.define('domTools/get/icFrame/contactTab/caseNoteModal/_activeModa
 	} 
 	else errMsg = "Unable to target an open case note modal";
 	
-	if( logErr ) _engine.debug.warn( `[ _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal() ] ${ errMsg }` );
+	if( errMsg ) _engine.debug.warn( `[ caseNoteModal._activeModal() ] ${ errMsg }` );
+	
+	return returnVal;
 	
 });

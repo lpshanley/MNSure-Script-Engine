@@ -1,7 +1,8 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('domTools/test/hcrTabType',function( tab ){
 	
-	let returnVal;
+	let returnVal = false,
+			err = '';
 	
 	typeof tab === 'undefined' ? 
 		tab = _engine.domTools.get.hcrTabActive() : 
@@ -40,17 +41,15 @@ _engine.module.define('domTools/test/hcrTabType',function( tab ){
 					'HCRInsuranceAssistanceHome' : "PDC|insurance assistance",
 					'HCRUnassistedQualifiedHealthPlanPDHome' : "PDC|unassisted qualified health plan"
 				};
-		
-		returnVal = typeMatch[ nodeData.page.params.tabDescriptor.tabID ];
-		
-		if( typeof returnVal === 'undefined' ) returnVal = false;
-		
-		if( !returnVal ) _engine.debug.warn( `[hcrTabType] Undefined tab type: ${ nodeData.page.params.tabDescriptor.tabID }` );
+				
+		if( typeof typeMatch[ nodeData.page.params.tabDescriptor.tabID ] !== 'undefined' )
+			returnVal = typeMatch[ nodeData.page.params.tabDescriptor.tabID ];
+		else err = `[hcrTabType] Undefined tab type: ${ nodeData.page.params.tabDescriptor.tabID }`;
 		
 	}
-	else returnVal = false;
+	else err = "Tab information could not be determined or defined.";
 	
-	if( !returnVal ) _engine.debug.warn( `[hcrTabType] Tab information could not be determined or defined.` );
+	if( err ) _engine.debug.warn( `[hcrTabType] ${ err }` );
 	
 	return returnVal;
 	
