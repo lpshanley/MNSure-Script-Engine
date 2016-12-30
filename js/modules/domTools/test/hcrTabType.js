@@ -1,17 +1,17 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('domTools/test/hcrTabType',function( _tab ){
+_engine.module.define('domTools/test/hcrTabType',function( tab ){
 	
 	let returnVal;
 	
-	typeof _tab === 'undefined' ? 
-		_tab = _engine.domTools.get.hcrTabActive() : 
-		typeof _tab[0] !== 'undefined' ?
-			_tab = _tab[0] :
-			_tab = _tab;
+	typeof tab === 'undefined' ? 
+		tab = _engine.domTools.get.hcrTabActive() : 
+		typeof tab[0] !== 'undefined' ?
+			tab = tab[0] :
+			tab = tab;
 	
-	if( _tab ){
+	if( tab ){
 			
-		let nodeData = dijit.registry.byNode( _tab ),
+		let nodeData = dijit.registry.byNode( tab ),
 				typeMatch = {
 					'HCRIntegratedCase' : "Integrated Case",
 					'PersonHome' : "Person Page",
