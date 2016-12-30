@@ -10,9 +10,7 @@ _engine.module.define('domTools/test/hcrTabType',function( _tab ){
 			_tab = _tab;
 	
 	if( _tab ){
-		
-		console.log( dijit.registry.byNode( _tab ) );
-		
+			
 		let nodeData = dijit.registry.byNode( _tab ),
 				typeMatch = {
 					'HCRIntegratedCase' : "Integrated Case",
@@ -52,7 +50,7 @@ _engine.module.define('domTools/test/hcrTabType',function( _tab ){
 	}
 	else returnVal = false;
 	
-	if( !returnVal ) _engine.debug.warn( `[hcrTabType] Undefined tab type: ${ nodeData.page.params.tabDescriptor.tabID }` );
+	if( !returnVal ) _engine.debug.warn( `[hcrTabType] Tab information could not be determined or defined.` );
 	
 	return returnVal;
 	
