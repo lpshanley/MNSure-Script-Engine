@@ -22,7 +22,7 @@ _engine.module.define('navigation/icTabs/icTabNavi',function( naviText, callback
 				
 				let loaded = function(){
 					
-					if( typeof callback === 'function' ) callback( iFrame );
+					if( typeof callback === 'function' ) callback( _engine.domTools.get.icFrame.icTabActiveFrame() );
 					
 					curam.util.onLoad.removeSubscriber( id, loaded );
 					
