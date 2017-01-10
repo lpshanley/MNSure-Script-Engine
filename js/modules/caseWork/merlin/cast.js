@@ -32,6 +32,9 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 			
 				/* Enable Modal Resizing and Dragging
 			***************************************************/
+				
+				$('[data-id="'+uniqueID+'"]').center();
+				
 				$('[data-id="'+uniqueID+'"]').draggable({ 
 					handle: $('[data-id="'+uniqueID+'"] .dijitDialogTitleBar')[0], 
 					stack: '.dijitDialog',
