@@ -25,7 +25,11 @@ _engine.module.define('navigation/icTabs/icTabNavi',function( naviText, callback
 						
 						if( _engine.domTools.get.icFrame.icTabActiveFrame().length > 0 ){
 							
-							console.log( _engine.domTools.get.icFrame.icTabActiveFrame()[0] );
+							let iFrame = _engine.domTools.get.icFrame.icTabActiveFrame()[0];
+							
+							console.log( $( iFrame ).find('div.title h2').text() );
+							
+							
 							
 						}
 						
