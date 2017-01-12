@@ -12,6 +12,11 @@ _engine.module.define('caseWork/unifiedSearch/_finish',function( modalId, params
 			
 			if( [8].indexOf( input.length ) > -1 ){
 				//Case Search
+				_engine.search._case(function(){
+					
+					_engine.domTools.set.searches.fieldFill("Reference",input);
+					
+				});
 				
 			}
 			else if( [9,10].indexOf( input.length ) > -1 ){

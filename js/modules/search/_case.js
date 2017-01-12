@@ -9,6 +9,18 @@ _engine.module.define('search/_case',function( callback ){
 		
 		curam.ui.SectionShortcutsPanel.handleClickOnAnchorElement("Case_search1",""); 
 		
+		_engine.advanced.waitForDom({function:_engine.domTools.get.hcrTabListTypeQuery,query:'Case Search'},function( tab ){
+
+			tabID = $( tab ).attr('widgetid').replace('HCRCASEAPPWorkspaceSection-stc_tablist_','');
+
+			_engine.advanced.waitForDom('#' + tabID + ' iframe',function( frame ){
+				
+				if( typeof callback === 'function' ) callback();
+				
+			});
+		
+		});
+		
 	});
 	
 });
