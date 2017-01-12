@@ -16,7 +16,11 @@ _engine.module.define('search/_person',function( callback ){
 
 			_engine.advanced.waitForDom('#' + tabID + ' iframe',function( frame ){
 				
-				if( typeof callback === 'function' ) callback();
+				_engine.advanced.onTabLoaded( $( frame ).attr('id'), function(){
+					
+					if( typeof callback === 'function' ) callback();
+					
+				});
 				
 			});
 		
