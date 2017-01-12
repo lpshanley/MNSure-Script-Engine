@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('search/_person',function(){
+_engine.module.define('search/_person',function( callback ){
 	
 	_engine.navigation.mainTabs.mainTabNavi('hcr',function(){
 		
@@ -10,12 +10,16 @@ _engine.module.define('search/_person',function(){
 		
 		curam.ui.SectionShortcutsPanel.handleClickOnAnchorElement("Person_search1","");
 		
-		searchTab = _engine.domTools.get.hcrTabListTypeQuery("Person Search");
+		_engine.advanced.waitForDom({function:_engine.domTools.get.hcrTabListTypeQuery,query:'Person Search'},function( tab ){
+
+			tabID = $( tab ).attr('widgetid').replace('HCRCASEAPPWorkspaceSection-stc_tablist_','');
+
+			_engine.advanced.waitForDom('#' + tabID + ' iframe',function( frame ){
+				
+				if( typeof callback === 'function' ) callback();
+				
+			});
 		
-		tabID = $( searchTab ).attr('widgetid').replace('HCRCASEAPPWorkspaceSection-stc_tablist_','');
-		
-		_engine.advanced.waitForSelector('#' + tabID + ' iframe',function( frame ){
-			console.log( frame );
 		});
 		
 	});
