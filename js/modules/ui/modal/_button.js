@@ -20,9 +20,10 @@ _engine.module.define('ui/modal/_button',function( button, modalId ){
 					break;
 				case 'case note':
 					if( _engine.ui.modal._validateModal( modalId ) ){
-						_engine.ui.modal._storeParams( modalId );
-						_engine.caseWork.note._completeNote( modalId );
-						_engine.ui.modal.destroy( modalId );
+						_engine.ui.modal._storeParams( modalId, function( params ){
+							_engine.caseWork.note._completeNote( modalId );
+							_engine.ui.modal.destroy( modalId );
+						});
 					} else {
 						_engine.debug.info("- * [ _engine.ui.modal._button( case notes ) ]: Invalid modal submission. Correct highlighted fields.");
 					}

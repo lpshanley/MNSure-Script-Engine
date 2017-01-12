@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('ui/modal/_storeParams',function( modalId ){
+_engine.module.define('ui/modal/_storeParams',function( modalId, callback ){
 	
 	let modalTemplate = '[data-id="' + modalId + '"] .mns-modal-template',
 			fields = $( modalTemplate + ' > .mns-input-group'),
@@ -41,5 +41,7 @@ _engine.module.define('ui/modal/_storeParams',function( modalId ){
 	});
 	
 	_engine.storage.nocache.data.modal[modalId].data.params = dataSet;
+	
+	if( typeof callback === 'function' ) callback( dataSet, modalId );
 	
 });

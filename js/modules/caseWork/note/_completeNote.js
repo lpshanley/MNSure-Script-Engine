@@ -5,6 +5,10 @@ _engine.module.define('caseWork/note/_completeNote',function( modalId ){
 		
 		let params = _engine.storage.nocache.data.modal[modalId].data.params;
 		
+		console.log( params );
+		
+		/*
+		
 		$.each( params, function( k, v ){
 			
 			let msg = '';
@@ -33,9 +37,9 @@ _engine.module.define('caseWork/note/_completeNote',function( modalId ){
 			}
 			
 			_engine.debug.info( msg );
-
+		
 		});
-
+		*/
 	});
 	/*
 	_engine.navigation.icTabs.icTabNavi("contact",function( contactFrame ){
@@ -141,7 +145,7 @@ _engine.module.define('caseWork/note/_completeNote',function( modalId ){
 
 				//_openModal Interval has timed out clear interval
 
-				_engine.debug.error("- * Fail Reason: [_engine.caseWork.note._completeNote()]: Failed to open or target case note modal. Request timed out.");							
+				_engine.debug.error("- * Fail Reason: [_engine.caseWork.note._completeNote()]: Failed to open or target case note modal. Request timed out.");
 				clearInterval( _openModal );
 
 			}
