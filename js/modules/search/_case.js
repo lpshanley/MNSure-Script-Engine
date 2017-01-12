@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('search/_case',function(){
+_engine.module.define('search/_case',function( callback ){
 	
 	_engine.navigation.mainTabs.mainTabNavi('hcr',function(){
 		
