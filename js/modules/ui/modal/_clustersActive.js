@@ -1,16 +1,12 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('ui/modal/_clustersActive',function( modalTarget ){
-
-	let _modal = $('[data-id="'+modalTarget+'"] div.mns-modal-template');
+_engine.module.define('ui/modal/_clustersActive',function( modalID ){
 	
-	if( _modal.length == 1 ){
-
-		var _clustersEnabled = $( _modal ).attr('data-input-clusters');
-
-		_clustersEnabled == "true" ? _clustersEnabled = true : _clustersEnabled = false;
-
-		return _clustersEnabled;
-
-	}
+	let modal = '[data-id="' + modalID + '"]',
+			returnVal = false;
+	
+	if( $( modal ).length ===  1 && $( modal + ' div.mns-modal-template' ).attr('data-input-clusters') === 'true')
+		returnVal = true;
+	
+	return returnVal;
 
 });

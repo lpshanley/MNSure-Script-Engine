@@ -1,6 +1,8 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('ui/modal/_storeParams',function( modalId ){
 
+	console.log("PARAM STORAGE");
+	
 	let fields = $('[data-id='+modalId+'] .mns-modal-template > .mns-input-group'),
 			clusterFields;
 	
