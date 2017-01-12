@@ -8,6 +8,15 @@ _engine.module.define('domTools/get/searches/advancedQuery',function( _query ){
 		
 		let _queryResult = $( _engine.domTools.get.hcrTabFrame() ).find('iframe').contents().find( _query );
 		
+		_engine.advanced.waitForDom({
+			function: _engine.domTools.get.hcrTabFrame,
+			query: ''
+		},function( obj ){ 
+			console.log(obj) 
+		});
+		
+		console.log( _query, _queryResult );
+		
 		if( _queryResult.length > 0 ) returnVal = _queryResult;
 		else err = `Could not find requested field: ${ _query }`;
 		
