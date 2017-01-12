@@ -1,11 +1,11 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('caseWork/note/_completeNote',function( modalId ){
+_engine.module.define('caseWork/note/_completeNote',function( modalId, params ){
 	
 	_engine.caseWork.note.openCuramNote(function(){
 		
-		let params = _engine.storage.nocache.data.modal[modalId].data.params;
+		if( typeof params === 'undefined' ) params = _engine.storage.nocache.data.modal[modalId].data.params;
 		
-		console.log( params );
+		console.log( 'params', params );
 		
 		/*
 		

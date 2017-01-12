@@ -42,6 +42,6 @@ _engine.module.define('ui/modal/_storeParams',function( modalId, callback ){
 	
 	_engine.storage.nocache.data.modal[modalId].data.params = dataSet;
 	
-	if( typeof callback === 'function' ) callback( dataSet, modalId );
+	if( typeof callback === 'function' ) callback( dataSet );
 	
 });

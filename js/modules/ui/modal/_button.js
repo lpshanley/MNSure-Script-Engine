@@ -21,7 +21,7 @@ _engine.module.define('ui/modal/_button',function( button, modalId ){
 				case 'case note':
 					if( _engine.ui.modal._validateModal( modalId ) ){
 						_engine.ui.modal._storeParams( modalId, function( params ){
-							_engine.caseWork.note._completeNote( modalId );
+							_engine.caseWork.note._completeNote( modalId, params );
 							_engine.ui.modal.destroy( modalId );
 						});
 					} else {
