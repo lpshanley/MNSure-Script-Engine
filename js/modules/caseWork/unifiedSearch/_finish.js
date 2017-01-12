@@ -1,171 +1,153 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('caseWork/unifiedSearch/_finish',function( modalId ){
+_engine.module.define('caseWork/unifiedSearch/_finish',function( modalId, params ){
+	
+	if( typeof params === 'undefined' ) params = _engine.storage.nocache.data.modal[modalId].data.params;
+	
+	$.each( params, function( k, v ){
 
-	//Start param gather counter
-	_c1 = 0;
+		let input = v.value.trim().replace(/[^\w\s]| +(?= )/g,'');
+			
+		if( $.isNumeric( input.replace(/[^0-9]/g,'') ) ){
+			input = input.replace(/[^0-9]/g,'');
+			
+			if( [8].indexOf( input.length ) > -1 ){
+				//Case Search
+				
+			}
+			else if( [9,10].indexOf( input.length ) > -1 ){
+				//Person Search
+				
+			}
+			else {
+				// Invalid input handler
+			}
+			
+		}
+		
+	});
+	
+	/*
 
-	var _gatherParams = setInterval(function(){
+	$.each( _engine.storage.modalParams.get(),function(k,v){
+			if( _input.length === 8 ){
 
-		//Setup loop to gather modal params
+				// Case Number
 
-		if( _c1 <= _engine.advanced._vars.iterations ){
+				let _tabToClose = _engine.domTools.get.hcrTabListTypeQuery("Case Search");
+				_engine.tools.closeTabHCR( _tabToClose );
 
-			_engine.debug.info("- * Attempting to gather params [ attempt: "+ _c1 +" ]");
+				_engine.search._case();
 
-			if( _engine.storage.modalParams.get() !== false ){
+				_c2 = 0;
 
-				//Perform actions on the stored params
+				let _openSearch = setInterval(function(){
+					_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
+					if(_c2 <= _engine.advanced._vars.iterations){
+						if( _engine.domTools.test.searches.windowLoaded() ){
 
-				_engine.debug.info("- * Params Gathered");
+							_engine.domTools.set.searches.fieldFill("Reference",_input);
 
-				$.each( _engine.storage.modalParams.get(),function(k,v){
+							_engine.tools.selectSearchResult();
 
-						//Remove Special Characters and Trim
-					var _input = v.value.trim().replace(/[^\w\s]| +(?= )/g,'');
-
-					if( $.isNumeric( _input.replace(/[^0-9]/g,'') ) ){
-						
-						_input = _input.replace(/[^0-9]/g,'');
-						
-						if( _input.length === 8 ){
-
-							// Case Number
-
-							let _tabToClose = _engine.domTools.get.hcrTabListTypeQuery("Case Search");
-							_engine.tools.closeTabHCR( _tabToClose );
-
-							_engine.search._case();
-
-							_c2 = 0;
-
-							let _openSearch = setInterval(function(){
-								_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
-								if(_c2 <= _engine.advanced._vars.iterations){
-									if( _engine.domTools.test.searches.windowLoaded() ){
-
-										_engine.domTools.set.searches.fieldFill("Reference",_input);
-
-										_engine.tools.selectSearchResult();
-
-										clearInterval( _openSearch );
-									}
-									++_c2;
-								} else {
-									clearInterval( _openSearch );
-								}
-							}, _engine.advanced._vars.timeout);
-							_openSearch;
-
-						} else if ( _input.length === 9 || _input.length === 10 ){
-							// SSN or MNS ID
-
-							let _tabToClose = _engine.domTools.get.hcrTabListTypeQuery("Person Search");
-							_engine.tools.closeTabHCR( _tabToClose );
-
-							_engine.search._person();
-
-							_c2 = 0;
-
-							let _openSearch = setInterval(function(){
-								_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
-								if(_c2 <= _engine.advanced._vars.iterations){
-									if( _engine.domTools.test.searches.windowLoaded() ){
-
-										_engine.domTools.set.searches.fieldFill("Reference",_input);
-
-										_engine.tools.selectSearchResult();
-
-										clearInterval( _openSearch );
-									}
-									++_c2;
-								} else {
-									clearInterval( _openSearch );
-								}
-							}, _engine.advanced._vars.timeout);
-							_openSearch;
-
-						} else {
-							
-							//Not a valid input -> Error msg needed here.
-							
+							clearInterval( _openSearch );
 						}
-
+						++_c2;
 					} else {
-						// Name
-
-						_engine.search._person();
-
-						var _name = _input.replace(/\|/g,' ').replace(' ','|').split('|');
-
-						if( _name.length > 1 ){
-
-							_c2 = 0;
-
-							var _openSearch = setInterval(function(){
-								_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
-								if(_c2 <= _engine.advanced._vars.iterations){
-									if( _engine.domTools.test.searches.windowLoaded() ){
-
-										_engine.domTools.set.searches.fieldFill("First Name",_name[0]);
-
-										_engine.domTools.set.searches.fieldFill("Last Name",_name[1]);
-
-										_engine.tools.selectSearchResult();
-
-										clearInterval( _openSearch );
-									}
-									++_c2;
-								} else {
-									clearInterval( _openSearch );
-								}
-							}, _engine.advanced._vars.timeout);
-							_openSearch;
-
-						} else {
-
-							_c2 = 0;
-
-							let _openSearch = setInterval(function(){
-								_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
-								if(_c2 <= _engine.advanced._vars.iterations){
-									if( _engine.domTools.test.searches.windowLoaded() ){
-
-										_engine.domTools.set.searches.fieldFill("First Name",_name[0]);
-
-										clearInterval( _openSearch );
-									}
-									++_c2;
-								} else {
-									clearInterval( _openSearch );
-								}
-							}, _engine.advanced._vars.timeout);
-							_openSearch;
-
-						}
-
+						clearInterval( _openSearch );
 					}
+				}, _engine.advanced._vars.timeout);
+				_openSearch;
 
-				});
+			} else if ( _input.length === 9 || _input.length === 10 ){
+				// SSN or MNS ID
 
-				_engine.debug.info("- * Clearing params");
+				let _tabToClose = _engine.domTools.get.hcrTabListTypeQuery("Person Search");
+				_engine.tools.closeTabHCR( _tabToClose );
 
-				_engine.storage.modalParams.clear();
+				_engine.search._person();
 
-				clearInterval( _gatherParams );
+				_c2 = 0;
+
+				let _openSearch = setInterval(function(){
+					_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
+					if(_c2 <= _engine.advanced._vars.iterations){
+						if( _engine.domTools.test.searches.windowLoaded() ){
+
+							_engine.domTools.set.searches.fieldFill("Reference",_input);
+
+							_engine.tools.selectSearchResult();
+
+							clearInterval( _openSearch );
+						}
+						++_c2;
+					} else {
+						clearInterval( _openSearch );
+					}
+				}, _engine.advanced._vars.timeout);
+				_openSearch;
+
+			} else {
+
+				//Not a valid input -> Error msg needed here.
 
 			}
 
-			++_c1;
-
 		} else {
+			// Name
 
-			_engine.debug.info("- * Fail Reason: Error [_engine.caseWork.note._completeNote()]: Failed to gather params.");							
-			clearInterval( _gatherParams );
+			_engine.search._person();
+
+			var _name = _input.replace(/\|/g,' ').replace(' ','|').split('|');
+
+			if( _name.length > 1 ){
+
+				_c2 = 0;
+
+				var _openSearch = setInterval(function(){
+					_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
+					if(_c2 <= _engine.advanced._vars.iterations){
+						if( _engine.domTools.test.searches.windowLoaded() ){
+
+							_engine.domTools.set.searches.fieldFill("First Name",_name[0]);
+
+							_engine.domTools.set.searches.fieldFill("Last Name",_name[1]);
+
+							_engine.tools.selectSearchResult();
+
+							clearInterval( _openSearch );
+						}
+						++_c2;
+					} else {
+						clearInterval( _openSearch );
+					}
+				}, _engine.advanced._vars.timeout);
+				_openSearch;
+
+			} else {
+
+				_c2 = 0;
+
+				let _openSearch = setInterval(function(){
+					_engine.debug.info("- * Attempting to target search screen [ attempt: "+ _c2 +" ]");
+					if(_c2 <= _engine.advanced._vars.iterations){
+						if( _engine.domTools.test.searches.windowLoaded() ){
+
+							_engine.domTools.set.searches.fieldFill("First Name",_name[0]);
+
+							clearInterval( _openSearch );
+						}
+						++_c2;
+					} else {
+						clearInterval( _openSearch );
+					}
+				}, _engine.advanced._vars.timeout);
+				_openSearch;
+
+			}
 
 		}
 
-	}, _engine.advanced._vars.timeout);
+	});
 
-	_gatherParams;
-
+	*/
 });
