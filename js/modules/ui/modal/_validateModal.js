@@ -1,16 +1,15 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('ui/modal/_validateModal',function( modalId ){
 
-	var _invalidFields = 0;
-	var required;
+	let _invalidFields = 0,
+			required = '[data-id='+modalId+'] div.mns-modal-template ',
+			returnVal = false;
 	
-	if( _engine.ui.modal._clustersActive() ){
-		required = $('[data-id='+modalId+'] sdiv.mns-modal-template > .mns-input-group.required, div.mns-modal-template > .input-cluster-active > .required');
-	} else {
-		required = $('[data-id='+modalId+'] div.mns-modal-template .required');
-	}
+	_engine.ui.modal._clustersActive( modalId ) ?
+		required += '> .mns-input-group.required, div.mns-modal-template > .input-cluster-active > .required' :
+		required += '.required';
 
-	$.each( required,function( k,v ){ 
+	$.each( $( required ) , function( k,v ){ 
 
 		if( $( v ).find('input').val() === "" ){
 
@@ -18,18 +17,13 @@ _engine.module.define('ui/modal/_validateModal',function( modalId ){
 
 			++_invalidFields;
 
-		} else {
-
-			$( v ).removeClass("input-error");
-
-		}
+		} 
+		else $( v ).removeClass("input-error");
 
 	});
 
-	if( _invalidFields === 0 ){
-		return true;
-	} else {
-		return false;
-	}
+	if( _invalidFields === 0 ) returnVal = true;
+	
+	return returnVal;
 
 });

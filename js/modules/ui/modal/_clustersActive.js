@@ -2,7 +2,7 @@
 _engine.module.define('ui/modal/_clustersActive',function( modalTarget ){
 
 	let _modal = $('[data-id="'+modalTarget+'"] div.mns-modal-template');
-
+	
 	if( _modal.length == 1 ){
 
 		var _clustersEnabled = $( _modal ).attr('data-input-clusters');
