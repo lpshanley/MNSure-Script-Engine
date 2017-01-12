@@ -9,8 +9,6 @@ _engine.module.define('ui/modal/_validateModal',function( modalId ){
 		required += '> .mns-input-group.required, div.mns-modal-template > .input-cluster-active > .required' :
 		required += '.required';
 	
-	console.log( required );
-	
 	$.each( $( required ) , function( k,v ){ 
 
 		if( $( v ).find('input').val() === "" ){
