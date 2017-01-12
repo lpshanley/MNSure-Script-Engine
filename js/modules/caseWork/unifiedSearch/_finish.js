@@ -28,6 +28,7 @@ _engine.module.define('caseWork/unifiedSearch/_finish',function( modalId, params
 			}
 			else {
 				// Invalid input handler
+				// This will require throw error dom functionality
 			}
 			
 		}
