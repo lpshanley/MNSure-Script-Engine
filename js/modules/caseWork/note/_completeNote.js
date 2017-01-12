@@ -1,71 +1,40 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('caseWork/note/_completeNote',function(){
+_engine.module.define('caseWork/note/_completeNote',function( modalId ){
 	
 	_engine.caseWork.note.openCuramNote(function(){
-
-		_count2 = 0;
-
-		var _gatherParams = setInterval(function(){
-
-			//Setup loop to gather modal params
-
-			if( _count2 <= _engine.advanced._vars.iterations ){
-
-				_engine.debug.info("- * Attempting to gather params [ attempt: "+ _count2 +" ]");
-
-				if( _engine.storage.modalParams.get() !== false ){
-
-					//Perform actions on the stored params
-
-					_engine.debug.info("- * Params Gathered");
-
-					$.each( _engine.storage.modalParams.get(),function(k,v){
-						if( v.descriptor.toLowerCase() == "subject" ){
-
-							_engine.debug.info("- * SUBJECT: [ " + v.value + " ]");
-
-							_engine.domTools.set.icFrame.contactTab.caseNoteModal.subject( v.value );
-
-						} else {
-
-							var line = "";
-
-							if( v.descriptor !== "" && v.value === "" ){
-								line += v.descriptor;
-							} else if( v.descriptor === "" && v.value !== "" ){
-								line += v.value;
-							} else if( v.descriptor !== "" && v.value !== "" ){
-								line += v.descriptor + ": " + v.value;
-							}
-
-							_engine.debug.info("- * BODY: [ " + line + " ]");
-
-							_engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine( line );
-
-						}
-
-					});
-
-					_engine.debug.info("- * Clearing params");
-
-					_engine.storage.modalParams.clear();
-
-					clearInterval( _gatherParams );
-
-				}
-
-				++_count2;
+		
+		let params = _engine.storage.nocache.data.modal[modalId].data.params;
+		
+		$.each( params, function( k, v ){
+			
+			let msg = '';
+			
+			if( v.descriptor.toLowerCase() === "subject" ){
+				
+				msg = "- * SUBJECT: [ " + v.value + " ]";
+				
+				_engine.domTools.set.icFrame.contactTab.caseNoteModal.subject( v.value );
 
 			} else {
+				
+				let line = '';
+				
+				if( v.value ){
+					if( v.descriptor ) 
+						line += v.descriptor + ": " + v.value;
+					else line += v.value;
+				}
+				else if ( v.descriptor ) line += v.descriptor;
 
-				_engine.debug.info("- * Fail Reason: Error [_engine.caseWork.note._completeNote()]: Failed to gather params.");							
-				clearInterval( _gatherParams );
+				msg = "- * BODY: [ " + line + " ]";
+
+				_engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine( line );
 
 			}
+			
+			_engine.debug.info( msg );
 
-		}, _engine.advanced._vars.timeout);
-
-		_gatherParams;
+		});
 
 	});
 	/*

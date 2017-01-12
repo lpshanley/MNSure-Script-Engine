@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('caseWork/unifiedSearch/_finish',function(){
+_engine.module.define('caseWork/unifiedSearch/_finish',function( modalId ){
 
 	//Start param gather counter
 	_c1 = 0;
