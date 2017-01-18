@@ -3,7 +3,7 @@ _engine.module.define('tools/customApi/evidence/_evidenceQueryUrlConstructor',fu
 	
 	let root = "en_US/Evidence_workspaceTypeListPage.do?",
 			curamObject = curam.tab.getSelectedTab().params.tabDescriptor,
-			caseID = curamObject.tabContent.parameters.caseID,
+			caseID = "caseID=" + curamObject.tabContent.parameters.caseID,
 			oc3tx = "o3ctx=" + curamObject.tabContent.parameters.o3ctx,
 			queryDefinition = _engine.advanced._vars.queryDefinitions,
 			objReturn = false,
