@@ -5,11 +5,8 @@ _engine.module.define('caseWork/global/onCaseScreen',function( callback, showMod
 		
 	_engine.domTools.test.hcrTabActiveIsIC(function( result ){
 		
-		if( result ){
-		
-			if(typeof callback === 'function') callback();
-			
-		} else {
+		if( result ) if ( typeof callback === 'function' ) callback();
+		else {
 			
 			if( showModal ){
 			
