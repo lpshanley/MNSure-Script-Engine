@@ -6,7 +6,7 @@ _engine.module.define('caseWork/caseData/maintainNocache',function( pageObj, cal
 	let tabParams = curam.tab.getSelectedTab();
 		
 	let curamObj = tabParams.params.tabDescriptor;
-
+	
 	let updateCaseData = function( data ){
 		let parsedData = $.parseHTML( data );
 
@@ -164,5 +164,5 @@ _engine.module.define('caseWork/caseData/maintainNocache',function( pageObj, cal
 		default:
 			break;
 	}
-
+	
 });
