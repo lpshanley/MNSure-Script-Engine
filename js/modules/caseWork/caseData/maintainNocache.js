@@ -3,15 +3,11 @@ _engine.module.define('caseWork/caseData/maintainNocache',function( pageObj, cal
 	
 	let cacheEmpty = typeof _engine.storage.nocache.data.caseData === 'undefined';
 	
-	let tabParams;
-	
-	typeof pageObj === 'undefined' ?
-		tabParams = curam.tab.getSelectedTab():
-		tabParams = pageObj;
-	
+	let tabParams = curam.tab.getSelectedTab();
+		
 	let curamObj = tabParams.params.tabDescriptor;
 
-	var updateCaseData = function( data ){
+	let updateCaseData = function( data ){
 		let parsedData = $.parseHTML( data );
 
 		let caseData = {

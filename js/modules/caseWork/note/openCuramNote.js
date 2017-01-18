@@ -2,7 +2,7 @@
 _engine.module.define('caseWork/note/openCuramNote',function( callback ){
 	_engine.caseWork.global.onCaseScreen(function(){
 		
-		let curamObj = _engine.storage._curamCreatedObject.get();
+		let curamObj = curam.tab.getSelectedTab().params.tabDescriptor;
 		
 		let __o3rpu = 'DefaultIC_listNotePage.do';
 		
@@ -34,7 +34,7 @@ _engine.module.define('caseWork/note/openCuramNote',function( callback ){
 					if( typeof callback === 'function' ) callback();
 					clearInterval( modalOpen );
 				}
-				count++
+				count++;
 			}
 			else {
 				clearInterval( modalOpen );
