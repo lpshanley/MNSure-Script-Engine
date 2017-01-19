@@ -1,10 +1,13 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
 _engine.module.define('domTools/get/hcrTabActive',function(){
 	
-	let returnVal = false;
+	let returnVal = false,
+			tab;
 	
 	if( _engine.domTools.test.mainTabType() === 'HCR Cases and Outcomes')
-		$.each(_engine.domTools.get.hcrTabList(),function(k,v){	if( $(v).hasClass('dijitChecked') ) returnVal = $(v)[0]; });
+		tab = $('#HCRCASEAPPWorkspaceSection-stc > div.dijitLayoutContainer > [data-dojo-attach-point="tablistWrapper"] > [role="tablist"] > [role="presentation"].dijitChecked')[0];
+	
+	if( tab ) returnVal = tab;
 	
 	return returnVal;
 	
