@@ -53,12 +53,18 @@ var _engine = {
 				version === 'master' ?
 					_engine.storage.debugStatus.set( false ):
 					_engine.storage.debugStatus.set( true );
-
+				
 				_engine.storage.prefillCache.clear();
 				
 				_engine.ui.topNotification.add(`Script Library: ${version}`);
 				
-				_engine.ui.topNotification.add( 'Session Expiry - ' + _engine.advanced._sessionExpiry() );
+				//Dynamic Ticket Notifs (10s)
+				setInterval(function(){
+					
+					_engine.ui.topNotification.remove("Session Expiry");
+					_engine.ui.topNotification.add( `Session Expiry - ${ _engine.advanced._sessionExpiry() }` );
+					
+				},10000);
 				
 				if( version !== 'master' && version !== 'beta' ){
 					
@@ -84,11 +90,7 @@ var _engine = {
 						
 					$('.scripts-link, .center-box').removeAttr('style');
 					
-					/* Commented out to remove timeout alert
-					//_engine.advanced.setupTimeoutAlert();
-					
-					_engine.events._persistSession(true);
-					*/
+					_engine.advanced.setupTimeoutAlert();
 					
 				});
 				

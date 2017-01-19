@@ -10,8 +10,8 @@ _engine.module.define('caseWork/caseData/maintainNocache',function( pageObj, cal
 		tabParams = pageObj;
 	
 	let curamObj = tabParams.params.tabDescriptor;
-
-	var updateCaseData = function( data ){
+	
+	let updateCaseData = function( data ){
 		let parsedData = $.parseHTML( data );
 
 		let caseData = {
@@ -168,5 +168,5 @@ _engine.module.define('caseWork/caseData/maintainNocache',function( pageObj, cal
 		default:
 			break;
 	}
-
+	
 });

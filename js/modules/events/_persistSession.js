@@ -1,35 +1,36 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('events/_persistSession',function( loading ){
+_engine.module.define('events/_persistSession',function(){
 	
-	let mainTab, subTab;
+	let persist = function( mainTab ){
+		
+		let tab = _engine.domTools.get.hcrTabActive();
+
+		setTimeout(function(){
+
+			_engine.search._case(function(){ 
+				_engine.tools.closeTabHCR( _engine.domTools.get.hcrTabListTypeQuery('Case Search') );
+				if( mainTab ) mainTab.click();
+			});
+
+			if( tab ) tab.click();
+
+		}, 100);
+		
+	}
 	
-	if( typeof loading === 'undefined' ) loading = false;
-	
-	if( loading === false ){
-		
-		if( $( _engine.domTools.get.mainTabActive() ).find('.tabLabel').text() === 'HCR Cases and Outcomes' ){
+	switch( _engine.domTools.test.mainTabType() ){
+		case 'HCR Cases and Outcomes':
+			persist();
+			break;
+		default:
 			
-			mainTab = $( _engine.domTools.get.mainTabList() ).index( $( _engine.domTools.get.mainTabActive() ) );
-			subTab = $( _engine.domTools.get.hcrTabList() ).index( $( _engine.domTools.get.hcrTabActive() ) );
+			let tab = _engine.domTools.get.mainTabActive();
 			
-			window.sessionStorage.mnsEngine_persistTabs = mainTab + "|" + subTab;
+			_engine.navigation.mainTabs.mainTabNavi('hcr',function(){ 
+				persist( tab );
+			})
 			
-		}
-		
-		window.location.reload();
-		
-	} else {
-		
-		if( typeof window.sessionStorage.mnsEngine_persistTabs !== 'undefined' ){
-			
-			let tabs = window.sessionStorage.mnsEngine_persistTabs.split('|');
-			
-			_engine.domTools.get.mainTabList()[tabs[0]].click();
-			_engine.domTools.get.hcrTabList()[tabs[1]].click();
-			
-			delete window.sessionStorage.mnsEngine_persistTabs;
-			
-		}
+			break;
 	}
 	
 });

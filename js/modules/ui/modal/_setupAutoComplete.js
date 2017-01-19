@@ -24,8 +24,6 @@ _engine.module.define('ui/modal/_setupAutoComplete',function( modalId ){
 				
 				let _autoComplete = $( input ).attr('data-autoComplete').toLowerCase();
 				
-				console.log(_autoComplete);
-				
 				let _autoCompleteType = _autoComplete.split("|")[0];
 				let _autoCompleteValue = _autoComplete.split("|")[1];
 				

@@ -105,6 +105,8 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 		/* Setup any post display actions/watchers
 		=====================================================*/
 		
+		$('[data-id='+uniqueId+']').center();
+		
 		_engine.ui.modal._setupClusters( uniqueId );
 		
 		_engine.ui.modal._watch( uniqueId );
