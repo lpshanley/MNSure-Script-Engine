@@ -10,11 +10,11 @@ _engine.module.define('advanced/setupTimeoutAlert',function(){
 		else {
 			_engine.ui.modal.build({
 				buttons:[
-					{label:'Refresh',onclick:"_engine.events._persistSession();"},
+					{label:'Continue Working',role:"submit"},
 					'close'
 				],
 				title:'Session about to expire...',
-				text: 'You are about to be timed out!  Would you like to attempt to refresh your session?'
+				text: 'It seems that your session is about to expire. Would you like to attempt to continue your session?'
 			},function( props ){
 				_engine.storage.nocache.data.modal[props.id].role = 'timeout alert';
 			});

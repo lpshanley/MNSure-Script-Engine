@@ -29,6 +29,10 @@ _engine.module.define('ui/modal/_button',function( button, modalId ){
 						_engine.debug.info("- * [ _engine.ui.modal._button( case notes ) ]: Invalid modal submission. Correct highlighted fields.");
 					}
 					break;
+				case 'timeout alert':
+					_engine.events._persistSession();
+					_engine.ui.modal.destroy( modalId );
+					break;
 				default:
 					_engine.debug.warn('Modal role is not a recognized type');
 					break;
@@ -36,6 +40,8 @@ _engine.module.define('ui/modal/_button',function( button, modalId ){
 			break;
 		case "close":
 			_engine.ui.modal.destroy( modalId );
+			break;
+		case "":
 			break;
 		default:
 			_engine.debug.error("- * Fail Reason: Modal Error [ _engine.ui.modal._button( _type ) ]: Type error or type not found.");
