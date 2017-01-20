@@ -20,6 +20,7 @@ _engine.module.define('domTools/test/hcrTabType',function( tab ){
 					'CaseSearch' : "Case Search",
 					'EvidenceType' : "Evidence|" + nodeData.page.title.split('-')[0].trim(),
 					'CommonIntakeMyApplications' : "My Application Cases",
+					'CommonIntakeApplicationCase': 'Application Case',
 					'EmployerSearch' : "Employer Search",
 					'ParticipantSearch' : "All Participants Search",
 					'CommonIntakeApplicationSearch' : "Application Case Search",

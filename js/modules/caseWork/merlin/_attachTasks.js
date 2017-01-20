@@ -3,7 +3,7 @@ _engine.module.define('caseWork/merlin/_attachTasks',function( id, input ){
 	
 	_engine.advanced.getView('merlin/card-template.html',function( template ){ 
 		
-		_engine.storage.nocache.data.modal[id].tasklist = {};
+		_engine.storage.nocache.data.modal[id].tasklist = [];
 		
 		let card;
 		
@@ -11,22 +11,20 @@ _engine.module.define('caseWork/merlin/_attachTasks',function( id, input ){
 			
 			card = $.parseHTML( template );
 			
-			let taskID = _engine.advanced.generateId()
-			
-			_engine.storage.nocache.data.modal[id].tasklist[taskID] = {
+			let defaultConfig = {
 				title: 'TITLE',
 				complete: false,
 				action: null
 			};
 			
-			$.each(config,function(k,v){ _engine.storage.nocache.data.modal[id].tasklist[taskID][k] = v });
+			$.each(config,function(k,v){ defaultConfig[k] = v });
 			
-			$( card ).attr( 'data-task', taskID );
-			$( card ).find('.card-title').text( _engine.storage.nocache.data.modal[id].tasklist[taskID].title );
+			$( card ).attr( 'data-task', _engine.storage.nocache.data.modal[id].tasklist.length );
+			$( card ).find('.card-title').text( defaultConfig.title );
+			
+			_engine.storage.nocache.data.modal[id].tasklist.push( defaultConfig );
 			
 			$("[data-id='"+id+"'] [data-role='task-list']").append( $( card ) );
-			
-			_engine.storage.nocache.data.modal[id].tasks++;
 			
 		});
 		

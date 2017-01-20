@@ -46,8 +46,9 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 			/* Setup Modal Actions 
 			***************************************************/
 				// Closeout Modal
+				
 				_engine.caseWork.merlin.setupAction({
-					item: '[data-role="titlebar-close-button"]',
+					item: '[data-id="'+uniqueID+'"] [data-role="titlebar-close-button"]',
 					trigger: 'click',
 					action: function(){ _engine.caseWork.merlin.destroy( uniqueID ) }
 				});
