@@ -10,7 +10,8 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 			let uniqueID = _engine.advanced.generateId();
 			
 			_engine.storage.nocache.data.modal[uniqueID] = {
-				loaded: false
+				loaded: false,
+				tasks: 0
 			}
 			
 			let config = {
@@ -26,27 +27,34 @@ _engine.module.define('caseWork/merlin/cast',function( input ){
 			
 			_engine.ui.dom.dimLights( true );
 			
-			$( curam.util.getTopmostWindow().document.body ).append(modal);
+			$( '.modal-overlay' ).append(modal);
 			
 			_engine.caseWork.merlin._attachTasks( uniqueID, config.tasks );
 			
 				/* Enable Modal Resizing and Dragging
 			***************************************************/
-				$('[data-id="'+uniqueID+'"]').draggable({ handle: $('[data-id="'+uniqueID+'"] .dijitDialogTitleBar')[0] });
+				
+				$('[data-id="'+uniqueID+'"]').center();
+				
+				$('[data-id="'+uniqueID+'"]').draggable({ 
+					handle: $('[data-id="'+uniqueID+'"] .dijitDialogTitleBar')[0], 
+					stack: '.dijitDialog',
+					containment: '.modal-overlay'
+				});
 				$('[data-id="'+uniqueID+'"]').resizable();
 				
 			/* Setup Modal Actions 
 			***************************************************/
 				// Closeout Modal
+				
 				_engine.caseWork.merlin.setupAction({
-					item: '[data-role="titlebar-close-button"]',
+					item: '[data-id="'+uniqueID+'"] [data-role="titlebar-close-button"]',
 					trigger: 'click',
 					action: function(){ _engine.caseWork.merlin.destroy( uniqueID ) }
 				});
 				
-				_engine.storage.nocache.data.modal[uniqueID] = {
-					loaded: true
-				}
+				_engine.storage.nocache.data.modal[uniqueID].loaded = true;
+				_engine.storage.nocache.data.modal[uniqueID].role = 'wizard';
 				
 		});
 	

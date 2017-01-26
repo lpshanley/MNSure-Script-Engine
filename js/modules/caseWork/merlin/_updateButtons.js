@@ -6,7 +6,7 @@ _engine.module.define('caseWork/merlin/_updateButtons',function( id, buttonConfi
 		
 		console.log(key,req);
 		
-		let props = { label:'error', onclick:'return false;', role:'', filler:true};
+		let props = { label:'error', onclick:'return false;', role:'', filler:true };
 		
 		if(typeof req === 'string'){
 			switch( req.toLowerCase() ){
