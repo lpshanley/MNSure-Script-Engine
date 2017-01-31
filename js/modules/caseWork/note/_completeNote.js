@@ -26,7 +26,7 @@ _engine.module.define('caseWork/note/_completeNote',function( modalId, params ){
 				}
 				else if ( v.descriptor && v.required ) line += v.descriptor;
 
-				msg = "- * BODY: [ " + line + " ]";
+				if(line) msg = "- * BODY: [ " + line + " ]";
 
 				_engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine( line );
 
