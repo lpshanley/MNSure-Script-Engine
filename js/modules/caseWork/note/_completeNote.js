@@ -32,7 +32,7 @@ _engine.module.define('caseWork/note/_completeNote',function( modalId, params ){
 
 			}
 			
-			_engine.debug.info( msg );
+			if(msg) _engine.debug.info( msg );
 		
 		});
 
