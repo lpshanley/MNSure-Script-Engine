@@ -13,7 +13,8 @@ _engine.module.define('ui/modal/_storeParams',function( modalId, callback ){
 		dataSet[k] = {
 			descriptor: '',
 			label: '',
-			value: ''
+			value: '',
+			required: false
 		};
 		
 		if( $( v ).find( '.mns-input-label' ).length )
@@ -23,9 +24,12 @@ _engine.module.define('ui/modal/_storeParams',function( modalId, callback ){
 			dataSet[k].descriptor = $( v ).find( '.mns-input-descriptor' ).text().trim();
 		
 		if( $( v ).find( 'input, select' ).length ){
+			
+			dataSet[k].required = $(v).hasClass('required') || dataSet[k].descriptor === "SUBJECT";
+			
 			let field = $( v ).find( 'input, select' ),
 					val = $( field ).val().trim();
-			
+				
 			val = val.replace(/"/g,'&quot;');
 			val = val.replace('"','\"');
 			

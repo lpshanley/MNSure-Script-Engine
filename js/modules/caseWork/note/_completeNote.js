@@ -24,7 +24,7 @@ _engine.module.define('caseWork/note/_completeNote',function( modalId, params ){
 						line += v.descriptor + ": " + v.value;
 					else line += v.value;
 				}
-				else if ( v.descriptor ) line += v.descriptor;
+				else if ( v.descriptor && v.required ) line += v.descriptor;
 
 				msg = "- * BODY: [ " + line + " ]";
 
