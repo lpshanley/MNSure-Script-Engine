@@ -241,11 +241,11 @@ var _engine = {
 		},
 		
 		splitArg:  function( input ){
-			return input.replace(/(^\/)|(\/$)/g,"").split( regex.splitQuery );
+			return input.replace(/(^\/)|(\/$)/g,"").split( _engine.tools.regex.splitQuery );
 		},
 		
 		parseToUrl: function( input ){
-			return input.replace(regex.splitQuery,"/").replace(/(^\/)|(\/$)/g,"");
+			return input.replace(_engine.tools.regex.splitQuery,"/").replace(/(^\/)|(\/$)/g,"");
 		},
 
 		isFunction: function( input ){
