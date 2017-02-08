@@ -268,14 +268,14 @@ var _engine = {
 	
 	module: {
 		
-		download: function( module, callback ){
+		download: function( module ){
 			let baseUrl = _engine.storage.config.get('advanced.baseUrl');
 			let req = baseUrl + "js/modules/" + _engine.tools.parseToUrl(module) + ".js";
 			$.ajax({
 				dataType: 'script',
 				url: req,
 				success: function(){
-					if(_engine.tools.isFunction(callback)) callback();
+					_engine.module.loadList.splice( _engine.module.loadList.indexOf( module ) );
 				}
 			});
 		},
@@ -323,9 +323,9 @@ var _engine = {
 			$.each(modules,function(key, module){
 				_engine.module.exists(module,function( exists ){
 					if(!exists){
+						reqs.push( module );
 						if( _engine.module.loadList.indexOf( module ) === -1 ){
 							_engine.module.loadList.push( module );
-							reqs.push( module );
 							_engine.module.download( module );
 						}
 					}
@@ -334,18 +334,27 @@ var _engine = {
 			
 			if(reqs.length){
 				let wait = setInterval(function(){
+					
 					let verify = reqs;
+					
 					console.log("Start: ", verify, reqs);
-					$.each(verify, function(k,mod){
+					
+					$.each(reqs, function(k,mod){
+						console.log(mod,reqs);
 						_engine.module.exists(mod,function(exists){
 							if(exists) {
-								console.log( "Before: ", reqs );
-								reqs.splice( reqs.indexOf( mod, 1 ) );
-								console.log( "After: ", reqs );
+								console.log( "Before: ", mod, verify );
+								
+								verify.splice( verify.indexOf( mod ) );
+								console.log( "After: ", mod, verify );
 							}
 						});
 					});
+					
+					reqs = verify;
+					
 					console.log("End: ", verify, reqs);
+					
 					if(reqs.length === 0){
 						if(_engine.tools.isFunction( callback )) callback();
 						clearInterval( wait );
