@@ -299,7 +299,7 @@ var _engine = {
 			
 		},
 		
-		moduleExists: function( module, callback ){
+		exists: function( module, callback ){
 			let modArray = _engine.tools.splitArg( module ),
 					root = _engine,
 					exists = true;
@@ -320,7 +320,7 @@ var _engine = {
 				
 				console.log( _engine.module.loadList );
 				
-				_engine.tools.moduleExists(module,function( exists ){
+				_engine.module.exists(module,function( exists ){
 					if(!exists)
 						if(!alreadyLoading)
 							_engine.module.download( module, _engine.module.loadList.splice( _engine.module.loadList.indexOf( module ) ) );
