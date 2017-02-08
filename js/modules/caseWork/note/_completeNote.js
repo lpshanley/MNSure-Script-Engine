@@ -24,15 +24,15 @@ _engine.module.define('caseWork/note/_completeNote',function( modalId, params ){
 						line += v.descriptor + ": " + v.value;
 					else line += v.value;
 				}
-				else if ( v.descriptor ) line += v.descriptor;
+				else if ( v.descriptor && v.required ) line += v.descriptor;
 
-				msg = "- * BODY: [ " + line + " ]";
+				if(line) msg = "- * BODY: [ " + line + " ]";
 
 				_engine.domTools.set.icFrame.contactTab.caseNoteModal.body.addLine( line );
 
 			}
 			
-			_engine.debug.info( msg );
+			if(msg) _engine.debug.info( msg );
 		
 		});
 
