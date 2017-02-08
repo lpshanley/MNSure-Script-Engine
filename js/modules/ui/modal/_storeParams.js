@@ -34,8 +34,8 @@ _engine.module.define('ui/modal/_storeParams',function( modalId, callback ){
 			val = val.replace('"','\"');
 			
 			if( field[0].type === 'date' ){
-				let date = new Date(val);
-				val = (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
+				let date = val.split('-');
+				val = date[1].replace(/^0/g,'') + '/' + date[2].replace(/^0/g,'') + '/' +  date[0];
 			}
 			
 			dataSet[k].value = val;
