@@ -331,19 +331,28 @@ var _engine = {
 					}
 				});
 			});
-
-			let wait = setInterval(function(){
-				let verify = reqs;
-				$.each(verify, function(k,module){
-					_engine.module.exists(module,function(exists){
-						if(exists) reqs.splice( reqs.indexOf( module, 1 ) );
+			
+			if(reqs.length){
+				let wait = setInterval(function(){
+					let verify = reqs;
+					console.log("Start: ", verify, reqs);
+					$.each(verify, function(k,mod){
+						_engine.module.exists(mod,function(exists){
+							if(exists) {
+								console.log( "Before: ", reqs );
+								reqs.splice( reqs.indexOf( mod, 1 ) );
+								console.log( "After: ", reqs );
+							}
+						});
 					});
-				});
-				if(reqs.length === 0){
-					if(_engine.tools.isFunction( callback )) callback();
-					clearInterval( wait );
-				}
-			}, 50);
+					console.log("End: ", verify, reqs);
+					if(reqs.length === 0){
+						if(_engine.tools.isFunction( callback )) callback();
+						clearInterval( wait );
+					}
+				}, 50);
+			}
+			else if(_engine.tools.isFunction( callback )) callback();
 			
 		},
 		
@@ -371,8 +380,6 @@ var _engine = {
 			});
 
 		},
-		
-		
 		
 		/* Loads a specified script file */
 		
