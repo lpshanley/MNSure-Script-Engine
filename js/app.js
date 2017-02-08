@@ -280,12 +280,14 @@ var _engine = {
 			});
 		},
 		
-		define: function( module, definition ){
-
+		define: function( module, reqs, definition ){
+			
+			if(typeof(reqs) === 'undefined') reqs = [];
+			
 			let def = _engine.tools.splitArg( module ),
 					root = _engine,
 					last = def.length - 1;
-
+			
 			$.each(def,function(key,path){
 				if(typeof(root[path]) === 'undefined') root[path] = {};
 
@@ -333,7 +335,7 @@ var _engine = {
 
 			let wait = setInterval(function(){
 				if(!loadList.length){
-					console.log( loadList );
+					if(_engine.tools.isFunction( callback )) callback();
 					clearInterval( wait );
 				}
 				else {
