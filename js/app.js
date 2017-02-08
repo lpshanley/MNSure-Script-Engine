@@ -337,6 +337,7 @@ var _engine = {
 				console.log( reqs );
 
 				$.each(reqs, function(k,module){
+					console.log( module );
 					_engine.module.exists(module,function(exists){
 						if(exists) reqs.splice( reqs.indexOf( module, 1 ) );
 					});
