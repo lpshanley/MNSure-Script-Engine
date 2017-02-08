@@ -285,7 +285,6 @@ var _engine = {
 			if(_engine.tools.isFunction(reqs) && typeof(definition) === 'undefined'){
 				definition = reqs;
 				reqs = [];
-				console.warn("Using deprecated definition style on module " + module);
 			}
 			
 			let def = _engine.tools.splitArg( module ),
@@ -318,54 +317,41 @@ var _engine = {
 		},
 		
 		require: function( modules, callback ){
+			
+			let reqs = [];
+			
 			$.each(modules,function(key, module){
-				let alreadyLoading = _engine.module.loadList.indexOf( module ) > -1;
-				if(!alreadyLoading) _engine.module.loadList.push( module );
-				
-				console.log( _engine.module.loadList );
-				
 				_engine.module.exists(module,function( exists ){
-					if(!exists)
-						if(!alreadyLoading)
-							_engine.module.download( module, _engine.module.loadList.splice( _engine.module.loadList.indexOf( module ) ) );
-					else
-						_engine.module.loadList.splice(_engine.module.loadList.indexOf(module));
+					if(!exists){
+						if( _engine.module.loadList.indexOf( module ) === -1 ){
+							_engine.module.loadList.push( module );
+							reqs.push( module );
+							_engine.module.download( module );
+						}
+					}
 				});
 			});
 
 			let wait = setInterval(function(){
-				if(!_engine.module.loadList.length){
+
+				console.log( reqs );
+
+				$.each(reqs, function(k,module){
+					_engine.module.exists(module,function(exists){
+						if(exists) reqs.splice( reqs.indexOf( module, 1 ) );
+					});
+				});
+
+				if(reqs.length === 0){
 					if(_engine.tools.isFunction( callback )) callback();
 					clearInterval( wait );
 				}
-				else {
-					console.log( "Loading... ", _engine.module.loadList );
-				}
-			},25);
+
+			}, 50);
 			
 		},
 		
 		loadList : [],
-		
-		timeout: {
-			clock: null,
-			start: function(){
-				clearInterval(_engine.module.timeout.clock);
-				_engine.module.timeout.clock = setInterval(function(){
-					if(!_engine.module.loadList.length){
-						//if(_engine.tools.isFunction( callback )) callback();
-						console.log( "Module queue clear" );
-						_engine.module.timeout.clear();
-					}
-					else {
-						console.log( "Loading... ", _engine.module.loadList );
-					}
-				},25);
-			},
-			clear: function(){
-				clearInterval(_engine.module.timeout.clock);
-			}
-		},
 		
 		/* DEPRECATED LOADING FUNCTIONS */
 		
