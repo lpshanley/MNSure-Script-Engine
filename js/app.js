@@ -314,37 +314,54 @@ var _engine = {
 		},
 		
 		require: function( modules, callback ){
-			let loadList = [];
 			$.each(modules,function(key, module){
-				loadList.push(module);
-				console.log( loadList );
+				let alreadyLoading = _engine.module.loadList.indexOf( module );
+				if(!alreadyLoading) _engine.module.loadList.push( module );
+				
+				console.log( _engine.module.loadList );
+				
 				_engine.tools.moduleExists(module,function( exists ){
-					if(!exists){
-						
-						/* download */
-						
-						_engine.tools.define(module,function(){
-							loadList.splice(loadList.indexOf(module));
-						});
-					}
-					else {
-						loadList.splice(loadList.indexOf(module));
-					}
+					if(!exists)
+						if(!alreadyLoading)
+							_engine.module.download( module, _engine.module.loadList.splice( _engine.module.loadList.indexOf( module ) ) );
+					else
+						_engine.module.loadList.splice(_engine.module.loadList.indexOf(module));
 				});
 			});
 
 			let wait = setInterval(function(){
-				if(!loadList.length){
+				if(!_engine.module.loadList.length){
 					if(_engine.tools.isFunction( callback )) callback();
 					clearInterval( wait );
 				}
 				else {
-					console.log( "Loading... ", loadList );
+					console.log( "Loading... ", _engine.module.loadList );
 				}
 			},25);
 			
 		},
 		
+		loadList : [],
+		
+		timeout: {
+			clock: null,
+			start: function(){
+				clearInterval(_engine.module.timeout.clock);
+				_engine.module.timeout.clock = setInterval(function(){
+					if(!_engine.module.loadList.length){
+						//if(_engine.tools.isFunction( callback )) callback();
+						console.log( "Module queue clear" );
+						_engine.module.timeout.clear();
+					}
+					else {
+						console.log( "Loading... ", _engine.module.loadList );
+					}
+				},25);
+			},
+			clear: function(){
+				clearInterval(_engine.module.timeout.clock);
+			}
+		},
 		
 		/* DEPRECATED LOADING FUNCTIONS */
 		
@@ -368,6 +385,8 @@ var _engine = {
 			});
 
 		},
+		
+		
 		
 		/* Loads a specified script file */
 		
