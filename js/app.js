@@ -282,7 +282,11 @@ var _engine = {
 		
 		define: function( module, reqs, definition ){
 			
-			if(typeof(reqs) === 'undefined') reqs = [];
+			if(_engine.tools.isFunction(reqs) && typeof(definition) === 'undefined'){
+				definition = reqs;
+				reqs = [];
+				console.warn("Using deprecated definition style on module " + module);
+			}
 			
 			let def = _engine.tools.splitArg( module ),
 					root = _engine,
@@ -315,7 +319,7 @@ var _engine = {
 		
 		require: function( modules, callback ){
 			$.each(modules,function(key, module){
-				let alreadyLoading = _engine.module.loadList.indexOf( module );
+				let alreadyLoading = _engine.module.loadList.indexOf( module ) > -1;
 				if(!alreadyLoading) _engine.module.loadList.push( module );
 				
 				console.log( _engine.module.loadList );
