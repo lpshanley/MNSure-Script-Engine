@@ -268,33 +268,29 @@ var _engine = {
 	
 	module: {
 		
-		define: function(module,callback){
-	
-			let downloadModule = function(){
-				let baseUrl = _engine.storage.config.get('advanced.baseUrl');
-				let req = baseUrl + "js/modules/" + _engine.tools.parseToUrl(module) + ".js";
-				$.ajax({
-					dataType: 'script',
-					url: req,
-					success: function(){
-
-						if(_engine.tools.isFunction(callback)) callback();
-
-					}
-				});
-			}
+		download: function( module, callback ){
+			let baseUrl = _engine.storage.config.get('advanced.baseUrl');
+			let req = baseUrl + "js/modules/" + _engine.tools.parseToUrl(module) + ".js";
+			$.ajax({
+				dataType: 'script',
+				url: req,
+				success: function(){
+					if(_engine.tools.isFunction(callback)) callback();
+				}
+			});
+		},
+		
+		define: function( module, definition ){
 
 			let def = _engine.tools.splitArg( module ),
 					root = _engine,
 					last = def.length - 1;
 
-			let func = function(){ console.log("DEFINED"); }
-
 			$.each(def,function(key,path){
 				if(typeof(root[path]) === 'undefined') root[path] = {};
 
 				key === last ?
-					root[path] = downloadModule() :
+					root[path] = definition :
 					root = root[path];
 
 			});
@@ -322,6 +318,9 @@ var _engine = {
 				console.log( loadList );
 				_engine.tools.moduleExists(module,function( exists ){
 					if(!exists){
+						
+						/* download */
+						
 						_engine.tools.define(module,function(){
 							loadList.splice(loadList.indexOf(module));
 						});
