@@ -333,21 +333,16 @@ var _engine = {
 			});
 
 			let wait = setInterval(function(){
-
-				console.log( reqs );
-
-				$.each(reqs, function(k,module){
-					console.log( module );
+				let verify = reqs;
+				$.each(verify, function(k,module){
 					_engine.module.exists(module,function(exists){
 						if(exists) reqs.splice( reqs.indexOf( module, 1 ) );
 					});
 				});
-
 				if(reqs.length === 0){
 					if(_engine.tools.isFunction( callback )) callback();
 					clearInterval( wait );
 				}
-
 			}, 50);
 			
 		},
