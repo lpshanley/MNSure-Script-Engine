@@ -293,14 +293,9 @@ var _engine = {
 			$.each(def,function(key,path){
 				if(typeof(root[path]) === 'undefined') root[path] = {};
 
-				if(key === last){
-					if( _engine.tools.isFunction( module ) ) {
-						root[path] = module;
-						if(_engine.tools.isFunction(callback)) callback();
-					}
-					else root[path] = downloadModule();
-				}
-				else root = root[path];
+				key === last ?
+					root[path] = downloadModule() :
+					root = root[path];
 
 			});
 			
