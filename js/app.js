@@ -21,12 +21,23 @@ var _engine = {
 		/********************************************************************/
 		
 		_startUp: function() {
+			
+			$('#script-launcher a').contextmenu(function(e){
+					// Prevent context menu pop-up
+				e.preventDefault();
+					// Open Case Search
+				_engine.search._case();
+					// Open Person Search
+				_engine.search._person();
+			});
+			
 			/* Runs the callback after all modules have been requested */
-			_engine.module.loadRequired(function(){
+			
+			//_engine.module.loadRequired(function(){
 				
-				_engine.debug.info('All modules have loaded.');
+				//_engine.debug.info('All modules have loaded.');
 
-				_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
+				//_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
 
 				/* Loaded
 				/* Scripts Main Button
@@ -35,37 +46,39 @@ var _engine = {
 				//********** Right Click **********//
 				// Performs Quick Load of Searches
 				
-				$('#script-launcher a').contextmenu(function(e){
+				//$('#script-launcher a').contextmenu(function(e){
 
 						// Prevent context menu pop-up
-					e.preventDefault();
+					//e.preventDefault();
 
 						// Open Case Search
-					_engine.search._case();
+					//_engine.search._case();
 
 						// Open Person Search
-					_engine.search._person();
+					//_engine.search._person();
 
-				});
+				//});
 
-				var version = _engine.storage.config.get('commit.current');
+				//var version = _engine.storage.config.get('commit.current');
 
-				version === 'master' ?
-					_engine.storage.debugStatus.set( false ):
-					_engine.storage.debugStatus.set( true );
+				//version === 'master' ?
+				//	_engine.storage.debugStatus.set( false ):
+				//	_engine.storage.debugStatus.set( true );
 				
-				_engine.storage.prefillCache.clear();
+				//_engine.storage.prefillCache.clear();
 				
-				_engine.ui.topNotification.add(`Script Library: ${version}`);
+				//_engine.ui.topNotification.add(`Script Library: ${version}`);
 				
 				//Dynamic Ticket Notifs (10s)
-				setInterval(function(){
+				//setInterval(function(){
 					
-					_engine.ui.topNotification.remove("Session Expiry");
-					_engine.ui.topNotification.add( `Session Expiry - ${ _engine.advanced._sessionExpiry() }` );
+					//_engine.ui.topNotification.remove("Session Expiry");
+					//_engine.ui.topNotification.add( `Session Expiry - ${ _engine.advanced._sessionExpiry() }` );
 					
-				},10000);
+				//},10000);
 				
+				let version = 'beta';
+			
 				if( version !== 'master' && version !== 'beta' ){
 					
 					$.ajax({
@@ -79,22 +92,22 @@ var _engine = {
 					
 				}
 				
-				_engine.ui.dom.prepUI(function(){
+				//_engine.ui.dom.prepUI(function(){
 					
-					_engine.ui.topNotification.run();
+					//_engine.ui.topNotification.run();
 					
 						//Build out menu
-					_engine.ui.scriptMenu.refresh();
+					//_engine.ui.scriptMenu.refresh();
 					
-					_engine.events.domMonitor();
+					//_engine.events.domMonitor();
 						
-					$('.scripts-link, .center-box').removeAttr('style');
+					//$('.scripts-link, .center-box').removeAttr('style');
 					
-					_engine.advanced.setupTimeoutAlert();
+					//_engine.advanced.setupTimeoutAlert();
 					
-				});
+				//});
 				
-			});
+			//});
 			
 		},
 
@@ -216,14 +229,132 @@ var _engine = {
 	},
 	
 	//**************//
+	//*   Tools    *//
+	//**************//
+	
+	tools: {
+		
+		regex: {
+			stripComment: /\/\*[\s\S]*?\*\/|([^:"'=]|^)\/\/.*$/mg,
+			stripArgs: /(.+\()|(\".+)|(\).+)|[}]/mg,
+			splitQuery: /[\|\/\\\.]/g
+		},
+		
+		splitArg:  function( input ){
+			return input.replace(/(^\/)|(\/$)/g,"").split( regex.splitQuery );
+		},
+		
+		parseToUrl: function( input ){
+			return input.replace(regex.splitQuery,"/").replace(/(^\/)|(\/$)/g,"");
+		},
+
+		isFunction: function( input ){
+			return Object.prototype.toString.call( input ) === "[object Function]";
+		},
+
+		isArray: function( input ){
+			return Object.prototype.toString.call( input ) === "[object Array]";
+		},
+
+		isUndefined: function( input ){
+			return Object.prototype.toString.call( input ) === "[object Undefined]";
+		}
+		
+	},
+	
+	//**************//
 	//*   Module   *//
 	//**************//
 	
 	module: {
 		
+		define: function(module,callback){
+	
+			let downloadModule = function(){
+				let baseUrl = _engine.storage.config.get('advanced.baseUrl');
+				let req = baseUrl + "js/modules/" + _engine.tools.parseToUrl(module) + ".js";
+				$.ajax({
+					dataType: 'script',
+					url: req,
+					success: function(){
+
+						if(_engine.tools.isFunction(callback)) callback();
+
+					}
+				});
+			}
+
+			let def = _engine.tools.splitArg( module ),
+					root = _engine,
+					last = def.length - 1;
+
+			let func = function(){ console.log("DEFINED"); }
+
+			$.each(def,function(key,path){
+				if(typeof(root[path]) === 'undefined') root[path] = {};
+
+				if(key === last){
+					if( _engine.tools.isFunction( module ) ) {
+						root[path] = module;
+						if(_engine.tools.isFunction(callback)) callback();
+					}
+					else root[path] = downloadModule();
+				}
+				else root = root[path];
+
+			});
+			
+		},
+		
+		moduleExists: function( module, callback ){
+			let modArray = _engine.tools.splitArg( module ),
+					root = _engine,
+					exists = true;
+			for( i=0, len = modArray.length; i < len; i++){
+				root = root[modArray[i]];
+				if( _engine.tools.isUndefined(root) ){
+					exists = false;
+					break;
+				}
+			}
+			if(_engine.tools.isFunction(callback)) callback(exists);
+		},
+		
+		require: function( modules, callback ){
+			let loadList = [];
+			$.each(modules,function(key, module){
+				loadList.push(module);
+				console.log( loadList );
+				_engine.tools.moduleExists(module,function( exists ){
+					if(!exists){
+						_engine.tools.define(module,function(){
+							loadList.splice(loadList.indexOf(module));
+						});
+					}
+					else {
+						loadList.splice(loadList.indexOf(module));
+					}
+				});
+			});
+
+			let wait = setInterval(function(){
+				if(!loadList.length){
+					console.log( loadList );
+					clearInterval( wait );
+				}
+				else {
+					console.log( "Loading... ", loadList );
+				}
+			},25);
+			
+		},
+		
+		
+		/* DEPRECATED LOADING FUNCTIONS */
+		
 		/* Allows definition of functions in modular files */
 		
-		define: function( dir, module ){
+		DEP_define: function( dir, module ){
 
 			dir = dir.split('/');
 			let last = (dir.length - 1);
@@ -244,7 +375,7 @@ var _engine = {
 		
 		/* Loads a specified script file */
 		
-		require: function( module ){
+		DEP_require: function( module ){
 			
 			let baseUrl = _engine.storage.config.get('advanced.baseUrl');
 			
@@ -270,7 +401,7 @@ var _engine = {
 		},
 		
 		/* Performs loading of all modules declared in the config */
-		
+		/*
 		loadRequired( callback, dirArray, moduleArray ){
 			
 			let pathArray = [];
@@ -357,10 +488,10 @@ var _engine = {
 				}
 			}
 		},
-		
+		*/
 		/* Set Counter to test that all scripts have loaded */
 		
-		_defineUnloaded: function( remainder ){
+		DEP__defineUnloaded: function( remainder ){
 			_engine.storage.config.set({
 				advanced: {
 					modules: {
@@ -372,7 +503,7 @@ var _engine = {
 		
 		/* Reduce counter as scripts load */
 		
-		_markLoaded: function(){
+		DEP__markLoaded: function(){
 			let unloaded = _engine.storage.config.get('advanced.modules.unloaded') - 1;
 			
 			if( unloaded === 0 ){
