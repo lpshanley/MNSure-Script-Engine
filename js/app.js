@@ -232,6 +232,10 @@ var _engine = {
 
 		isUndefined: function( input ){
 			return Object.prototype.toString.call( input ) === "[object Undefined]";
+		},
+		
+		isObject: function( input ){
+			return Object.prototype.toString.call( input ) === "[object Object]";
 		}
 		
 	},
@@ -257,7 +261,7 @@ var _engine = {
 		},
 		
 		define: function( module, reqs, definition ){
-			if(_engine.tools.isFunction(reqs) && typeof(definition) === 'undefined'){
+			if( (_engine.tools.isFunction(reqs) || _engine.tools.isObject(reqs)) && _engine.tools.isUndefined( definition )){
 				definition = reqs;
 				reqs = [];
 			}
