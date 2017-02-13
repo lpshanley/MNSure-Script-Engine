@@ -286,7 +286,6 @@ var _engine = {
 		},
 		
 		exists: function( module, callback ){
-			console.log( 'Exist Check: ' + module );
 			let modArray = _engine.tools.splitArg( module ),
 					root = _engine,
 					exists = true;
@@ -310,8 +309,6 @@ var _engine = {
 				_engine.module.exists($array[0],function( exists ){
 					
 					if(exists) $array.splice( $array.indexOf( $array[0] ), 1 );
-					
-					console.log(loopCounter, $array);
 					
 					if($array.length === 0 ){
 						if(_engine.tools.isFunction( $callback )) $callback();
