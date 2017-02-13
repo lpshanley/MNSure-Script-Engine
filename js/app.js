@@ -22,7 +22,9 @@ var _engine = {
 		
 		_startUp: function() {
 			
-			_engine.module.require(['search/_case','search/_person'],function(){
+			_engine.module.require(['search/_case','search/_person','ui/topNotification','storage/debugStatus'],function(){
+				
+				//_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
 				
 				$('#script-launcher a').contextmenu(function(e){
 						// Prevent context menu pop-up
@@ -33,7 +35,23 @@ var _engine = {
 					_engine.search._person();
 				});
 				
-				let version = 'beta';
+				//Dynamic Ticker Notifs (10s)
+				setInterval(function(){
+					
+					_engine.ui.topNotification.remove("Session Expiry");
+					_engine.ui.topNotification.add( `Session Expiry - ${ _engine.advanced._sessionExpiry() }` );
+					
+				},10000);
+				
+				let version = _engine.storage.config.get('commit.current');
+				
+				_engine.storage.prefillCache.clear();
+				
+				_engine.ui.topNotification.add(`Script Library: ${version}`);
+				
+				version === 'master' ?
+					_engine.storage.debugStatus.set( false ):
+					_engine.storage.debugStatus.set( true );
 				
 				if( version !== 'master' && version !== 'beta' ){
 					
@@ -47,54 +65,6 @@ var _engine = {
 					});
 					
 				}
-				
-			});
-			
-			/* Runs the callback after all modules have been requested */
-			
-			//_engine.module.loadRequired(function(){
-				
-				//_engine.debug.info('All modules have loaded.');
-
-				//_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
-
-				/* Loaded
-				/* Scripts Main Button
-				========================*/
-
-				//********** Right Click **********//
-				// Performs Quick Load of Searches
-				
-				//$('#script-launcher a').contextmenu(function(e){
-
-						// Prevent context menu pop-up
-					//e.preventDefault();
-
-						// Open Case Search
-					//_engine.search._case();
-
-						// Open Person Search
-					//_engine.search._person();
-
-				//});
-
-				//var version = _engine.storage.config.get('commit.current');
-
-				//version === 'master' ?
-				//	_engine.storage.debugStatus.set( false ):
-				//	_engine.storage.debugStatus.set( true );
-				
-				//_engine.storage.prefillCache.clear();
-				
-				//_engine.ui.topNotification.add(`Script Library: ${version}`);
-				
-				//Dynamic Ticket Notifs (10s)
-				//setInterval(function(){
-					
-					//_engine.ui.topNotification.remove("Session Expiry");
-					//_engine.ui.topNotification.add( `Session Expiry - ${ _engine.advanced._sessionExpiry() }` );
-					
-				//},10000);
 				
 				//_engine.ui.dom.prepUI(function(){
 					
@@ -111,7 +81,7 @@ var _engine = {
 					
 				//});
 				
-			//});
+			});
 			
 		},
 
@@ -272,6 +242,8 @@ var _engine = {
 	
 	module: {
 		
+		loadList : [],
+		
 		download: function( module ){
 			let baseUrl = _engine.storage.config.get('advanced.baseUrl');
 			let req = baseUrl + "js/modules/" + _engine.tools.parseToUrl(module) + ".js";
@@ -361,172 +333,6 @@ var _engine = {
 
 			if(reqs.length) process(reqs,callback);
 			else if( _engine.tools.isFunction( callback )) callback();
-			
-		},
-		
-		loadList : [],
-		
-		/* DEPRECATED LOADING FUNCTIONS */
-		
-		/* Allows definition of functions in modular files */
-		
-		DEP_define: function( dir, module ){
-
-			dir = dir.split('/');
-			let last = (dir.length - 1);
-
-			let obj = _engine;
-
-			$.each(dir,function(key,value){
-
-				if(typeof obj[value] === 'undefined') obj[value] = {};
-
-				key === last?
-					obj[value] = module:
-					obj = obj[value];
-
-			});
-
-		},
-		
-		/* Loads a specified script file */
-		
-		DEP_require: function( module ){
-			
-			let baseUrl = _engine.storage.config.get('advanced.baseUrl');
-			
-			let req = baseUrl + module;
-			
-			$.ajax({
-				dataType: 'script',
-				url: req,
-				success: function(){
-					
-					_engine.module._markLoaded();
-					
-					if( _engine.storage.fallbackCache.cacheable() ){
-						if(_engine.storage.fallbackCache.get()[_engine.storage.config.get('commit.current')].modules.indexOf( module ) === -1 ){
-							_engine.storage.fallbackCache.addModule( module );
-						}
-					}
-					
-					let remaining = _engine.storage.config.get('advanced.modules.unloaded');
-					
-				}
-			});
-		},
-		
-		/* Performs loading of all modules declared in the config */
-		/*
-		loadRequired( callback, dirArray, moduleArray ){
-			
-			let pathArray = [];
-			
-			if(_engine.storage.fallbackCache.fallbackStatus()){
-				
-				console.info('Fallback Cache is current. Using cache to load file list.');
-				
-				moduleArray = _engine.storage.fallbackCache.get()[_engine.storage.config.get('commit.current')].modules;
-				
-			} else {
-				
-				if(typeof moduleArray === 'undefined'){
-					if( _engine.storage.fallbackCache.cacheable() ){
-						console.info('Fallback Cache is out of date. Updating fallback cache.');
-					}
-					else {
-						console.info('Script verion is not cacheable. Requesting module list from github.');
-					}
-				}
-				
-				let api = 'https://api.github.com/repos/lpshanley/MNSure-Script-Engine/contents/';
-			
-				let refParam = "?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1&ref=" + _engine.storage.config.get('commit.current');
-
-				if(typeof dirArray === 'undefined') dirArray = ['js/modules/'];
-				if(typeof moduleArray === 'undefined') moduleArray = [];
-
-				$.each( dirArray, function(key, value){
-
-					let req = api + value;
-
-					if(req.charAt( req.length-1 ) === '/') req = req.substring(0,req.length-1); 
-
-					req += refParam;
-
-					$.ajax({
-						async: false,
-						dataType: 'json',
-						url: req,
-						success: function(data){
-							$.each(data,function(key,value){
-
-								if( value.type === 'file' ) moduleArray.push( value.path );
-								if( value.type === 'dir' ) pathArray.push( value.path );
-
-							});
-						}
-					});
-
-				});
-
-				if( pathArray.length > 0 ) _engine.module.loadRequired( callback, pathArray, moduleArray );
-				
-			}
-			
-			if( pathArray.length === 0 ){
-				
-				_engine.module._defineUnloaded( moduleArray.length );
-				
-				$.each(moduleArray, function(key, module){
-					
-					_engine.module.require( module );
-					
-				});
-				
-				if( typeof callback === 'function'){
-					var counter = 0;
-					var loadModules = setInterval(function(){
-						if( counter < 400 ){
-							var unloaded = _engine.storage.config.get('advanced.modules.unloaded');
-							if (unloaded === 0){
-								callback();
-								clearInterval(loadModules);
-							}
-							counter++;
-						} else {
-							clearInterval( loadModules );
-						}
-					},25);
-					
-					loadModules;
-					
-				}
-			}
-		},
-		*/
-		/* Set Counter to test that all scripts have loaded */
-		
-		DEP__defineUnloaded: function( remainder ){
-			_engine.storage.config.set({
-				advanced: {
-					modules: {
-						unloaded: remainder
-					}
-				}
-			});
-		},
-		
-		/* Reduce counter as scripts load */
-		
-		DEP__markLoaded: function(){
-			let unloaded = _engine.storage.config.get('advanced.modules.unloaded') - 1;
-			
-			if( unloaded === 0 ){
-				_engine.storage.fallbackCache.fallbackStatus( true );
-			}
-			
-			_engine.module._defineUnloaded( unloaded );
 			
 		}
 		
