@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('advanced/setupTimeoutAlert',function(){
+_engine.module.define('advanced/setupTimeoutAlert', ['debug/info', 'ui/modal/build', 'storage/nocache', 'advanced/_sessionRemaining'], function(){
 	
 	let timeoutBuffer = 180000;
 
