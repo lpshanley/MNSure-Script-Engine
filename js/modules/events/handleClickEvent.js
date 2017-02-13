@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('events/handleClickEvent',function( req ){
+_engine.module.define('events/handleClickEvent',['tools/stringToQuery','debug/info'],function( req ){
 	
 	req = _engine.tools.stringToQuery( req );
 	
