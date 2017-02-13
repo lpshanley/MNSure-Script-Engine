@@ -22,13 +22,32 @@ var _engine = {
 		
 		_startUp: function() {
 			
-			$('#script-launcher a').contextmenu(function(e){
-					// Prevent context menu pop-up
-				e.preventDefault();
-					// Open Case Search
-				_engine.search._case();
-					// Open Person Search
-				_engine.search._person();
+			_engine.module.require(['search/_case','search/_person'],function(){
+				
+				$('#script-launcher a').contextmenu(function(e){
+						// Prevent context menu pop-up
+					e.preventDefault();
+						// Open Case Search
+					_engine.search._case();
+						// Open Person Search
+					_engine.search._person();
+				});
+				
+				let version = 'beta';
+				
+				if( version !== 'master' && version !== 'beta' ){
+					
+					$.ajax({
+						url: 'https://api.github.com/rate_limit?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1',
+						dataType: 'json',
+						async: false,
+						success: function( data ){
+							_engine.ui.topNotification.add(`Calls Remaining: ${data.resources.core.remaining}`);
+						}
+					});
+					
+				}
+				
 			});
 			
 			/* Runs the callback after all modules have been requested */
@@ -76,21 +95,6 @@ var _engine = {
 					//_engine.ui.topNotification.add( `Session Expiry - ${ _engine.advanced._sessionExpiry() }` );
 					
 				//},10000);
-				
-				let version = 'beta';
-			
-				if( version !== 'master' && version !== 'beta' ){
-					
-					$.ajax({
-						url: 'https://api.github.com/rate_limit?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1',
-						dataType: 'json',
-						async: false,
-						success: function( data ){
-							_engine.ui.topNotification.add(`Calls Remaining: ${data.resources.core.remaining}`);
-						}
-					});
-					
-				}
 				
 				//_engine.ui.dom.prepUI(function(){
 					
@@ -275,17 +279,18 @@ var _engine = {
 				dataType: 'script',
 				url: req,
 				success: function(){
-					_engine.module.loadList.splice( _engine.module.loadList.indexOf( module ) );
+					_engine.module.loadList.splice( _engine.module.loadList.indexOf( module ), 1 );
 				}
 			});
 		},
 		
 		define: function( module, reqs, definition ){
-			
 			if(_engine.tools.isFunction(reqs) && typeof(definition) === 'undefined'){
 				definition = reqs;
 				reqs = [];
 			}
+			
+			_engine.module.require(reqs);
 			
 			let def = _engine.tools.splitArg( module ),
 					root = _engine,
@@ -293,16 +298,19 @@ var _engine = {
 			
 			$.each(def,function(key,path){
 				if(typeof(root[path]) === 'undefined') root[path] = {};
-
+				
 				key === last ?
 					root[path] = definition :
 					root = root[path];
 
 			});
 			
+			
+			
 		},
 		
 		exists: function( module, callback ){
+			console.log( 'Exist Check: ' + module );
 			let modArray = _engine.tools.splitArg( module ),
 					root = _engine,
 					exists = true;
@@ -317,8 +325,27 @@ var _engine = {
 		},
 		
 		require: function( modules, callback ){
-			
-			let reqs = [];
+				
+			let loopCounter = 0,
+					reqs = [];
+				
+			let process = function($array, $callback){
+				loopCounter++;
+				_engine.module.exists($array[0],function( exists ){
+					
+					if(exists) $array.splice( $array.indexOf( $array[0] ), 1 );
+					
+					console.log(loopCounter, $array);
+					
+					if($array.length === 0 ){
+						if(_engine.tools.isFunction( $callback )) $callback();
+					}
+					else {
+						if( loopCounter < 400 ) setTimeout(function(){ process($array,$callback) }, 25);
+						else _engine.debug.error('Timeout on [module/require]: ', $array);
+					}
+				});
+			}
 			
 			$.each(modules,function(key, module){
 				_engine.module.exists(module,function( exists ){
@@ -331,37 +358,9 @@ var _engine = {
 					}
 				});
 			});
-			
-			if(reqs.length){
-				let wait = setInterval(function(){
-					
-					let verify = reqs;
-					
-					console.log("Start: ", verify, reqs);
-					
-					$.each(reqs, function(k,mod){
-						console.log(mod,reqs);
-						_engine.module.exists(mod,function(exists){
-							if(exists) {
-								console.log( "Before: ", mod, verify );
-								
-								verify.splice( verify.indexOf( mod ) );
-								console.log( "After: ", mod, verify );
-							}
-						});
-					});
-					
-					reqs = verify;
-					
-					console.log("End: ", verify, reqs);
-					
-					if(reqs.length === 0){
-						if(_engine.tools.isFunction( callback )) callback();
-						clearInterval( wait );
-					}
-				}, 50);
-			}
-			else if(_engine.tools.isFunction( callback )) callback();
+
+			if(reqs.length) process(reqs,callback);
+			else if( _engine.tools.isFunction( callback )) callback();
 			
 		},
 		
