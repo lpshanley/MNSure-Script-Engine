@@ -22,7 +22,7 @@ var _engine = {
 		
 		_startUp: function() {
 			
-			_engine.module.require(['search/_case','search/_person','ui/topNotification','storage/debugStatus','advanced/_sessionExpiry'],function(){
+			_engine.module.require(['search/_case','search/_person','ui/topNotification','storage/debugStatus', 'storage/prefillCache','advanced/_sessionExpiry'],function(){
 				
 				//_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
 				
