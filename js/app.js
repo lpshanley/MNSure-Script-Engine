@@ -22,7 +22,7 @@ var _engine = {
 		
 		_startUp: function() {
 			
-			_engine.module.require(['search/_case','search/_person','ui/topNotification','storage/debugStatus', 'storage/prefillCache','advanced/_sessionExpiry'],function(){
+			_engine.module.require(['search/_case','search/_person', 'events/domMonitor', 'ui/topNotification','ui/dom/prepUI', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/_sessionExpiry', 'advanced/setupTimeoutAlert'],function(){
 				
 				//_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
 				
@@ -66,20 +66,20 @@ var _engine = {
 					
 				}
 				
-				//_engine.ui.dom.prepUI(function(){
+				_engine.ui.dom.prepUI(function(){
 					
-					//_engine.ui.topNotification.run();
+					_engine.ui.topNotification.run();
 					
 						//Build out menu
-					//_engine.ui.scriptMenu.refresh();
+					_engine.ui.scriptMenu.refresh();
 					
-					//_engine.events.domMonitor();
+					_engine.events.domMonitor();
 						
-					//$('.scripts-link, .center-box').removeAttr('style');
+					$('.scripts-link, .center-box').removeAttr('style');
 					
-					//_engine.advanced.setupTimeoutAlert();
+					_engine.advanced.setupTimeoutAlert();
 					
-				//});
+				});
 				
 			});
 			
