@@ -50,7 +50,7 @@ _engine.module.define('ui/dom',[],{
 
 	},
 
-	interfaceAlterations: function( pageObj ){
+	interfaceAlteration: function( pageObj ){
 		
 		let tabParams;
 	
