@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('domTools/test/mainTabType',function( req ){
+_engine.module.define('domTools/test/mainTabType', ['domTools/get/mainTabActive'], function( req ){
 
 	let label = dijit.registry.byNode( _engine.domTools.get.mainTabActive() ).label;
 	
