@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('ui/topNotification',['advanced/_vars'],{
+_engine.module.define('ui/topNotification',['advanced/vars'],{
 	
 	add: function( msg ){
 		
