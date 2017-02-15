@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('domTools/test/hcrTabType',function( tab ){
+_engine.module.define('domTools/test/hcrTabType', ['domTools/get/hcrTabActive','debug/warn'],function( tab ){
 	
 	let returnVal = false,
 			err = '';
