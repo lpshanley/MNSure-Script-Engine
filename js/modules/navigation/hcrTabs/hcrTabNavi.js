@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('navigation/hcrTabs/hcrTabNavi',function( tabTitle, callback ){
+_engine.module.define('navigation/hcrTabs/hcrTabNavi', ['domTools/get/hcrTabActive', 'domTools/get/hcrTabList', 'domTools/get/hcrTabFrame', 'debug/info'], function( tabTitle, callback ){
 
 	_engine.debug.info('=================== Starting HCR Tab Navigation. ===================');
 

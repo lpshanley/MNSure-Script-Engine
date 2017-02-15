@@ -17,7 +17,7 @@ var _engine = {
 	
 	events: {
 		
-		/* Cannot move _startUp into a module
+		/* Cannot move startUp into a module
 		/********************************************************************/
 		
 		startUp: function() {
