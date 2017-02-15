@@ -1,4 +1,4 @@
-_engine.module.define('ui/dom',[],{
+_engine.module.define('ui/dom',['domTools/get/icFrame/icTabList'],{
 	
 	createElement: function( input ){
 		
