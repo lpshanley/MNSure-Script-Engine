@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('events/domMonitor',function(){
+_engine.module.define('events/domMonitor', ['advanced/_vars','events/tabEventHandler'],function(){
 	
 	if( typeof _engine.advanced._vars.lastTab === 'undefined' ) _engine.advanced._vars.lastTab = null;
 	
