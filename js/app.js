@@ -22,9 +22,9 @@ var _engine = {
 		
 		startUp: function() {
 			
-			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert'],function(){
+			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons'],function(){
 				
-				//_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
+				_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
 				
 				$('#script-launcher a').contextmenu(function(e){
 						// Prevent context menu pop-up
@@ -35,6 +35,8 @@ var _engine = {
 					_engine.search.person();
 				});
 				
+				_engine.storage.prefillCache.clear();
+				
 				//Dynamic Ticker Notifs (10s)
 				setInterval(function(){
 					
@@ -43,17 +45,18 @@ var _engine = {
 					
 				},10000);
 				
-				let version = _engine.storage.config.get('commit.current');
-				
-				_engine.storage.prefillCache.clear();
-				
+				let version = _engine.storage.config.get('commit.current'),
+						commit = _engine.storage.config.get('commit.' + version);
+					
 				_engine.ui.topNotification.add(`Script Library: ${version}`);
 				
 				version === 'master' ?
 					_engine.storage.debugStatus.set( false ):
 					_engine.storage.debugStatus.set( true );
-				
+					
 				if( version !== 'master' && version !== 'beta' ){
+					
+					_engine.ui.topNotification.add(`Loaded commit: ${commit}`);
 					
 					$.ajax({
 						url: 'https://api.github.com/rate_limit?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1',
