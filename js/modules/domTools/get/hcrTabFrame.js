@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('domTools/get/hcrTabFrame',function( _tab ){
+_engine.module.define('domTools/get/hcrTabFrame', ['domTools/test/mainTabType','domTools/get/hcrTabList'],function( _tab ){
 	
 	let returnVal = false;
 	
