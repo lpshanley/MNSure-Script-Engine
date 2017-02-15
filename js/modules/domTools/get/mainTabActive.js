@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('domTools/get/mainTabActive',function(){
+_engine.module.define('domTools/get/mainTabActive', ['domTools/get/mainTabList'], function(){
 	
 	let returnVal = false;
 	
