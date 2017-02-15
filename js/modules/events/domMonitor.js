@@ -6,9 +6,9 @@ _engine.module.define('events/domMonitor', ['advanced/_vars','events/tabEventHan
 	// Trips event monitor on navigation
 	$( document ).on('click', '.dijitTabListWrapper .visible.dijitTab',function(){ 
 	
-		if( _engine.advanced._vars.lastTab !== this ){
+		if( _engine.advanced.vars.lastTab !== this ){
 			
-			_engine.advanced._vars.lastTab = this;
+			_engine.advanced.vars.lastTab = this;
 			
 			_engine.events.tabEventHandler( this );
 			
@@ -19,9 +19,9 @@ _engine.module.define('events/domMonitor', ['advanced/_vars','events/tabEventHan
 	// Trips event monitor when new tab is created as system auto navigates to the new tab
 	$( '.dijitTabListWrapper' ).on('DOMSubtreeModified', '.visible.dijitTab',function(){
 		
-		if( _engine.advanced._vars.lastTab !== this ){
+		if( _engine.advanced.vars.lastTab !== this ){
 			
-			_engine.advanced._vars.lastTab = this;
+			_engine.advanced.vars.lastTab = this;
 			
 			_engine.events.tabEventHandler( this );
 			

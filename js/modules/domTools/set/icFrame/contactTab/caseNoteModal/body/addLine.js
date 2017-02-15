@@ -3,7 +3,7 @@ _engine.module.define('domTools/set/icFrame/contactTab/caseNoteModal/body/addLin
 	
 	if( typeof input !== 'string' ) input = "";
 	
-	let body = _engine.domTools.get.icFrame.contactTab.caseNoteModal._body(),
+	let body = _engine.domTools.get.icFrame.contactTab.caseNoteModal.body(),
 			line = $('<div>',{'html': input }),
 			err = false;
 	

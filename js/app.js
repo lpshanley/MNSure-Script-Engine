@@ -20,7 +20,7 @@ var _engine = {
 		/* Cannot move _startUp into a module
 		/********************************************************************/
 		
-		_startUp: function() {
+		startUp: function() {
 			
 			_engine.module.require(['search/_case','search/_person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/_sessionExpiry', 'advanced/setupTimeoutAlert'],function(){
 				
@@ -30,16 +30,16 @@ var _engine = {
 						// Prevent context menu pop-up
 					e.preventDefault();
 						// Open Case Search
-					_engine.search._case();
+					_engine.search.case();
 						// Open Person Search
-					_engine.search._person();
+					_engine.search.person();
 				});
 				
 				//Dynamic Ticker Notifs (10s)
 				setInterval(function(){
 					
 					_engine.ui.topNotification.remove("Session Expiry");
-					_engine.ui.topNotification.add( `Session Expiry - ${ _engine.advanced._sessionExpiry() }` );
+					_engine.ui.topNotification.add( `Session Expiry - ${ _engine.advanced.sessionExpiry() }` );
 					
 				},10000);
 				
@@ -95,7 +95,7 @@ var _engine = {
 		
 		/* Config Storage Model and _data cannot be relocated */
 		
-		_data: {
+		data: {
 			encode: function( input ){
 				return encodeURIComponent( JSON.stringify( input ) );
 			},
@@ -107,7 +107,7 @@ var _engine = {
 		config: {
 			get: function( reqString ){
 				
-				let config = _engine.storage._data.decode( window.localStorage.mnsEngine_Config );
+				let config = _engine.storage.data.decode( window.localStorage.mnsEngine_Config );
 				
 				if(typeof reqString === "string"){ 
 					
@@ -131,7 +131,7 @@ var _engine = {
 
 				$.extend(true,config,obj);
 
-				window.localStorage.mnsEngine_Config = _engine.storage._data.encode( config );
+				window.localStorage.mnsEngine_Config = _engine.storage.data.encode( config );
 				
 			}
 		},
@@ -140,7 +140,7 @@ var _engine = {
 			
 			get: function(){
 				
-				return _engine.storage._data.decode( window.localStorage.mnsEngine_fallbackCache );
+				return _engine.storage.data.decode( window.localStorage.mnsEngine_fallbackCache );
 				
 			},
 			
@@ -154,7 +154,7 @@ var _engine = {
 
 					fallbackCache[currentCommit].modules.push( module );
 
-					window.localStorage.mnsEngine_fallbackCache = _engine.storage._data.encode( fallbackCache );
+					window.localStorage.mnsEngine_fallbackCache = _engine.storage.data.encode( fallbackCache );
 
 				}
 				
@@ -174,7 +174,7 @@ var _engine = {
 
 						fallbackCache[currentCommit].current = status;
 
-						window.localStorage.mnsEngine_fallbackCache = _engine.storage._data.encode( fallbackCache );
+						window.localStorage.mnsEngine_fallbackCache = _engine.storage.data.encode( fallbackCache );
 
 					}
 					
@@ -349,7 +349,7 @@ _engine.temp.jQloaded = setInterval(function(){
 
 	if( _engine.temp.count < 400 ){
 		if( typeof $ === 'function' ){
-			_engine.events._startUp();
+			_engine.events.startUp();
 			clearInterval(_engine.temp.jQloaded);
 			delete _engine.temp;
 		} else {

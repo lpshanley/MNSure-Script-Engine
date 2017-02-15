@@ -1,12 +1,12 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('advanced/setupTimeoutAlert', ['debug/info', 'ui/modal', 'storage/nocache', 'advanced/_sessionRemaining'], function(){
+_engine.module.define('advanced/setupTimeoutAlert', ['debug/info', 'ui/modal', 'storage/nocache', 'advanced/sessionRemaining'], function(){
 	
 	let timeoutBuffer = 180000;
 
 	_engine.debug.info('Session timeout notification set.');
 	
 	setTimeout(function(){
-		if( _engine.advanced._sessionRemaining() > timeoutBuffer ) _engine.advanced.setupTimeoutAlert();
+		if( _engine.advanced.sessionRemaining() > timeoutBuffer ) _engine.advanced.setupTimeoutAlert();
 		else {
 			_engine.ui.modal.build({
 				buttons:[
@@ -19,7 +19,7 @@ _engine.module.define('advanced/setupTimeoutAlert', ['debug/info', 'ui/modal', '
 				_engine.storage.nocache.data.modal[props.id].role = 'timeout alert';
 			});
 		}
-	}, _engine.advanced._sessionRemaining() - timeoutBuffer);
+	}, _engine.advanced.sessionRemaining() - timeoutBuffer);
 	
 	
 });

@@ -39,14 +39,14 @@ _engine.module.define('ui/scriptMenu',['events/handleClickEvent'],{
 			$.each(menu, function(k,v){
 
 				var navItem = $('<li>');
-				var navLink = $('<a>',{text: k, 'data-click': v._events });
+				var navLink = $('<a>',{text: k, 'data-click': v.events });
 
 				/* Attach anchor to list item */
 				$( navItem ).append( navLink );
 				/* Attach list item to list */
 				$( '#script-launcher-nav' ).append( navItem )
 
-				if(typeof v._submenu === "object"){
+				if(typeof v.submenu === "object"){
 
 					/* Build Subnav Menu */
 					var subnav = $('<ul>',{class: 'script-launcher-subnav'});
@@ -54,10 +54,10 @@ _engine.module.define('ui/scriptMenu',['events/handleClickEvent'],{
 					/* Attach built menu */
 					$( navItem ).append( subnav );
 
-					$.each(v._submenu, function(k2,v2){ 
+					$.each(v.submenu, function(k2,v2){ 
 
 						var navItemSub = $('<li>');
-						var navLinkSub = $('<a>',{text: k2, 'data-click': v2._events });
+						var navLinkSub = $('<a>',{text: k2, 'data-click': v2.events });
 
 						/* Attach anchor to list item */
 						$( navItemSub ).append( navLinkSub );

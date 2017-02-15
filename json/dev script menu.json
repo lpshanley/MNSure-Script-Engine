@@ -1,43 +1,43 @@
 {
 	"Unified Search": {
-		"_events": "caseWork/unifiedSearch/start()"
+		"events": "caseWork/unifiedSearch/start()"
 	},
 	"Case Notes": {
-		"_events": "",
-		"_submenu": {
+		"events": "",
+		"submenu": {
 			"Returned Mail...": {
-				"_events": "caseWork/note/write(Returned Mail)"
+				"events": "caseWork/note/write(Returned Mail)"
 			},
 			"Change Reported...": {
-				"_events": "caseWork/note/write(Change Reported)"
+				"events": "caseWork/note/write(Change Reported)"
 			},
 			"Client Contact...": {
-				"_events": "caseWork/note/write(Client Contact)"
+				"events": "caseWork/note/write(Client Contact)"
 			},
 			"Add Member...": {
-				"_events": "caseWork/note/write(Add Member)"
+				"events": "caseWork/note/write(Add Member)"
 			},
 			"Income...": {
-				"_events": "caseWork/note/write(Income)"
+				"events": "caseWork/note/write(Income)"
 			},
 			"ATS...": {
-				"_events": "caseWork/note/write(ATS)"
+				"events": "caseWork/note/write(ATS)"
 			}
 		}
 	},
 	"Tools": {
-		"_events": "",
-		"_submenu": {
+		"events": "",
+		"submenu": {
 			"ATS Mileage Rate...": {
-				"_events": "tools/getInfo(ATS Mileage)"
+				"events": "tools/getInfo(ATS Mileage)"
 			}
 		}
 	},
 	"Merlin": {
-		"_events":"",
-		"_submenu": {
+		"events":"",
+		"submenu": {
 			"Client Contact...":{
-				"_events": "caseWork/merlin/_start(client contact)"
+				"events": "caseWork/merlin/_start(client contact)"
 			}
 		}
 	}

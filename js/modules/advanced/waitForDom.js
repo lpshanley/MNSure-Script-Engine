@@ -13,7 +13,7 @@ _engine.module.define('advanced/waitForDom',function( req, callback ){
 	
 	let interval = setInterval(function(){
 		
-		if( count < _engine.advanced._vars.iterations ){
+		if( count < _engine.advanced.vars.iterations ){
 			
 			let result;
 			
@@ -39,7 +39,7 @@ _engine.module.define('advanced/waitForDom',function( req, callback ){
 			
 		} 
 		
-	}, _engine.advanced._vars.timeout);
+	}, _engine.advanced.vars.timeout);
 	
 	interval;
 	

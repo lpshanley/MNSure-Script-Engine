@@ -1,4 +1,4 @@
-_engine.module.define('caseWork/unifiedSearch',[ 'advanced/getView', 'navigation/mainTabs/mainTabNavi', 'ui/modal', 'storage/nocache', 'domTools/set/searches/fieldFill', 'tools/selectSearchResult', 'search/_case', 'search/_person'],{
+_engine.module.define('caseWork/unifiedSearch',[ 'advanced/getView', 'navigation/mainTabs/mainTabNavi', 'ui/modal', 'storage/nocache', 'domTools/set/searches/fieldFill', 'tools/selectSearchResult', 'search/case', 'search/person'],{
 	
 	start: function(){
 		
@@ -38,7 +38,7 @@ _engine.module.define('caseWork/unifiedSearch',[ 'advanced/getView', 'navigation
 
 				if( [8].indexOf( input.length ) > -1 ){
 					//Case Search
-					_engine.search._case(function(){
+					_engine.search.case(function(){
 						_engine.domTools.set.searches.fieldFill("Reference",input);
 						_engine.tools.selectSearchResult();
 					});
@@ -46,7 +46,7 @@ _engine.module.define('caseWork/unifiedSearch',[ 'advanced/getView', 'navigation
 				}
 				else if( [9,10].indexOf( input.length ) > -1 ){
 					//Person Search
-					_engine.search._person(function(){
+					_engine.search.person(function(){
 						_engine.domTools.set.searches.fieldFill("Reference",input);
 						_engine.tools.selectSearchResult();
 					});
@@ -62,7 +62,7 @@ _engine.module.define('caseWork/unifiedSearch',[ 'advanced/getView', 'navigation
 
 				let name = input.replace(/\|/g,' ').replace(' ','|').split('|');
 
-				_engine.search._person(function(){
+				_engine.search.person(function(){
 
 					console.log( name );
 

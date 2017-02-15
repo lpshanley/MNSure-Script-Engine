@@ -62,7 +62,7 @@ _engine.module.define('ui/dom',[],{
 
 		let count = 0;
 		let timeoutForLoad = setInterval(function(){
-			if( count < _engine.advanced._vars.iterations ){
+			if( count < _engine.advanced.vars.iterations ){
 
 				subnavTabs = $( '#'+tabParams.id + ' .nav-panel .nav-area-wrapper .navigation-bar-tabs .dijitTabListWrapper' );
 
@@ -90,7 +90,7 @@ _engine.module.define('ui/dom',[],{
 			else{
 				clearTimeout( timeoutForLoad );
 			}
-		}, _engine.advanced._vars.timeout);
+		}, _engine.advanced.vars.timeout);
 
 		timeoutForLoad;
 		

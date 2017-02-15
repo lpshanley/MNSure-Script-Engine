@@ -3,40 +3,40 @@ _engine.module.define('ui/topNotification',['advanced/_vars'],{
 	
 	add: function( msg ){
 		
-		if( typeof _engine.advanced._vars.topNotificationTicker === 'undefined' ) _engine.advanced._vars.topNotificationTicker = [];
+		if( typeof _engine.advanced.vars.topNotificationTicker === 'undefined' ) _engine.advanced.vars.topNotificationTicker = [];
 			
-		if( msg.trim() !== '' && typeof msg === 'string' && _engine.advanced._vars.topNotificationTicker.indexOf( msg ) === -1 ){
-			_engine.advanced._vars.topNotificationTicker.push( msg );
+		if( msg.trim() !== '' && typeof msg === 'string' && _engine.advanced.vars.topNotificationTicker.indexOf( msg ) === -1 ){
+			_engine.advanced.vars.topNotificationTicker.push( msg );
 		}
 		
 	},
 	
 	remove: function( msg ){
 		
-		if( typeof _engine.advanced._vars.topNotificationTicker === 'undefined' )
-			_engine.advanced._vars.topNotificationTicker = [];
+		if( typeof _engine.advanced.vars.topNotificationTicker === 'undefined' )
+			_engine.advanced.vars.topNotificationTicker = [];
 		
 		let msgArray = [];
 		
-		$.each( _engine.advanced._vars.topNotificationTicker, function( k, v ){
+		$.each( _engine.advanced.vars.topNotificationTicker, function( k, v ){
 			if( v.indexOf( msg ) === -1 ) msgArray.push( v );
 		});
 		
-		_engine.advanced._vars.topNotificationTicker = msgArray;
+		_engine.advanced.vars.topNotificationTicker = msgArray;
 		
 	},
 	
 	run: function(){
 		
-		if( typeof _engine.advanced._vars.topTickerStatus === 'undefined' ) _engine.advanced._vars.topTickerStatus = false;
+		if( typeof _engine.advanced.vars.topTickerStatus === 'undefined' ) _engine.advanced.vars.topTickerStatus = false;
 		
-		if( !_engine.advanced._vars.topTickerStatus ){
+		if( !_engine.advanced.vars.topTickerStatus ){
 		
-			if( _engine.advanced._vars.topNotificationTicker.length > 0 ){
+			if( _engine.advanced.vars.topNotificationTicker.length > 0 ){
 
 				if( $('.center-box span').length === 0 ){
 
-					var _span = $('<span>',{'html': _engine.advanced._vars.topNotificationTicker[0] , 'style':'display:none;' });
+					var _span = $('<span>',{'html': _engine.advanced.vars.topNotificationTicker[0] , 'style':'display:none;' });
 					$('div.center-box').html( _span );
 
 					$('.center-box span').fadeIn();
@@ -48,22 +48,22 @@ _engine.module.define('ui/topNotification',['advanced/_vars'],{
 
 			setInterval(function(){
 
-				let messages = _engine.advanced._vars.topNotificationTicker;
+				let messages = _engine.advanced.vars.topNotificationTicker;
 
 				let onMessage = 0, nextMessage = 0, notif;
 
-				if( $('.center-box span').length > 0 && _engine.advanced._vars.topNotificationTicker.indexOf( $('.center-box span').text() ) > -1 ){
+				if( $('.center-box span').length > 0 && _engine.advanced.vars.topNotificationTicker.indexOf( $('.center-box span').text() ) > -1 ){
 
-					onMessage = _engine.advanced._vars.topNotificationTicker.indexOf( $('.center-box span').text() );
+					onMessage = _engine.advanced.vars.topNotificationTicker.indexOf( $('.center-box span').text() );
 
-					if( ( _engine.advanced._vars.topNotificationTicker.length - 1 ) === onMessage ) nextMessage = 0;
+					if( ( _engine.advanced.vars.topNotificationTicker.length - 1 ) === onMessage ) nextMessage = 0;
 					else nextMessage = onMessage + 1;
 
 				}
 
 				notif = messages[nextMessage];
 				
-				if( _engine.advanced._vars.topNotificationTicker.length > 1 ){
+				if( _engine.advanced.vars.topNotificationTicker.length > 1 ){
 					
 					$('.center-box span').fadeOut(function(){ 
 
@@ -81,7 +81,7 @@ _engine.module.define('ui/topNotification',['advanced/_vars'],{
 
 			},7500);
 		
-			_engine.advanced._vars.topTickerStatus = true;
+			_engine.advanced.vars.topTickerStatus = true;
 			
 		}
 			

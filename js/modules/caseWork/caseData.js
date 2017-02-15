@@ -92,7 +92,7 @@ _engine.module.define('caseWork/caseData', ['storage/nocache','debug/info','adva
 				}
 			});
 
-			if( Object.getOwnPropertyNames( _engine.advanced._vars.queryDefinitions ).length === 0 ){
+			if( Object.getOwnPropertyNames( _engine.advanced.vars.queryDefinitions ).length === 0 ){
 				$.ajax({
 					url:'en_US/HCRDefaultIC_dashboardPage.do',
 					data: {
@@ -103,7 +103,7 @@ _engine.module.define('caseWork/caseData', ['storage/nocache','debug/info','adva
 					$.each($.parseHTML( data ),function(k,v){
 						if(typeof $(v).attr('id') !== 'undefined' && $(v).attr('id') === 'content'){
 							$.each($(v).find('div#dashboardData li'),function(k,v){
-								_engine.advanced._vars.queryDefinitions[$(v).attr('name').toLowerCase()] = 'evidenceType=' + $(v).attr('evidencetype');
+								_engine.advanced.vars.queryDefinitions[$(v).attr('name').toLowerCase()] = 'evidenceType=' + $(v).attr('evidencetype');
 							});
 						}
 					});

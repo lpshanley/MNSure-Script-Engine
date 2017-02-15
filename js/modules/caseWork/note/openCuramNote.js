@@ -12,7 +12,7 @@ _engine.module.define('caseWork/note/openCuramNote',function( callback ){
 		
 			let modalOpen = setInterval(function(){
 				if( count <= 400 ){
-					if( _engine.domTools.get.icFrame.contactTab.caseNoteModal._activeModal( false ) ){
+					if( _engine.domTools.get.icFrame.contactTab.caseNoteModal.activeModal( false ) ){
 						if( typeof callback === 'function' ) callback();
 						clearInterval( modalOpen );
 					}

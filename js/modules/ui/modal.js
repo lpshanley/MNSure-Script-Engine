@@ -11,27 +11,27 @@ _engine.module.define('ui/modal',[],{
 			case "submit":
 				switch( modalParams.role ){
 					case 'query':
-						if( _engine.ui.modal._validateModal( modalId ) ){
-							_engine.ui.modal._storeParams( modalId, function( params ){
-								_engine.caseWork.unifiedSearch._finish( modalId, params );
+						if( _engine.ui.modal.validateModal( modalId ) ){
+							_engine.ui.modal.storeParams( modalId, function( params ){
+								_engine.caseWork.unifiedSearch.finish( modalId, params );
 								_engine.ui.modal.destroy( modalId );
 							});
 						} else {
-							_engine.debug.info("- * [ _engine.ui.modal._button( queries ) ]: Invalid modal submission. Correct highlighted fields.");
+							_engine.debug.info("- * [ _engine.ui.modal.button( queries ) ]: Invalid modal submission. Correct highlighted fields.");
 						}
 						break;
 					case 'case note':
-						if( _engine.ui.modal._validateModal( modalId ) ){
-							_engine.ui.modal._storeParams( modalId, function( params ){
-								_engine.caseWork.note._completeNote( modalId, params );
+						if( _engine.ui.modal.validateModal( modalId ) ){
+							_engine.ui.modal.storeParams( modalId, function( params ){
+								_engine.caseWork.note.completeNote( modalId, params );
 								_engine.ui.modal.destroy( modalId );
 							});
 						} else {
-							_engine.debug.info("- * [ _engine.ui.modal._button( case notes ) ]: Invalid modal submission. Correct highlighted fields.");
+							_engine.debug.info("- * [ _engine.ui.modal.button( case notes ) ]: Invalid modal submission. Correct highlighted fields.");
 						}
 						break;
 					case 'timeout alert':
-						_engine.events._persistSession();
+						_engine.events.persistSession();
 						_engine.ui.modal.destroy( modalId );
 						break;
 					default:
@@ -45,7 +45,7 @@ _engine.module.define('ui/modal',[],{
 			case "":
 				break;
 			default:
-				_engine.debug.error("- * Fail Reason: Modal Error [ _engine.ui.modal._button( _type ) ]: Type error or type not found.");
+				_engine.debug.error("- * Fail Reason: Modal Error [ _engine.ui.modal.button( _type ) ]: Type error or type not found.");
 				break;
 
 		}
@@ -54,7 +54,7 @@ _engine.module.define('ui/modal',[],{
 	
 	_changeActiveCluster: function( modalTarget, subjectValue ){
 		
-		if( _engine.ui.modal._clustersActive( modalTarget ) ){
+		if( _engine.ui.modal.clustersActive( modalTarget ) ){
 
 			var _activeCluster = $('[data-id='+modalTarget+']  span.mns-input-cluster.input-cluster-active');
 
@@ -260,7 +260,7 @@ _engine.module.define('ui/modal',[],{
 		var _fields = $('[data-id="'+modalTarget+'"] .mns-modal-template > .mns-input-group');
 
 			//Push additional clusters if clustering is active
-		if( _engine.ui.modal._clustersActive( modalTarget ) ){
+		if( _engine.ui.modal.clustersActive( modalTarget ) ){
 
 			var _clusterFields = $('[data-id="'+modalTarget+'"] .mns-modal-template > .mns-input-cluster.input-cluster-active > .mns-input-group');
 
@@ -306,7 +306,7 @@ _engine.module.define('ui/modal',[],{
 						case "evidence":
 							if( _prefillValue !== "" ){
 
-								_engine.ui.modal._prefillFromDataQuery(_prefillValue,function( prefillString ){
+								_engine.ui.modal.prefillFromDataQuery(_prefillValue,function( prefillString ){
 									$( v ).find('input').val( prefillString );
 								});
 
@@ -330,7 +330,7 @@ _engine.module.define('ui/modal',[],{
 		let _fields = $('[data-id="'+modalId+'"] .mns-modal-template > .mns-input-group');
 		//Push additional clusters if clustering is active
 
-		if( _engine.ui.modal._clustersActive( modalId ) ){
+		if( _engine.ui.modal.clustersActive( modalId ) ){
 
 			let _clusterFields = $('[data-id="'+modalId+'"] .mns-modal-template > .mns-input-cluster.input-cluster-active > .mns-input-group');
 
@@ -388,7 +388,7 @@ _engine.module.define('ui/modal',[],{
 	
 	_setupClusters: function( modalTarget ){
 		
-		if( _engine.ui.modal._clustersActive( modalTarget ) ){
+		if( _engine.ui.modal.clustersActive( modalTarget ) ){
 
 			var _subject = $( '[data-id='+modalTarget+'] .modal-content-container span.mns-input-group span:contains("SUBJECT")' );
 
@@ -396,7 +396,7 @@ _engine.module.define('ui/modal',[],{
 
 				let _selectVal = $( _subject ).parent().find('select').val();
 
-				_engine.ui.modal._changeActiveCluster( modalTarget, _selectVal );
+				_engine.ui.modal.changeActiveCluster( modalTarget, _selectVal );
 
 			}
 
@@ -410,7 +410,7 @@ _engine.module.define('ui/modal',[],{
 				fields = $( modalTemplate + ' > .mns-input-group'),
 				dataSet = {};
 
-		if( _engine.ui.modal._clustersActive( modalId ) )
+		if( _engine.ui.modal.clustersActive( modalId ) )
 			$.each( $( modalTemplate + ' > .input-cluster-active > .mns-input-group') ,function(k,v){ fields.push(v); });
 
 		$.each( fields, function(k,v){
@@ -469,7 +469,7 @@ _engine.module.define('ui/modal',[],{
 				required = '[data-id='+modalId+'] div.mns-modal-template ',
 				returnVal = true;
 
-		_engine.ui.modal._clustersActive( modalId ) ?
+		_engine.ui.modal.clustersActive( modalId ) ?
 			required += '> .mns-input-group.required, div.mns-modal-template > .input-cluster-active > .required' :
 			required += '.required';
 
@@ -501,7 +501,7 @@ _engine.module.define('ui/modal',[],{
 		}
 
 		$(modal).find('.action-set').on('click', 'a',function( e ){
-			_engine.ui.modal._button( $(this), modalTarget );
+			_engine.ui.modal.button( $(this), modalTarget );
 		});
 
 		$('[data-id='+modalTarget+'] .mns-modal-template').keypress(function(e){ 
@@ -526,10 +526,10 @@ _engine.module.define('ui/modal',[],{
 		});
 
 		//Process onLoad Prefill
-		_engine.ui.modal._processPrefill( modalTarget );
-		_engine.ui.modal._setupAutoComplete( modalTarget );
+		_engine.ui.modal.processPrefill( modalTarget );
+		_engine.ui.modal.setupAutoComplete( modalTarget );
 
-		if( _engine.ui.modal._clustersActive( modalTarget ) ){
+		if( _engine.ui.modal.clustersActive( modalTarget ) ){
 
 			var _subject = $( '[data-id='+modalTarget+'] .modal-content-container span.mns-input-group span:contains("SUBJECT")' );
 
@@ -541,11 +541,11 @@ _engine.module.define('ui/modal',[],{
 
 					let _selectVal = $( _subject ).parent().find('select').val();
 
-					_engine.ui.modal._changeActiveCluster( modalTarget, _selectVal );
+					_engine.ui.modal.changeActiveCluster( modalTarget, _selectVal );
 
 					//Process dynamic Prefill on subject change
-					_engine.ui.modal._processPrefill( modalTarget );
-					_engine.ui.modal._setupAutoComplete( modalTarget );
+					_engine.ui.modal.processPrefill( modalTarget );
+					_engine.ui.modal.setupAutoComplete( modalTarget );
 
 				});
 
@@ -643,7 +643,7 @@ _engine.module.define('ui/modal',[],{
 
 			$( template ).attr('data-id',uniqueId);
 
-			$( template ).find( '.dijitDialogCloseIcon' ).attr( 'onclick', "_engine.ui.modal._button('[data-id="+uniqueId+"] .dijitDialogCloseIcon','"+uniqueId+"');" );
+			$( template ).find( '.dijitDialogCloseIcon' ).attr( 'onclick', "_engine.ui.modal.button('[data-id="+uniqueId+"] .dijitDialogCloseIcon','"+uniqueId+"');" );
 
 			$( template ).find( '.dijitDialogTitle' ).text( config.title );
 
@@ -663,9 +663,9 @@ _engine.module.define('ui/modal',[],{
 
 			$('[data-id='+uniqueId+']').center();
 
-			_engine.ui.modal._setupClusters( uniqueId );
+			_engine.ui.modal.setupClusters( uniqueId );
 
-			_engine.ui.modal._watch( uniqueId );
+			_engine.ui.modal.watch( uniqueId );
 
 			$('[data-id='+uniqueId+']').draggable({
 				handle: 'div.modal-titlebar',
@@ -689,7 +689,7 @@ _engine.module.define('ui/modal',[],{
 	destroy: function( modalId ){
 		
 		// Unwatch actions
-		_engine.ui.modal._unwatch( modalId );
+		_engine.ui.modal.unwatch( modalId );
 
 		// Remove dom element
 		$('[data-id="'+modalId+'"].custom-modal').remove();

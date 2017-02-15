@@ -13,7 +13,7 @@ _engine.module.define('tools/selectSearchResult',function(){
 
 		_engine.debug.info("- * Attempting to load results screen [ attempt: "+ _count +" ]");
 
-		if( _count <= _engine.advanced._vars.iterations ){
+		if( _count <= _engine.advanced.vars.iterations ){
 
 			var _results = _engine.domTools.get.searches.searchResultsQuery();
 
@@ -37,9 +37,9 @@ _engine.module.define('tools/selectSearchResult',function(){
 
 						} else {
 
-							_engine.debug.info(`- * [ _engine.tools.selectSearchResult() ] Found zero results. Checking again in ${_engine.advanced._vars.timeout}ms. Attempt: ${_zeroResultCounter}`);
+							_engine.debug.info(`- * [ _engine.tools.selectSearchResult() ] Found zero results. Checking again in ${_engine.advanced.vars.timeout}ms. Attempt: ${_zeroResultCounter}`);
 
-							if( _zeroResultCounter >= _engine.advanced._vars.iterations ){
+							if( _zeroResultCounter >= _engine.advanced.vars.iterations ){
 								clearInterval( _loadWindow );
 							}
 
@@ -72,7 +72,7 @@ _engine.module.define('tools/selectSearchResult',function(){
 			clearInterval( _loadWindow );
 
 		}
-	}, _engine.advanced._vars.timeout);
+	}, _engine.advanced.vars.timeout);
 
 	_loadWindow;
 	
