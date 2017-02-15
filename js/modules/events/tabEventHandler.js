@@ -1,10 +1,10 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('events/tabEventHandler',function( tab ){
+_engine.module.define('events/tabEventHandler', ['caseWork/caseData', 'ui/dom'], function( tab ){
 	
 	if( typeof $( tab ).attr('widgetid') !== "undefined" ){
 		
 		let tabScope = $( tab ).attr('widgetid').split('-')[0];
-
+		
 		switch( tabScope ){
 			case "HCRCASEAPPWorkspaceSection":
 				
