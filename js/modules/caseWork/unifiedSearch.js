@@ -4,7 +4,7 @@ _engine.module.define('caseWork/unifiedSearch',[ 'advanced/getView', 'navigation
 		
 		_engine.navigation.mainTabs.mainTabNavi('hcr',function(){
 		
-			_engine.advanced.getView( "queries/unified search.html",function(template){
+			_engine.advanced.getView("queries/unified search.html",function(template){
 
 				_engine.ui.modal.build({
 					title:"Unified Search Query",

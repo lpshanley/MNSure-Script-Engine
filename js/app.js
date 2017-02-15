@@ -269,22 +269,22 @@ var _engine = {
 				reqs = [];
 			}
 			
-			_engine.module.require(reqs);
+			_engine.module.require(reqs,function(){
 			
-			let def = _engine.tools.splitArg( module ),
-					root = _engine,
-					last = def.length - 1;
-			
-			$.each(def,function(key,path){
-				if(typeof(root[path]) === 'undefined') root[path] = {};
-				
-				key === last ?
-					root[path] = definition :
-					root = root[path];
+				let def = _engine.tools.splitArg( module ),
+						root = _engine,
+						last = def.length - 1;
 
+				$.each(def,function(key,path){
+					if(typeof(root[path]) === 'undefined') root[path] = {};
+
+					key === last ?
+						root[path] = definition :
+						root = root[path];
+
+				});
+			
 			});
-			
-			
 			
 		},
 		
