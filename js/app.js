@@ -259,11 +259,7 @@ var _engine = {
 				dataType: 'script',
 				url: req,
 				success: function(){
-					_engine.module.exists(module,function(exists){
-						if(exists) _engine.module.loadList.splice( _engine.module.loadList.indexOf( module ), 1 );
-						else console.error('DOES NOT EXIST YET', module);
-					});
-					
+					_engine.module.downloadComplete( module );
 				}
 			});
 		},
@@ -343,6 +339,21 @@ var _engine = {
 			if(reqs.length) process(reqs,callback);
 			else if( _engine.tools.isFunction( callback )) callback();
 			
+		},
+		
+		downloadComplete: function( module ){
+			_engine.module.exists(module,function(exists){
+				if( exists ){
+					console.info('Installed: ' + module);
+					_engine.module.loadList.splice( _engine.module.loadList.indexOf( module ), 1 );
+				}
+				else {
+					console.error('Installation not finished: ', module);
+					setTimeout(function(){
+						_engine.module.downloadComplete( module );
+					}, 10);
+				}
+			});
 		}
 		
 	}
