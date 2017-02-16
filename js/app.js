@@ -351,7 +351,7 @@ var _engine = {
 					console.error('Installation not finished: ', module);
 					setTimeout(function(){
 						_engine.module.downloadComplete( module );
-					}, 10);
+					}, 100);
 				}
 			});
 		}
