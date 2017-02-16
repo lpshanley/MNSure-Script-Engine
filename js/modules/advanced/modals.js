@@ -1,4 +1,4 @@
-_engine.module.define('advanced/modals',{
+_engine.module.define('advanced/modals', ['ui/modal', 'storage/nocache'], {
 	
 	error: function( msg ){
 		

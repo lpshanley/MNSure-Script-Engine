@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('advanced/getView',function( file, callback ){
+_engine.module.define('advanced/getView', ['storage/nocache','debug/info'], function( file, callback ){
 	
 	var href = _engine.advanced.baseUrl() + 'views/' + file;
 	
