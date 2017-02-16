@@ -252,13 +252,18 @@ var _engine = {
 		loadList : [],
 		
 		download: function( module ){
-			let baseUrl = _engine.storage.config.get('advanced.baseUrl');
-			let req = baseUrl + "js/modules/" + _engine.tools.parseToUrl(module) + ".js";
+			let baseUrl = _engine.storage.config.get('advanced.baseUrl'),
+					mod = _engine.tools.parseToUrl(module),
+					req = baseUrl + "js/modules/" + mod + ".js";
 			$.ajax({
 				dataType: 'script',
 				url: req,
 				success: function(){
-					_engine.module.loadList.splice( _engine.module.loadList.indexOf( module ), 1 );
+					_engine.module.exists(module,function(exists){
+						if(exists) _engine.module.loadList.splice( _engine.module.loadList.indexOf( module ), 1 );
+						else console.error('DOES NOT EXIST YET', module);
+					});
+					
 				}
 			});
 		},
