@@ -1,4 +1,4 @@
-_engine.module.define('ui/modal',[],{
+_engine.module.define('ui/modal',['advanced/generateId', 'storage/nocache', 'caseWord/unifiedSearch', 'debug/info', 'debug/warn', 'debug/error', 'events/persistSession', 'tools/customApi/evidence/queryAndCache', 'storage/prefillCache'],{
 	
 	_button: function( button, modalId ){
 		
