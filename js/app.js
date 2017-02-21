@@ -338,7 +338,7 @@ var _engine = {
 						}
 					}
 					
-					if(_engine.tools.isFunction( $callback )) $callback( errs );
+					if(_engine.tools.isFunction( $callback )) $callback( complete );
 					
 				});
 			}
