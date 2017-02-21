@@ -310,6 +310,9 @@ var _engine = {
 				
 			let process = function($array, $callback){
 				loopCounter++;
+				
+				console.log( $array, loopCounter );
+				
 				_engine.module.exists($array[0],function( exists ){
 					
 					if(exists) $array.splice( $array.indexOf( $array[0] ), 1 );
