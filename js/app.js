@@ -324,11 +324,8 @@ var _engine = {
 				
 			let process = function($array, $callback){
 				loopCounter++;
-					
 				_engine.module.exists($array[0],function( exists ){
-					
 					if(exists) $array.splice( $array.indexOf( $array[0] ), 1 );
-					
 					if($array.length === 0 ){
 						if(_engine.tools.isFunction( $callback )) $callback( true );
 					}
@@ -360,7 +357,7 @@ var _engine = {
 			});
 
 			if(reqs.length) process(reqs,callback);
-			else if( _engine.tools.isFunction( callback )) callback();
+			else if( _engine.tools.isFunction( callback )) callback(true);
 			
 		},
 		
