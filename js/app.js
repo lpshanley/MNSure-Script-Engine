@@ -310,9 +310,7 @@ var _engine = {
 				
 			let process = function($array, $callback){
 				loopCounter++;
-				
-				console.log( $array, loopCounter );
-				
+					
 				_engine.module.exists($array[0],function( exists ){
 					
 					if(exists) $array.splice( $array.indexOf( $array[0] ), 1 );
@@ -321,8 +319,14 @@ var _engine = {
 						if(_engine.tools.isFunction( $callback )) $callback();
 					}
 					else {
-						if( loopCounter < 400 ) setTimeout(function(){ process($array,$callback) }, 25);
-						else _engine.debug.error('Timeout on [module/require]: ', $array);
+						if( loopCounter < 400 ){
+							setTimeout(function(){ 
+								process($array,$callback) 
+							}, 25);
+						}
+						else {
+							console.error('Timeout on [module/require]: ', $array);
+						}
 					}
 				});
 			}
