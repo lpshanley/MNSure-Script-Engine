@@ -270,20 +270,27 @@ var _engine = {
 				reqs = [];
 			}
 			
-			_engine.module.require(reqs,function(){
-			
-				let def = _engine.tools.splitArg( module ),
-						root = _engine,
-						last = def.length - 1;
+			_engine.module.require(reqs,function( reqsComplete ){
+				if( reqsComplete ){
+					let def = _engine.tools.splitArg( module ),
+							root = _engine,
+							last = def.length - 1;
 
-				$.each(def,function(key,path){
-					if(typeof(root[path]) === 'undefined') root[path] = {};
+					$.each(def,function(key,path){
+						if(typeof(root[path]) === 'undefined') root[path] = {};
 
-					key === last ?
-						root[path] = definition :
-						root = root[path];
+						key === last ?
+							root[path] = definition :
+							root = root[path];
 
-				});
+					});
+					
+				}
+				else {
+					
+					console.error(`Error defining ${module}: Could not obtain requirements.`);
+					
+				}
 			
 			});
 			
@@ -313,21 +320,26 @@ var _engine = {
 					
 				_engine.module.exists($array[0],function( exists ){
 					
+					let complete = false;
+					
 					if(exists) $array.splice( $array.indexOf( $array[0] ), 1 );
 					
 					if($array.length === 0 ){
-						if(_engine.tools.isFunction( $callback )) $callback();
+						complete = true;
 					}
 					else {
-						if( loopCounter < 400 ){
+						if( loopCounter < 100 ){
 							setTimeout(function(){ 
 								process($array,$callback) 
-							}, 25);
+							}, 10);
 						}
 						else {
 							console.error('Timeout on [module/require]: ', $array);
 						}
 					}
+					
+					if(_engine.tools.isFunction( $callback )) $callback( errs );
+					
 				});
 			}
 			
