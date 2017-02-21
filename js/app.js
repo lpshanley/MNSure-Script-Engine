@@ -352,9 +352,10 @@ var _engine = {
 				else {
 					console.error(`Installation not finished [Attempt: ${timeout}]: `, module);
 					setTimeout(function(){
-						if(timeout < 100)
+						if(timeout < 100){
+							timeout++;
 							_engine.module.downloadComplete( module, timeout );
-						
+						}
 					}, 10);
 				}
 			});
