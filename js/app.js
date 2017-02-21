@@ -341,17 +341,21 @@ var _engine = {
 			
 		},
 		
-		downloadComplete: function( module ){
+		downloadComplete: function( module, count ){
+			let timeout = count || 0;
+			
 			_engine.module.exists(module,function(exists){
 				if( exists ){
 					console.info('Installed: ' + module);
 					_engine.module.loadList.splice( _engine.module.loadList.indexOf( module ), 1 );
 				}
 				else {
-					console.error('Installation not finished: ', module);
+					console.error(`Installation not finished [Attempt: ${timeout}]: `, module);
 					setTimeout(function(){
-						_engine.module.downloadComplete( module );
-					}, 100);
+						if(timeout < 100)
+							_engine.module.downloadComplete( module, timeout );
+						
+					}, 10);
 				}
 			});
 		}
