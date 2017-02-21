@@ -350,12 +350,12 @@ var _engine = {
 					_engine.module.loadList.splice( _engine.module.loadList.indexOf( module ), 1 );
 				}
 				else {
-					console.error(`Installation not finished [Attempt: ${timeout}]: `, module);
 					setTimeout(function(){
 						if(timeout < 100){
 							timeout++;
 							_engine.module.downloadComplete( module, timeout );
 						}
+						else console.error(`Installation not finished after ${timeout} attempts: ${module}`);
 					}, 10);
 				}
 			});
