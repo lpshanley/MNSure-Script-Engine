@@ -22,67 +22,74 @@ var _engine = {
 		
 		startUp: function() {
 			
-			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error'],function(){
+			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error'],function( reqsMet ){
 				
-				_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
+				if( reqsMet ){
 				
-				$('#script-launcher a').contextmenu(function(e){
-						// Prevent context menu pop-up
-					e.preventDefault();
-						// Open Case Search
-					_engine.search.case();
-						// Open Person Search
-					_engine.search.person();
-				});
-				
-				_engine.storage.prefillCache.clear();
-				
-				//Dynamic Ticker Notifs (10s)
-				setInterval(function(){
-					
-					_engine.ui.topNotification.remove("Session Expiry");
-					_engine.ui.topNotification.add( `Session Expiry - ${ _engine.advanced.sessionExpiry() }` );
-					
-				},10000);
-				
-				let version = _engine.storage.config.get('commit.current'),
-						commit = _engine.storage.config.get('commit.' + version);
-					
-				_engine.ui.topNotification.add(`Script Library: ${version}`);
-				
-				version === 'master' ?
-					_engine.storage.debugStatus.set( false ):
-					_engine.storage.debugStatus.set( true );
-					
-				if( version !== 'master' && version !== 'beta' ){
-					
-					_engine.ui.topNotification.add(`Loaded commit: ${commit}`);
-					
-					$.ajax({
-						url: 'https://api.github.com/rate_limit?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1',
-						dataType: 'json',
-						async: false,
-						success: function( data ){
-							_engine.ui.topNotification.add(`Calls Remaining: ${data.resources.core.remaining}`);
-						}
+					_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
+
+					$('#script-launcher a').contextmenu(function(e){
+							// Prevent context menu pop-up
+						e.preventDefault();
+							// Open Case Search
+						_engine.search.case();
+							// Open Person Search
+						_engine.search.person();
+					});
+
+					_engine.storage.prefillCache.clear();
+
+					//Dynamic Ticker Notifs (10s)
+					setInterval(function(){
+
+						_engine.ui.topNotification.remove("Session Expiry");
+						_engine.ui.topNotification.add( `Session Expiry - ${ _engine.advanced.sessionExpiry() }` );
+
+					},10000);
+
+					let version = _engine.storage.config.get('commit.current'),
+							commit = _engine.storage.config.get('commit.' + version);
+
+					_engine.ui.topNotification.add(`Script Library: ${version}`);
+
+					version === 'master' ?
+						_engine.storage.debugStatus.set( false ):
+						_engine.storage.debugStatus.set( true );
+
+					if( version !== 'master' && version !== 'beta' ){
+
+						_engine.ui.topNotification.add(`Loaded commit: ${commit}`);
+
+						$.ajax({
+							url: 'https://api.github.com/rate_limit?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1',
+							dataType: 'json',
+							async: false,
+							success: function( data ){
+								_engine.ui.topNotification.add(`Calls Remaining: ${data.resources.core.remaining}`);
+							}
+						});
+
+					}
+
+					_engine.ui.dom.prepUI(function(){
+
+						_engine.ui.topNotification.run();
+
+							//Build out menu
+						_engine.ui.scriptMenu.refresh();
+
+						_engine.events.domMonitor();
+
+						$('.scripts-link, .center-box').removeAttr('style');
+
+						_engine.advanced.setupTimeoutAlert();
+
 					});
 					
 				}
-				
-				_engine.ui.dom.prepUI(function(){
-					
-					_engine.ui.topNotification.run();
-					
-						//Build out menu
-					_engine.ui.scriptMenu.refresh();
-					
-					_engine.events.domMonitor();
-						
-					$('.scripts-link, .center-box').removeAttr('style');
-					
-					_engine.advanced.setupTimeoutAlert();
-					
-				});
+				else {
+					console.error(`Reqs not met on launch. Scripts not starting.`);
+				}
 				
 			});
 			
@@ -320,12 +327,10 @@ var _engine = {
 					
 				_engine.module.exists($array[0],function( exists ){
 					
-					let complete = false;
-					
 					if(exists) $array.splice( $array.indexOf( $array[0] ), 1 );
 					
 					if($array.length === 0 ){
-						complete = true;
+						if(_engine.tools.isFunction( $callback )) $callback( true );
 					}
 					else {
 						if( loopCounter < 100 ){
@@ -334,11 +339,10 @@ var _engine = {
 							}, 10);
 						}
 						else {
+							if(_engine.tools.isFunction( $callback )) $callback( false );
 							console.error('Timeout on [module/require]: ', $array);
 						}
 					}
-					
-					if(_engine.tools.isFunction( $callback )) $callback( complete );
 					
 				});
 			}
