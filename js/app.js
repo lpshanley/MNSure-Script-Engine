@@ -406,8 +406,8 @@ _engine.temp.jQloaded = setInterval(function(){
 	if( _engine.temp.count < 400 ){
 		if( typeof $ === 'function' ){
 			_engine.events._startUp();
-			if(_engine.temp.jQloaded) clearInterval(_engine.temp.jQloaded);
-			if(_engine.temp) delete _engine.temp;
+			if(typeof( _engine.temp.jQloaded !== "undefined" )) clearInterval(_engine.temp.jQloaded);
+			if(typeof( _engine.temp !== "undefined" )) delete _engine.temp;
 		} else {
 			_engine.temp.count++;
 		}
