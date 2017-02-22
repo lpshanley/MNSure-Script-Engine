@@ -21,13 +21,14 @@ var _engine = {
 		/********************************************************************/
 		
 		_startUp: function() {
-			/* Runs the callback after all modules have been requested */
-			_engine.module.loadRequired(function(){
-				
-				let online = false;
-				
-				if( online ) {
+			
+			let online = false,
+					version = _engine.storage.config.get('commit.current');
 
+			if( online && ( ['master','beta'].indexOf( version ) > -1 )) {
+			
+				/* Runs the callback after all modules have been requested */
+				_engine.module.loadRequired(function(){
 					_engine.debug.info('All modules have loaded.');
 
 					_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
@@ -43,7 +44,6 @@ var _engine = {
 
 							// Prevent context menu pop-up
 						e.preventDefault();
-
 							// Open Case Search
 						_engine.search._case();
 
@@ -51,8 +51,6 @@ var _engine = {
 						_engine.search._person();
 
 					});
-
-					var version = _engine.storage.config.get('commit.current');
 
 					version === 'master' ?
 						_engine.storage.debugStatus.set( false ):
@@ -95,15 +93,17 @@ var _engine = {
 						$('.scripts-link, .center-box').removeAttr('style');
 
 						_engine.advanced.setupTimeoutAlert();
-
+					
 					});
 					
-				}
+				});
+			
+			}
 				else {
-					
+					$('.center-box').html("<span>Script Library: Unavailable</span>");
+					$('.center-box').removeAttr('style');
+					_engine = undefined;
 				}
-				
-			});
 			
 		},
 
