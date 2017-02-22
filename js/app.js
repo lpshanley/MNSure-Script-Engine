@@ -22,7 +22,7 @@ var _engine = {
 		
 		_startUp: function() {
 			
-			let online = false,
+			let online = true,
 					version = _engine.storage.config.get('commit.current');
 			
 			if( !online ) online = ( ['master'].indexOf( version ) < 0 );
