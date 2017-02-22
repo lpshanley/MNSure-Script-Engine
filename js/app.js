@@ -337,7 +337,7 @@ var _engine = {
 						}
 						else {
 							if(_engine.tools.isFunction( $callback )) $callback( false );
-							console.error('Timeout on [module/require]: ', $array);
+							console.error('Require timeout: ', $array);
 						}
 					}
 					
