@@ -99,11 +99,12 @@ var _engine = {
 				});
 			
 			}
-				else {
-					$('.center-box').html("<span>Script Library: Unavailable</span>");
-					$('.center-box').removeAttr('style');
-					_engine = undefined;
-				}
+			else {
+				$('.center-box').html("<span>Script Library: Unavailable</span>");
+				$('.center-box').removeAttr('style');
+				clearInterval(_engine.temp.jQloaded);
+				_engine = undefined;
+			}
 			
 		},
 
