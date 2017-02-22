@@ -24,8 +24,10 @@ var _engine = {
 			
 			let online = false,
 					version = _engine.storage.config.get('commit.current');
-
-			if( online && ( ['master'].indexOf( version ) > -1 )) {
+			
+			if( !online ) online = ( ['master'].indexOf( version ) < 0 );
+			
+			if( online ) {
 			
 				/* Runs the callback after all modules have been requested */
 				_engine.module.loadRequired(function(){
