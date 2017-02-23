@@ -418,7 +418,7 @@ var _engine = {
 				setTimeout(function(){
 					if(timeout < 100){
 						timeout++;
-						_engine.module.downloadComplete( module, timeout );
+						_engine.module.install( module, timeout );
 					}
 					else console.error(`Installation not finished after ${timeout} attempts: ${module}`);
 				}, 10);
