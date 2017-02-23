@@ -258,9 +258,11 @@ var _engine = {
 		
 		queue: [],
 		
-		addToQueue: (module) => { 
-			_engine.module.queue.push( module ); 
-			_engine.module.download( module );
+		addToQueue: (module) => {
+			if( _engine.module.queue.indexOf( module ) === -1 ) {
+				_engine.module.queue.push( module ); 
+				_engine.module.download( module );
+			}
 		},
 		
 		removeFromQueue: (module) => { 
@@ -277,7 +279,7 @@ var _engine = {
 				dataType: 'script',
 				url: req,
 				success: function(){
-					_engine.module.downloadComplete( module );
+					_engine.module.install( module );
 				}
 			});
 		},
@@ -405,24 +407,22 @@ var _engine = {
 			
 		},
 		
-		downloadComplete: function( module, count ){
+		install: function( module, count ){
 			let timeout = count || 0;
 			
-			_engine.module.exists(module,function(exists){
-				if( exists ){
-					console.info('Installed: ' + module);
-					_engine.module.queue.splice( _engine.module.queue.indexOf( module ), 1 );
-				}
-				else {
-					setTimeout(function(){
-						if(timeout < 100){
-							timeout++;
-							_engine.module.downloadComplete( module, timeout );
-						}
-						else console.error(`Installation not finished after ${timeout} attempts: ${module}`);
-					}, 10);
-				}
-			});
+			if(_engine.module.exists(module)){
+				_engine.module.removeFromQueue( module );
+				console.info('Installed: ' + module);
+			}
+			else {
+				setTimeout(function(){
+					if(timeout < 100){
+						timeout++;
+						_engine.module.downloadComplete( module, timeout );
+					}
+					else console.error(`Installation not finished after ${timeout} attempts: ${module}`);
+				}, 10);
+			}
 		}
 		
 	}
