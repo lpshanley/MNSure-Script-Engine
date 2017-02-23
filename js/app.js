@@ -290,8 +290,10 @@ var _engine = {
 				reqs = [];
 			}
 			
-			_engine.module.require(reqs,function( reqsComplete ){
-				if( reqsComplete ){
+			_engine.module.require(reqs,function( unfinished ){
+				if(!_engine.tools.isArray(unfinished)) unfinished = [];
+				
+				if( unfinished.length === 0 ){
 					let def = _engine.tools.splitArg( module ),
 							root = _engine,
 							last = def.length - 1;
@@ -308,7 +310,7 @@ var _engine = {
 				}
 				else {
 					
-					console.error(`Error defining [${module}]: Could not obtain requirements.`);
+					console.error(`Error defining [ ${module} ]: Failed to obtain => ${ unfinished }.`);
 					
 				}
 			
@@ -339,7 +341,8 @@ var _engine = {
 		require: function( modules, callback ){
 				
 			let loopCounter = 0,
-					reqs = [];
+					reqs = [],
+					isCallback = _engine.tools.isFunction( callback );
 				
 			let process = function($array, $callback){
 				loopCounter++;
@@ -356,7 +359,7 @@ var _engine = {
 				
 				
 				if($array.length === 0 ){
-						if(_engine.tools.isFunction( $callback )) $callback( true );
+						if( isCallback ) $callback();
 					}
 				else {
 					if( loopCounter < 100 ){
@@ -365,8 +368,7 @@ var _engine = {
 						}, 10);
 					}
 					else {
-						if(_engine.tools.isFunction( $callback )) $callback( false );
-						console.error('Require timed out: remaining => ', $array);
+						if( isCallback ) $callback( $array );
 					}
 				}
 			}
@@ -378,7 +380,7 @@ var _engine = {
 			}
 			
 			if(reqs.length) process(reqs,callback);
-			else if( _engine.tools.isFunction( callback )) callback(true);
+			else if( isCallback ) callback();
 			
 		},
 		
@@ -395,7 +397,6 @@ var _engine = {
 						timeout++;
 						_engine.module.install( module, timeout );
 					}
-					else console.error(`Installation not finished after ${timeout} attempts: ${module}`);
 				}, 10);
 			}
 		}
