@@ -258,8 +258,12 @@ var _engine = {
 		
 		queue: [],
 		
-		addToQueue: (module)=>{ if(!_engine.module.exists(module)) _engine.module.queue.push( module ); },
-		removeFromQueue: (module)=>{ 
+		addToQueue: (module) => { 
+			_engine.module.queue.push( module ); 
+			_engine.module.download( module );
+		},
+		
+		removeFromQueue: (module) => { 
 			let index = _engine.module.queue.indexOf( module );
 			if( index > -1 )
 				_engine.module.queue.splice( index, 1 ); 
@@ -309,27 +313,13 @@ var _engine = {
 			});
 			
 		},
-		/*
-		exists: function( module, callback ){
-			let modArray = _engine.tools.splitArg( module ),
-					root = _engine,
-					exists = true;
-			for( i=0, len = modArray.length; i < len; i++){
-				root = root[modArray[i]];
-				if( _engine.tools.isUndefined(root) ){
-					exists = false;
-					break;
-				}
-			}
-			if(_engine.tools.isFunction(callback)) callback(exists);
-		},
-		*/
 		
 		exists: function( module ){
 			let modArray = _engine.tools.splitArg( module ),
 					obj = _engine,
 					exists = true;
-				
+			
+			/* Determines is a module is present in the root structure */
 			for( let i=0, len = modArray.length; i < len; i++){
 				obj = obj[modArray[i]];
 				if( _engine.tools.isUndefined(obj) ){
@@ -337,6 +327,9 @@ var _engine = {
 					break;
 				}
 			}
+			
+			/* If module does not exists add to download queue */
+			if(!exists) _engine.module.addToQueue( module );
 			
 			return exists;
 		},
@@ -398,18 +391,15 @@ var _engine = {
 				*/
 			}
 			
-			$.each(modules,function(key, module){
-				_engine.module.exists(module,function( exists ){
-					if(!exists){
-						reqs.push( module );
-						if( _engine.module.queue.indexOf( module ) === -1 ){
-							_engine.module.queue.push( module );
-							_engine.module.download( module );
-						}
-					}
-				});
-			});
-
+			for(let i = 0, len = modules.length; i < len; i++){
+				if(!_engine.module.exists(modules[i])){
+					reqs.push( modules[i] );
+					console.log('Need Local: ', modules[i] );
+				}
+			}
+			
+			console.log('Start processing reqs: ', reqs);
+			
 			if(reqs.length) process(reqs,callback);
 			else if( _engine.tools.isFunction( callback )) callback(true);
 			
