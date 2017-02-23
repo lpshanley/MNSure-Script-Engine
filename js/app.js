@@ -303,7 +303,6 @@ var _engine = {
 			
 		},
 		
-		/*
 		exists: function( module, callback ){
 			let modArray = _engine.tools.splitArg( module ),
 					root = _engine,
@@ -317,8 +316,8 @@ var _engine = {
 			}
 			if(_engine.tools.isFunction(callback)) callback(exists);
 		},
-		*/
 		
+		/*
 		exists: function( module ){
 			let modArray = _engine.tools.splitArg( module ),
 					obj = _engine,
@@ -334,8 +333,8 @@ var _engine = {
 			
 			return exists;
 		},
+		*/
 		
-		/*
 		require: function( modules, callback ){
 				
 			let loopCounter = 0,
@@ -377,46 +376,6 @@ var _engine = {
 
 			if(reqs.length) process(reqs,callback);
 			else if( _engine.tools.isFunction( callback )) callback(true);
-			
-		},
-		*/
-		
-		require: function( modules, callback ){
-				
-			let reqs = [];
-				
-				if( _engine.tools.isArray( modules ) && _engine.tools.isFunction( callback ) ){
-					
-					// Build a list of modules that are not in the system yet
-					for(let i = 0, len = modules.length; i < len; i++){
-						// If module does not exist
-						if( !_engine.module.exists( modules[i] ) ){
-							// Verify module is not a duplicate already in the list
-							if( reqs.indexOf( modules[i] ) === -1 ) reqs.push(modules[i]);
-							// Add to download queue
-							_engine.module.download( modules[i] );
-						}
-						
-					}
-						
-					// Loop until no more reqs exist
-					while( reqs.length ){
-						
-						let remo = [];
-						
-						for(let i = 0, len = reqs.length; i < len; i++)
-							if( _engine.module.exists( reqs[i] ) ) remo.push( reqs[i] );
-						
-						for(let i = 0, len = remo.length; i < len; i++ )
-							reqs.splice( reqs.indexOf( remo[i] ), 1 );
-						
-						console.log("Waiting on: ", reqs);
-						
-					}
-						
-					console.log( reqs );
-						
-				}
 			
 		},
 		
