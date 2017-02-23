@@ -256,7 +256,7 @@ var _engine = {
 	
 	module: {
 		
-		loadList : [],
+		queue : [],
 		
 		download: function( module ){
 			let baseUrl = _engine.storage.config.get('advanced.baseUrl'),
@@ -303,6 +303,7 @@ var _engine = {
 			
 		},
 		
+		/*
 		exists: function( module, callback ){
 			let modArray = _engine.tools.splitArg( module ),
 					root = _engine,
@@ -316,7 +317,25 @@ var _engine = {
 			}
 			if(_engine.tools.isFunction(callback)) callback(exists);
 		},
+		*/
 		
+		exists: function( module ){
+			let modArray = _engine.tools.splitArg( module ),
+					obj = _engine,
+					exists = true;
+				
+			for( let i=0, len = modArray.length; i < len; i++){
+				obj = obj[modArray[i]];
+				if( _engine.tools.isUndefined(obj) ){
+					exists = false;
+					break;
+				}
+			}
+			
+			return exists;
+		},
+		
+		/*
 		require: function( modules, callback ){
 				
 			let loopCounter = 0,
@@ -348,8 +367,8 @@ var _engine = {
 				_engine.module.exists(module,function( exists ){
 					if(!exists){
 						reqs.push( module );
-						if( _engine.module.loadList.indexOf( module ) === -1 ){
-							_engine.module.loadList.push( module );
+						if( _engine.module.queue.indexOf( module ) === -1 ){
+							_engine.module.queue.push( module );
 							_engine.module.download( module );
 						}
 					}
@@ -360,6 +379,46 @@ var _engine = {
 			else if( _engine.tools.isFunction( callback )) callback(true);
 			
 		},
+		*/
+		
+		require: function( modules, callback ){
+				
+			let reqs = [];
+				
+				if( _engine.tools.isArray( modules ) && _engine.tools.isFunction( callback ) ){
+					
+					// Build a list of modules that are not in the system yet
+					for(let i = 0, len = modules.length; i < len; i++){
+						// If module does not exist
+						if( !_engine.module.exist( modules[i] ) ){
+							// Verify module is not a duplicate already in the list
+							if( reqs.indexOf( modules[i] ) === -1 ) reqs.push(modules[i]);
+							// Add to download queue
+							_engine.module.download( modules[i] );
+						}
+						
+					}
+						
+					// Loop until no more reqs exist
+					while( reqs.length ){
+						
+						let remo = [];
+						
+						for(let i = 0, len = reqs.length; i < len; i++)
+							if( _engine.module.exist( reqs[i] ) ) remo.push( reqs[i] );
+						
+						for(let i = 0, len = remo.length; i < len; i++ )
+							reqs.splice( reqs.indexOf( remo[i] ), 1 );
+						
+						console.log("Waiting on: ", reqs);
+						
+					}
+						
+					console.log( reqs );
+						
+				}
+			
+		},
 		
 		downloadComplete: function( module, count ){
 			let timeout = count || 0;
@@ -367,7 +426,7 @@ var _engine = {
 			_engine.module.exists(module,function(exists){
 				if( exists ){
 					console.info('Installed: ' + module);
-					_engine.module.loadList.splice( _engine.module.loadList.indexOf( module ), 1 );
+					_engine.module.queue.splice( _engine.module.queue.indexOf( module ), 1 );
 				}
 				else {
 					setTimeout(function(){
