@@ -307,7 +307,7 @@ var _engine = {
 				}
 				else {
 					
-					console.error(`Error defining [ ${module} ]: Failed to obtain => ${ unfinished }.`);
+					console.error(`Installation failure: ${module} | Requirements not satisfied: ${ unfinished }.`);
 					
 				}
 			
