@@ -22,9 +22,9 @@ var _engine = {
 		
 		startUp: function() {
 			
-			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error'],function( reqsMet ){
-				
-				if( reqsMet ){
+			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error'],function( reqsNotMet ){
+				if(!_engine.tools.isArray(reqsNotMet)) reqsNotMet = [];
+				if( reqsNotMet.length === 0 ){
 				
 					_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
 
@@ -86,9 +86,6 @@ var _engine = {
 
 					});
 					
-				}
-				else {
-					console.error(`Reqs not met on launch. Scripts not starting.`);
 				}
 				
 			});
