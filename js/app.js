@@ -377,8 +377,6 @@ var _engine = {
 				}
 			}
 			
-			console.log('Start processing reqs: ', reqs);
-			
 			if(reqs.length) process(reqs,callback);
 			else if( _engine.tools.isFunction( callback )) callback(true);
 			
