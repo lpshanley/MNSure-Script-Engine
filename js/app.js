@@ -361,7 +361,6 @@ var _engine = {
 				else {
 					if( loopCounter < 100 ){
 						setTimeout(function(){
-							console.log( 'Looping: ', $array );
 							process($array,$callback)
 						}, 10);
 					}
@@ -370,33 +369,11 @@ var _engine = {
 						console.error('Require timed out: remaining => ', $array);
 					}
 				}
-				
-				/*
-				_engine.module.exists($array[0],function( exists ){
-					if(exists) $array.splice( $array.indexOf( $array[0] ), 1 );
-					if($array.length === 0 ){
-						if(_engine.tools.isFunction( $callback )) $callback( true );
-					}
-					else {
-						if( loopCounter < 100 ){
-							setTimeout(function(){ 
-								process($array,$callback) 
-							}, 10);
-						}
-						else {
-							if(_engine.tools.isFunction( $callback )) $callback( false );
-							console.error('Require timeout: ', $array);
-						}
-					}
-					
-				});
-				*/
 			}
 			
 			for(let i = 0, len = modules.length; i < len; i++){
 				if(!_engine.module.exists(modules[i])){
 					reqs.push( modules[i] );
-					console.log('Need Local: ', modules[i] );
 				}
 			}
 			
