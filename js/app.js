@@ -386,7 +386,6 @@ var _engine = {
 			
 			if(_engine.module.exists(module)){
 				_engine.module.removeFromQueue( module );
-				console.info('Installed: ' + module);
 			}
 			else {
 				setTimeout(function(){
