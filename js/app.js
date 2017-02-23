@@ -256,7 +256,14 @@ var _engine = {
 	
 	module: {
 		
-		queue : [],
+		queue: [],
+		
+		addToQueue: (module)=>{ if(!_engine.module.exists(module)) _engine.module.queue.push( module ); },
+		removeFromQueue: (module)=>{ 
+			let index = _engine.module.queue.indexOf( module );
+			if( index > -1 )
+				_engine.module.queue.splice( index, 1 ); 
+		},
 		
 		download: function( module ){
 			let baseUrl = _engine.storage.config.get('advanced.baseUrl'),
@@ -282,27 +289,27 @@ var _engine = {
 					let def = _engine.tools.splitArg( module ),
 							root = _engine,
 							last = def.length - 1;
-
+						
 					$.each(def,function(key,path){
 						if(typeof(root[path]) === 'undefined') root[path] = {};
-
+						
 						key === last ?
 							root[path] = definition :
 							root = root[path];
-
+						
 					});
 					
 				}
 				else {
 					
-					console.error(`Error defining ${module}: Could not obtain requirements.`);
+					console.error(`Error defining [${module}]: Could not obtain requirements.`);
 					
 				}
 			
 			});
 			
 		},
-		
+		/*
 		exists: function( module, callback ){
 			let modArray = _engine.tools.splitArg( module ),
 					root = _engine,
@@ -316,8 +323,8 @@ var _engine = {
 			}
 			if(_engine.tools.isFunction(callback)) callback(exists);
 		},
+		*/
 		
-		/*
 		exists: function( module ){
 			let modArray = _engine.tools.splitArg( module ),
 					obj = _engine,
@@ -333,7 +340,6 @@ var _engine = {
 			
 			return exists;
 		},
-		*/
 		
 		require: function( modules, callback ){
 				
@@ -342,6 +348,35 @@ var _engine = {
 				
 			let process = function($array, $callback){
 				loopCounter++;
+				let purge = [];
+				for( let i = 0, len = $array.length; i < len; i++ ){
+					if(_engine.module.exists($array[i])){
+						purge.push($array[i]);
+					}
+				}
+				
+				for( let i = 0, len = purge.length; i < len; i++ ){
+					$array.splice($array.indexOf(purge[i]),1);
+				}
+				
+				
+				if($array.length === 0 ){
+						if(_engine.tools.isFunction( $callback )) $callback( true );
+					}
+				else {
+					if( loopCounter < 100 ){
+						setTimeout(function(){
+							console.log( 'Looping: ', $array );
+							process($array,$callback)
+						}, 10);
+					}
+					else {
+						if(_engine.tools.isFunction( $callback )) $callback( false );
+						console.error('Require timed out: remaining => ', $array);
+					}
+				}
+				
+				/*
 				_engine.module.exists($array[0],function( exists ){
 					if(exists) $array.splice( $array.indexOf( $array[0] ), 1 );
 					if($array.length === 0 ){
@@ -360,6 +395,7 @@ var _engine = {
 					}
 					
 				});
+				*/
 			}
 			
 			$.each(modules,function(key, module){
