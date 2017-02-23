@@ -307,7 +307,7 @@ var _engine = {
 				}
 				else {
 					
-					console.error(`Installation failure: ${module} | Requirements not satisfied: ${ unfinished }.`);
+					console.error(`Installation failure: ${module} \nRequirements not satisfied: `, unfinished);
 					
 				}
 			
