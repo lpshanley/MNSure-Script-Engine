@@ -390,7 +390,7 @@ var _engine = {
 					// Build a list of modules that are not in the system yet
 					for(let i = 0, len = modules.length; i < len; i++){
 						// If module does not exist
-						if( !_engine.module.exist( modules[i] ) ){
+						if( !_engine.module.exists( modules[i] ) ){
 							// Verify module is not a duplicate already in the list
 							if( reqs.indexOf( modules[i] ) === -1 ) reqs.push(modules[i]);
 							// Add to download queue
@@ -405,7 +405,7 @@ var _engine = {
 						let remo = [];
 						
 						for(let i = 0, len = reqs.length; i < len; i++)
-							if( _engine.module.exist( reqs[i] ) ) remo.push( reqs[i] );
+							if( _engine.module.exists( reqs[i] ) ) remo.push( reqs[i] );
 						
 						for(let i = 0, len = remo.length; i < len; i++ )
 							reqs.splice( reqs.indexOf( remo[i] ), 1 );
