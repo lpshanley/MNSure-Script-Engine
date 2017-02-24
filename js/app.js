@@ -22,71 +22,67 @@ var _engine = {
 		
 		startUp: function() {
 			
-			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error'],function( reqsNotMet ){
-				if(!_engine.tools.isArray(reqsNotMet)) reqsNotMet = [];
-				if( reqsNotMet.length === 0 ){
+			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error'],function(){
 				
-					_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
+				_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
 
-					$('#script-launcher a').contextmenu(function(e){
-							// Prevent context menu pop-up
-						e.preventDefault();
-							// Open Case Search
-						_engine.search.case();
-							// Open Person Search
-						_engine.search.person();
+				$('#script-launcher a').contextmenu(function(e){
+						// Prevent context menu pop-up
+					e.preventDefault();
+						// Open Case Search
+					_engine.search.case();
+						// Open Person Search
+					_engine.search.person();
+				});
+
+				_engine.storage.prefillCache.clear();
+
+				//Dynamic Ticker Notifs (10s)
+				setInterval(function(){
+
+					_engine.ui.topNotification.remove("Session Expiry");
+					_engine.ui.topNotification.add( `Session Expiry - ${ _engine.advanced.sessionExpiry() }` );
+
+				},10000);
+
+				let version = _engine.storage.config.get('commit.current'),
+						commit = _engine.storage.config.get('commit.' + version);
+
+				_engine.ui.topNotification.add(`Script Library: ${version}`);
+
+				version === 'master' ?
+					_engine.storage.debugStatus.set( false ):
+					_engine.storage.debugStatus.set( true );
+
+				if( version !== 'master' && version !== 'beta' ){
+
+					_engine.ui.topNotification.add(`Loaded commit: ${commit}`);
+
+					$.ajax({
+						url: 'https://api.github.com/rate_limit?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1',
+						dataType: 'json',
+						async: false,
+						success: function( data ){
+							_engine.ui.topNotification.add(`Calls Remaining: ${data.resources.core.remaining}`);
+						}
 					});
 
-					_engine.storage.prefillCache.clear();
-
-					//Dynamic Ticker Notifs (10s)
-					setInterval(function(){
-
-						_engine.ui.topNotification.remove("Session Expiry");
-						_engine.ui.topNotification.add( `Session Expiry - ${ _engine.advanced.sessionExpiry() }` );
-
-					},10000);
-
-					let version = _engine.storage.config.get('commit.current'),
-							commit = _engine.storage.config.get('commit.' + version);
-
-					_engine.ui.topNotification.add(`Script Library: ${version}`);
-
-					version === 'master' ?
-						_engine.storage.debugStatus.set( false ):
-						_engine.storage.debugStatus.set( true );
-
-					if( version !== 'master' && version !== 'beta' ){
-
-						_engine.ui.topNotification.add(`Loaded commit: ${commit}`);
-
-						$.ajax({
-							url: 'https://api.github.com/rate_limit?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1',
-							dataType: 'json',
-							async: false,
-							success: function( data ){
-								_engine.ui.topNotification.add(`Calls Remaining: ${data.resources.core.remaining}`);
-							}
-						});
-
-					}
-
-					_engine.ui.dom.prepUI(function(){
-
-						_engine.ui.topNotification.run();
-
-							//Build out menu
-						_engine.ui.scriptMenu.refresh();
-
-						_engine.events.domMonitor();
-
-						$('.scripts-link, .center-box').removeAttr('style');
-
-						_engine.advanced.setupTimeoutAlert();
-
-					});
-					
 				}
+
+				_engine.ui.dom.prepUI(function(){
+
+					_engine.ui.topNotification.run();
+
+						//Build out menu
+					_engine.ui.scriptMenu.refresh();
+
+					_engine.events.domMonitor();
+
+					$('.scripts-link, .center-box').removeAttr('style');
+
+					_engine.advanced.setupTimeoutAlert();
+
+				});
 				
 			});
 			
