@@ -259,7 +259,7 @@ var _engine = {
 		
 		bustLoop: (name, modules) => {
 			
-			_engine.module.addToBuster( name );
+			_engine.module.addToLoopBuster( name );
 			
 			let rtn = [],
 					bustArray = _engine.module.buster;
@@ -269,54 +269,9 @@ var _engine = {
 				if( indexTest > -1 ) rtn.push( modules[i] );
 			}
 			
-			return rtn;
+			console.log( name, rtn, bustArray );
 			
-			/*
-			let rtn = [],
-					matchTest = [],
-					bustModule = true,
-					match = Object.getOwnPropertyNames(_engine.module.buster);
-				
-			for(let i = 0, len = modules.length; i < len; i++ ){
-				if( match.indexOf(modules[i]) > -1 ) {
-					
-					let comp = _engine.module.buster[modules[i]];
-					
-					for( let arg = 0, len = comp.length; arg < comp; arg++ ){
-						
-						if( name === comp[arg] ) console.log(true);
-						
-					}
-					
-				}
-			}
-			/*
-				for(let i = 0, len = matchTest.length; i < len; i++){
-					
-					let reqs = _engine.module.buster[matchTest[i]],
-							matched = false;
-					
-					for(let req = 0, total = reqs.length; req < total; req++){
-						console.log(name, reqs[i]);
-						if( reqs[i] === name ) matched = true;
-						
-					}
-					
-					if(matched) console.log(`MATCHED: ${name}`);
-					
-				}
-				
-			}
-			else {
-				_engine.module.buster[name] = modules;
-			}
-			*/
-			/*
-			matchTest.length === 0 ?
-				rtn = false:
-				rtn = matchTest;
-			*/
-			//return rtn;
+			return rtn;
 		},
 		
 		addToLoopBuster: (module) => {
@@ -525,6 +480,7 @@ var _engine = {
 			
 			if(_engine.module.exists(module)){
 				_engine.module.removeFromPending( module );
+				_engine.module.removeFromLoopBuster( module );
 			}
 			else {
 				setTimeout(function(){
