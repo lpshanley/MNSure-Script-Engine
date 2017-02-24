@@ -360,6 +360,8 @@ var _engine = {
 		
 		require: function( config, callback ){
 			
+			console.log( config );
+			
 			let loopCounter = 0,
 					name = config.name,
 					modules = config.require,
