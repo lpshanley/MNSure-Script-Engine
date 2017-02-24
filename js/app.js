@@ -258,7 +258,24 @@ var _engine = {
 		buster: {},
 		
 		bustLoop: (name, modules) => {
-			let rtn = [];
+			let rtn = [],
+					matchTest = [],
+					bustModule = true,
+					match = Object.getOwnPropertyNames(_engine.module.buster);
+			
+			if( match.length > 0 ){
+				for(let i = 0, len = modules.length; i < len; i++ ){
+					
+					if( match.indexOf(modules[i]) > -1 ) matchTest.push( modules[i] );
+					
+				}
+			}
+			else {
+				//Empty Buster
+			}
+			
+			rtn = matchTest;
+			
 			return rtn;
 		},
 		
