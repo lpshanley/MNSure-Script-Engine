@@ -459,7 +459,7 @@ var _engine = {
 			}
 			else {
 				setTimeout(function(){
-					if(timeout < 100){
+					if(timeout < 200){
 						timeout++;
 						_engine.module.pendForInstall( module, timeout );
 					}
