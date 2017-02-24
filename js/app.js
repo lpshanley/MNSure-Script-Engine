@@ -254,9 +254,10 @@ var _engine = {
 	module: {
 		
 		queue: [],
+		pending: [],
 		
 		addToQueue: (module) => {
-			if( _engine.module.queue.indexOf( module ) === -1 ) {
+			if( _engine.module.queue.indexOf( module ) === -1 && _engine.module.pending.indexOf( module ) === -1 ) {
 				_engine.module.queue.push( module ); 
 				_engine.module.download( module );
 			}
@@ -268,6 +269,23 @@ var _engine = {
 				_engine.module.queue.splice( index, 1 ); 
 		},
 		
+		addToPending: (module) => {
+			if( _engine.module.pending.indexOf( module ) === -1 ) {
+				_engine.module.pending.push( module );
+			}
+		},
+		
+		switchToPending: (module) => {
+			_engine.module.removeFromQueue( module );
+			_engine.module.addToPending( module );
+		},
+		
+		removeFromPending: (module) => { 
+			let index = _engine.module.pending.indexOf( module );
+			if( index > -1 )
+				_engine.module.pending.splice( index, 1 ); 
+		},
+		
 		download: function( module ){
 			let baseUrl = _engine.storage.config.get('advanced.baseUrl'),
 					mod = _engine.tools.parseToUrl(module),
@@ -276,7 +294,7 @@ var _engine = {
 				dataType: 'script',
 				url: req,
 				success: function(){
-					_engine.module.install( module );
+					_engine.module.pendForInstall( module );
 				}
 			});
 		},
@@ -336,14 +354,17 @@ var _engine = {
 		},
 		
 		require: function( modules, callback ){
-				
+			
 			let loopCounter = 0,
 					reqs = [],
 					isCallback = _engine.tools.isFunction( callback );
 				
-			let process = function($array, $callback){
+			let process = function($array, $callback, $loopBuster){
 				loopCounter++;
+				
 				let purge = [];
+				$loopBuster = $loopBuster || false;
+				
 				for( let i = 0, len = $array.length; i < len; i++ ){
 					if(_engine.module.exists($array[i])){
 						purge.push($array[i]);
@@ -354,14 +375,24 @@ var _engine = {
 					$array.splice($array.indexOf(purge[i]),1);
 				}
 				
-				
 				if($array.length === 0 ){
-						if( isCallback ) $callback();
-					}
+					if( isCallback ) $callback();
+				}
 				else {
 					if( loopCounter < 100 ){
 						setTimeout(function(){
-							process($array,$callback)
+							if( purge.length === 0 ){
+								if( $loopBuster ) 
+									++$loopBuster;
+								else 
+									$loopBuster = 1;
+								console.log('Busting Loop: ',$loopBuster);
+								process($array,$callback, $loopBuster);
+							}
+							else {
+								if($loopBuster) console.log('Reseting buster');
+								process($array,$callback);
+							}
 						}, 10);
 					}
 					else {
@@ -376,22 +407,29 @@ var _engine = {
 				}
 			}
 			
-			if(reqs.length) process(reqs,callback);
+			if(reqs.length) process(reqs,callback,loopBuster);
 			else if( isCallback ) callback();
 			
 		},
 		
-		install: function( module, count ){
+		pendForInstall: function( module, count ){
+			
+			if( _engine.module.queue.indexOf( module ) > -1 )
+				_engine.module.switchToPending( module );
+			
 			let timeout = count || 0;
 			
 			if(_engine.module.exists(module)){
-				_engine.module.removeFromQueue( module );
+				_engine.module.removeFromPending( module );
 			}
 			else {
 				setTimeout(function(){
 					if(timeout < 100){
 						timeout++;
-						_engine.module.install( module, timeout );
+						_engine.module.pendForInstall( module, timeout );
+					}
+					else {
+						console.error('Timed out ' + module + " in pending status.");
 					}
 				}, 10);
 			}
