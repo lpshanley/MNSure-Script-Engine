@@ -255,6 +255,9 @@ var _engine = {
 		
 		queue: [],
 		pending: [],
+		buster: {},
+		
+		
 		
 		addToQueue: (module) => {
 			if( _engine.module.queue.indexOf( module ) === -1 && _engine.module.pending.indexOf( module ) === -1 ) {
@@ -372,7 +375,8 @@ var _engine = {
 					name = config.name,
 					modules = config.require,
 					reqs = [],
-					isCallback = _engine.tools.isFunction( callback );
+					isCallback = _engine.tools.isFunction( callback ),
+					loopLimit = 100;
 				
 			let process = function($setup, $callback, $loopBuster){
 				loopCounter++;
@@ -396,14 +400,18 @@ var _engine = {
 					if( isCallback ) $callback();
 				}
 				else {
-					if( loopCounter < 100 ){
+					if( loopCounter < loopLimit ){
 						setTimeout(function(){
 							if( purge.length === 0 ){
 								if( $loopBuster ) 
 									++$loopBuster;
 								else 
 									$loopBuster = 1;
-								if( $loopBuster % 10 === 0 && $loopBuster > 30 ) console.log(`Busting Loop [ ${$name} ]: ${$loopBuster}`);
+								if( $loopBuster === 50 ) {
+									console.log(`Busting Loop [ ${$name} ]: ${$loopBuster}`);
+									loopLimit = 150;
+								}
+								console.log( `[ ${$name} ] Looplimit ${ loopLimit }` );
 								process({array: $array, name: $name},$callback, $loopBuster);
 							}
 							else {
