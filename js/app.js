@@ -437,9 +437,14 @@ var _engine = {
 									if($array.length === 0) busted = true;
 								}
 								
-								if(busted) console.log('Busted Array for : ', $name);
-								
-								process({array: $array, name: $name},$callback, $loopBuster);
+								if( busted && $name === 'startup'){
+									
+									console.log('Pausing Startup for final validation');
+									
+								}
+								else {
+									process({array: $array, name: $name},$callback, $loopBuster);
+								}
 								
 							}
 							else {
