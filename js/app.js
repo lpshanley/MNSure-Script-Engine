@@ -431,7 +431,7 @@ var _engine = {
 				array: reqs
 			}
 			
-			if(reqs.length) process(reqs,callback);
+			if(reqs.length) process(setupProcess,callback);
 			else if( isCallback ) callback();
 			
 		},
