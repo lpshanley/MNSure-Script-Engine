@@ -362,7 +362,13 @@ var _engine = {
 		
 		require: function( config, callback ){
 			
-			console.log( config );
+			if(_engine.tools.isArray(config)){
+				let temp = config;
+				config = {
+					name: undefined,
+					require: temp
+				}
+			}
 			
 			let loopCounter = 0,
 					name = config.name,
