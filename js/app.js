@@ -255,12 +255,23 @@ var _engine = {
 		
 		queue: [],
 		pending: [],
-		buster: {},
+		buster: [],
 		
 		bustLoop: (name, modules) => {
 			
-			_engine.module.buster[name] = modules;
+			_engine.module.addToBuster( name );
 			
+			let rtn = [],
+					bustArray = _engine.module.buster;
+			
+			for(let i = 0, len = modules.length; i < len; i++){
+				let indexTest = bustArray.indexOf( modules[i] );
+				if( indexTest > -1 ) rtn.push( modules[i] );
+			}
+			
+			return rtn;
+			
+			/*
 			let rtn = [],
 					matchTest = [],
 					bustModule = true,
@@ -300,11 +311,24 @@ var _engine = {
 				_engine.module.buster[name] = modules;
 			}
 			*/
+			/*
 			matchTest.length === 0 ?
 				rtn = false:
 				rtn = matchTest;
-			
-			return rtn;
+			*/
+			//return rtn;
+		},
+		
+		addToLoopBuster: (module) => {
+			if( _engine.module.buster.indexOf( module ) === -1 ) {
+				_engine.module.buster.push( module );
+			}
+		},
+		
+		removeFromLoopBuster: (module) => {
+			let index = _engine.module.buster.indexOf( module );
+			if( index > -1 )
+				_engine.module.buster.splice( index, 1 ); 
 		},
 		
 		addToQueue: (module) => {
@@ -456,8 +480,8 @@ var _engine = {
 									++$loopBuster;
 								else 
 									$loopBuster = 1;
-								if( $loopBuster === 50 ) loopLimit = 150;
-								else if( $loopBuster >= 50 ){
+								if( $loopBuster === 40 ) loopLimit = 200;
+								else if( $loopBuster >= 60 ){
 									bustedArray = _engine.module.bustLoop( $name, $array );
 								}
 								
