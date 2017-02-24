@@ -279,7 +279,7 @@ var _engine = {
 					
 				}
 			}
-			
+			/*
 				for(let i = 0, len = matchTest.length; i < len; i++){
 					
 					let reqs = _engine.module.buster[matchTest[i]],
@@ -299,11 +299,11 @@ var _engine = {
 			else {
 				_engine.module.buster[name] = modules;
 			}
-			
+			*/
 			matchTest.length === 0 ?
 				rtn = false:
 				rtn = matchTest;
-			*/
+			
 			return rtn;
 		},
 		
