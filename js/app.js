@@ -340,29 +340,21 @@ var _engine = {
 			}
 			
 			_engine.module.require(config,function( unfinished ){
-				if(!_engine.tools.isArray(unfinished)) unfinished = [];
+				let def = _engine.tools.splitArg( module ),
+						root = _engine,
+						last = def.length - 1;
 				
-				if( unfinished.length === 0 ){
-					let def = _engine.tools.splitArg( module ),
-							root = _engine,
-							last = def.length - 1;
-						
-					$.each(def,function(key,path){
-						if(typeof(root[path]) === 'undefined') root[path] = {};
-						
-						key === last ?
-							root[path] = definition :
-							root = root[path];
-						
-					});
+				console.log('defining ', module);
+				
+				$.each(def,function(key,path){
+					if(typeof(root[path]) === 'undefined') root[path] = {};
 					
-				}
-				else {
+					key === last ?
+						root[path] = definition :
+						root = root[path];
 					
-					console.error(`Installation failure: ${module} \nRequirements not satisfied: `, unfinished);
-					
-				}
-			
+				});
+				
 			});
 			
 		},
@@ -456,7 +448,7 @@ var _engine = {
 						}, 10);
 					}
 					else {
-						if( isCallback ) $callback( $array );
+						if( isCallback ) $callback();
 					}
 				}
 			}
