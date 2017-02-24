@@ -20,9 +20,7 @@ var _engine = {
 		/* Cannot move startUp into a module
 		/********************************************************************/
 		
-		startUp: function() {
-			
-			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error'],function(){
+		startUp: ()=>{ _engine.module.define('events/startUp',['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error'],function() {
 				
 				_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
 
