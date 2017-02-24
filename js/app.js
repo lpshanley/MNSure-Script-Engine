@@ -257,7 +257,10 @@ var _engine = {
 		pending: [],
 		buster: {},
 		
-		
+		bustLoop: (name, modules) => {
+			let rtn = [];
+			return rtn;
+		},
 		
 		addToQueue: (module) => {
 			if( _engine.module.queue.indexOf( module ) === -1 && _engine.module.pending.indexOf( module ) === -1 ) {
@@ -383,7 +386,8 @@ var _engine = {
 				
 				let $array = $setup.array,
 						$name = $setup.name,
-						purge = [];
+						purge = [],
+						bustedArray = [];
 				$loopBuster = $loopBuster || false;
 				
 				for( let i = 0, len = $array.length; i < len; i++ ){
@@ -407,15 +411,16 @@ var _engine = {
 									++$loopBuster;
 								else 
 									$loopBuster = 1;
-								if( $loopBuster === 50 ) {
-									console.log(`Busting Loop [ ${$name} ]: ${$loopBuster}`);
-									loopLimit = 150;
+								if( $loopBuster === 50 ) loopLimit = 150;
+								else if( $loopBuster >= 50 ){
+									bustedArray = _engine.module.bustLoop( $name, $array );
 								}
-								console.log( `[ ${$name} ] Looplimit ${ loopLimit }` );
+								
+								console.log(`[${name}] Modules busted: `, bustedArray);
 								process({array: $array, name: $name},$callback, $loopBuster);
+								
 							}
 							else {
-								if($loopBuster > 9) console.log(`Reseting buster for [ ${name} ]`);
 								process({array: $array, name: $name},$callback);
 							}
 						}, 10);
