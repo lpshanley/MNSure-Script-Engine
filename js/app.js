@@ -305,6 +305,11 @@ var _engine = {
 				reqs = [];
 			}
 			
+			reqs = {
+				name: module,
+				require: reqs
+			}
+			
 			_engine.module.require(reqs,function( unfinished ){
 				if(!_engine.tools.isArray(unfinished)) unfinished = [];
 				
@@ -353,9 +358,11 @@ var _engine = {
 			return exists;
 		},
 		
-		require: function( modules, callback ){
+		require: function( config, callback ){
 			
 			let loopCounter = 0,
+					name = config.name,
+					modules = config.require,
 					reqs = [],
 					isCallback = _engine.tools.isFunction( callback );
 				
@@ -386,11 +393,11 @@ var _engine = {
 									++$loopBuster;
 								else 
 									$loopBuster = 1;
-								console.log('Busting Loop: ',$loopBuster);
+								console.log(`Busting Loop [${name}]: ${$loopBuster}`);
 								process($array,$callback, $loopBuster);
 							}
 							else {
-								if($loopBuster) console.log('Reseting buster');
+								if($loopBuster) console.log('Reseting buster for [${name}]');
 								process($array,$callback);
 							}
 						}, 10);
