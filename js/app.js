@@ -405,7 +405,7 @@ var _engine = {
 			if(_engine.tools.isArray(config)){
 				let temp = config;
 				config = {
-					name: undefined,
+					name: 'default',
 					require: temp
 				}
 			}
