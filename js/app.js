@@ -380,7 +380,7 @@ var _engine = {
 			if(_engine.tools.isArray(config)){
 				let temp = config;
 				config = {
-					name: 'default',
+					name: 'startup',
 					require: temp
 				}
 			}
@@ -418,11 +418,12 @@ var _engine = {
 					if( loopCounter < loopLimit ){
 						setTimeout(function(){
 							if( purge.length === 0 ){
+								let busted = false;
 								if( $loopBuster ) 
 									++$loopBuster;
 								else 
 									$loopBuster = 1;
-								if( $loopBuster === 40 ) loopLimit = 200;
+								if( $loopBuster === 40 ) loopLimit = 300;
 								else if( $loopBuster >= 60 ){
 									bustedArray = _engine.module.bustLoop( $name, $array );
 								}
@@ -433,9 +434,10 @@ var _engine = {
 										if( bustedArray.indexOf( $array[i] ) === -1 ) unbusted.push( bustedArray[i] );
 									}
 									$array = unbusted;
+									if($array.length === 0) busted = true;
 								}
 								
-								console.log('Remaining: ', $array);
+								if(busted) console.log('Busted Array for : ', $name);
 								
 								process({array: $array, name: $name},$callback, $loopBuster);
 								
@@ -480,7 +482,7 @@ var _engine = {
 			}
 			else {
 				setTimeout(function(){
-					if(timeout < 200){
+					if(timeout < 300){
 						timeout++;
 						_engine.module.pendForInstall( module, timeout );
 					}
