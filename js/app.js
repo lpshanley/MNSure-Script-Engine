@@ -277,7 +277,7 @@ var _engine = {
 							matched = false;
 					
 					for(let req = 0, total = reqs.length; req < total; req++){
-						
+						console.log(name, reqs[i]);
 						if( reqs[i] === name ) matched = true;
 						
 					}
