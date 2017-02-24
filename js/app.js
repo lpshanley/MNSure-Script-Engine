@@ -271,7 +271,7 @@ var _engine = {
 				}
 			}
 			else {
-				//Empty Buster
+				_engine.module.buster[name] = modules;
 			}
 			
 			rtn = matchTest;
