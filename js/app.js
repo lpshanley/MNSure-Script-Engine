@@ -376,10 +376,12 @@ var _engine = {
 					reqs = [],
 					isCallback = _engine.tools.isFunction( callback );
 				
-			let process = function($array, $callback, $loopBuster){
+			let process = function($setup, $callback, $loopBuster){
 				loopCounter++;
 				
-				let purge = [];
+				let $array = $setup.array,
+						$name = $setup.name,
+						purge = [];
 				$loopBuster = $loopBuster || false;
 				
 				for( let i = 0, len = $array.length; i < len; i++ ){
@@ -403,12 +405,12 @@ var _engine = {
 									++$loopBuster;
 								else 
 									$loopBuster = 1;
-								console.log(`Busting Loop [${name}]: ${$loopBuster}`);
-								process($array,$callback, $loopBuster);
+								if( $loopBuster % 10 === 0 ) console.log(`Busting Loop [ ${$name} ]: ${$loopBuster}`);
+								process({array: $array, name: $name},$callback, $loopBuster);
 							}
 							else {
 								if($loopBuster) console.log('Reseting buster for [${name}]');
-								process($array,$callback);
+								process({array: $array, name: $name},$callback);
 							}
 						}, 10);
 					}
@@ -422,6 +424,11 @@ var _engine = {
 				if(!_engine.module.exists(modules[i])){
 					reqs.push( modules[i] );
 				}
+			}
+			
+			let setupProcess = {
+				name: name,
+				array: reqs
 			}
 			
 			if(reqs.length) process(reqs,callback);
