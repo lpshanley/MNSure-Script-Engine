@@ -264,11 +264,28 @@ var _engine = {
 					match = Object.getOwnPropertyNames(_engine.module.buster);
 			
 			if( match.length > 0 ){
+				
 				for(let i = 0, len = modules.length; i < len; i++ ){
 					
 					if( match.indexOf(modules[i]) > -1 ) matchTest.push( modules[i] );
 					
 				}
+				
+				for(let i = 0, len = matchTest.length; i < len; i++){
+					
+					let reqs = _engine.module.buster[matchTest[i]],
+							matched = false;
+					
+					for(let req = 0, total = reqs.length; req < total; req++){
+						
+						if( reqs[i] === name ) matched = true;
+						
+					}
+					
+					if(matched) console.log(`MATCHED: ${name}`);
+					
+				}
+				
 			}
 			else {
 				_engine.module.buster[name] = modules;
