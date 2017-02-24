@@ -1,6 +1,6 @@
 _engine.module.define('ui/modal',['advanced/generateId', 'storage/nocache', 'caseWork/unifiedSearch', 'debug/info', 'debug/warn', 'debug/error', 'events/persistSession', 'tools/customApi/evidence/queryAndCache', 'storage/prefillCache'],{
 	
-	_button: function( button, modalId ){
+	button: function( button, modalId ){
 		
 		let modal = $('[data-id='+modalId+']');
 		let action = $( button )[0].dataset.role;
@@ -52,7 +52,7 @@ _engine.module.define('ui/modal',['advanced/generateId', 'storage/nocache', 'cas
 		
 	},
 	
-	_changeActiveCluster: function( modalTarget, subjectValue ){
+	changeActiveCluster: function( modalTarget, subjectValue ){
 		
 		if( _engine.ui.modal.clustersActive( modalTarget ) ){
 
@@ -80,7 +80,7 @@ _engine.module.define('ui/modal',['advanced/generateId', 'storage/nocache', 'cas
 		
 	},
 	
-	_clustersActive: function( modalID ){
+	clustersActive: function( modalID ){
 		
 		let modal = '[data-id="' + modalID + '"]',
 			returnVal = false;
@@ -92,7 +92,7 @@ _engine.module.define('ui/modal',['advanced/generateId', 'storage/nocache', 'cas
 		
 	},
 	
-	_prefillFromDataQuery: function( type, callback ){
+	prefillFromDataQuery: function( type, callback ){
 		
 		type = type.toLowerCase();
 
@@ -255,7 +255,7 @@ _engine.module.define('ui/modal',['advanced/generateId', 'storage/nocache', 'cas
 		
 	},
 	
-	_processPrefill: function( modalTarget ){
+	processPrefill: function( modalTarget ){
 	
 		var _fields = $('[data-id="'+modalTarget+'"] .mns-modal-template > .mns-input-group');
 
@@ -325,7 +325,7 @@ _engine.module.define('ui/modal',['advanced/generateId', 'storage/nocache', 'cas
 		
 	},
 	
-	_setupAutoComplete: function( modalId ){
+	setupAutoComplete: function( modalId ){
 		
 		let _fields = $('[data-id="'+modalId+'"] .mns-modal-template > .mns-input-group');
 		//Push additional clusters if clustering is active
@@ -386,7 +386,7 @@ _engine.module.define('ui/modal',['advanced/generateId', 'storage/nocache', 'cas
 		
 	},
 	
-	_setupClusters: function( modalTarget ){
+	setupClusters: function( modalTarget ){
 		
 		if( _engine.ui.modal.clustersActive( modalTarget ) ){
 
@@ -404,7 +404,7 @@ _engine.module.define('ui/modal',['advanced/generateId', 'storage/nocache', 'cas
 		
 	},
 	
-	_storeParams: function( modalId, callback ){
+	storeParams: function( modalId, callback ){
 		
 		let modalTemplate = '[data-id="' + modalId + '"] .mns-modal-template',
 				fields = $( modalTemplate + ' > .mns-input-group'),
@@ -455,7 +455,7 @@ _engine.module.define('ui/modal',['advanced/generateId', 'storage/nocache', 'cas
 		
 	},
 	
-	_unwwatch: function(){
+	unwwatch: function(){
 		
 		$('.mns-modal-template').off('keypress');
 		
@@ -463,7 +463,7 @@ _engine.module.define('ui/modal',['advanced/generateId', 'storage/nocache', 'cas
 		
 	},
 	
-	_validateModal: function( modalId ){
+	validateModal: function( modalId ){
 		
 		let errors = 0,
 				required = '[data-id='+modalId+'] div.mns-modal-template ',
@@ -492,7 +492,7 @@ _engine.module.define('ui/modal',['advanced/generateId', 'storage/nocache', 'cas
 		
 	},
 	
-	_watch: function( modalTarget ){
+	watch: function( modalTarget ){
 		
 		let modal = $('[data-id='+modalTarget+']');
 
