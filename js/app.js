@@ -409,7 +409,7 @@ var _engine = {
 								process({array: $array, name: $name},$callback, $loopBuster);
 							}
 							else {
-								if($loopBuster) console.log('Reseting buster for [${name}]');
+								if($loopBuster) console.log(`Reseting buster for [ ${name} ]`);
 								process({array: $array, name: $name},$callback);
 							}
 						}, 10);
