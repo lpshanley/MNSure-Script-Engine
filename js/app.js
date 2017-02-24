@@ -407,7 +407,7 @@ var _engine = {
 				}
 			}
 			
-			if(reqs.length) process(reqs,callback,loopBuster);
+			if(reqs.length) process(reqs,callback);
 			else if( isCallback ) callback();
 			
 		},
