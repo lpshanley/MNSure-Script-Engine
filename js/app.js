@@ -433,7 +433,7 @@ var _engine = {
 									bustedArray = _engine.module.bustLoop( $name, $array );
 								}
 								
-								console.log(`[${name}] Modules busted: `, bustedArray);
+								if(bustedArray) console.log(`[${name}] Modules busted: `, bustedArray);
 								process({array: $array, name: $name},$callback, $loopBuster);
 								
 							}
