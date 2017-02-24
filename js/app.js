@@ -403,11 +403,11 @@ var _engine = {
 									++$loopBuster;
 								else 
 									$loopBuster = 1;
-								if( $loopBuster % 10 === 0 ) console.log(`Busting Loop [ ${$name} ]: ${$loopBuster}`);
+								if( $loopBuster % 10 === 0 && $loopBuster > 30 ) console.log(`Busting Loop [ ${$name} ]: ${$loopBuster}`);
 								process({array: $array, name: $name},$callback, $loopBuster);
 							}
 							else {
-								if($loopBuster) console.log(`Reseting buster for [ ${name} ]`);
+								if($loopBuster > 9) console.log(`Reseting buster for [ ${name} ]`);
 								process({array: $array, name: $name},$callback);
 							}
 						}, 10);
