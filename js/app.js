@@ -269,9 +269,8 @@ var _engine = {
 				if( indexTest > -1 ) rtn.push( modules[i] );
 			}
 			
-			console.log( name, rtn, bustArray );
-			
 			return rtn;
+			
 		},
 		
 		addToLoopBuster: (module) => {
@@ -440,7 +439,14 @@ var _engine = {
 									bustedArray = _engine.module.bustLoop( $name, $array );
 								}
 								
-								if( bustedArray.length ) console.log(`[${name}] Modules busted: `, bustedArray);
+								if( bustedArray.length > 0 ) {
+									let unbusted = [];
+									for(let i = 0, len = $array.length; i <  len; i++){
+										if( bustedArray.indexOf( $array[i] ) === -1 ) unbusted.push( bustedArray[i] );
+									}
+									$array = unbusted;
+								}
+								
 								process({array: $array, name: $name},$callback, $loopBuster);
 								
 							}
