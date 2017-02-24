@@ -274,7 +274,9 @@ var _engine = {
 				_engine.module.buster[name] = modules;
 			}
 			
-			rtn = matchTest;
+			matchTest.length === 0 ?
+				rtn = false:
+				rtn = matchTest;
 			
 			return rtn;
 		},
@@ -433,7 +435,7 @@ var _engine = {
 									bustedArray = _engine.module.bustLoop( $name, $array );
 								}
 								
-								if( bustedArray.length > 0 ) console.log(`[${name}] Modules busted: `, bustedArray);
+								if( bustedArray.length ) console.log(`[${name}] Modules busted: `, bustedArray);
 								process({array: $array, name: $name},$callback, $loopBuster);
 								
 							}
