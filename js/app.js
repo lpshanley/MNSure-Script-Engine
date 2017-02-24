@@ -310,6 +310,8 @@ var _engine = {
 				require: reqs
 			}
 			
+			console.log(`Prereq: `, config);
+			
 			_engine.module.require(config,function( unfinished ){
 				if(!_engine.tools.isArray(unfinished)) unfinished = [];
 				
