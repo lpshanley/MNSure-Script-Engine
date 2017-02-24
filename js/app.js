@@ -305,12 +305,12 @@ var _engine = {
 				reqs = [];
 			}
 			
-			reqs = {
+			let config = {
 				name: module,
 				require: reqs
 			}
 			
-			_engine.module.require(reqs,function( unfinished ){
+			_engine.module.require(config,function( unfinished ){
 				if(!_engine.tools.isArray(unfinished)) unfinished = [];
 				
 				if( unfinished.length === 0 ){
