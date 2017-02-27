@@ -382,14 +382,13 @@ var _engine = {
 			
 			if( _engine.module.pending.length === 0 ) {
 				console.info(`Pend Log clear running request: `);
+				console.log( _engine.module.queue );
 				_engine.module.requestor = undefined;
 				if( _engine.tools.isFunction( callback ) ) callback();
 			}
 			else {
-				if( timeOut++ < 200 ){
-					console.log(timeOut);
+				if( timeOut++ < 300 ){
 					setTimeout(function(){
-						console.info('Waiting on pending list.');
 						_engine.module.pauseForPending( callback, timeOut );
 					},10);
 				}
