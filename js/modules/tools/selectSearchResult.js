@@ -1,5 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('tools/selectSearchResult',function(){
+_engine.module.define('tools/selectSearchResult', ['domTools/get/searches/advancedQuery', 'domTools/test/hcrTabType', 'debug/info', 'advanced/vars', 'domTools/get/searches/searchResultsQuery', 'domTools/test/searches/windowLoaded', '_engine/domTools/get/hcrTabListTypeQuery'], function(){
 	
 	_engine.domTools.get.searches.advancedQuery(".action-set a:contains('Search')")[0].click();
 
@@ -13,8 +13,8 @@ _engine.module.define('tools/selectSearchResult',function(){
 
 		_engine.debug.info("- * Attempting to load results screen [ attempt: "+ _count +" ]");
 
-		if( _count <= _engine.advanced.vars.iterations ){
-
+		if( ++_count <= _engine.advanced.vars.iterations ){
+			
 			var _results = _engine.domTools.get.searches.searchResultsQuery();
 
 			if( _engine.domTools.test.searches.windowLoaded() && _results.length > 0 ){
@@ -64,8 +64,6 @@ _engine.module.define('tools/selectSearchResult',function(){
 				}
 
 			}
-
-			++_count;
 
 		} else {
 
