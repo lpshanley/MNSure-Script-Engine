@@ -1,11 +1,5 @@
 /* MNSure Script Engine | (c) Lucas Shanley | https://raw.githubusercontent.com/lpshanley/MNSure-Script-Engine/master/LICENSE */
-_engine.module.define('tools/selectSearchResult', ['domTools/get/searches/advancedQuery', 'domTools/test/hcrTabType', 'debug/info', 'advanced/vars', 'domTools/get/searches/searchResultsQuery', 'domTools/test/searches/windowLoaded', 'domTools/get/hcrTabListTypeQuery'], function( config ){
-	
-	config = config || {
-		foo: 'bar'
-	}
-	
-	console.log( config );
+_engine.module.define('tools/selectSearchResult', ['domTools/get/searches/advancedQuery', 'domTools/test/hcrTabType', 'debug/info', 'advanced/vars', 'domTools/get/searches/searchResultsQuery', 'domTools/test/searches/windowLoaded', 'domTools/get/hcrTabListTypeQuery'], function(){
 	
 	_engine.domTools.get.searches.advancedQuery(".action-set a:contains('Search')")[0].click();
 
