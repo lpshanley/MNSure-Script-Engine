@@ -257,10 +257,6 @@ _engine.module = {
 
 	requestor: undefined,
 
-	register: function(){
-
-	},
-
 	bustLoop: (name, modules) => {
 
 		_engine.module.addToLoopBuster( name );
