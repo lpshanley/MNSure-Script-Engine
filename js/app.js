@@ -510,8 +510,10 @@ let ProjectValkyrie = function( id ){
 	
 	this.ready = ( count ) => {
 		this.count = ++count || 0;
-		if(tools.isFunction($))
+		if(tools.isFunction($)){
 			this.events.startUp();
+			delete this.ready;
+		}
 		else 
 			if( count < 400 )
 				setTimeout(this.ready(count),25);
