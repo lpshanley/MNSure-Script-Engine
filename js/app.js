@@ -410,7 +410,7 @@ var _engine = {
 				}
 			}
 			
-			if(!undefined) _engine.module.requestor = config.name;
+			if( _engine.module.requestor === undefined ) _engine.module.requestor = config.name;
 			
 			let loopCounter = 0,
 					name = config.name,
@@ -464,7 +464,7 @@ var _engine = {
 									if($array.length === 0) busted = true;
 								}
 								
-								if( busted && $name === _engine.module.requestor){
+								if( $name === _engine.module.requestor){
 									
 									_engine.module.pauseForPending( $callback );
 									
