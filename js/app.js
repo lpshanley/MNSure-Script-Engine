@@ -9,9 +9,20 @@
 //                                        /_/                       /____/              
 // 
 
-let root = window._engine = {};
+let root = {
+	path: '_engine',
+	get: ()=>{
+		return window[root.path];
+	}
+}
 
-root.events = {
+window[root.path] = {};
+
+_engine.root = () => {
+	return this;
+}
+
+_engine.events = {
 
 	/* Cannot move startUp into a module
 	/********************************************************************/
@@ -90,7 +101,7 @@ root.events = {
 //*  Storage  *//
 //*************//
 
-root.storage = {
+_engine.storage = {
 
 	/* Config Storage Model and _data cannot be relocated */
 
@@ -205,7 +216,7 @@ root.storage = {
 //*   Tools    *//
 //**************//
 
-root.tools = {
+_engine.tools = {
 
 	regex: {
 		stripComment: /\/\*[\s\S]*?\*\/|([^:"'=]|^)\/\/.*$/mg,
@@ -243,7 +254,7 @@ root.tools = {
 //*   Module   *//
 //**************//
 
-root.module = {
+_engine.module = {
 
 	queue: [],
 	pending: [],
@@ -525,21 +536,21 @@ root.module = {
 
 /* [Program Start] Runs the startup function 
 /********************************************************************/
-root.temp = {count:0};
+_engine.temp = {count:0};
 
-root.temp.jQloaded = setInterval(function(){
+_engine.temp.jQloaded = setInterval(function(){
 
-	if( root.temp.count < 400 ){
+	if( _engine.temp.count < 400 ){
 		if( typeof $ === 'function' ){
-			root.events.startUp();
-			clearInterval(root.temp.jQloaded);
-			delete root.temp;
+			_engine.events.startUp();
+			clearInterval(_engine.temp.jQloaded);
+			delete _engine.temp;
 		} else {
-			root.temp.count++;
+			_engine.temp.count++;
 		}
 	} else {
-		clearInterval(root.temp.jQloaded);
+		clearInterval(_engine.temp.jQloaded);
 	}
 },25);
 
-root.temp.jQloaded;
+_engine.temp.jQloaded;
