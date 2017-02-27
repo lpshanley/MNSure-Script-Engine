@@ -9,14 +9,9 @@
 //                                        /_/                       /____/              
 // 
 
-let _engine = window._engine = {};
+let _engine = new ProjectValkyrie('_engine');
 
-
-_engine.root = () => {
-	return this;
-}
-
-_engine.events = {
+ProjectValkyrie.events = {
 
 	/* Cannot move startUp into a module
 	/********************************************************************/
@@ -95,7 +90,7 @@ _engine.events = {
 //*  Storage  *//
 //*************//
 
-_engine.storage = {
+ProjectValkyrie.storage = {
 
 	/* Config Storage Model and _data cannot be relocated */
 
@@ -210,45 +205,25 @@ _engine.storage = {
 //*   Tools    *//
 //**************//
 
-_engine.tools = {
-
+ProjectValkyrie.tools = {
 	regex: {
 		stripComment: /\/\*[\s\S]*?\*\/|([^:"'=]|^)\/\/.*$/mg,
 		stripArgs: /(.+\()|(\".+)|(\).+)|[}]/mg,
 		splitQuery: /[\|\/\\\.]/g
 	},
-
-	splitArg:  function( input ){
-		return input.replace(/(^\/)|(\/$)/g,"").split( _engine.tools.regex.splitQuery );
-	},
-
-	parseToUrl: function( input ){
-		return input.replace(_engine.tools.regex.splitQuery,"/").replace(/(^\/)|(\/$)/g,"");
-	},
-
-	isFunction: function( input ){
-		return Object.prototype.toString.call( input ) === "[object Function]";
-	},
-
-	isArray: function( input ){
-		return Object.prototype.toString.call( input ) === "[object Array]";
-	},
-
-	isUndefined: function( input ){
-		return Object.prototype.toString.call( input ) === "[object Undefined]";
-	},
-
-	isObject: function( input ){
-		return Object.prototype.toString.call( input ) === "[object Object]";
-	}
-
+	splitArg: ( input ) => input.replace(/(^\/)|(\/$)/g,"").split( _engine.tools.regex.splitQuery ),
+	parseToUrl: ( input ) => input.replace(_engine.tools.regex.splitQuery,"/").replace(/(^\/)|(\/$)/g,""),
+	isFunction: ( input ) => Object.prototype.toString.call( input ) === "[object Function]",
+	isArray: ( input ) => Object.prototype.toString.call( input ) === "[object Array]",
+	isUndefined: ( input ) => Object.prototype.toString.call( input ) === "[object Undefined]",
+	isObject: ( input ) => Object.prototype.toString.call( input ) === "[object Object]"
 }
 
 //**************//
 //*   Module   *//
 //**************//
 
-_engine.module = {
+ProjectValkyrie.module = {
 
 	queue: [],
 	pending: [],
@@ -533,21 +508,20 @@ _engine.module = {
 
 /* [Program Start] Runs the startup function 
 /********************************************************************/
-_engine.temp = {count:0};
+ProjectValkyrie.temp = {count:0};
+ProjectValkyrie.temp.jQloaded = setInterval(function(){
 
-_engine.temp.jQloaded = setInterval(function(){
-
-	if( _engine.temp.count < 400 ){
+	if( ProjectValkyrie.temp.count < 400 ){
 		if( typeof $ === 'function' ){
-			_engine.events.startUp();
-			clearInterval(_engine.temp.jQloaded);
-			delete _engine.temp;
+			ProjectValkyrie.events.startUp();
+			clearInterval(ProjectValkyrie.temp.jQloaded);
+			delete ProjectValkyrie.temp;
 		} else {
-			_engine.temp.count++;
+			ProjectValkyrie.temp.count++;
 		}
 	} else {
-		clearInterval(_engine.temp.jQloaded);
+		clearInterval(ProjectValkyrie.temp.jQloaded);
 	}
 },25);
 
-_engine.temp.jQloaded;
+ProjectValkyrie.temp.jQloaded;
