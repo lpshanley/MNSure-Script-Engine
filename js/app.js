@@ -417,7 +417,7 @@ let ProjectValkyrie = function( id ){
 	
 	let ready = ( callback, count ) => {
 		this.count = ++count || 0;
-		if(tools.isFunction($) && tools.isFunction(callback)) callback();
+		if( $tools.isFunction($) && $tools.isFunction(callback)) callback();
 		else if( count < 400 ) setTimeout(this.ready(callback, count),25);
 	}
 	
