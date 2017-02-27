@@ -380,7 +380,7 @@ var _engine = {
 			
 			timeOut = timeOut || 0;
 			
-			if( _engine.module.pending.length === 0 ) {
+			if(  _engine.module.queue.length === 0 && _engine.module.pending.length === 0 ) {
 				console.info(`Pend Log clear running request: `);
 				console.log( _engine.module.queue );
 				_engine.module.requestor = undefined;
@@ -463,7 +463,7 @@ var _engine = {
 									if($array.length === 0) busted = true;
 								}
 								
-								($name === _engine.module.requestor && _engine.module.queue.length === 0) ?
+								($name === _engine.module.requestor) ?
 									_engine.module.pauseForPending( $callback ) :
 									process({array: $array, name: $name},$callback, $loopBuster);
 								
