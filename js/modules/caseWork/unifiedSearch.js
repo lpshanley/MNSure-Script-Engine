@@ -25,7 +25,7 @@ _engine.module.define('caseWork/unifiedSearch',[ 'advanced/getView', 'navigation
 		
 	},
 	
-	_finish: function( modalId, params ){
+	finish: function( modalId, params ){
 		
 		if( typeof params === 'undefined' ) params = _engine.storage.nocache.data.modal[modalId].data.params;
 	
