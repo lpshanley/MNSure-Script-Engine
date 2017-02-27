@@ -12,118 +12,23 @@
 'use strict';
 
 let ProjectValkyrie = function( id ){
-	this.events = {
-
-		/* Cannot move startUp into a module
-		/********************************************************************/
-
-		startUp: function() {
-
-			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error'],function(){
-
-				_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
-
-				$('#script-launcher a').contextmenu(function(e){
-						// Prevent context menu pop-up
-					e.preventDefault();
-						// Open Case Search
-					_engine.search.case();
-						// Open Person Search
-					_engine.search.person();
-				});
-
-				_engine.storage.prefillCache.clear();
-
-				//Dynamic Ticker Notifs (10s)
-				setInterval(function(){
-
-					_engine.ui.topNotification.remove("Session Expiry");
-					_engine.ui.topNotification.add( `Session Expiry - ${ _engine.advanced.sessionExpiry() }` );
-
-				},10000);
-
-				let version = _engine.storage.config.get('commit.current'),
-						commit = _engine.storage.config.get('commit.' + version);
-
-				_engine.ui.topNotification.add(`Script Library: ${version}`);
-
-				version === 'master' ?
-					_engine.storage.debugStatus.set( false ):
-					_engine.storage.debugStatus.set( true );
-
-				if( version !== 'master' && version !== 'beta' ){
-
-					_engine.ui.topNotification.add(`Loaded commit: ${commit}`);
-
-					$.ajax({
-						url: 'https://api.github.com/rate_limit?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1',
-						dataType: 'json',
-						async: false,
-						success: function( data ){
-							_engine.ui.topNotification.add(`Calls Remaining: ${data.resources.core.remaining}`);
-						}
-					});
-
-				}
-
-				_engine.ui.dom.prepUI(function(){
-
-					_engine.ui.topNotification.run();
-
-						//Build out menu
-					_engine.ui.scriptMenu.refresh();
-
-					_engine.events.domMonitor();
-
-					$('.scripts-link, .center-box').removeAttr('style');
-
-					_engine.advanced.setupTimeoutAlert();
-
-				});
-
-			});
-
-		},
-
-	}
 
 	//*************//
 	//*  Storage  *//
 	//*************//
 
 	this.storage = {
-
-		/* Config Storage Model and _data cannot be relocated */
-
-		data: {
-			encode: function( input ){
-				return encodeURIComponent( JSON.stringify( input ) );
-			},
-			decode: function( input ){
-				return $.parseJSON( decodeURIComponent( input ) );
-			}
-		},
-
 		config: {
-			get: function( reqString ){
-
-				let config = _engine.storage.data.decode( window.localStorage.mnsEngine_Config );
-
-				if(typeof reqString === "string"){ 
-
-					let reqArray = reqString.split('.');
-
-					$.each( reqArray, function(k,v){
-
-						typeof config[v] === "undefined" ?
-							config = false :
-							config = config[v];
-
-					});
+			get: function(req){
+				let config = $tools.decodeString( window.localStorage.mnsEngine_Config ),
+						rtn = config;
+				
+				if( $tools.isString(req) ){ 
+					let reqArray = $tools.parseQueryString(req);
+					for(let i=0, len = reqArray.length; i < len; i++)
+						i === len - 1 ? rtn = config[i] : config = config[i];
 				}
-
-				return config;
-
+				return rtn;
 			},
 			set: function( obj ){
 
@@ -131,7 +36,7 @@ let ProjectValkyrie = function( id ){
 
 				$.extend(true,config,obj);
 
-				window.localStorage.mnsEngine_Config = _engine.storage.data.encode( config );
+				window.localStorage.mnsEngine_Config = $tools.encodeString( config );
 
 			}
 		},
@@ -206,20 +111,22 @@ let ProjectValkyrie = function( id ){
 	//*   Tools    *//
 	//**************//
 
-	let tools = {
+	let $tools = {
 		regex: {
 			stripComment: /\/\*[\s\S]*?\*\/|([^:"'=]|^)\/\/.*$/mg,
 			stripArgs: /(.+\()|(\".+)|(\).+)|[}]/mg,
 			splitQuery: /[\|\/\\\.]/g
 		},
-		splitArg: ( input ) => input.replace(/(^\/)|(\/$)/g,"").split( _engine.tools.regex.splitQuery ),
-		parseToUrl: ( input ) => input.replace(_engine.tools.regex.splitQuery,"/").replace(/(^\/)|(\/$)/g,""),
+		parseQueryString: ( input ) => input.replace(/(^\/)|(\/$)/g,"").split( $tools.regex.splitQuery ),
+		parseToUrl: ( input ) => input.replace( $tools.regex.splitQuery, "/" ).replace(/(^\/)|(\/$)/g,""),
 		isFunction: ( input ) => Object.prototype.toString.call( input ) === "[object Function]",
 		isArray: ( input ) => Object.prototype.toString.call( input ) === "[object Array]",
 		isUndefined: ( input ) => Object.prototype.toString.call( input ) === "[object Undefined]",
-		isObject: ( input ) => Object.prototype.toString.call( input ) === "[object Object]"
+		isObject: ( input ) => Object.prototype.toString.call( input ) === "[object Object]",
+		encodeString: ( input ) => encodeURIComponent( JSON.stringify( input ) ),
+		decodeString: ( input ) => $.parseJSON( decodeURIComponent( input ) )
 	}
-	this.tools = tools;
+	this.tools = $tools;
 	
 	//**************//
 	//*   Module   *//
@@ -508,17 +415,83 @@ let ProjectValkyrie = function( id ){
 
 	}
 	
-	this.ready = ( count ) => {
+	let ready = ( callback, count ) => {
 		this.count = ++count || 0;
-		if(tools.isFunction($)) {
-			this.events.startUp();
-		}
-		else {
-			if( count < 400 ) setTimeout(this.ready(count),25);
-		}
+		if(tools.isFunction($) && tools.isFunction(callback)) callback();
+		else if( count < 400 ) setTimeout(this.ready(callback, count),25);
+	}
+	
+	this.run = function() {
+		ready(function(){
+			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error'],function(){
+
+				_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
+
+				$('#script-launcher a').contextmenu(function(e){
+						// Prevent context menu pop-up
+					e.preventDefault();
+						// Open Case Search
+					_engine.search.case();
+						// Open Person Search
+					_engine.search.person();
+				});
+
+				_engine.storage.prefillCache.clear();
+
+				//Dynamic Ticker Notifs (10s)
+				setInterval(function(){
+
+					_engine.ui.topNotification.remove("Session Expiry");
+					_engine.ui.topNotification.add( `Session Expiry - ${ _engine.advanced.sessionExpiry() }` );
+
+				},10000);
+
+				let version = _engine.storage.config.get('commit.current'),
+						commit = _engine.storage.config.get('commit.' + version);
+
+				_engine.ui.topNotification.add(`Script Library: ${version}`);
+
+				version === 'master' ?
+					_engine.storage.debugStatus.set( false ):
+					_engine.storage.debugStatus.set( true );
+
+				if( version !== 'master' && version !== 'beta' ){
+
+					_engine.ui.topNotification.add(`Loaded commit: ${commit}`);
+
+					$.ajax({
+						url: 'https://api.github.com/rate_limit?access_token=e4ad5080ca84edff38ff06bea3352f30beafaeb1',
+						dataType: 'json',
+						async: false,
+						success: function( data ){
+							_engine.ui.topNotification.add(`Calls Remaining: ${data.resources.core.remaining}`);
+						}
+					});
+
+				}
+
+				_engine.ui.dom.prepUI(function(){
+
+					_engine.ui.topNotification.run();
+
+						//Build out menu
+					_engine.ui.scriptMenu.refresh();
+
+					_engine.events.domMonitor();
+
+					$('.scripts-link, .center-box').removeAttr('style');
+
+					_engine.advanced.setupTimeoutAlert();
+
+				});
+
+			});
+
+		});
+		
 	}
 	
 }
 
 let _engine = new ProjectValkyrie('_engine');
-_engine.ready();
+_engine.run();
