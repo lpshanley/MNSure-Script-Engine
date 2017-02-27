@@ -387,6 +387,7 @@ var _engine = {
 			}
 			else {
 				if( timeOut++ < 200 ){
+					console.log(timeOut);
 					setTimeout(function(){
 						console.info('Waiting on pending list.');
 						_engine.module.pauseForPending( callback, timeOut );
