@@ -9,14 +9,8 @@
 //                                        /_/                       /____/              
 // 
 
-let root = {
-	path: '_engine',
-	get: ()=>{
-		return window[root.path];
-	}
-}
+let _engine = window._engine = {};
 
-window[root.path] = {};
 
 _engine.root = () => {
 	return this;
