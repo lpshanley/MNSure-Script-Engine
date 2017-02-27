@@ -463,14 +463,9 @@ var _engine = {
 									if($array.length === 0) busted = true;
 								}
 								
-								if( $name === _engine.module.requestor){
-									
-									_engine.module.pauseForPending( $callback );
-									
-								}
-								else {
+								($name === _engine.module.requestor && _engine.module.queue.length === 0) ?
+									_engine.module.pauseForPending( $callback ) :
 									process({array: $array, name: $name},$callback, $loopBuster);
-								}
 								
 							}
 							else {
