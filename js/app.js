@@ -257,6 +257,10 @@ _engine.module = {
 
 	requestor: undefined,
 
+	register: function( name, reqs ){
+		_engine.module.registry[name] = reqs;
+	},
+
 	bustLoop: (name, modules) => {
 
 		_engine.module.addToLoopBuster( name );
@@ -329,6 +333,7 @@ _engine.module = {
 	},
 
 	define: function( module, reqs, definition ){
+		
 		if( (_engine.tools.isFunction(reqs) || _engine.tools.isObject(reqs)) && _engine.tools.isUndefined( definition )){
 			definition = reqs;
 			reqs = [];
@@ -338,6 +343,8 @@ _engine.module = {
 			name: module,
 			require: reqs
 		}
+		
+		_engine.module.register(config.name, config.require);
 
 		_engine.module.require(config,function( unfinished ){
 			let def = _engine.tools.splitArg( module ),
