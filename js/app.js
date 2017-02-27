@@ -252,6 +252,7 @@ var _engine = {
 		queue: [],
 		pending: [],
 		buster: [],
+		requestor: undefined,
 		
 		bustLoop: (name, modules) => {
 			
@@ -375,6 +376,29 @@ var _engine = {
 			return exists;
 		},
 		
+		pauseForPending: ( callback, timeOut ) => {
+			
+			timeOut = timeOut || 0;
+			
+			if( _engine.module.pending.length === 0 ) {
+				console.info(`Pend Log clear running request: `);
+				_engine.module.requestor = undefined;
+				if( _engine.tools.isFunction( callback ) ) callback();
+			}
+			else {
+				if( timeOut++ < 200 ){
+					setTimeout(function(){
+						console.info('Waiting on pending list.');
+						_engine.module.pauseForPending( callback, timeOut );
+					},10);
+				}
+				else {
+					console.info('Timeout encountered on structure launch.');
+				}
+			}
+			
+		},
+		
 		require: function( config, callback ){
 			
 			if(_engine.tools.isArray(config)){
@@ -384,6 +408,8 @@ var _engine = {
 					require: temp
 				}
 			}
+			
+			if(!undefined) _engine.module.requestor = config.name;
 			
 			let loopCounter = 0,
 					name = config.name,
@@ -437,9 +463,9 @@ var _engine = {
 									if($array.length === 0) busted = true;
 								}
 								
-								if( busted && $name === 'startup'){
+								if( busted && $name === _engine.module.requestor){
 									
-									console.log('Pausing Startup for final validation');
+									_engine.module.pauseForPending( $callback );
 									
 								}
 								else {

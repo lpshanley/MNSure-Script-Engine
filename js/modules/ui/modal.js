@@ -455,7 +455,7 @@ _engine.module.define('ui/modal',['advanced/generateId', 'storage/nocache', 'cas
 		
 	},
 	
-	unwwatch: function(){
+	unwatch: function(){
 		
 		$('.mns-modal-template').off('keypress');
 		
