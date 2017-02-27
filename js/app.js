@@ -206,7 +206,7 @@ let ProjectValkyrie = function( id ){
 	//*   Tools    *//
 	//**************//
 
-	this.tools = {
+	let tools = {
 		regex: {
 			stripComment: /\/\*[\s\S]*?\*\/|([^:"'=]|^)\/\/.*$/mg,
 			stripArgs: /(.+\()|(\".+)|(\).+)|[}]/mg,
@@ -219,7 +219,8 @@ let ProjectValkyrie = function( id ){
 		isUndefined: ( input ) => Object.prototype.toString.call( input ) === "[object Undefined]",
 		isObject: ( input ) => Object.prototype.toString.call( input ) === "[object Object]"
 	}
-
+	this.tools = tools;
+	
 	//**************//
 	//*   Module   *//
 	//**************//
@@ -506,25 +507,17 @@ let ProjectValkyrie = function( id ){
 		}
 
 	}
+	
+	this.ready = ( count ) => {
+		this.count = ++count || 0;
+		if(tools.isFunction($))
+			this.events.startUp();
+		else 
+			if( count < 400 )
+				setTimeout(this.ready(count),25);
+	}
+	
 }
 
 let _engine = new ProjectValkyrie('_engine');
-
-/* [Program Start] Runs the startup function 
-/********************************************************************/
-_engine.temp = {count:0};
-_engine.temp.jQloaded = setInterval(function(){
-
-	if( _engine.temp.count < 400 ){
-		if( typeof $ === 'function' ){
-			_engine.events.startUp();
-			clearInterval(_engine.temp.jQloaded);
-			delete _engine.temp;
-		} else {
-			_engine.temp.count++;
-		}
-	} else {
-		clearInterval(_engine.temp.jQloaded);
-	}
-},25);
-_engine.temp.jQloaded;
+_engine.ready();
