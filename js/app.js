@@ -98,11 +98,12 @@ let Valkyrie = function( id ){
 		this.verified = false;
 		this.def = config.def;
 		
-		let download = () => {
+		// Local functions
+		let $download = () => {
 			
 		}
 		
-		this.fetchReqs = () => {
+		let $fetchReqs = () => {
 			let count = this.require.length;
 			if( count > 0 ){
 				for(let i = 0, len = count; i < len; i++){
@@ -115,6 +116,7 @@ let Valkyrie = function( id ){
 		this.install = () => {
 			
 			console.log(`Run on: ${this.name}`);
+			$fetchReqs();
 			
 		}
 		
