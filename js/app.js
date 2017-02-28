@@ -87,8 +87,6 @@ let ProjectValkyrie = function( id ){
 
 	$amd.module = function(config){
 		
-		$amd.registry[config.name] = this;
-		
 		this.path = $tools.parseQueryString(config.path);
 		this.name = this.path[this.path.length - 1];
 		this.require = config.require;
@@ -114,6 +112,9 @@ let ProjectValkyrie = function( id ){
 			
 			
 		}
+		
+		// Module registration
+		$amd.registry[this.name] = this;
 		
 	}
 	
