@@ -446,7 +446,7 @@ let Valkyrie = function( id ){
 		}
 	}
 	
-	let $run = function() {
+	this.run = function() {
 		$ready(function(){
 			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error', 'search/case'],function(){
 				
@@ -518,9 +518,8 @@ let Valkyrie = function( id ){
 		});
 		
 	}
-	$run();
 	
 }
 
 _engine = new Valkyrie('_engine');
-//_engine.run();
+_engine.run();
