@@ -9,7 +9,7 @@
 //                                        /_/                       /____/              
 // 
 
-'use strict';
+//'use strict';
 let _engine;
 
 let ProjectValkyrie = function( id ){
