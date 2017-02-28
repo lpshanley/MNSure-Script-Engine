@@ -364,7 +364,7 @@ let ProjectValkyrie = function( id ){
 		if( typeof($) === 'function' ) callback();
 		else if( count < 400 ) { 
 			count++;
-			setTimeout( $ready(callback, count),25);
+			setTimeout(function(){$ready(callback, count)},25);
 		}
 	}
 	
