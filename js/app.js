@@ -106,7 +106,8 @@ let Valkyrie = function( id ){
 			let count = this.require.length;
 			if( count > 0 ){
 				for(let i = 0, len = count; i < len; i++){
-					new $amd.module({path: this.require[i], require: undefined, def: undefined});
+					let mod = new $amd.module({path: this.require[i], require: undefined, def: undefined});
+					mod.install();
 				}
 			}
 		}
