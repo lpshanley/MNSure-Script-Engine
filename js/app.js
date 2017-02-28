@@ -353,14 +353,14 @@ let ProjectValkyrie = function( id ){
 	}
 	this.module = $module;
 	
-	let ready = ( callback, count ) => {
+	let $ready = ( callback, count ) => {
 		this.count = ++count || 0;
-		if( $tools.isFunction($) && $tools.isFunction(callback)) callback();
+		if( !$tools.isUndefined($) && $tools.isFunction($) && $tools.isFunction(callback)) callback();
 		else if( count < 400 ) setTimeout(this.ready(callback, count),25);
 	}
 	
 	this.run = function() {
-		ready(function(){
+		$ready(function(){
 			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error'],function(){
 
 				_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
