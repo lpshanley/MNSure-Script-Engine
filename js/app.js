@@ -103,13 +103,22 @@ let Valkyrie = function( id ){
 			console.log(`${this.name} needs to be downloaded.`);
 		}
 		
+		let fetchRegistration = ( module ) => {
+			let rtn = $amd.registry[module];
+			if( rtn === undefined ) rtn = false;
+			return rtn;
+		}
+		
 		let $fetchUndefined = () => {
 			if($tools.isArray( this.require )) {
 				let count = this.require.length;
 				if( count > 0 ){
 					for(let i = 0, len = count; i < len; i++){
-						let mod = new $amd.module({path: this.require[i], require: undefined, def: undefined});
-						mod.install();
+						let reg = fetchRegistration(this.require[i]);
+						if( !reg ){
+							let mod = new $amd.module({path: this.require[i], require: undefined, def: undefined});
+							mod.install();
+						}
 					}
 				}
 			}
@@ -117,6 +126,8 @@ let Valkyrie = function( id ){
 				$download();
 			}
 		}
+		
+		// Global funcitons
 		
 		this.install = () => {
 			
