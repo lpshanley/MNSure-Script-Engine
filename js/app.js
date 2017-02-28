@@ -14,6 +14,8 @@ let _engine;
 
 let ProjectValkyrie = function( id ){
 	
+	let $root = window[id];
+	
 	//**************//
 	//*   Tools    *//
 	//**************//
@@ -145,21 +147,21 @@ let ProjectValkyrie = function( id ){
 		},
 
 		download: function( module ){
-			let baseUrl = _engine.storage.config.get('advanced.baseUrl'),
-					mod = _engine.tools.parseToUrl(module),
+			let baseUrl = $storage.config.get('advanced.baseUrl'),
+					mod = $tools.parseToUrl(module),
 					req = baseUrl + "js/modules/" + mod + ".js";
 			$.ajax({
 				dataType: 'script',
 				url: req,
 				success: function(){
-					_engine.module.pendForInstall( module );
+					$module.pendForInstall( module );
 				}
 			});
 		},
 
 		define: function( module, reqs, definition ){
 
-			if( (_engine.tools.isFunction(reqs) || _engine.tools.isObject(reqs)) && _engine.tools.isUndefined( definition )){
+			if( ($tools.isFunction(reqs) || $tools.isObject(reqs)) && $tools.isUndefined( definition )){
 				definition = reqs;
 				reqs = [];
 			}
@@ -169,10 +171,10 @@ let ProjectValkyrie = function( id ){
 				require: reqs
 			}
 
-			_engine.module.register(config.name, config.require);
+			$module.register(config.name, config.require);
 
-			_engine.module.require(config,function( unfinished ){
-				let def = _engine.tools.splitArg( module ),
+			$module.require(config,function( unfinished ){
+				let def = $tools.parseQueryString( module ),
 						root = _engine,
 						last = def.length - 1;
 
