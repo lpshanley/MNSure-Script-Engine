@@ -10,103 +10,10 @@
 // 
 
 'use strict';
+let _engine;
 
 let ProjectValkyrie = function( id ){
-
-	//*************//
-	//*  Storage  *//
-	//*************//
-
-	this.storage = {
-		config: {
-			get: function(req){
-				let config = $tools.decodeString( window.localStorage.mnsEngine_Config ),
-						rtn = config;
-				
-				if( $tools.isString(req) ){ 
-					let reqArray = $tools.parseQueryString(req);
-					for(let i=0, len = reqArray.length; i < len; i++)
-						i === len - 1 ? rtn = config[i] : config = config[i];
-				}
-				return rtn;
-			},
-			set: function( obj ){
-
-				let config = _engine.storage.config.get();
-
-				$.extend(true,config,obj);
-
-				window.localStorage.mnsEngine_Config = $tools.encodeString( config );
-
-			}
-		},
-
-		fallbackCache: {
-
-			get: function(){
-
-				return _engine.storage.data.decode( window.localStorage.mnsEngine_fallbackCache );
-
-			},
-
-			addModule: function( module ){
-
-				if( typeof module !== 'undefined' ){
-
-					let currentCommit = _engine.storage.config.get('commit.current');
-
-					let fallbackCache = _engine.storage.fallbackCache.get();
-
-					fallbackCache[currentCommit].modules.push( module );
-
-					window.localStorage.mnsEngine_fallbackCache = _engine.storage.data.encode( fallbackCache );
-
-				}
-
-			},
-
-			fallbackStatus: function( status ){
-
-				let currentCommit = _engine.storage.config.get('commit.current');
-
-				let fallbackCache = _engine.storage.fallbackCache.get();
-
-				let response;
-
-				if( _engine.storage.fallbackCache.cacheable() ){
-
-					if(typeof status === 'boolean') {
-
-						fallbackCache[currentCommit].current = status;
-
-						window.localStorage.mnsEngine_fallbackCache = _engine.storage.data.encode( fallbackCache );
-
-					}
-
-					response = fallbackCache[currentCommit].current;
-
-				} else {
-
-					response = false;
-
-				}
-
-				return response;
-
-			},
-
-			cacheable: function(){
-
-				let currentCommit = _engine.storage.config.get('commit.current');
-
-				return ( ['master','beta'].indexOf( currentCommit ) > -1 );
-
-			}
-
-		}
-
-	}
-
+	
 	//**************//
 	//*   Tools    *//
 	//**************//
@@ -127,12 +34,42 @@ let ProjectValkyrie = function( id ){
 		decodeString: ( input ) => $.parseJSON( decodeURIComponent( input ) )
 	}
 	this.tools = $tools;
-	
+
+	//*************//
+	//*  Storage  *//
+	//*************//
+
+	let $storage = {
+		
+		query: ( obj ) => window.localStorage['mnsEngine_' + obj ],
+		
+		config: {
+			get: (req) => {
+				let config = $tools.decodeString( $storage.query('Config') ),
+						rtn = config;
+				
+				if( $tools.isString(req) ){ 
+					let reqArray = $tools.parseQueryString(req);
+					for(let i=0, len = reqArray.length; i < len; i++)
+						i === len - 1 ? rtn = config[i] : config = config[i];
+				}
+				return rtn;
+			},
+			set: ( obj ) => {
+				let config = $storage.config.get();
+				$.extend(true,config,obj);
+				window.localStorage.mnsEngine_Config = $tools.encodeString( config );
+			}
+		}
+
+	}
+	this.storage = $storage;
+
 	//**************//
 	//*   Module   *//
 	//**************//
 
-	this.module = {
+	let $module = {
 
 		queue: [],
 		pending: [],
@@ -251,14 +188,14 @@ let ProjectValkyrie = function( id ){
 		},
 
 		exists: function( module ){
-			let modArray = _engine.tools.splitArg( module ),
+			let modArray = $tools.parseQueryString( module ),
 					obj = _engine,
 					exists = true;
 
 			/* Determines is a module is present in the root structure */
 			for( let i=0, len = modArray.length; i < len; i++){
 				obj = obj[modArray[i]];
-				if( _engine.tools.isUndefined(obj) ){
+				if( $tools.isUndefined(obj) ){
 					exists = false;
 					break;
 				}
@@ -414,6 +351,7 @@ let ProjectValkyrie = function( id ){
 		}
 
 	}
+	this.module = $module;
 	
 	let ready = ( callback, count ) => {
 		this.count = ++count || 0;
@@ -493,5 +431,5 @@ let ProjectValkyrie = function( id ){
 	
 }
 
-let _engine = new ProjectValkyrie('_engine');
+_engine = new ProjectValkyrie('_engine');
 _engine.run();
