@@ -86,24 +86,19 @@ let ProjectValkyrie = function( id ){
 	$amd.requestor = undefined,
 
 	$amd.module = function(config){
-		
-		let register = () => $amd.registry[config.name] = this;
-		
-		let $this = register();
+		$amd.registry[config.name] = this;
 		
 		this.name = config.name;
 		this.require = config.require;
 		this.pending = false;
 		this.verified = false;
 		
-		$this.name = this.name;
-		
 		this.reqsAvailable = () => {
 			
 		}
 		
 		this.install = () => {
-			console.log( this, $this );
+			console.log( $root.module.registry );
 		}
 		
 		
