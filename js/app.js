@@ -86,185 +86,45 @@ let ProjectValkyrie = function( id ){
 	$amd.requestor = undefined,
 
 	$amd.module = function(config){
+		
 		$amd.registry[config.name] = this;
 		
-		this.name = config.name;
+		this.path = $tools.parseQueryString(config.path);
+		this.name = this.path[this.path.length - 1];
 		this.require = config.require;
 		this.pending = false;
 		this.verified = false;
 		
-		this.reqsAvailable = () => {
+		let download = () => {
 			
 		}
 		
+		this.fetchReqs = () => {
+			let count = this.require.length;
+			if( count > 0 ){
+				for(let i = 0, len = count; i < len; i++){
+					console.log( `${this.name} requires: ${this.require[i]}` );
+					//$amd.require
+				}
+			}
+		}
+		
 		this.install = () => {
-			console.log( $amd.module.registry );
+			
+			
+			
 		}
 		
-		
-		
 	}
-		
-	$amd.register = ( name, reqs ) => {
-		_engine.module.registry[name] = reqs;
-	}
-
-	$amd.bustLoop = (name, modules) => {
-
-		_engine.module.addToLoopBuster( name );
-
-		let rtn = [],
-				bustArray = _engine.module.buster;
-
-		for(let i = 0, len = modules.length; i < len; i++){
-			let indexTest = bustArray.indexOf( modules[i] );
-			if( indexTest > -1 ) rtn.push( modules[i] );
-		}
-
-		return rtn;
-
-	}
-
-	$amd.addToLoopBuster = (module) => {
-		if( _engine.module.buster.indexOf( module ) === -1 ) {
-			_engine.module.buster.push( module );
-		}
-	}
-
-	$amd.removeFromLoopBuster = (module) => {
-		let index = _engine.module.buster.indexOf( module );
-		if( index > -1 )
-			_engine.module.buster.splice( index, 1 ); 
-	}
-
-	$amd.addToQueue = (module) => {
-		if( _engine.module.queue.indexOf( module ) === -1 && _engine.module.pending.indexOf( module ) === -1 ) {
-			_engine.module.queue.push( module ); 
-			_engine.module.download( module );
-		}
-	}
-
-	$amd.removeFromQueue = (module) => { 
-		let index = _engine.module.queue.indexOf( module );
-		if( index > -1 )
-			_engine.module.queue.splice( index, 1 ); 
-	}
-
-	$amd.addToPending = (module) => {
-		if( _engine.module.pending.indexOf( module ) === -1 ) {
-			_engine.module.pending.push( module );
-		}
-	}
-
-	$amd.switchToPending = (module) => {
-		_engine.module.removeFromQueue( module );
-		_engine.module.addToPending( module );
-	}
-
-	$amd.removeFromPending = (module) => { 
-		let index = _engine.module.pending.indexOf( module );
-		if( index > -1 )
-			_engine.module.pending.splice( index, 1 ); 
-	}
-
-	$amd.download = function( module ){
-		let baseUrl = $storage.config.get('advanced.baseUrl'),
-				mod = $tools.parseToUrl(module),
-				req = baseUrl + "js/modules/" + mod + ".js";
-		$.ajax({
-			dataType: 'script',
-			url: req,
-			success: function(){
-				$amd.pendForInstall( module );
-			}
-		});
-	}
-
-	$amd.define = function( module, reqs, definition ){
-		
-		if( ($tools.isFunction(reqs) || $tools.isObject(reqs)) && $tools.isUndefined( definition )){
-			definition = reqs;
-			reqs = [];
-		}
-
-		let config = {
-			name: module,
-			require: reqs
-		}
-
-		$amd.register(config.name, config.require);
-
-		$amd.require(config,function( unfinished ){
-			let def = $tools.parseQueryString( module ),
-					root = _engine,
-					last = def.length - 1;
-
-			console.log('defining ', module);
-
-			$.each(def,function(key,path){
-				if(typeof(root[path]) === 'undefined') root[path] = {};
-
-				key === last ?
-					root[path] = definition :
-					root = root[path];
-
-			});
-
-		});
-
-	}
-
-	$amd.exists = function( module ){
-		let modArray = $tools.parseQueryString( module ),
-				obj = _engine,
-				exists = true;
-
-		/* Determines is a module is present in the root structure */
-		for( let i=0, len = modArray.length; i < len; i++){
-			obj = obj[modArray[i]];
-			if( $tools.isUndefined(obj) ){
-				exists = false;
-				break;
-			}
-		}
-
-		/* If module does not exists add to download queue */
-		if(!exists) _engine.module.addToQueue( module );
-
-		return exists;
-	}
-
-	$amd.pauseForPending = ( callback, timeOut ) => {
-
-		timeOut = timeOut || 0;
-
-		if(  _engine.module.queue.length === 0 && _engine.module.pending.length === 0 ) {
-			console.info(`Pend Log clear running request: `);
-			console.log( _engine.module.queue );
-			_engine.module.requestor = undefined;
-			if( _engine.tools.isFunction( callback ) ) callback();
-		}
-		else {
-			if( timeOut++ < 300 ){
-				setTimeout(function(){
-					_engine.module.pauseForPending( callback, timeOut );
-				},10);
-			}
-			else {
-				console.info('Timeout encountered on structure launch.');
-			}
-		}
-
-	}
-
-	$amd.require = function( config, callback ){
+	
+	$amd.require = function( config, definition ){
 		
 		if($tools.isArray(config)) {
 			let data = config;
-			config = { name: 'startup', require: data }
+			config = { path: 'startup', require: data, def: definition }
 		}
 		
-		let module = new $amd.module(config);
+		let module = new $amd.module( config );
 		module.install();
 		
 		/*
@@ -362,6 +222,173 @@ let ProjectValkyrie = function( id ){
 		
 		*/
 		
+	}
+	
+	$amd.define = function( installPath, reqs, definition ){
+		if( arguments.length === 2 ){
+			if( $tools.isString( installPath ) && $tools.isFunction( reqs ) ){
+				definition = reqs;
+				reqs = [];
+			}
+		}
+		
+		let config = {
+			path: installPath,
+			require: reqs,
+			def: definition
+		}
+		
+		$amd.require( config, definition );
+		
+		
+		/*
+		
+		if( ($tools.isFunction(reqs) || $tools.isObject(reqs)) && $tools.isUndefined( definition )){
+			definition = reqs;
+			reqs = [];
+		}
+
+		let config = {
+			name: module,
+			require: reqs
+		}
+
+		$amd.register(config.name, config.require);
+
+		$amd.require(config,function( unfinished ){
+			let def = $tools.parseQueryString( module ),
+					root = _engine,
+					last = def.length - 1;
+
+			console.log('defining ', module);
+
+			$.each(def,function(key,path){
+				if(typeof(root[path]) === 'undefined') root[path] = {};
+
+				key === last ?
+					root[path] = definition :
+					root = root[path];
+
+			});
+
+		});
+		
+		*/
+
+	}
+
+	$amd.bustLoop = (name, modules) => {
+
+		_engine.module.addToLoopBuster( name );
+
+		let rtn = [],
+				bustArray = _engine.module.buster;
+
+		for(let i = 0, len = modules.length; i < len; i++){
+			let indexTest = bustArray.indexOf( modules[i] );
+			if( indexTest > -1 ) rtn.push( modules[i] );
+		}
+
+		return rtn;
+
+	}
+
+	$amd.addToLoopBuster = (module) => {
+		if( _engine.module.buster.indexOf( module ) === -1 ) {
+			_engine.module.buster.push( module );
+		}
+	}
+
+	$amd.removeFromLoopBuster = (module) => {
+		let index = _engine.module.buster.indexOf( module );
+		if( index > -1 )
+			_engine.module.buster.splice( index, 1 ); 
+	}
+
+	$amd.addToQueue = (module) => {
+		if( _engine.module.queue.indexOf( module ) === -1 && _engine.module.pending.indexOf( module ) === -1 ) {
+			_engine.module.queue.push( module ); 
+			_engine.module.download( module );
+		}
+	}
+
+	$amd.removeFromQueue = (module) => { 
+		let index = _engine.module.queue.indexOf( module );
+		if( index > -1 )
+			_engine.module.queue.splice( index, 1 ); 
+	}
+
+	$amd.addToPending = (module) => {
+		if( _engine.module.pending.indexOf( module ) === -1 ) {
+			_engine.module.pending.push( module );
+		}
+	}
+
+	$amd.switchToPending = (module) => {
+		_engine.module.removeFromQueue( module );
+		_engine.module.addToPending( module );
+	}
+
+	$amd.removeFromPending = (module) => { 
+		let index = _engine.module.pending.indexOf( module );
+		if( index > -1 )
+			_engine.module.pending.splice( index, 1 ); 
+	}
+
+	$amd.download = function( module ){
+		let baseUrl = $storage.config.get('advanced.baseUrl'),
+				mod = $tools.parseToUrl(module),
+				req = baseUrl + "js/modules/" + mod + ".js";
+		$.ajax({
+			dataType: 'script',
+			url: req,
+			success: function(){
+				$amd.pendForInstall( module );
+			}
+		});
+	}
+
+	$amd.exists = function( module ){
+		let modArray = $tools.parseQueryString( module ),
+				obj = _engine,
+				exists = true;
+
+		/* Determines is a module is present in the root structure */
+		for( let i=0, len = modArray.length; i < len; i++){
+			obj = obj[modArray[i]];
+			if( $tools.isUndefined(obj) ){
+				exists = false;
+				break;
+			}
+		}
+
+		/* If module does not exists add to download queue */
+		if(!exists) _engine.module.addToQueue( module );
+
+		return exists;
+	}
+
+	$amd.pauseForPending = ( callback, timeOut ) => {
+
+		timeOut = timeOut || 0;
+
+		if(  _engine.module.queue.length === 0 && _engine.module.pending.length === 0 ) {
+			console.info(`Pend Log clear running request: `);
+			console.log( _engine.module.queue );
+			_engine.module.requestor = undefined;
+			if( _engine.tools.isFunction( callback ) ) callback();
+		}
+		else {
+			if( timeOut++ < 300 ){
+				setTimeout(function(){
+					_engine.module.pauseForPending( callback, timeOut );
+				},10);
+			}
+			else {
+				console.info('Timeout encountered on structure launch.');
+			}
+		}
+
 	}
 
 	$amd.pendForInstall = function( module, count ){
