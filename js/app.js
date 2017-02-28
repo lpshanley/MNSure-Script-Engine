@@ -42,17 +42,18 @@ let ProjectValkyrie = function( id ){
 
 	let $storage = {
 		
-		query: ( obj ) => window.localStorage['mnsEngine_' + obj ],
+		fetch: ( obj ) => window.localStorage['mnsEngine_' + obj ],
 		
 		config: {
 			get: (req) => {
-				let config = $tools.decodeString( $storage.query('Config') ),
+				let config = $tools.decodeString( $storage.fetch('Config') ),
 						rtn = config;
 				
 				if( $tools.isString(req) ){ 
 					let reqArray = $tools.parseQueryString(req);
-					for(let i=0, len = reqArray.length; i < len; i++)
+					for(let i=0, len = reqArray.length; i < len; i++){
 						i === len - 1 ? rtn = config[i] : config = config[i];
+					}
 				}
 				return rtn;
 			},
