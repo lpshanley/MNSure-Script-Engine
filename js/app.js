@@ -86,12 +86,30 @@ let ProjectValkyrie = function( id ){
 	$amd.requestor = undefined,
 	
 	$amd.module = function(config){
+		
+		let register = () =>{
+			$amd.registry[this.name] = {};
+			return $amd.registry[this.name];
+		}
+		
+		let $this = register();
+		
 		this.name = config.name;
 		this.require = config.require;
+		this.pending = false;
+		this.verified = false;
+		
+		$this.name = this.name;
+		
+		this.reqsAvailable = () => {
+			
+		}
 		
 		this.install = () => {
-			console.log( this );
+			console.log( this, $this );
 		}
+		
+		
 		
 	}
 		
@@ -171,7 +189,7 @@ let ProjectValkyrie = function( id ){
 	}
 
 	$amd.define = function( module, reqs, definition ){
-
+		
 		if( ($tools.isFunction(reqs) || $tools.isObject(reqs)) && $tools.isUndefined( definition )){
 			definition = reqs;
 			reqs = [];
