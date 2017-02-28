@@ -100,23 +100,28 @@ let Valkyrie = function( id ){
 		
 		// Local functions
 		let $download = () => {
-			
+			console.log(`${this.name} needs to be downloaded.`);
 		}
 		
-		let $fetchReqs = () => {
-			let count = this.require.length;
-			if( count > 0 ){
-				for(let i = 0, len = count; i < len; i++){
-					let mod = new $amd.module({path: this.require[i], require: undefined, def: undefined});
-					mod.install();
+		let $fetchUndefined = () => {
+			if($tools.isArray( this.require )) {
+				let count = this.require.length;
+				if( count > 0 ){
+					for(let i = 0, len = count; i < len; i++){
+						let mod = new $amd.module({path: this.require[i], require: undefined, def: undefined});
+						mod.install();
+					}
 				}
+			}
+			else {
+				$download();
 			}
 		}
 		
 		this.install = () => {
 			
 			console.log(`Run on: ${this.name}`);
-			$fetchReqs();
+			$fetchUndefined();
 			
 		}
 		
