@@ -115,9 +115,12 @@ let Valkyrie = function( id ){
 				if( count > 0 ){
 					for(let i = 0, len = count; i < len; i++){
 						let reg = fetchRegistration(this.require[i]);
-						if( !reg ){
+						if( reg === false ){
 							let mod = new $amd.module({path: this.require[i], require: undefined, def: undefined});
 							mod.install();
+						}
+						else {
+							console.log(`${reg.name} is already registered: `, reg);
 						}
 					}
 				}
@@ -451,7 +454,7 @@ let Valkyrie = function( id ){
 	
 	this.run = function() {
 		$ready(function(){
-			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error'],function(){
+			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error', 'search/case'],function(){
 				
 				/*
 				_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
