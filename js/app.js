@@ -93,9 +93,10 @@ let Valkyrie = function( id ){
 		this.name = this.path[this.path.length - 1];
 		// List of other modules that are required
 		this.require = config.require;
-		// Is 
+		// Status
 		this.pending = false;
 		this.verified = false;
+		// Defintion of function
 		this.def = config.def;
 		
 		// Local functions
@@ -115,6 +116,7 @@ let Valkyrie = function( id ){
 				if( count > 0 ){
 					for(let i = 0, len = count; i < len; i++){
 						let reg = fetchRegistration(this.require[i]);
+						console.log( reg );
 						if( reg === false ){
 							let mod = new $amd.module({path: this.require[i], require: undefined, def: undefined});
 							mod.install();
