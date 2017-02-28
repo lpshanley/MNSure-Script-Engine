@@ -104,8 +104,10 @@ let Valkyrie = function( id ){
 			console.log(`${this.name} needs to be downloaded.`);
 		}
 		
-		let fetchRegistration = ( module ) => {
-			let rtn = $amd.registry[module];
+		let fetchRegistration = ( path ) => {
+			path = $tools.parseQueryString( path );
+			let name = path[path.length - 1];
+			let rtn = $amd.registry[name];
 			if( rtn === undefined ) rtn = false;
 			return rtn;
 		}
@@ -115,7 +117,7 @@ let Valkyrie = function( id ){
 				let count = this.require.length;
 				if( count > 0 ){
 					for(let i = 0, len = count; i < len; i++){
-						let reg = fetchRegistration(this.require[i]);
+						let reg = fetchRegistration( this.require[i] );
 						console.log( reg );
 						if( reg === false ){
 							let mod = new $amd.module({path: this.require[i], require: undefined, def: undefined});
