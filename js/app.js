@@ -42,34 +42,30 @@ let Valkyrie = function( id ){
 	//*  Storage  *//
 	//*************//
 
-	let $storage = {
-		
-		fetch: ( obj ) => window.localStorage['mnsEngine_' + obj ],
-		
-		config: {
-			get: (req) => {
-				let config = $tools.decodeString( $storage.fetch('Config') ),
-						rtn = config;
-				
-				if( $tools.isString(req) ) {
-					let reqArray = $tools.parseQueryString(req);
-					for(let i=0, len = reqArray.length; i < len; i++){
-						i === len - 1 ? 
-							rtn = config[reqArray[i]] : 
-							config = config[reqArray[i]];
-					}
-				}
-				return rtn;
-			},
-			set: ( obj ) => {
-				let config = $storage.config.get();
-				$.extend(true,config,obj);
-				window.localStorage.mnsEngine_Config = $tools.encodeString( config );
-			}
-		}
+	let $storage = {};
+	$storage.fetch = ( obj ) => window.localStorage['mnsEngine_' + obj ],
+	$storage.public.config = {
+		get: (req) => {
+			let config = $tools.decodeString( $storage.fetch('Config') ),
+					rtn = config;
 
+			if( $tools.isString(req) ) {
+				let reqArray = $tools.parseQueryString(req);
+				for(let i=0, len = reqArray.length; i < len; i++){
+					i === len - 1 ? 
+						rtn = config[reqArray[i]] : 
+						config = config[reqArray[i]];
+				}
+			}
+			return rtn;
+		},
+		set: ( obj ) => {
+			let config = $storage.config.get();
+			$.extend(true,config,obj);
+			window.localStorage.mnsEngine_Config = $tools.encodeString( config );
+		}
 	}
-	this.storage = $storage;
+	this.storage.public = $storage;
 
 	//*************//
 	//*    AMD    *//
@@ -83,10 +79,17 @@ let Valkyrie = function( id ){
 	$amd.buster = [];
 	$amd.registry = {};
 	
+	$amd.fetchRegistration = ( path ) => {
+		path = $tools.parseQueryString( path );
+		let name = path[path.length - 1];
+		let rtn = $amd.registry[name];
+		if( rtn === undefined ) rtn = false;
+		return rtn;
+	}
+	
 	$amd.requestor = undefined,
 
 	$amd.module = function(config){
-		
 		// Root path for usage
 		this.path = $tools.parseQueryString(config.path);
 		// Name of module
@@ -104,20 +107,12 @@ let Valkyrie = function( id ){
 			console.log(`${this.name} needs to be downloaded.`);
 		}
 		
-		let fetchRegistration = ( path ) => {
-			path = $tools.parseQueryString( path );
-			let name = path[path.length - 1];
-			let rtn = $amd.registry[name];
-			if( rtn === undefined ) rtn = false;
-			return rtn;
-		}
-		
 		let $fetchUndefined = () => {
 			if($tools.isArray( this.require )) {
 				let count = this.require.length;
 				if( count > 0 ){
 					for(let i = 0, len = count; i < len; i++){
-						let reg = fetchRegistration( this.require[i] );
+						let reg = $amd.fetchRegistration( this.require[i] );
 						if( reg === false ){
 							let mod = new $amd.module({path: this.require[i], require: undefined, def: undefined});
 							mod.install();
@@ -134,7 +129,6 @@ let Valkyrie = function( id ){
 		
 		this.install = () => {
 			
-			console.log(`Run on: ${this.name}`);
 			$fetchUndefined();
 			
 		}
@@ -144,7 +138,7 @@ let Valkyrie = function( id ){
 		
 	}
 	
-	$amd.require = function( config, definition ){
+	$amd.require = function( config, definition ) {
 		
 		if($tools.isArray(config)) {
 			let data = config;
