@@ -87,11 +87,16 @@ let Valkyrie = function( id ){
 
 	$amd.module = function(config){
 		
+		// Root path for usage
 		this.path = $tools.parseQueryString(config.path);
+		// Name of module
 		this.name = this.path[this.path.length - 1];
+		// List of other modules that are required
 		this.require = config.require;
+		// Is 
 		this.pending = false;
 		this.verified = false;
+		this.def = config.def;
 		
 		let download = () => {
 			
@@ -101,15 +106,14 @@ let Valkyrie = function( id ){
 			let count = this.require.length;
 			if( count > 0 ){
 				for(let i = 0, len = count; i < len; i++){
-					console.log( `${this.name} requires: ${this.require[i]}` );
-					//$amd.require
+					new $amd.module({path: this.require[i], require: undefined, def: undefined});
 				}
 			}
 		}
 		
 		this.install = () => {
 			
-			
+			console.log(`Run on: ${this.name}`);
 			
 		}
 		
