@@ -254,10 +254,8 @@ let ProjectValkyrie = function( id ){
 			config = { name: 'startup', require: data }
 		}
 		
-		for( let i = 0, len = config.require.length; i < len; i++ ){
-			let module = new $amd.module(config);
-			module.install();
-		}
+		let module = new $amd.module(config);
+		module.install();
 		
 		/*
 		if(_engine.tools.isArray(config)){
