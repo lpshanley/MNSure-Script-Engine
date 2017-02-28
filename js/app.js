@@ -12,7 +12,7 @@
 'use strict';
 let _engine;
 
-let ProjectValkyrie = function( id ){
+let Valkyrie = function( id ){
 	
 	let $root = window[id];
 	
@@ -501,5 +501,5 @@ let ProjectValkyrie = function( id ){
 	
 }
 
-_engine = new ProjectValkyrie('_engine');
+_engine = new Valkyrie('_engine');
 _engine.run();
