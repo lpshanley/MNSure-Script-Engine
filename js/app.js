@@ -98,7 +98,7 @@ let ProjectValkyrie = function( id ){
 		}
 		
 		this.install = () => {
-			console.log( $root.module.registry );
+			console.log( $amd.module.registry );
 		}
 		
 		
