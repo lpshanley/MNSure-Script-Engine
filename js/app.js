@@ -359,9 +359,11 @@ let ProjectValkyrie = function( id ){
 	this.module = $amd;
 	
 	let $ready = ( callback, count ) => {
+		console.log('Testing for ready: ', count);
 		count = ++count || 0;
-		if( $tools.isFunction($) ) callback();
-		else if( count < 400 ) setTimeout( $ready(callback, count),25);
+		if( typeof($) === 'function' ) callback();
+		else
+			if( count < 400 ) setTimeout( $ready(callback, count),25);
 	}
 	
 	this.run = function() {
