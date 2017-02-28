@@ -356,12 +356,11 @@ let ProjectValkyrie = function( id ){
 			}, 10);
 		}
 	}
-
 	this.module = $amd;
 	
 	let $ready = ( callback, count ) => {
-		this.count = ++count || 0;
-		if( typeof $ === 'function' ) callback();
+		count = ++count || 0;
+		if( $tools.isFunction($) ) callback();
 		else if( count < 400 ) setTimeout( $ready(callback, count),25);
 	}
 	
