@@ -44,7 +44,7 @@ let Valkyrie = function( id ){
 
 	let $storage = {};
 	$storage.fetch = ( obj ) => window.localStorage['mnsEngine_' + obj ],
-	$storage.public.config = {
+	$storage.config = {
 		get: (req) => {
 			let config = $tools.decodeString( $storage.fetch('Config') ),
 					rtn = config;
@@ -65,7 +65,7 @@ let Valkyrie = function( id ){
 			window.localStorage.mnsEngine_Config = $tools.encodeString( config );
 		}
 	}
-	this.storage = $storage.public;
+	this.storage = $storage;
 
 	//*************//
 	//*    AMD    *//
