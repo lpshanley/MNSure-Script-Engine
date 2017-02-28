@@ -26,7 +26,7 @@ let ProjectValkyrie = function( id ){
 		},
 		parseQueryString: ( input ) => input.replace(/(^\/)|(\/$)/g,"").split( $tools.regex.splitQuery ),
 		parseToUrl: ( input ) => input.replace( $tools.regex.splitQuery, "/" ).replace(/(^\/)|(\/$)/g,""),
-		isFunction: ( input ) => Object.prototype.toString.call( input ) === "[object Function]",
+		isFunction: ( input ) => typeof( input ) === "function",
 		isArray: ( input ) => Object.prototype.toString.call( input ) === "[object Array]",
 		isString: ( input ) => Object.prototype.toString.call( input ) === "[object String]",
 		isUndefined: ( input ) => typeof( input ) === "undefined",
