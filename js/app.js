@@ -84,10 +84,10 @@ let ProjectValkyrie = function( id ){
 	$amd.registry = {};
 	
 	$amd.requestor = undefined,
-	
+
 	$amd.module = function(config){
 		
-		let register = () => $amd.registry[config.name] = {};
+		let register = () => $amd.registry[config.name] = this;
 		
 		let $this = register();
 		
