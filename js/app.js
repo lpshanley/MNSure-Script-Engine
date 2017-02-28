@@ -51,14 +51,10 @@ let ProjectValkyrie = function( id ){
 				
 				if( $tools.isString(req) ) {
 					let reqArray = $tools.parseQueryString(req);
-					
-					console.log( reqArray );
-					
 					for(let i=0, len = reqArray.length; i < len; i++){
-						
 						i === len - 1 ? 
-							rtn = config[i] : 
-							config = config[i];
+							rtn = config[reqArray[i]] : 
+							config = config[reqArray[i]];
 					}
 				}
 				return rtn;
