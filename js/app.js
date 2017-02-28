@@ -71,24 +71,25 @@ let ProjectValkyrie = function( id ){
 	}
 	this.storage = $storage;
 
-	//**************//
-	//*   Module   *//
-	//**************//
+	//*************//
+	//*    AMD    *//
+	//*************//
 
-	let $module = {
+	let $amd = {};
+	
+		$amd.registry = {};
+		$amd.queue = [];
+		$amd.pending = [];
+		$amd.buster = [];
+		$amd.registry = {};
 
-		queue: [],
-		pending: [],
-		buster: [],
-		registry: {},
+		$amd.requestor = undefined,
 
-		requestor: undefined,
-
-		register: function( name, reqs ){
+		$amd.register = ( name, reqs ) => {
 			_engine.module.registry[name] = reqs;
-		},
+		}
 
-		bustLoop: (name, modules) => {
+		$amd.bustLoop = (name, modules) => {
 
 			_engine.module.addToLoopBuster( name );
 
@@ -102,51 +103,51 @@ let ProjectValkyrie = function( id ){
 
 			return rtn;
 
-		},
+		}
 
-		addToLoopBuster: (module) => {
+		$amd.addToLoopBuster = (module) => {
 			if( _engine.module.buster.indexOf( module ) === -1 ) {
 				_engine.module.buster.push( module );
 			}
-		},
+		}
 
-		removeFromLoopBuster: (module) => {
+		$amd.removeFromLoopBuster = (module) => {
 			let index = _engine.module.buster.indexOf( module );
 			if( index > -1 )
 				_engine.module.buster.splice( index, 1 ); 
-		},
+		}
 
-		addToQueue: (module) => {
+		$amd.addToQueue = (module) => {
 			if( _engine.module.queue.indexOf( module ) === -1 && _engine.module.pending.indexOf( module ) === -1 ) {
 				_engine.module.queue.push( module ); 
 				_engine.module.download( module );
 			}
-		},
+		}
 
-		removeFromQueue: (module) => { 
+		$amd.removeFromQueue = (module) => { 
 			let index = _engine.module.queue.indexOf( module );
 			if( index > -1 )
 				_engine.module.queue.splice( index, 1 ); 
-		},
+		}
 
-		addToPending: (module) => {
+		$amd.addToPending = (module) => {
 			if( _engine.module.pending.indexOf( module ) === -1 ) {
 				_engine.module.pending.push( module );
 			}
-		},
+		}
 
-		switchToPending: (module) => {
+		$amd.switchToPending = (module) => {
 			_engine.module.removeFromQueue( module );
 			_engine.module.addToPending( module );
-		},
+		}
 
-		removeFromPending: (module) => { 
+		$amd.removeFromPending = (module) => { 
 			let index = _engine.module.pending.indexOf( module );
 			if( index > -1 )
 				_engine.module.pending.splice( index, 1 ); 
-		},
+		}
 
-		download: function( module ){
+		$amd.download = function( module ){
 			let baseUrl = $storage.config.get('advanced.baseUrl'),
 					mod = $tools.parseToUrl(module),
 					req = baseUrl + "js/modules/" + mod + ".js";
@@ -154,12 +155,12 @@ let ProjectValkyrie = function( id ){
 				dataType: 'script',
 				url: req,
 				success: function(){
-					$module.pendForInstall( module );
+					$amd.pendForInstall( module );
 				}
 			});
-		},
+		}
 
-		define: function( module, reqs, definition ){
+		$amd.define = function( module, reqs, definition ){
 
 			if( ($tools.isFunction(reqs) || $tools.isObject(reqs)) && $tools.isUndefined( definition )){
 				definition = reqs;
@@ -171,9 +172,9 @@ let ProjectValkyrie = function( id ){
 				require: reqs
 			}
 
-			$module.register(config.name, config.require);
+			$amd.register(config.name, config.require);
 
-			$module.require(config,function( unfinished ){
+			$amd.require(config,function( unfinished ){
 				let def = $tools.parseQueryString( module ),
 						root = _engine,
 						last = def.length - 1;
@@ -191,9 +192,9 @@ let ProjectValkyrie = function( id ){
 
 			});
 
-		},
+		}
 
-		exists: function( module ){
+		$amd.exists = function( module ){
 			let modArray = $tools.parseQueryString( module ),
 					obj = _engine,
 					exists = true;
@@ -211,9 +212,9 @@ let ProjectValkyrie = function( id ){
 			if(!exists) _engine.module.addToQueue( module );
 
 			return exists;
-		},
+		}
 
-		pauseForPending: ( callback, timeOut ) => {
+		$amd.pauseForPending = ( callback, timeOut ) => {
 
 			timeOut = timeOut || 0;
 
@@ -234,9 +235,9 @@ let ProjectValkyrie = function( id ){
 				}
 			}
 
-		},
+		}
 
-		require: function( config, callback ){
+		$amd.require = function( config, callback ){
 
 			if(_engine.tools.isArray(config)){
 				let temp = config;
@@ -330,9 +331,9 @@ let ProjectValkyrie = function( id ){
 			if(reqs.length) process(setupProcess,callback);
 			else if( isCallback ) callback();
 
-		},
+		}
 
-		pendForInstall: function( module, count ){
+		$amd.pendForInstall = function( module, count ){
 
 			if( _engine.module.queue.indexOf( module ) > -1 )
 				_engine.module.switchToPending( module );
@@ -357,7 +358,7 @@ let ProjectValkyrie = function( id ){
 		}
 
 	}
-	this.module = $module;
+	this.module = $amd;
 	
 	let $ready = ( callback, count ) => {
 		this.count = ++count || 0;
