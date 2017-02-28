@@ -28,6 +28,7 @@ let ProjectValkyrie = function( id ){
 		parseToUrl: ( input ) => input.replace( $tools.regex.splitQuery, "/" ).replace(/(^\/)|(\/$)/g,""),
 		isFunction: ( input ) => Object.prototype.toString.call( input ) === "[object Function]",
 		isArray: ( input ) => Object.prototype.toString.call( input ) === "[object Array]",
+		isString: ( input ) => Object.prototype.toString.call( input ) === "[object String]",
 		isUndefined: ( input ) => Object.prototype.toString.call( input ) === "[object Undefined]",
 		isObject: ( input ) => Object.prototype.toString.call( input ) === "[object Object]",
 		encodeString: ( input ) => encodeURIComponent( JSON.stringify( input ) ),
