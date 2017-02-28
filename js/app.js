@@ -65,7 +65,7 @@ let Valkyrie = function( id ){
 			window.localStorage.mnsEngine_Config = $tools.encodeString( config );
 		}
 	}
-	this.storage.public = $storage;
+	this.storage = $storage.public;
 
 	//*************//
 	//*    AMD    *//
