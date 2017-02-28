@@ -82,9 +82,19 @@ let ProjectValkyrie = function( id ){
 	$amd.pending = [];
 	$amd.buster = [];
 	$amd.registry = {};
-
+	
 	$amd.requestor = undefined,
-
+	
+	$amd.module = function(config){
+		this.name = config.name;
+		this.require = config.require;
+		
+		this.install = () => {
+			console.log( this );
+		}
+		
+	}
+		
 	$amd.register = ( name, reqs ) => {
 		_engine.module.registry[name] = reqs;
 	}
@@ -238,7 +248,18 @@ let ProjectValkyrie = function( id ){
 	}
 
 	$amd.require = function( config, callback ){
-
+		
+		if($tools.isArray(config)) {
+			let data = config;
+			config = { name: 'startup', require: data }
+		}
+		
+		for( let i = 0, len = config.require.length; i < len; i++ ){
+			let module = new $amd.module(config);
+			module.install();
+		}
+		
+		/*
 		if(_engine.tools.isArray(config)){
 			let temp = config;
 			config = {
@@ -330,7 +351,9 @@ let ProjectValkyrie = function( id ){
 
 		if(reqs.length) process(setupProcess,callback);
 		else if( isCallback ) callback();
-
+		
+		*/
+		
 	}
 
 	$amd.pendForInstall = function( module, count ){
@@ -370,7 +393,8 @@ let ProjectValkyrie = function( id ){
 	this.run = function() {
 		$ready(function(){
 			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error'],function(){
-
+				
+				/*
 				_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
 
 				$('#script-launcher a').contextmenu(function(e){
@@ -430,6 +454,8 @@ let ProjectValkyrie = function( id ){
 					_engine.advanced.setupTimeoutAlert();
 
 				});
+				
+				*/
 
 			});
 
