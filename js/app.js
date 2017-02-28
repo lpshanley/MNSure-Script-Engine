@@ -9,7 +9,7 @@
 //                                        /_/                       /____/              
 // 
 
-//'use strict';
+'use strict';
 let _engine;
 
 let ProjectValkyrie = function( id ){
@@ -29,7 +29,7 @@ let ProjectValkyrie = function( id ){
 		isFunction: ( input ) => Object.prototype.toString.call( input ) === "[object Function]",
 		isArray: ( input ) => Object.prototype.toString.call( input ) === "[object Array]",
 		isString: ( input ) => Object.prototype.toString.call( input ) === "[object String]",
-		isUndefined: ( input ) => Object.prototype.toString.call( input ) === "[object Undefined]",
+		isUndefined: ( input ) => typeof( input ) === "undefined",
 		isObject: ( input ) => Object.prototype.toString.call( input ) === "[object Object]",
 		encodeString: ( input ) => encodeURIComponent( JSON.stringify( input ) ),
 		decodeString: ( input ) => $.parseJSON( decodeURIComponent( input ) )
