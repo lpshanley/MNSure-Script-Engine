@@ -95,7 +95,8 @@ let Valkyrie = function( id ){
 		// Root path for usage
 		this.path = $tools.parseQueryString(config.path);
 		// Name of module
-		this.name = this.path[this.path.length - 1];
+		let $name = this.path[this.path.length - 1];
+		this.name = $name;
 		// List of other modules that are required
 		this.require = config.require;
 		// Status
@@ -109,6 +110,10 @@ let Valkyrie = function( id ){
 			let baseUrl = $storage.config.get('advanced.baseUrl'),
 					path = $tools.arrayToUrl( this.path ),
 					req = baseUrl + "js/modules/" + path + ".js";
+			
+			console.log( $.getScript( req ) );
+			
+			/*
 			$.ajax({
 				dataType: 'script',
 				url: req,
@@ -117,6 +122,7 @@ let Valkyrie = function( id ){
 					console.log(this.def, this, data);
 				}
 			});
+			*/
 		}
 		
 		let $fetchUndefined = () => {
