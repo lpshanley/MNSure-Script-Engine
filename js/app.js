@@ -107,13 +107,14 @@ let Valkyrie = function( id ){
 		// Local functions
 		let $download = () => {
 			let baseUrl = $storage.config.get('advanced.baseUrl'),
-					mod = $tools.stringToUrl(module),
-					req = baseUrl + "js/modules/" + mod + ".js";
+					path = $tools.arrayToUrl( this.path ),
+					req = baseUrl + "js/modules/" + path + ".js";
 			$.ajax({
 				dataType: 'script',
 				url: req,
-				success: function(){
-					$amd.pendForInstall( module );
+				success: function( data ){
+					this.def = data;
+					console.log(this.def, this, data);
 				}
 			});
 		}
@@ -132,7 +133,7 @@ let Valkyrie = function( id ){
 				}
 			}
 			else {
-				$download();
+				//$download();
 			}
 		}
 		
