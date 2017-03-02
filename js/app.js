@@ -111,7 +111,10 @@ let Valkyrie = function( id ){
 					path = $tools.arrayToUrl( this.path ),
 					req = baseUrl + "js/modules/" + path + ".js";
 			
-			console.log( $.getScript( req ) );
+			$.getScript( req )
+				.success(function( data ){
+					console.log( data, this );
+				});
 			
 			/*
 			$.ajax({
@@ -264,6 +267,9 @@ let Valkyrie = function( id ){
 	}
 	
 	$amd.define = function( installPath, reqs, definition ){
+		
+		console.info('RUNNING DEFINE');
+		
 		if( arguments.length === 2 ){
 			if( $tools.isString( installPath ) && $tools.isFunction( reqs ) ){
 				definition = reqs;
