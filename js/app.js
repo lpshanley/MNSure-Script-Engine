@@ -10,6 +10,7 @@
 // 
 
 'use strict';
+
 let _engine;
 
 let Valkyrie = function( id ){
@@ -27,7 +28,8 @@ let Valkyrie = function( id ){
 			splitQuery: /[\|\/\\\.]/g
 		},
 		parseQueryString: ( input ) => input.replace(/(^\/)|(\/$)/g,"").split( $tools.regex.splitQuery ),
-		parseToUrl: ( input ) => input.replace( $tools.regex.splitQuery, "/" ).replace(/(^\/)|(\/$)/g,""),
+		stringToUrl: ( input ) => input.replace( $tools.regex.splitQuery, "/" ).replace(/(^\/)|(\/$)/g,""),
+		arrayToUrl: ( input ) => $tools.stringToUrl(input.join('/')),
 		isFunction: ( input ) => typeof( input ) === "function",
 		isArray: ( input ) => Object.prototype.toString.call( input ) === "[object Array]",
 		isString: ( input ) => Object.prototype.toString.call( input ) === "[object String]",
@@ -104,7 +106,16 @@ let Valkyrie = function( id ){
 		
 		// Local functions
 		let $download = () => {
-			console.log(`${this.name} needs to be downloaded.`);
+			let baseUrl = $storage.config.get('advanced.baseUrl'),
+					mod = $tools.stringToUrl(module),
+					req = baseUrl + "js/modules/" + mod + ".js";
+			$.ajax({
+				dataType: 'script',
+				url: req,
+				success: function(){
+					$amd.pendForInstall( module );
+				}
+			});
 		}
 		
 		let $fetchUndefined = () => {
@@ -358,7 +369,7 @@ let Valkyrie = function( id ){
 
 	$amd.download = function( module ){
 		let baseUrl = $storage.config.get('advanced.baseUrl'),
-				mod = $tools.parseToUrl(module),
+				mod = $tools.stringToUrl(module),
 				req = baseUrl + "js/modules/" + mod + ".js";
 		$.ajax({
 			dataType: 'script',
@@ -448,7 +459,7 @@ let Valkyrie = function( id ){
 	
 	this.run = function() {
 		$ready(function(){
-			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error', 'search/case'],function(){
+			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error'],function(){
 				
 				/*
 				_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );

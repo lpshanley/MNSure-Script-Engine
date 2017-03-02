@@ -64,8 +64,6 @@ _engine.module.define('caseWork/unifiedSearch',[ 'advanced/getView', 'navigation
 
 				_engine.search.person(function(){
 
-					console.log( name );
-
 					_engine.domTools.set.searches.fieldFill("First Name", name[0]);
 
 					if( name[1] ) _engine.domTools.set.searches.fieldFill("Last Name", name[1]);
