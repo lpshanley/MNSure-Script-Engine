@@ -133,7 +133,7 @@ let Valkyrie = function( id ){
 				}
 			}
 			else {
-				//$download();
+				$download();
 			}
 		}
 		
@@ -459,8 +459,11 @@ let Valkyrie = function( id ){
 	}
 	
 	this.run = function() {
+		
+		let reqs = ['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error'];
+		
 		$ready(function(){
-			_engine.module.require(['search/case','search/person', 'events/domMonitor', 'ui/topNotification','ui/dom', 'ui/scriptMenu','storage/debugStatus', 'storage/prefillCache','advanced/sessionExpiry', 'advanced/setupTimeoutAlert', 'tools/loadAddons', 'debug/error'],function(){
+			_engine.module.require(['debug/error'],function(){
 				
 				/*
 				_engine.tools.loadAddons.run( _engine.tools.loadAddons.config );
