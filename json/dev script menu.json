@@ -25,6 +25,9 @@
 			},
 			"Demo...": {
 				"_events": "caseWork/note/write(Demo)"
+			},
+			"NEW...": {
+				"_events": "caseWork/note/write(New)"
 			}
 		}
 	},
