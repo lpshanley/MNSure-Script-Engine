@@ -23,8 +23,8 @@
 			"ATS...": {
 				"_events": "caseWork/note/write(ATS)"
 			},
-			"Demo...": {
-				"_events": "caseWork/note/write(Demo)"
+			"Application...": {
+				"_events": "caseWork/note/write(Application)"
 			}
 		}
 	},
