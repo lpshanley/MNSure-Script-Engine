@@ -22,6 +22,9 @@
 			},
 			"ATS...": {
 				"_events": "caseWork/note/write(ATS)"
+			},
+			"A Demo Note...": {
+				"_events": "caseWork/note/write(demo)"
 			}
 		}
 	},
