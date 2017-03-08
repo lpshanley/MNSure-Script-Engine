@@ -7,13 +7,6 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://getbootstrap.com/assets/css/docs.min.css">
 		<link rel="stylesheet" href="./css/main.css">
-
-			<!-- Latest compiled and minified JavaScript -->
-		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<script src="https://getbootstrap.com/assets/js/docs.min.js"></script>
-		<script src="./js/main.js"></script>
-
 	</head>
 	<body>
 
@@ -39,15 +32,22 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-9">
-					<h2>Doc section</h2>
+					<div class="bs-docs-section">
+						<h2>Doc section</h2>
 					<p>
 						Demo text here...
 					</p>
 					<figure class="highlight">
 						<pre>
-							Pre here <code>function(){}</code> <code class="language-scss" data-lang="scss">@media (max-width: @screen-xs-max) { ... }</code>
+							<code class="language-html" data-lang="html">
+								&lt;!DOCTYPE html&gt;
+								&lt;html lang="en"&gt;
+									...
+								&lt;/html&gt;
+							</code>
 						</pre>
 					</figure>
+					</div>
 				</div>
 				<div class="bs-docs-sidebar col-md-3 hidden-sm hidden-xs hidden-print">
 					<ul class="nav bs-docs-sidenav">
@@ -56,5 +56,13 @@
 				</div>
 			</div>
 		</div>
+		
+		
+			<!-- Latest compiled and minified JavaScript -->
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://getbootstrap.com/assets/js/docs.min.js"></script>
+		<script src="./js/main.js"></script>
+		
 	</body>
 </html>
