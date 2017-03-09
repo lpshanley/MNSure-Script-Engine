@@ -7,8 +7,8 @@ _engine.module.define('caseWork/note/write',function( _note ){
 		let _noteLocation = null, _validNotes = [];
 		
 		// Iterate over element array
-		$.each( $('#script-launcher > ul > li:contains("Case Notes") ul li') ,function(k,v){ 
-			_validNotes.push( $( v ).text().replace(/[.]/g,"").toLowerCase() ); 
+		$.each( $('#script-launcher li:contains("Case Notes") li') ,function(k,v){ 
+			_validNotes.push( v.innerText.replace(/[^a-zA-Z ]/g,"").toLowerCase() ); 
 		});
 		
 		// Check if the requested case note type is in the list of valid case notes

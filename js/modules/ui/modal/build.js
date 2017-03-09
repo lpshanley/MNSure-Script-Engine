@@ -2,7 +2,7 @@
 _engine.module.define('ui/modal/build', function(modalReq, callback) {
 
 	let mnsModalFooterButtonContainer, config, template, returnProps;
-
+	
 	// Button Creator for the modal creator
 	let addButton = function(key, req, template) {
 

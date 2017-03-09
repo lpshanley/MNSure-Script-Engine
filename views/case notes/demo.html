@@ -1,31 +1,29 @@
-<template>
+<div class="note template">
 	
-	<subject>
+	<div data-config="role: subject">
 		<label>Subject: </label>
 		<select>
 			<option value="Cluster 1" data-target="cluster1">Show Cluster 1</option>
 			<option value="Cluster 2" data-target="cluster2">Show Cluster 2</option>
 		</select>
-	</subject>
+	</div>
 	
-	<cluster data-id="cluster1">
+	<div data-config="id: cluster1; role: cluster; required: true;">
 		
-		<input-group>
-			<label>Cluster 1 Input: </label>
-			<description>Cluster 1 Input</description>
+		<div class="input-group">
+			<label data-description="Cluster 1 Input">Cluster 1 Input: </label>
 			<input type="text" />
-		</input-group>
+		</div>
+		
+	</div>
+	
+	<div data-config="id: cluster2; role: cluster;">
+		
+		<div class="input-group">
+			<label data-description="Cluster 2 Input">Cluster 2 Input: </label>
+			<input type="text" />
+		</div>
 		
 	</cluster>
 	
-	<cluster data-id="cluster2">
-		
-		<input-group>
-			<label>Cluster 2 Input: </label>
-			<description>Cluster 2 Input</description>
-			<input type="text" />
-		</input-group>
-		
-	</cluster>
-	
-</template>
+</div>
