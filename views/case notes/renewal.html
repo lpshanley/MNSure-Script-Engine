@@ -1,0 +1,359 @@
+
+<div class="mns-modal-template" data-input-clusters="true">
+	
+	<span class="mns-input-group">
+		<span class="mns-input-descriptor">SUBJECT</span>
+		<span class="mns-input-label">Renewal Status: </span> 
+		<select type="select" >
+			<option value="Renewal Status: Received">Received</option>								<!-- this bit is ready -->
+			<option value="Renewal Status: Incomplete">Incomplete</option> 							<!-- this bit is ready -->
+			<option value="Renewal Status: Complete">Complete</option>								<!-- this bit is not ready -->
+			<option value="Renewal Status: Verification Required">Verification Required</option>	<!-- this bit is not ready -->
+			<option value="Renewal Status: Incorrect Form Received">Incorrect Form</option>			<!-- this bit is ready -->
+			<option value="Renewal Status: Cannot Process Renewal">Cannot Process</option>			<!-- this bit is not ready -->
+		</select>
+	</span>
+	
+	<span class="mns-input-cluster" data-cluster-title="Renewal Status: Received">
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Service Agency</span>
+			<span class="mns-input-label">Renewal Received At (Agency): </span>
+			<input type="text" data-prefill="evidence|service agency(current)" />
+		</span>
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Renewal Date</span>
+			<span class="mns-input-label">Renewal Date: </span>
+			<input type="text" />
+		</span>
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Date Received</span>
+			<span class="mns-input-label">Date Received: </span>
+			<input type="text" />
+		</span>		
+		
+	</span>
+	
+	<span class="mns-input-cluster" data-cluster-title="Renewal Status: Incomplete">
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Sign and Submit</span>
+			<span class="mns-input-label">Sign and Submit Selected (Y/N): </span>
+			<select type="select">
+				<option value="Sign and Submit not selected">No</option>
+				<option value="Sign and Submit selected">Yes</option>
+			</select>
+		</span>
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Date Received</span>
+			<span class="mns-input-label">Received Date: </span>
+			<input type="date" />
+		</span>
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-HH Comp Complete</span>
+			<span class="mns-input-label">Household Composition Complete (Y/N): </span>
+			<select type="select">
+				<option value="HH Comp Incomplete">No</option>
+				<option value="HH Comp Complete">Yes</option>
+			</select>
+		</span>
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Member Relationship</span>
+			<span class="mns-input-label">Member Relationship Complete (Y/N): </span>
+			<select type="select">
+				<option value="Member Relationship Incomplete">No</option>
+				<option value="Member Relationship Complete">Yes</option>
+			</select>
+		</span>
+		
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Pregnancy Status</span>
+			<span class="mns-input-label">Pregnancy Status Complete (Y/N): </span>
+			<select type="select">
+				<option value="Pregnancy Status Incomplete">No</option>
+				<option value="Pregnancy Status Complete">Yes</option>
+			</select>
+		</span>		
+		
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Citizen IMIG</span>
+			<span class="mns-input-label">Citizenship/Immigration Complete (Y/N): </span>
+			<select type="select">
+				<option value="HH Comp Incomplete">No</option>
+				<option value="HH Comp Complete">Yes</option>
+			</select>
+		</span>
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Tax Filing</span>
+			<span class="mns-input-label">Expected Tax Filing/Tax Dependents Complete (Y/N): </span>
+			<select type="select">
+				<option value="Tax Filing Incomplete">No</option>
+				<option value="Tax Filing Complete">Yes</option>
+			</select>
+		</span>
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-OHI</span>
+			<span class="mns-input-label">OHI Complete (Y/N): </span>
+			<select type="select">
+				<option value="OHI Incomplete">No</option>
+				<option value="OHI Complete">Yes</option>
+			</select>
+		</span>
+		
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Current Income</span>
+			<span class="mns-input-label">Current Income Complete (Y/N): </span>
+			<select type="select">
+				<option value="Current Income Incomplete">No</option>
+				<option value="Current Income Complete">Yes</option>
+			</select>
+		</span>
+		
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Deductions</span>
+			<span class="mns-input-label">Deductions Complete (Y/N): </span>
+			<select type="select">
+				<option value="Deductions Incomplete">No</option>
+				<option value="Deductions Complete">Yes</option>
+			</select>
+		</span>		
+		
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-PAI for all HH Complete</span>
+			<span class="mns-input-label">PAI for all HH Members Complete (Y/N): </span>
+			<select type="select">
+				<option value="PAI for all members Incomplete">No</option>
+				<option value="PAI for all members Complete">Yes</option>
+			</select>
+		</span>
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Required Signature</span>
+			<span class="mns-input-label">Required Signature (Y/N): </span>
+			<select type="select">
+				<option value="Required Signature Incomplete">No</option>
+				<option value="Required Signature Complete">Yes</option>
+			</select>
+		</span>	
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Outstanding Verifs Cleared</span>
+			<span class="mns-input-label">Outstanding Verifications Cleared (Y/N): </span>
+			<select type="select">
+				<option value="Outstanding verifications not cleared">No</option>
+				<option value="Outstanding verifications cleared">Yes</option>
+			</select>
+		</span>		
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-In Edit Evidence Discarded</span>
+			<span class="mns-input-label">In Edit Evidence Discarded (Y/N): </span>
+			<select type="select">
+				<option value="In Edit evidence not discarded">No</option>
+				<option value="In Edit evidence discarded">Yes</option>
+			</select>
+		</span>	
+
+		<span class="mns-input-cluster" data-cluster-title="In Edit evidence discarded">
+
+			<span class="mns-input-group">
+				<span class="mns-input-descriptor">-Discarded Evidence</span>
+				<span class="mns-input-label">What Evidence Discarded: </span>
+				<input type="text" />
+			</span>	
+		
+		</span>		
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-RFI Sent</span>
+			<span class="mns-input-label">RFI Sent (Y/N): </span>
+			<select type="select" >
+				<option value="No, RFI not sent">No</select>
+				<option value="Yes, RFI sent">Yes</select>
+			</select>
+		</span>	
+
+		<span class="mns-input-cluster" data-cluster-title="Yes, RFI sent">
+
+			<span class="mns-input-group">
+				<span class="mns-input-descriptor">-RFI Info Requested</span>
+				<span class="mns-input-label">RFI Information Requested: </span>
+				<input type="text" />
+			</span>
+		
+			<span class="mns-input-group">
+				<span class="mns-input-descriptor">-Date RFI Sent</span>
+				<span class="mns-input-label">Date RFI Sent: </span>
+				<input type="data" />
+			</span>		
+		
+		</span>
+		
+		<span class="mns-input-group">
+			<span class="mns-input-descriptor">-Additional Notes</span>
+			<span class="mns-input-label">Additional Notes: </span>
+			<input type="text" />
+		</span>	
+		
+</span>
+	
+	<span class="mns-input-cluster" data-cluster-title="Renewal Status: Verification Required">
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">SUBJECT</span>
+			<span class="mns-input-label">Renewal Month</span>
+			<input type="date" />
+		</span>
+		
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Sign and Submit</span>
+			<span class="mns-input-label">Sign and Submit Selected (Y/N): </span>
+			<select type="select">
+				<option value="Sign and Submit not selected">No</option>
+				<option value="Sign and Submit selected">Yes</option>
+			</select>
+		</span>
+		
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Date RFI Sent</span>
+			<span class="mns-input-label">Date RFI Sent: </span>
+			<input type="date" />
+		</span>			
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Verifications Cleared</span>
+			<span class="mns-input-label">Verifications Cleared (Y/N): </span>
+			<select type="select">
+				<option value="NO, verifications not cleared">No</option>
+				<option value="YES, verifications cleared">Yes</option>
+			</select>
+		</span>		
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-In Edit Evidence Discarded</span>
+			<span class="mns-input-label">In Edit Evidence Discarded (Y/N): </span>
+			<select type="select">
+				<option value="NO, In Edit evidence not discard">No</option>
+				<option value="YES, In Edit evidence discarded">Yes</option>
+			</select>
+		</span>	
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-New In Edit Evidence Created</span>
+			<span class="mns-input-label">New In Edit Evidence Created (Y/N): </span>
+			<select type="select">
+				<option value="NO, new In Edit evidence not created">No</option>
+				<option value="YES, new In Edit evidence created">Yes</option>
+			</select>
+		</span>		
+
+		
+	</span>
+
+	<span class="mns-input-cluster" data-cluster-title="Renewal Status: Incorrect Form Received">
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Form Received</span>
+			<span class="mns-input-label">Type of Form Received: </span> 		
+			<input type="text" />
+		</span>
+		
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Date Received</span>
+			<span class="mns-input-label">TDate Form Received: </span> 		
+			<input type="data" />
+		</span>
+		
+		<span class="mns-input-group">
+			<span class="mns-input-descriptor">-Printed and sent renewal from the notifications tab with an RFI.</span>
+		</span>		
+		
+	</span>
+	
+	<span class="mns-input-cluster" data-cluster-title="Renewal Status: Complete">
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">SUBJECT</span>
+			<span class="mns-input-label">Renewal Month: </span>
+			<input type="date" />
+		</span>
+		
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Sign and Submit</span>
+			<span class="mns-input-label">Sign and Submit Selected (Y/N): </span>
+			<select type="select">
+				<option value="Sign and Submit not selected">No</option>
+				<option value="Sign and Submit selected">Yes</option>
+			</select>
+		</span>		
+		
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Sign and Submit</span>
+			<span class="mns-input-label">Renewal Month: </span>
+			<input type="date" />
+		</span>
+		
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Non-MAGI Referral</span>
+			<span class="mns-input-label">Non-MAGI Referral (Y/N): </span>
+			<select type="select">
+				<option value="No non-MAGI referral">No</option>
+				<option value="Non-MAGI referral made">Yes</option>
+			</select>
+		</span>		
+		
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Cost-Effective Determination</span>
+			<span class="mns-input-label">Cost-Effective Determination (Y/N): </span>
+			<select type="select">
+				<option value="No Cost-Effective determination">No</option>
+				<option value="Cost-Effective determination made">Yes</option>
+			</select>
+		</span>	
+		
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Medical Support Referral</span>
+			<span class="mns-input-label">Medical Support Referral (Y/N): </span>
+			<select type="select">
+				<option value="No medical support referral">No</option>
+				<option value="Yes, medical support referral">Yes</option>
+			</select>
+		</span>
+		
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-MNsure Task Created</span>
+			<span class="mns-input-label">MNsure Task Created (Y/N): </span>
+			<select type="select">
+				<option value="No MNsure task created">No</option>
+				<option value="Yes, MNsure task created">Yes</option>
+			</select>
+		</span>
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Other Task Created</span>
+			<span class="mns-input-label">Other Task Created (Y/N): </span>
+			<select type="select">
+				<option value="No other task created">No</option>
+				<option value="Yes, other task created">Yes</option>
+			</select>
+		</span>
+
+		<span class="mns-input-group required">
+			<span class="mns-input-descriptor">-Verification Cleared</span>
+			<span class="mns-input-label">Verifications Cleared (Y/N): </span>
+			<select type="select">
+				<option value="Verifications not cleared">No</option>
+				<option value="Verifications cleared">Yes</option>
+			</select>
+		</span>		
+		
+	</span>	
+		
+</div>
