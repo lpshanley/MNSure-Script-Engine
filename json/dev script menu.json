@@ -28,6 +28,9 @@
 			},
 			"Renewal...": {
 				"_events": "caseWork/note/write(Renewal)"
+			},
+			"Demo...": {
+				"_events": "caseWork/note/write(Demo)"
 			}
 		}
 	},
