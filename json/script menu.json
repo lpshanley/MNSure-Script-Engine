@@ -25,7 +25,10 @@
 			},
 			"Application...": {
 				"_events": "caseWork/note/write(Application)"
-			}
+			},
+			"Renewal...": {
+				"_events": "caseWork/note/write(Renewal)"
+			}			
 		}	
 	}
 }
