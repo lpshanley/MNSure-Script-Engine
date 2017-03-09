@@ -1,0 +1,9 @@
+.highlight {
+	background-color: #23241f;
+}
+
+.highlight pre code {
+	color: #f8f8f2;
+	width: 100%;
+}
+
