@@ -1,4 +1,4 @@
-_engine.module.define('ui/dom/modal/Modal',function( config ){
+_engine.module.define('ui/modal/Modal',function( config ){
 	config = config || {};
 		
 	let $id = Math.ceil( Math.random() * 100000000 ),
@@ -43,14 +43,14 @@ _engine.module.define('ui/dom/modal/Modal',function( config ){
 				
 			if(!$(v).is(':input')) 
 				test = $(v).children(':input');
-
+				
 			$.each(test,function(k,v){
 				if( $(v).is(':checkbox') )
 					isValid = v.checked;
 				else
 					isValid = v.value !== "";
 			});
-
+				
 				// Do show/hide on dual validation
 			if($(v).is('select')){
 				$.each($container.find('[data-showif]'),function(k,v){
@@ -101,6 +101,7 @@ _engine.module.define('ui/dom/modal/Modal',function( config ){
 		$container.on('click', '.dijitDialogCloseIcon',function(e){ $do.close(); });
 		
 		if($props.live){
+			$meldForm();
 			$container.find('.template :input').on('keyup paste change',function(){
 				$meldForm( $(this).closest('[data-id]') );
 			});
@@ -123,7 +124,6 @@ _engine.module.define('ui/dom/modal/Modal',function( config ){
 			// Sets up the modal as requested
 			$updateTitle();
 			$updateContent();
-			if($props.live) $meldForm();
 			
 			// Allows the modal to be moved on the screen
 			$allowDragging();
@@ -139,6 +139,7 @@ _engine.module.define('ui/dom/modal/Modal',function( config ){
 			
 			// Affix the modal to the dom and dim lights if needed
 			_engine.ui.dom.dimLights();
+			
 			$('.modal-overlay').append( $container );
 			
 			// Watch for user actions
