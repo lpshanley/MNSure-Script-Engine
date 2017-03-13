@@ -12,6 +12,7 @@ _engine.module.define('ui/dom/modal/Modal',function( config ){
 			$props.html = config.html || $contents( $props.text );
 			$props.title = config.title || 'DEFAULT MODAL TITLE';
 			$props.buttons = config.buttons || ['Close'];
+			$props.live = config.live || false;
 			
 	let $updateTitle = ( title ) => {
 		title = title || $props.title;
@@ -29,6 +30,45 @@ _engine.module.define('ui/dom/modal/Modal',function( config ){
 		$container.find('.modal-content-container').html( $props.html );
 	}
 	this.updateContent = $updateContent;
+	
+	let $meldForm = (ele) => {
+		
+		let list = ele || $container.find('[data-id]');
+		
+		$.each(list,function(k,v){
+			
+			let test = $(v),
+					isValid = true,
+					id = v.dataset.id;
+				
+			if(!$(v).is(':input')) 
+				test = $(v).children(':input');
+
+			$.each(test,function(k,v){
+				if( $(v).is(':checkbox') )
+					isValid = v.checked;
+				else
+					isValid = v.value !== "";
+			});
+
+				// Do show/hide on dual validation
+			if($(v).is('select')){
+				$.each($container.find('[data-showif]'),function(k,v){
+					let item = v.dataset.showif.split(/[:\/|$\\=]/g);
+					if(item.length === 2 && item[0] === id){
+						if( item[1] === test.val() ) $(v).show();
+						else $(v).hide();
+					} 
+				});
+			}
+				// Do show/hide on single validation elements
+			else
+				isValid ?
+					$container.find(`[data-showif="${ id }"]`).show():
+					$container.find(`[data-showif="${ id }"]`).hide();
+				
+		});
+	}
 	
 	let $register = () => _engine.storage.nocache.query('modal')[$id] = this;
 	
@@ -60,11 +100,20 @@ _engine.module.define('ui/dom/modal/Modal',function( config ){
 		 /* Watch for closure */
 		$container.on('click', '.dijitDialogCloseIcon',function(e){ $do.close(); });
 		
+		
+		
+		if($props.live){
+			$container.find('.template :input').on('keyup paste change',function(){
+				$meldForm( $(this).closest('[data-id]') );
+			});
+		}
+		
 	}
 	
 	let $setupButtons = () => {
 		
 		console.log( $container.find('.action-set') );
+		
 	}
 	this.newBtn = $setupButtons;
 	
