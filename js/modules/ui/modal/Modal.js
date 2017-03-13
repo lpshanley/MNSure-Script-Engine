@@ -11,7 +11,7 @@ _engine.module.define('ui/modal/Modal',function( config ){
 			$props.text = config.text || 'No defined html template was passed.';
 			$props.html = config.html || $contents( $props.text );
 			$props.title = config.title || 'DEFAULT MODAL TITLE';
-			$props.buttons = config.buttons || ['Close'];
+			$props.buttons = config.buttons || ['close', 'submit'];
 			$props.live = config.live || false;
 			
 	let $updateTitle = ( title ) => {
@@ -98,7 +98,19 @@ _engine.module.define('ui/modal/Modal',function( config ){
 	
 	let $watch = () => {
 		 /* Watch for closure */
-		$container.on('click', '.dijitDialogCloseIcon',function(e){ $do.close(); });
+		$container.on('click', '.dijitDialogCloseIcon',function(){ $do.close(); });
+		
+		$container.on('click', '.action-set a', function(e){
+			switch(this.dataset.role){
+				case 'close':
+					$do.close;
+					break;
+				case 'submit':
+					
+					break;
+				default:
+			}
+		});
 		
 		if($props.live){
 			$meldForm();
@@ -110,6 +122,9 @@ _engine.module.define('ui/modal/Modal',function( config ){
 	}
 	
 	let $setupButtons = ( buttons ) => {
+		
+		buttons = buttons || $props.buttons;
+		
 		let preset = {
 			submit: { label: 'Submit', role: 'submit' },
 			close: { label: 'Close', role: 'close' }
@@ -119,7 +134,6 @@ _engine.module.define('ui/modal/Modal',function( config ){
 			
 			if(Object.prototype.toString.call(config) === '[object String]') config = preset[config];
 			if(!config) config = {};
-			console.log(config);
 			
 			let $action = config.action || false,
 					$role = config.role || false,
@@ -134,8 +148,9 @@ _engine.module.define('ui/modal/Modal',function( config ){
 		}
 		
 		$.each(buttons,function(key, config){
-			console.log(button);
-			$container.find('.action-set').append( new button(config) );
+			let attachPoint = $container.find('.action-set');
+			attachPoint.append( new button(config) );
+			if((buttons.length - 1) !== key) attachPoint.append($('<span class="filler">'))
 		});
 		
 	}
