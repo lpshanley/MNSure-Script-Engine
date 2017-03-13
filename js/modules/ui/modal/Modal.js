@@ -109,9 +109,34 @@ _engine.module.define('ui/modal/Modal',function( config ){
 		
 	}
 	
-	let $setupButtons = () => {
+	let $setupButtons = ( buttons ) => {
+		let preset = {
+			submit: { label: 'Submit', role: 'submit' },
+			close: { label: 'Close', role: 'close' }
+		}
 		
-		console.log( $container.find('.action-set') );
+		let button = function(config) {
+			
+			if(Object.prototype.toString.call(config) === '[object String]') config = preset[config];
+			if(!config) config = {};
+			console.log(config);
+			
+			let $action = config.action || false,
+					$role = config.role || false,
+					$label = config.label || 'undefined',
+					$template = () => `<span class="left-corner"><span class="right-corner"><span class="middle">${$label}</span></span></span>`;
+			
+			let $this = $('<a>');
+			if($action) $this.attr('onClick', $action );
+			if($role) $this.attr('data-role', $role );
+			$this.html( $template );
+			return $this;
+		}
+		
+		$.each(buttons,function(key, config){
+			console.log(button);
+			$container.find('.action-set').append( new button(config) );
+		});
 		
 	}
 	this.newBtn = $setupButtons;
