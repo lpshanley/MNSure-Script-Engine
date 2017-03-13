@@ -84,6 +84,9 @@ _engine.module.define('ui/modal/Modal',function( config ){
 			delete _engine.storage.nocache.data.modal[$id];
 				// Toggle lights
 			_engine.ui.dom.dimLights();
+		},
+		submit: () => {
+			console.log('Test');
 		}
 	}
 	this.action = $do;
@@ -103,10 +106,10 @@ _engine.module.define('ui/modal/Modal',function( config ){
 		$container.on('click', '.action-set a', function(e){
 			switch(this.dataset.role){
 				case 'close':
-					$do.close;
+					$do.close();
 					break;
 				case 'submit':
-					
+					$do.submit();
 					break;
 				default:
 			}
