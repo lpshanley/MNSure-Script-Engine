@@ -20,9 +20,12 @@ _engine.module.define('ui/dom/modal/Modal',function( config ){
 	this.updateTitle = $updateTitle;
 	
 	let $updateContent = ( html ) => {
-		if( Object.prototype.toString.call( $.parseHTML(html)[0] ) === "[object Text]")
-			html = $contents(html);
-		$props.html = html;
+		if(!html) html = $props.html;
+		else {
+			if( Object.prototype.toString.call( $.parseHTML(html)[0] ) === "[object Text]")
+				html = $contents(html);
+			$props.html = html;
+		}
 		$container.find('.modal-content-container').html( $props.html );
 	}
 	this.updateContent = $updateContent;
