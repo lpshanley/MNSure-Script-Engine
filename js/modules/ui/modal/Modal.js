@@ -100,8 +100,6 @@ _engine.module.define('ui/dom/modal/Modal',function( config ){
 		 /* Watch for closure */
 		$container.on('click', '.dijitDialogCloseIcon',function(e){ $do.close(); });
 		
-		
-		
 		if($props.live){
 			$container.find('.template :input').on('keyup paste change',function(){
 				$meldForm( $(this).closest('[data-id]') );
@@ -125,6 +123,7 @@ _engine.module.define('ui/dom/modal/Modal',function( config ){
 			// Sets up the modal as requested
 			$updateTitle();
 			$updateContent();
+			if($props.live) $meldForm();
 			
 			// Allows the modal to be moved on the screen
 			$allowDragging();
