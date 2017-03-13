@@ -107,7 +107,8 @@ _engine.module.define('ui/modal/build', function(modalReq, callback) {
 		
 		$('[data-id='+uniqueId+']').center();
 		
-		_engine.ui.modal._setupClusters( uniqueId );
+		// Cluster functions being deprecated 3.13.17
+		//_engine.ui.modal._setupClusters( uniqueId );
 		
 		_engine.ui.modal._watch( uniqueId );
 		
