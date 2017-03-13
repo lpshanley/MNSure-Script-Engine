@@ -294,15 +294,18 @@
 .custom-modal .template {
   padding: 0 15px;
   border-top: 1px solid #7FBAD5;
+  max-height: 450px;
+  overflow-y: scroll;
 }
 .custom-modal .input-group {
-  margin: 5px 0;
+  margin: 10px 0;
 }
 .custom-modal .input-group select {
   height: 21px;
 }
 .custom-modal .input-group select, .custom-modal .input-group input {
   float: right;
+  margin-left: 10px;
 }
 
 @media screen and (max-width: 1150px) {
