@@ -176,9 +176,6 @@ _engine.module.define('ui/modal/Modal',function( config ){
 			// Registers the modals in the nocache registry
 			$register();
 			
-			// Centers the modal object
-			$container.center();
-			
 			// Sets up the button configuration
 			$updateButtons();
 			
@@ -186,6 +183,9 @@ _engine.module.define('ui/modal/Modal',function( config ){
 			_engine.ui.dom.dimLights();
 			
 			$('.modal-overlay').append( $container );
+			
+			// Centers the modal object
+			$container.center();
 			
 			// Watch for user actions
 			$watch();
