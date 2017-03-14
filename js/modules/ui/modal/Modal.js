@@ -124,7 +124,9 @@ _engine.module.define('ui/modal/Modal',function( config ){
 		
 	}
 	
-	let $setupButtons = ( buttons ) => {
+	let $updateButtons = ( buttons ) => {
+		let attachPoint = $container.find('.action-set');
+		attachPoint.empty();
 		
 		buttons = buttons || $props.buttons;
 		
@@ -134,6 +136,7 @@ _engine.module.define('ui/modal/Modal',function( config ){
 		}
 		
 		let button = function(config) {
+			
 			
 			if(Object.prototype.toString.call(config) === '[object String]') config = preset[config];
 			if(!config) config = {};
@@ -151,13 +154,12 @@ _engine.module.define('ui/modal/Modal',function( config ){
 		}
 		
 		$.each(buttons,function(key, config){
-			let attachPoint = $container.find('.action-set');
 			attachPoint.append( new button(config) );
 			if((buttons.length - 1) !== key) attachPoint.append($('<span class="filler">'))
 		});
 		
 	}
-	this.newBtn = $setupButtons;
+	this.updateButtons = $updateButtons;
 	
 	let $build = () => {
 		_engine.advanced.getView('modal/default.html',function( template ){ 
@@ -178,7 +180,7 @@ _engine.module.define('ui/modal/Modal',function( config ){
 			$container.center();
 			
 			// Sets up the button configuration
-			$setupButtons();
+			$updateButtons();
 			
 			// Affix the modal to the dom and dim lights if needed
 			_engine.ui.dom.dimLights();
