@@ -300,6 +300,9 @@
 .custom-modal .input-group {
   margin: 10px 0;
 }
+.custom-modal .input-group label.indent {
+  margin-left: 15px;
+}
 .custom-modal .input-group select {
   height: 21px;
 }
