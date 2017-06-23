@@ -40,6 +40,15 @@
 
 .scripts-link {
   cursor: pointer; }
+  .scripts-link a {
+    color: white;
+    font-size: 12px;
+    font-family: "HelvNeueMediumforIBM";
+    margin-top: 0px;
+    padding: 7px 15px 11px 15px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 17px; }
 
 #script-launcher:hover > ul {
   z-index: 1000;
