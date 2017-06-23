@@ -262,7 +262,7 @@
     display: none !important; } }
 div.center-box > span {
   position: relative;
-  font-weight: 8px;
+  font-weight: bold;
   top: 8px;
   left: 6px; }
 
