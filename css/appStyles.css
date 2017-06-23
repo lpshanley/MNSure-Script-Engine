@@ -78,6 +78,7 @@
   right: 0;
   display: none;
   width: 150px;
+  height: auto !important;
 }
 #script-launcher ul li {
   position: relative;
@@ -85,7 +86,6 @@
   margin: 0;
   padding: 0;
   width: 150px;
-  height: auto !important;
 }
 #script-launcher ul li:hover {
   background: #4178BE;
