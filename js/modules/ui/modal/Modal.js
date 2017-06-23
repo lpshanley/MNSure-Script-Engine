@@ -4,22 +4,24 @@ _engine.module.define('ui/modal/Modal',function( config ){
 	let $id = Math.ceil( Math.random() * 100000000 ),
 			$contents = (msg) => $.parseHTML('<div class="mns-modal-template"><span class="mns-input-group"><span class="mns-input-label mns-input-infotext">' + msg + '</span></span></div>')[0],
 			$container = null,
-			$props = {};
+			$props = {},
+			$dataStore = {};
 			
 			/* Build Props */
-			$props.role = config.role || null;
+			$props.role = config.role || 'modal';
 			$props.text = config.text || 'No defined html template was passed.';
 			$props.html = config.html || $contents( $props.text );
 			$props.title = config.title || 'DEFAULT MODAL TITLE';
 			$props.buttons = config.buttons || ['close', 'submit'];
 			$props.live = config.live || false;
+			$props.onSubmit = config.onSubmit || false;
 			
 	let $updateTitle = ( title ) => {
 		title = title || $props.title;
 		$container.find('.dijitDialogTitle').text( title );
 	}
 	this.updateTitle = $updateTitle;
-	
+
 	let $updateContent = ( html ) => {
 		if(!html) html = $props.html;
 		else {
@@ -66,11 +68,76 @@ _engine.module.define('ui/modal/Modal',function( config ){
 				isValid ?
 					$container.find(`[data-showif="${ id }"]`).show():
 					$container.find(`[data-showif="${ id }"]`).hide();
-				
 		});
 	}
 	
 	let $register = () => _engine.storage.nocache.query('modal')[$id] = this;
+	
+	let $parseScreen = () => {
+		
+		let convert = {
+			month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+			shortMonth: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+			day: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+			shortDay: ['Sun','Mon','Tues','Wed','Thur','Fri','Sat']
+		}
+		
+		let inputs = $container.find( '.template .input-group:has(:input:visible)' );
+		let parsedData = {}
+		
+		$.each(inputs,function(k,v){
+			
+				// Setup data store
+			parsedData[k] = {}
+				
+				// Store label
+			parsedData[k].label = $( v ).find('label').text().trim() || false;
+				
+				// Store description
+			let description = false;
+			let descriptionTag = $( v ).find('label[data-description]');
+			if( descriptionTag.length ) description = descriptionTag.attr('data-description').trim();
+			parsedData[k].description = description;
+				
+				// Store input content
+			let content = "";
+			$.each($( v ).find(':input:visible'),function(k,v){
+				
+				let value = $(v).val().trim();
+				
+				if( value.trim() !== "" ){
+					if( v.nodeName.toLowerCase() === "input" ){
+						let type = v.type.toLowerCase();
+							
+						if(['date','month'].indexOf( type )){
+								
+							let date = value.split('-'),
+									day = parseInt(date[2]) || false,
+									month = parseInt(date[1]) || false,
+									year = parseInt(date[0]) || false;
+								
+							if( type === 'date' )
+								value = `${month}/${day}/${year}`;
+							if( type === 'month' )
+								value = `${convert.month[month-1]} ${year}`;
+							
+							if( k > 0 ) value = " " + value;
+						}
+						
+					}
+				}
+				
+				content += value;
+				
+			});
+			parsedData[k].content = content.replace(/\s\s+/g," ").trim();
+			
+		});
+		
+		console.log( parsedData );
+		
+	}
+	this.parseScreen = $parseScreen;
 	
 	let $do = {
 		show: () => { $container.removeClass('hidden') },
@@ -86,7 +153,10 @@ _engine.module.define('ui/modal/Modal',function( config ){
 			_engine.ui.dom.dimLights();
 		},
 		submit: () => {
-			console.log('Test');
+			$parseScreen();
+			
+			//if($props.onSubmit) $props.onSubmit();
+			
 		}
 	}
 	this.action = $do;
@@ -132,7 +202,8 @@ _engine.module.define('ui/modal/Modal',function( config ){
 		
 		let preset = {
 			submit: { label: 'Submit', role: 'submit' },
-			close: { label: 'Close', role: 'close' }
+			close: { label: 'Close', role: 'close' },
+			cancel: { label: 'Cancel', role: 'close' }
 		}
 		
 		let button = function(config) {
