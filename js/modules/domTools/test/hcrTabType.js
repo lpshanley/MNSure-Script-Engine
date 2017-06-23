@@ -16,6 +16,7 @@ _engine.module.define('domTools/test/hcrTabType',function( tab ){
 				typeMatch = {
 					'HCRIntegratedCase' : "Integrated Case",
 					'PersonHome' : "Person Page",
+					'HCRPersonHome' : "Person Page",
 					'PersonSearch' : "Person Search",
 					'CaseSearch' : "Case Search",
 					'EvidenceType' : "Evidence|" + nodeData.page.title.split('-')[0].trim(),
