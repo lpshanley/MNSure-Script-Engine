@@ -52,7 +52,7 @@
       color: #4378bd !important; }
 
 #script-launcher {
-  background: url(../../curam/images/Banner_Link_Border.png) left center no-repeat !important; }
+  background: url(https://people.mnsure.org/CuramStatic/themes/curam/images/Banner_Link_Border.png) left center no-repeat !important; }
   #script-launcher:hover > ul {
     z-index: 1000;
     display: block; }
