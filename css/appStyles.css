@@ -17,10 +17,10 @@
 #app-banner .center-box {
   position: relative;
   width: 213px;
-  height: 29px;
+  height: 30px;
   border: 1px solid #325c80;
   background-color: #264a60;
-  margin: 4px 10px 5px;
+  margin: 4px 10px;
   float: left;
   display: inline-block;
   color: white; }
@@ -81,8 +81,8 @@
 #script-launcher ul li a {
   display: block;
   color: black !important;
-  line-height: 26px;
-  padding: 8px 0 8px 14px !important;
+  line-height: 25px;
+  padding: 7px 0 7px 14px !important;
   background: none; }
 #script-launcher ul li a:hover {
   color: white !important;
