@@ -17,8 +17,8 @@
 			"Change Reported...": {
 				"_events": "caseWork/note/write(Change Reported)"
 			},
-			"Citizen/ID Verified...": {
-				"_events": "caseWork/note/write(Citizen ID Verified)"
+			"Citizen & ID Verified...": {
+				"_events": "caseWork/note/write(Citizen & ID Verified)"
 			},
 			"Client Contact...": {
 				"_events": "caseWork/note/write(Client Contact)"
