@@ -26,6 +26,9 @@
 			"Application...": {
 				"_events": "caseWork/note/write(Application)"
 			}
+			"Citizen/ID Verified...": {
+				"_events": "caseWork/note/write(Citizen ID Verified)"
+			}
 		}	
 	}
 }
