@@ -9,6 +9,7 @@
 	<span class="mns-input-group">
 		<span class="mns-input-descriptor">Person</span>
 		<span class="mns-input-label">Person: </span>
+		<input type="text" data-prefill="participants|name" />
 		
 		<span class="mns-input-descriptor">Citizenship Evidence</span>
 		<span class="mns-input-label">Citizenship Evidence: </span>
