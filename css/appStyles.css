@@ -340,11 +340,17 @@ ul.ui-autocomplete {
   padding: 0;
 }
 ul.ui-autocomplete li.ui-menu-item a {
-  padding: 1px !important;
-  font: 13px Tahoma, sans-serif !important;
+  padding: 5px 10px !important;
+  font: 12px "HelvNeueMediumforIBM" !important;
 }
 ul.ui-autocomplete li.ui-menu-item:hover {
   border-radius: 0;
+}
+ul.ui-autocomplete li.ui-menu-item.ui-state-focus {
+  background: #4178BE;
+}
+ul.ui-autocomplete li.ui-menu-item.ui-state-focus a {
+  color: white;
 }
 
 .ui-helper-hidden-accessible {
